@@ -88,8 +88,8 @@ A continuacion encontrara los enlaces para los archivos de la carpeta _doc_ que 
 [Actas/Bitacoras de Reunion del Equipo de Desarrollo]()<br>
 [Documento SRS del Proyecto]()<br>
 [Sprint Retrospective]()<br>
-[Herramientas de Apoyo para el Proyecto]()
-[Normas de uso del Repositorio](https://github.com/Bloque-SID/project2024-2-24204/main/doc/normas_de_uso_github.md)
+[Herramientas de Apoyo para el Proyecto]()<br>
+[Normas de uso del Repositorio](https://github.com/Proyecto-Integrador-I-2024-2/proyecto-e2-proyectointegrador-202402-djmink/blob/main/doc/normas_de_uso_github.md)
 
 ## Anotaciones a tener en cuenta
 
