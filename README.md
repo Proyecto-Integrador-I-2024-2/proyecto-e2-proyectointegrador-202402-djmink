@@ -72,11 +72,11 @@ proyecto-e2-proyectointegrador-202402-djmink/
 
 A continuacion encontrara los enlaces para los archivos de la carpeta _model_ que pueden ser visualizados en GitHub:
 
-[Modelo Entidad Relacion del Proyecto]()<br>
-[Modelo Relacional del Proyecto]()<br>
-[Diagrama de Casos de Uso del Proyecto]()<br>
-[Carpeta con los Diagramas de Secuencia del Proyecto]()<br>
-[Diagrama de Clases del Proyecto]()<br>
+[Modelo Entidad Relacion del Proyecto](https://github.com/Proyecto-Integrador-I-2024-2/proyecto-e2-proyectointegrador-202402-djmink/blob/main/model/conceptual/mer.pdf)<br>
+[Modelo Relacional del Proyecto](https://github.com/Proyecto-Integrador-I-2024-2/proyecto-e2-proyectointegrador-202402-djmink/blob/main/model/relacional/mr.pdf)<br>
+[Diagrama de Casos de Uso del Proyecto](https://github.com/Proyecto-Integrador-I-2024-2/proyecto-e2-proyectointegrador-202402-djmink/blob/main/model/casos_de_uso/casos_de_uso.pdf)<br>
+[Diagramas de Secuencia](https://github.com/Proyecto-Integrador-I-2024-2/proyecto-e2-proyectointegrador-202402-djmink/blob/main/model/secuencias/secuencias.pdf)<br>
+[Diagrama de Clases del Proyecto](https://github.com/Proyecto-Integrador-I-2024-2/proyecto-e2-proyectointegrador-202402-djmink/blob/main/model/clases/clases.pdf)<br>
 [Mockups del Proyecto]()<br>
 [Carpeta con los Wireframes]()
 
@@ -84,11 +84,12 @@ A continuacion encontrara los enlaces para los archivos de la carpeta _model_ qu
 
 A continuacion encontrara los enlaces para los archivos de la carpeta _doc_ que pueden ser visualizados en GitHub:
 
-[Actas/Bitacoras de Reunion del Equipo de Desarrollo]()<br>
+[Actas/Bitacoras de Reunion del Equipo de Desarrollo](https://github.com/Proyecto-Integrador-I-2024-2/proyecto-e2-proyectointegrador-202402-djmink/blob/main/doc/actas_de_reunion.pdf)<br>
 [Documento SRS del Proyecto]()<br>
-[Sprint Retrospective]()<br>
+[Sprint Retrospective 0](https://github.com/Proyecto-Integrador-I-2024-2/proyecto-e2-proyectointegrador-202402-djmink/blob/main/doc/sprint_retrospective_0.pdf)<br>
 [Herramientas de Apoyo para el Proyecto]()<br>
-[Normas de uso del Repositorio](https://github.com/Proyecto-Integrador-I-2024-2/proyecto-e2-proyectointegrador-202402-djmink/blob/main/doc/normas_de_uso_github.md)
+[Normas de uso del Repositorio](https://github.com/Proyecto-Integrador-I-2024-2/proyecto-e2-proyectointegrador-202402-djmink/blob/main/doc/normas_de_uso_github.md)<br>
+[Backlog del Proyecto](https://github.com/Proyecto-Integrador-I-2024-2/proyecto-e2-proyectointegrador-202402-djmink/blob/main/doc/backlog.pdf)
 
 ## Anotaciones a tener en cuenta
 
