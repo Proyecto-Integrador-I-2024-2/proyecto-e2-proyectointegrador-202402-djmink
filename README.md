@@ -37,13 +37,10 @@ proyecto-e2-proyectointegrador-202402-djmink/
 |       |-- casos_de_uso.vpm
 |
 |   |-- secuencias/
-|       |-- secuencia1.pdf
+|       |-- secuencias.pdf
 |       |-- secuencia1.vpm
-|       |-- secuencia2.pdf
 |       |-- secuencia2.vpm
-|       |-- secuencia3.pdf
 |       |-- secuencia3.vpm
-|       |-- secuencia4.pdf
 |       |-- secuencia4.vpm
 |
 |   |-- clases/
@@ -61,8 +58,10 @@ proyecto-e2-proyectointegrador-202402-djmink/
 |
 |-- doc/
 |   |-- actas_de_reunion.pdf
+|   |-- backlog.pdf
 |   |-- documento_srs.pdf
-|   |-- sprint_retrospective.pdf
+|   |-- sprint_retrospective_0.pdf
+|   |-- plan_de_pruebas.pdf
 |   |-- herramientas.pdf
 |   |-- normas_de_uso_github.md
 |
