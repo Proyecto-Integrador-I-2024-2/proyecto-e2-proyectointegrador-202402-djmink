@@ -5,6 +5,9 @@ from django.shortcuts import render, redirect
 from .models import FreelancerProfile, Freelancer, User
 from .forms import RegisterForm
 
+def home(request):
+    return render(request, 'my_aplication/first_page.html')
+
 def users(request):
     users = Freelancer.objects.all()
     return render(request, 'my_aplication/users.html', {'users': users})
