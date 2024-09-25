@@ -19,5 +19,9 @@ from django.urls import path, include
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+<<<<<<< HEAD
     path('', include('my_aplication.urls')), 
+=======
+    path('account/', include('account.urls'))
+>>>>>>> 2064563 (feat: v1 inicio de sesión)
 ]
