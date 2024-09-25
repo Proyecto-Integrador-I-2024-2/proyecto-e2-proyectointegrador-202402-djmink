@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block title %}Log-in{% endblock %}
+
+{% block content %}
+<div class="v382_3423">
+  <div class="v382_3424"></div>
+  <div class="v382_3425">
+    <h1 class="v382_3435">Log In</h1>
+    {% if form.errors %}
+      <p>Your username and password didn't match. Please try again.</p>
+    {% else %}
+      <p>
+        Don’t have an account yet? <a href="{% url "register" %}" class="v382_3433">Sign up</a>
+      </p>
+    {% endif %}
+    
+    <form action="{% url 'login' %}" method="post">
+      {% csrf_token %}
+      <div class="login-form">
+        {% load widget_tweaks %}
+        {% for field in form %}
+          {{ field.label_tag }}
+          {% render_field field class+="input" %}
+        {% endfor %}
+      </div>
+      <input type="submit" value="Log In" class="button">
+      <input type="hidden" name="next" value="{{ next }}">
+    </form>
+
+    <p class="v382_3429">Forgot password? <a href="{% url 'password_reset' %}" class="v382_3428">Recover it</a></p>
+  </div>
+</div>
+{% endblock %}
