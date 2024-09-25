@@ -1,6 +1,12 @@
 from django.test import TestCase
 from django.urls import reverse
 
+<<<<<<< HEAD
+# Create your tests here.
+
+   
+    
+=======
 class HomeViewTest(TestCase):
     
     """Tests for the Home view."""
@@ -26,3 +32,4 @@ class HomeViewTest(TestCase):
         url = reverse('home')
         response = self.client.get(url)
         self.assertTemplateUsed(response, 'my_aplication/first_page.html')
+>>>>>>> dev
