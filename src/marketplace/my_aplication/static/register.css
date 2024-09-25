@@ -1,0 +1,91 @@
+body {
+    font-family: 'Poppins', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f5f5f5;
+}
+
+.login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.login-box {
+    background-color: #fff;
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    width: 350px;
+    text-align: center;
+}
+
+h2 {
+    margin-bottom: 20px;
+    color: #333;
+}
+
+input[type="text"],
+input[type="password"] {
+    width: 100%;
+    padding: 12px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+.btn-login {
+    width: 100%;
+    padding: 12px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.btn-login:hover {
+    background-color: #45a049;
+}
+
+.forgot-password {
+    margin-top: 15px;
+    font-size: 14px;
+}
+
+.forgot-password a {
+    color: #007BFF;
+    text-decoration: none;
+}
+
+.forgot-password a:hover {
+    text-decoration: underline;
+}
+
+.signup-section {
+    margin-top: 20px;
+    font-size: 14px;
+}
+
+.signup-section a {
+    color: #007BFF;
+    text-decoration: none;
+}
+
+.signup-section a:hover {
+    text-decoration: underline;
+}
+
+.language-selector {
+    margin-top: 30px;
+}
+
+.language-selector select {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    width: 100%;
+}
