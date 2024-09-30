@@ -29,3 +29,6 @@ def perfilesCliente(request, id):
     p = get_object_or_404(ClientProfile, id=id)
     return render(request, 'perfil/perfil_cliente.html', {'p':p})
 
+def mainCliente(request, id):        
+    p = get_object_or_404(ClientProfile, id=id)
+    return render(request, 'perfil/main_client.html', {'p':p})
