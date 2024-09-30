@@ -6,7 +6,7 @@ from perfil.models import Profile, ClientProfile
 # Create your views here.
 def perfilesFreelancer(request, id):
     
-    p = get_object_or_404(Profile, id=1)
+    p = get_object_or_404(Profile, id=id)
     return render(request, 'perfil/perfil_freelancer.html', {'p': p})
     
         

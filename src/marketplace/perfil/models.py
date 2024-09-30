@@ -12,6 +12,9 @@ class Profile(models.Model):
     jobs_completed = models.IntegerField(default=0)
     price = models.CharField(max_length=100)
     join_date = models.DateField(auto_now_add=True)
+    profile_picture = models.ImageField(upload_to='profile_pictures/', blank=True, null=True)
+
+
 
     def __str__(self):
         return self.name
@@ -23,6 +26,7 @@ class ClientProfile(models.Model):
     type = models.CharField(max_length=100)
     description = models.TextField()
     rating = models.FloatField(default=0.0)
+    profile_picture = models.ImageField(upload_to='profile_pictures/', blank=True, null=True)
 
     def __str__(self):
         return self.name
