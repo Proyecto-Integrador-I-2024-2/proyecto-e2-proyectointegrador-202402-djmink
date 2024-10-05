@@ -1,0 +1,228 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Profile</title>
+    <link rel="stylesheet" href="{% static 'ep1.css' %}">
+</head>
+<body>
+    <div id="editsection" class="editsection">
+
+        <a href="{% url 'perfilesCliente' p.id %}">
+            <img id="profile_picture" class="profile_picture" src="{{ p.profile_picture.url }}" alt="Profile Picture"/>
+        </a>
+
+        <img id="logo" class="logo" src="{% static 'logo.png' %}"/>
+        <div id="logoseparator" class="logoseparator"></div>
+    
+        <div id="onlinemarketplace2" class="onlinemarketplace2">
+            Online Marketplace
+        </div>
+
+        <div id="ruta" class="ruta">
+            <div class="name_profile">
+                {{ p.name }}<span class="/">/</span>
+                <span class="edit-profile">Edit profile</span>
+            </div>
+        </div>        
+
+        <div id="setupyour" class="setupyour">
+            Set up your Online Marketplace
+        </div>
+
+        <div class="options">
+            <div id="general" class="general">General</div>
+            <a href="{% url 'editar_perfil_portfolio' p.id %}">Portfolio</a> 
+            <a href="{% url 'editar_perfil_account' p.id %}">Account</a>
+            <a href="{% url 'editar_perfil_security' p.id %}">Security</a>
+            <a href="{% url 'editar_perfil_data' p.id %}">Data Export</a>
+            <a href="{% url 'editar_perfil_delete' p.id %}">Delete account</a>
+        </div>
+
+        <div class="Personal-info">
+            Personal information
+        </div>
+
+        <div class="input-container">
+            <label for="name">Name</label>
+            <textarea class="input-box">{{ p.name }}</textarea>
+        </div>
+        
+        <div class="input-container">
+            <label for="occupation">Occupation</label>
+            <textarea class="input-box">{{ p.profession }}</textarea>
+        </div>
+        
+        <div class="input-container">
+            <label for="location">Location</label>
+            <textarea class="input-box">{{ p.location }}</textarea>
+        </div>
+
+        <div class="input-container">
+            <label for="bio">Bio</label>
+            <textarea class="input-box bio-con">{{ p.description }}</textarea>
+        </div>
+
+        <div class="profile-pciture-container">
+            
+            <img id="profileImage" class="profile-picture" src="user.jpg" alt="Profile Picture" />
+        
+            <div class="button-group">
+                <input type="file" id="fileInput" accept="image/*" style="display: none;" onchange="previewImage(event)">
+                <button class="btn" onclick="document.getElementById('fileInput').click()">New picture</button>
+                <button class="btn delete">Delete</button>
+            </div>
+
+        </div>
+
+        <div class="About">
+            About
+        </div>
+
+        <div class="input-container">
+            <label for="experience">Experience</label>
+            <textarea class="input-box">{{ p.experience }}</textarea>
+        </div>
+
+        <div class="input-container">
+            <label for="price">Hourly rate</label>
+            <textarea class="input-box">{{ p.price }}</textarea>
+        </div>
+
+        <div class="Skills">
+            Skills
+        </div>
+
+        <div class="habilities-container">
+            {% for hability in p.skills.all %}
+                <div class="hability-container" id="hability-{{ hability.id }}">
+                    <div class="hability">{{ hability.name }}</div>
+                    <button class="delete-btn" onclick="markForRemoval('{{ hability.id }}')">X</button>
+                </div>
+            {% empty %}
+                <p>You don't have skills registered yet.</p>
+            {% endfor %}
+        </div>
+
+        <div class="certificates-container">
+            {% for certificate in p.certificates.all %}
+                <div class="certificate-container" id="certificate-{{ certificate.id }}">
+                    <div class="name">{{ certificate.name }}</div>
+                    <div class="rectangle20">
+                        <img id="card" class="card" src="{% static 'card.png' %}" alt="Card"/>
+                        <div class="type">{{ certificate.type }}</div>
+                    </div>
+                    <a href="{{ certificate.url }}" target="_blank">
+                        <img id="view" class="view" src="{% static 'view.png' %}" alt="View"/>
+                    </a>
+                    
+                    <button class="delete-btn" onclick="markForRemoval('{{ hability.id }}')">X</button>
+                </div>
+            {% empty %}
+                <p>You don't have certificates registered yet.</p>
+            {% endfor %}
+        </div>
+
+        <div class="input-container">
+            <textarea class="input-box">Write your skill here</textarea>
+        </div>
+
+        <button id="addBtn" class="nav-button">+</button>
+
+        <div class="input-container"></div>
+            <textarea class="input-box small">Name</textarea>
+        </div>
+
+        <div class="input-container"></div>
+            <textarea class="input-box small">Type</textarea>
+        </div>
+
+        <div class="input-container"></div>
+            <textarea class="input-box small">URL</textarea>
+        </div>
+
+        <button id="addBtn2" class="nav-button">+</button>
+
+        <div class="Social">
+            Social Media
+        </div>
+
+        <div class="input-container">
+            <label for="facebook">Facebook</label>
+            <textarea class="input-box media"></textarea>
+        </div>
+
+        <div class="input-container">
+            <label for="Instagram">Instagram</label>
+            <textarea class="input-box media"></textarea>
+        </div>
+
+        <div class="input-container">
+            <label for="linkedin">Linkedin</label>
+            <textarea class="input-box media"></textarea>
+        </div>
+
+        <div class="input-container">
+            <label for="Github">Github</label>
+            <textarea class="input-box media"></textarea>
+        </div>
+
+        <div class="input-container"></div>
+            <label for="email">Email contact</label>
+            <textarea class="input-box media"></textarea>
+        </div>
+        
+
+        <footer class="footer">
+        
+            <div class="footer-content">
+                <img id="encora2" class="encora2" src="{% static 'encora.png' %}" />
+                <img id="fb3" class="fb3" src="{% static 'fb2.png' %}"/>
+                <img id="ig3" class="ig3" src="{% static 'ig2.png' %}" />
+                <img id="lin3" class="lin3" src="{% static 'lin2.png' %}" />
+                <img id="gmail3" class="gmail3" src="{% static 'gmail2.png' %}" />
+                <nav class="footer-nav">
+                    <a href="#features">Features</a>
+                    <a href="#about">About</a>
+                    <a href="#support">Support</a>
+                    <a href="#resources">Resources</a>
+                    <a href="#places">Places</a>
+                    <a href="#jobs">Jobs</a>
+                </nav>
+                <div id='footertext' class='footertext'> 
+                    © 2024 Online Marketplace
+                </div>
+            </div>
+    
+        </footer>
+    </div>
+
+    <script>
+        function previewImage(event) {
+            var reader = new FileReader();
+            reader.onload = function() {
+                var output = document.getElementById('profileImage');
+                output.src = reader.result;  // Previsualiza la imagen
+            };
+            reader.readAsDataURL(event.target.files[0]); // Lee el archivo seleccionado
+        }
+
+        let removedCertificates = [];  // Lista de certificados que han sido eliminados temporalmente
+
+        // Función para eliminar un certificado temporalmente
+        function removeCertificate(certificateId) {
+            // Ocultar el contenedor del certificado
+            document.getElementById('certificate-' + certificateId).style.display = 'none';
+            
+            removedCertificates.push(certificateId);
+        }
+
+    </script>
+
+</body>

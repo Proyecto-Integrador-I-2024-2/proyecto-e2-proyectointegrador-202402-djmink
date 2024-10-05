@@ -14,8 +14,6 @@ class Profile(models.Model):
     join_date = models.DateField(auto_now_add=True)
     profile_picture = models.ImageField(upload_to='profile_pictures/', blank=True, null=True)
 
-
-
     def __str__(self):
         return self.name
 
@@ -92,6 +90,44 @@ class Project(models.Model):
     description = models.CharField(max_length=500, default='Description')
     state = models.CharField(max_length=100, choices=STATE_CHOICES, default='PENDING')
     project_picture = models.ImageField(upload_to='project_pictures/', blank=True, null=True)
+    budget = models.DecimalField(max_digits=10, decimal_places=2, default=0)
 
     def __str__(self):
         return self.name
+    
+class Publication(models.Model):
+    project = models.ForeignKey(Project, related_name='publications', on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
+    favorites = models.IntegerField()
+
+
+
+class CommentPublication(models.Model):
+    publication = models.ForeignKey(Publication, related_name='commentsPublication', on_delete=models.CASCADE)
+    author = models.CharField(max_length=100)
+    content = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.author}: {self.content}"
+    
+class Requirement(models.Model):
+
+    STATE_CHOICES = [
+        ('Available', 'available'),
+        ('Taken', 'available'),
+    ]
+
+    project = models.ForeignKey(Project, related_name='requirements', on_delete=models.CASCADE) 
+    description = models.CharField(max_length=500, default='Description')
+    state = models.CharField(max_length=100, choices=STATE_CHOICES, default='Available')
+
+class Profession(models.Model):
+    requeriment = models.ForeignKey(Requirement, related_name='professions', on_delete=models.CASCADE)
+    name = models.CharField(max_length=100)
+
+class ProjectCategory(models.Model):
+    project = models.ForeignKey(Project, related_name='projectcategories', on_delete=models.CASCADE) 
+    name = models.CharField(max_length=100)
+
+
