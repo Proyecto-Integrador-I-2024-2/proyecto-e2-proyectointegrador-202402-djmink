@@ -1,0 +1,571 @@
+/* edit freelancer account */
+
+html {
+    scroll-behavior: smooth;
+}
+
+/* Heading section */
+
+.heading {
+    background-color:#F2F2F2;
+    height:102px;
+    width: 1440px; 
+    position:relative;
+}
+
+.hometext
+{
+    color:#000000;
+    text-align:left;
+    vertical-align:text-top;
+    font-size:24px;
+    font-family: "Poppins", sans-serif;
+    font-weight: 600;
+    font-style: normal;
+    line-height:auto;
+    border-style:hidden;
+    outline:none;
+    top:32px;
+    left:690px;
+    position:absolute;
+    width:60px;
+    height:30px;
+}
+
+.chat_icon{
+    top:35px;
+    left:1268px;
+    position:absolute;
+    width:35px;
+    height: 35px;
+    cursor: pointer;
+}
+
+.notification_icon{
+    top:35px;
+    left:1315px;
+    position:absolute;
+    width:35px;
+    height: 35px;
+    cursor: pointer;
+}
+
+.logo{
+    top:7px;
+    left:40px;
+    position:absolute;
+    width:80px;
+    height: 80px;
+}
+
+.logoseparator
+{
+    top:45px;
+    left:95px;
+    width: 60px;
+    transform:rotate(-90deg);
+    border:1px solid #01000c;
+    position:absolute;
+}
+
+.onlinemarketplace2
+{
+    color:#01000c;
+    text-align:left;
+    vertical-align:text-top;
+    font-size:18px;
+    font-family: "Poppins", sans-serif;
+    font-weight: 500;
+    font-style: normal;
+    line-height:auto;
+    border-style:hidden;
+    outline:none;
+    top:20px;
+    left:150px;
+    position:absolute;
+    width:100px;
+    height: 66px;
+    cursor: pointer;
+}
+
+.profile_picture2 {
+    top:25px;
+    left:1365px;
+    position:absolute;
+    width:50px;
+    height: 50px;
+    border-radius: 50%; 
+    object-fit: cover;
+}
+
+.ptext {
+    text-align:left;
+    vertical-align:text-top;
+    font-family: "Poppins", sans-serif;
+    font-style: normal;
+    line-height:auto;
+    border-style:hidden;
+    outline:none;
+    position:absolute;
+}
+
+.ptext.ep {
+    color:#7D7D7D;
+    font-size:14px;
+    font-weight: 700; /* Bold */
+    top:181px;
+    left:114px;
+    width:100px;
+    height:21px; 
+}
+
+.ptext.my-account {
+    color:#000000;
+    font-size:16px;
+    font-weight: 400; /* Regular */
+    top:215px;
+    left:114px;
+    width:94px;
+    height:24px;
+    text-decoration: none; 
+}
+
+.ptext.profile {
+    color:#000000;
+    font-size:16px;
+    font-weight: 700;  /* Bold */
+    top:254px;
+    left:114px;
+    width:53px;
+    height:24px;
+    text-decoration: none; 
+}
+
+.ptext.portfolio {
+    color:#000000;
+    font-size:16px;
+    font-weight: 400; /* Regular */
+    top:293px;
+    left:114px;
+    width:94px;
+    height:24px;
+    text-decoration: none; 
+}
+
+.ptext.delete-account {
+    color:#DA5F5F;
+    font-size:16px;
+    font-weight: 400; /* Regular */
+    top:332px;
+    left:114px;
+    width:122px;
+    height:24px;
+    text-decoration: none; 
+}
+
+.container {
+    
+    top:115px;
+    left:315px;
+    width: 1087px;
+    height: 1075px;
+    position: absolute;
+}
+
+.ptext.profiletitle {
+    color:#000000;
+    font-size:24px;
+    font-weight: 500;  /* Medium */
+    top:20px;
+    left:143px;
+    width:75px;
+    height:36px; 
+}
+
+.container-pic{
+    background-color: #BCBCBC;
+    top:82px;
+    left:149px;
+    width:785px;
+    height:100px; 
+    border-top-left-radius: 50px; 
+    border-bottom-left-radius: 50px;
+    position: absolute;
+}
+
+.profile_picture3 {
+    top: 10px;
+    left: 14px;
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    object-fit: cover;
+    position: absolute;
+}
+
+.ptext.name {
+    color:#000000;
+    font-size:18px;
+    font-weight: 400;  /* Regular */
+    top:32px;
+    left:112px;
+    width:300px;
+    height:36px; 
+}
+
+.change-picture-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #FFFFFF;
+    color: black;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    top: 30px;
+    left: 550px;
+    width: 203px;
+    height: 40px;
+    position: absolute;
+}
+
+.change-picture-button:hover {
+    background-color: #0056b3;
+}
+
+.ptext.about-you{
+    top: 221px;
+    left: 149px;
+    width: 213px;
+    height: 30px;
+    color:#000000;
+    font-size:18px;
+    font-weight: 400;
+}
+
+.input-container-major{
+    left: 156px;
+    top: 256px;
+    width: 400px;
+    height: 75px;
+    position: absolute;
+}
+
+.input-container-bio{
+    left: 156px;
+    top: 351px;
+    width: 400px;
+    height: 154px;
+    position: absolute;
+}
+
+.input-container-mail{
+    left: 156px;
+    top: 473px;
+    width: 400px;
+    height: 75px;
+    position: absolute;
+}
+
+.ptext.about{
+    width: 245px;
+    height: 28px;
+    color:#000000;
+    font-size:14px;
+    font-weight: 400; 
+    position: absolute;
+}
+
+.input-box {
+    vertical-align: middle;
+    font-family: "Poppins", sans-serif;
+    font-style: normal;
+    color: #BCBCBC;
+    background-color: #FFFFFF;
+    border: 1px solid #ccc;
+    padding-left: 10px;
+    border-radius: 10px;
+    text-align: left;
+    align-items: center;
+    position: absolute;
+    justify-content: center;
+    resize: none;
+}
+
+.input-box.major{
+    line-height: 40px;
+    top: 28px;
+    width: 387px;
+    height: 40px;
+}
+
+.input-box.bio{
+    top: 28px;
+    width: 387px;
+    height: 65px;
+}
+
+.input-box.mail{
+    line-height: 40px;
+    top: 28px;
+    width: 387px;
+    height: 40px;
+}
+
+.ptext.links{
+    top: 221px;
+    left: 591px;
+    width: 213px;
+    height: 30px;
+    color:#000000;
+    font-size:18px;
+    font-weight: 400;
+}
+
+.social-networks{
+    background-color: #0056b3;
+    left: 591px;
+    top: 256px;
+    width: 346px;
+    max-height: 165px;
+    overflow-y: auto;
+    position: absolute;
+}
+
+.container-media{
+    height: 30px;
+    width: 328px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    margin-bottom: 10px;
+}
+
+.media-pic{
+    border-radius: 10px;
+    height: 30px;
+    width: 30px;
+}
+
+.mediainput{
+    text-align:left;
+    font-family: "Poppins", sans-serif;
+    font-style: normal;
+    font-size: 10px;
+    font-weight: 400;
+    color: #BCBCBC;
+    background-color: transparent;
+    border: none; 
+    padding-left: 10px;
+    width: 250px;
+    height: 20px;
+    resize: none;
+    outline: none;
+    white-space: nowrap;  /* Evita que el texto baje a la siguiente línea */
+    overflow: hidden; 
+    text-overflow: ellipsis;
+}
+
+.delete-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    background-color: transparent;
+    border: none; 
+    padding: 0;
+}
+
+.delete-btn.social{
+    top: -34px;
+    left:295px;
+    width: 30px;
+    height: 30px;
+    color: #000000;
+    position: relative;
+}
+
+.ptext.add-new-social{
+    top: 430px;
+    left: 591px;
+    width: 213px;
+    height: 30px;
+    color:#000000;
+    font-size:18px;
+    font-weight: 400;
+}
+
+.social-selector-container select {
+    left : 591px;
+    top: 458px;
+    padding: 8px;
+    margin-top: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px;
+    color: #333;
+    background-color: #6df60c;
+    position: absolute;
+}
+
+.social-selector-container option {
+    font-size: 14px;
+}
+
+
+.newmediainput{
+    font-family: "Poppins", sans-serif;
+    font-style: normal;
+    font-size: 10px;
+    font-weight: 400;
+    color: #BCBCBC;
+    background-color: transparent;
+    border: none; 
+    border-bottom: 1px solid #BCBCBC;
+    padding-left: 10px;
+    text-align: left;
+    width: 250px;
+    height: 20px;
+    resize: none;
+    outline: none;
+    position: absolute;
+    top: 523px;
+    left: 650px;
+}
+
+#selected-icon {
+    border-radius: 10px;
+    top: 518px;
+    left: 600px;
+    max-width: 30px; 
+    max-height: 30px; 
+    display: none; 
+    transition: opacity 0.3s;
+    position: absolute;
+}
+
+button.add-social-btn {
+    height: 40px;
+    width: 40px;
+    left: 822px;
+    top: 473px;
+    background-color: #4CAF50;
+    color: rgb(233, 0, 0);
+    font-size: 16px; 
+    font-family: "Poppins", sans-serif;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px; 
+    cursor: pointer; 
+    transition: background-color 0.3s ease, transform 0.2s ease; 
+    margin-top: 20px;
+    position: absolute;
+}
+
+button.add-social-btn:hover {
+    background-color: #45a049;
+    transform: translateY(-2px);
+}
+
+
+.footer {
+    background-color: #F2F2F2;
+    text-align: center;
+    font-family: "Poppins", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    padding: 0;
+    position: relative;
+    bottom: 0;
+    left: 0px;
+    width: 1440px; 
+    height: 135px;
+}
+
+
+.footer-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.footer-nav {
+    margin-top: 57px;
+}
+
+.footer-nav2 {
+    margin-top: 20px;
+}
+
+.footer-nav a {
+    color: #01000C;
+    margin: 0 15px;
+    text-decoration: none;
+    font-size: 20px;
+}
+
+.footer-nav a:hover {
+    text-decoration: underline; 
+}
+
+.encora2 {
+    position: absolute;
+    left: 37px;
+    top: 10px; 
+    height: 111px; 
+    width: 113px;
+}
+
+.gmail3 {
+    position: absolute;
+    left: 1252px;
+    top: 78px; 
+    height: 24px; 
+    width: 24px;
+    cursor: pointer;
+}
+
+.lin3 {
+    position: absolute;
+    left: 1280px;
+    top: 78px; 
+    height: 24px; 
+    width: 24px;
+    cursor: pointer;
+}
+
+.ig3 {
+    position: absolute;
+    left: 1308px;
+    top: 78px; 
+    height: 24px; 
+    width: 24px;
+    cursor: pointer;
+}
+
+.fb3 {
+    position: absolute;
+    left: 1336px;
+    top: 78px; 
+    height: 24px; 
+    width: 24px;
+    cursor: pointer;
+}
+
+.footertext {
+    text-align:center;
+    vertical-align:text-top;
+    font-size:12px;
+    font-family: "Inter", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    line-height:auto;
+    border-style:hidden;
+    outline:none;
+    top:105px;
+    left:1205px;
+    position:absolute;
+    width:200px;
+    height:18px;
+}

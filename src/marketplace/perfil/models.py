@@ -3,6 +3,15 @@ from django.db import models
 from django.db import models
 
 class Profile(models.Model):
+
+    EXPERIENCE_CHOICES = [
+        ('junior', 'Junior'),
+        ('semi_senior', 'Semi-senior'),
+        ('senior', 'Senior'),
+        ('manager', 'Manager'),
+        ('lead', 'Lead'),
+    ]
+     
     name = models.CharField(max_length=100)
     email = models.CharField(max_length=100)
     phone = models.CharField(max_length=100)
@@ -13,6 +22,8 @@ class Profile(models.Model):
     price = models.CharField(max_length=100)
     join_date = models.DateField(auto_now_add=True)
     profile_picture = models.ImageField(upload_to='profile_pictures/', blank=True, null=True)
+    contact_email = models.CharField(max_length=100, default='example@example.com')
+    experience = models.CharField(max_length=20, choices=EXPERIENCE_CHOICES, default='junior')
 
     def __str__(self):
         return self.name
@@ -129,5 +140,38 @@ class Profession(models.Model):
 class ProjectCategory(models.Model):
     project = models.ForeignKey(Project, related_name='projectcategories', on_delete=models.CASCADE) 
     name = models.CharField(max_length=100)
+
+
+class SocialNetwork(models.Model):
+
+    TYPE_CHOICES = [
+        ('facebook', 'Facebook'),
+        ('twitter', 'Twitter'),
+        ('instagram', 'Instagram'),
+        ('linkedin', 'LinkedIn'),
+        ('github', 'GitHub'),
+    ]
+
+    profile = models.ForeignKey(Profile, related_name='social_networks', on_delete=models.CASCADE)
+    type = models.CharField(max_length=20, choices=TYPE_CHOICES, unique=True)
+    url = models.URLField(max_length=200)
+    image = models.ImageField(upload_to='social_networks/', default='social_networks/default_icon.png')
+
+    def save(self, *args, **kwargs):
+        if self.image.name == 'social_networks/default_icon.png':
+            if self.type == 'facebook':
+                self.image = 'social_networks/facebook_icon.png'
+            elif self.type == 'twitter':
+                self.image = 'social_networks/twitter_icon.jpg'
+            elif self.type == 'instagram':
+                self.image = 'social_networks/instagram_icon.png'
+            elif self.type == 'linkedin':
+                self.image = 'social_networks/linkedin_icon.png'
+            elif self.type == 'github':
+                self.image = 'social_networks/github_icon.png'
+        super().save(*args, **kwargs)
+
+    def __str__(self):
+        return self.type
 
 

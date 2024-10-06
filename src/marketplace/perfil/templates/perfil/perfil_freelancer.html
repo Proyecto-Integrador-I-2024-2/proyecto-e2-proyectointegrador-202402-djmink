@@ -9,7 +9,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Freelancer Profile</title>
-    <link rel="stylesheet" href="{% static 'fr2.css' %}">
+    <link rel="stylesheet" href="{% static 'freelancer_profile.css' %}">
 </head>
 <body> 
 
@@ -29,9 +29,9 @@
             Profile
         </div>
 
-        <button id='editprofilebutton' class='editprofilebutton'>
+        <a href="{% url 'editAccount' p.id %}" class="editprofilebutton">
             <div id='editprofilebuttontext' class='editprofilebuttontext'>Edit profile</div>
-        </button>
+        </a>
 
         <hr class="l2">
 
@@ -39,12 +39,16 @@
         <div id="profession">{{ p.profession }}</div>
         <img id="profile_picture" class="profile_picture" src="{{ p.profile_picture.url }}" alt="Profile Picture"/>
         <div id="description">{{ p.description }}</div>
-        <img id="ig2" class="ig2" src="{% static 'ig2.png' %}" />
-        <img id="lin2" class="lin2" src="{% static 'lin2.png' %}" />
-        <img id="gmail2" class="gmail2" src="{% static 'gmail2.png' %}" />
-        <img id="git2" class="git2" src="{% static 'fb2.png' %}"/>
-        <img id="star" class="star" src="{% static 'Star.png' %}" />
+        <div id="email">{{ p.contact_email }}</div>
+        <div class="social-networks">
+            {% for network in p.social_networks.all %}
+                <a href="{{ network.url }}" target="_blank">
+                    <img class="social-icon" src="{{ network.image.url }}" alt="{{ network.type }}">
+                </a>
+            {% endfor %}
+        </div>
         <div id="calification">{{ p.rating }}</div>
+        <img id="star" class="star" src="{% static 'Star.png' %}" />
     </div> 
 
     <div id="aboutsection" class="aboutsection">
@@ -66,7 +70,7 @@
         </div>        
 
         <div class="experience">
-            <div class="experience-header">Semi-senior</div>
+            <div class="experience-header">{{ p.experience }}</div>
             <div class="experience-body">
                 <div class="jobs-done">
                     <span class="percentage">{{ p.jobs_completed }}%</span> Jobs Completed

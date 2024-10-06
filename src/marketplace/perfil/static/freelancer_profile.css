@@ -107,8 +107,8 @@ height:96px;
 }
 
 .editprofilebutton {
-    width: 105px;
-    height: 40px;
+    width: 70px;
+    height: 18px;
     position: absolute;
     left: 1212px;
     top: 224px;
@@ -125,11 +125,12 @@ height:96px;
     font-family: "Poppins", sans-serif;
     font-weight: 500;
     font-style: normal;
-    font-size: 12;
+    font-size: 13px;
+    text-decoration: none; /* Quita la línea de subrayado */
 }
 
 .editprofilebutton:hover {
-    background-color: #e8141444; /* Color al pasar el mouse */
+    background-color: #6ce81444; /* Color al pasar el mouse */
 }
 
 .l2 {
@@ -197,40 +198,36 @@ border:1px solid #000000;
     font-size: 16px;
 }
 
-.git2 {
+#email {
+    width: 200px;
+    left: 439px;
+    top: 600px;
+    height: 30px;
+    position: absolute;
+    font-family: "Poppins", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    font-size: 16px;
+    color: #007BFF;
+}
+
+.social-networks {
     position: absolute;
     left: 438px;
     top: 639px; 
-    height: 32px; 
-    width: 32px;
-    cursor: pointer;
+    display: flex; /* Para alinear horizontalmente las imágenes */
+    gap: 10px; /* Espacio entre las imágenes */
 }
 
-.lin2 {
-    position: absolute;
-    left: 481px;
-    top: 639px; 
-    height: 32px; 
-    width: 32px;
-    cursor: pointer;
+.social-icon {
+    width: 32px; /* Ajusta el tamaño según lo que necesites */
+    height: 32px; /* Ajusta el tamaño según lo que necesites */
+    cursor: pointer; /* Cambia el cursor al pasar sobre la imagen */
+    transition: transform 0.2s; /* Para un efecto al pasar el mouse */
 }
 
-.ig2 {
-    position: absolute;
-    left: 524px;
-    top: 639px; 
-    height: 32px; 
-    width: 32px;
-    cursor: pointer;
-}
-
-.gmail2 {
-    position: absolute;
-    left: 567px;
-    top: 639px; 
-    height: 32px; 
-    width: 32px;
-    cursor: pointer;
+.social-icon:hover {
+    transform: scale(1.1); /* Efecto de aumento al pasar el mouse */
 }
 
 .star {

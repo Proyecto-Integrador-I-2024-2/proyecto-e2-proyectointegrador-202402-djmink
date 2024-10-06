@@ -8,8 +8,8 @@ urlpatterns = [
     path('perfilesCliente/<int:id>/', views.perfilesCliente, name='perfilesCliente'),
     path('perfilesCliente/<int:id>/main/', views.mainCliente, name='mainCliente'),
     path('perfilesFreelancer/<int:id>/main/', views.mainFreelancer, name='mainFreelancer'),
-    #path('perfilesFreelancer/<int:id>/editar/', views.editar_perfil, name='editar_perfil'),
-    #path('perfilesFreelancer/<int:id>/general/', views.editar_perfil_general, name='editar_perfil_general'),
+    path('perfilesFreelancer/<int:id>/account/', views.editAccount, name='editAccount'),
+    path('perfilesFreelancer/<int:id>/editProfile/', views.editProfile, name='editProfile'),
     #path('perfilesFreelancer/<int:id>/password/', views.editar_perfil_password, name='editar_perfil_password'),
     #path('perfilesFreelancer/<int:id>/sessions/', views.editar_perfil_sessions, name='editar_perfil_sessions'),
 ]
