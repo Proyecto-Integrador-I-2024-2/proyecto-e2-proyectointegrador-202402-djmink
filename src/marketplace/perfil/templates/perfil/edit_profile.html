@@ -1,6 +1,9 @@
 {% load static %}
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="whatever" 
+    data-skill-count="{{ p.skills.count|default:0 }}" 
+    data-socials-count="{{ p.social_networks.count|default:0 }}"
+    data-certificates-count="{{p.certificates.count|default:0}}">
 <head>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -9,7 +12,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Edit Profile</title>
-    <link rel="stylesheet" href="{% static 'epp1.css' %}">
+    <link rel="stylesheet" href="{% static 'epp.css' %}">
 </head>
 
 <body>
@@ -50,7 +53,7 @@
             <div class="container-pic">
                 <img id="profile_picture3" class="profile_picture3" src="{{ p.profile_picture.url }}" alt="Profile Picture"/>
                 <div class="ptext name">{{ p.name }}</div>
-                <button id='change-picture-button' class='change-picture-button'>
+                <button id='change-picture-button' class='change-picture-button' onclick="changePicture()">
                     <div class='ptext change'>Change profile picture</div>
                 </button>
             </div>
@@ -105,38 +108,220 @@
 
             <textarea id="user-input" class="newmediainput" style="display: none;"></textarea>
             <img id="selected-icon" src="" alt="Social Media Icon" style="display: none;">
-            <button class="add-social-btn" onclick="addSocialNetwork()">+</button>
+            <button id= "add-social-btn" class="add social-btn" style="display: none" onclick="addSocialNetwork()">+</button>
+
+            <div class="ptext professional">
+                Your Professional Path
+            </div>
+
+            <div class="input-container-exp">
+                <div class="ptext exp">Experience</div>
+                <textarea class="input-box exp">{{ p.experience }}</textarea>
+            </div>
+    
+            <div class="input-container-hour">
+                <div class="ptext exp">Hourly Rate</div>
+                <textarea class="input-box exp">{{ p.price }}</textarea>
+            </div>
+
+            <div class="ptext skills">
+                Skills
+            </div>
+
+            <div class="habilities-container" id="habilities-container">
+                {% for hability in p.skills.all %}
+                    <div class="hability-container" id="hability-{{ hability.id }}">
+                        <div class="hability">{{ hability.name }}
+                            <button class="delete-btn skill" onclick="markForRemoval('hability', '{{ hability.id }}')">X</button>
+                        </div>
+                    </div>
+                {% empty %}
+                    <p>You don't have skills registered yet.</p>
+                {% endfor %}
+            </div> 
+
+            <div class="ptext add-new-skill">
+                Add new
+            </div>
+            
+            <div class="input-container-skill">
+                <input id="input-box-skill" class="input-box skill" type="text" placeholder="New skill" oninput="showElement('input-box-skill', 'add-skill-btn')"/>
+            </div>
+
+            <button id= "add-skill-btn" class="add skill-btn" style="display: none" onclick="addSkill()">+</button>
+
+            <div class="ptext certificates">
+                Certificates
+            </div>
+
+            <div class="certificates-container" id="certificates-container">
+                {% for certificate in p.certificates.all %}
+                    <div class="certificate-container" id="certificate-{{ certificate.id }}">
+                        <div class="name">{{ certificate.name }}</div>
+                        <div class="rectangle20">
+                            <img id="card" class="card" src="{% static 'card.png' %}" alt="Card"/>
+                            <div class="type">{{ certificate.type }}</div>
+                            <button class="delete-btn cer" onclick="markForRemoval('certificate', '{{ certificate.id }}')">X</button>
+                        </div>
+                        <a href="{{ certificate.url }}" target="_blank">
+                            <img id="view" class="view" src="{% static 'view.png' %}" alt="View"/>
+                        </a>
+                    </div>
+                {% empty %}
+                    <p>You don't have certificates registered yet.</p>
+                {% endfor %}
+            </div>
+
+            <div class="ptext add-new-cer">
+                Add new
+            </div>
+    
+            <div class="input-container-certificates name">
+                <input id="input-box name-cer" class="input-box cer" type="text"  placeholder="Enter name" oninput="showElement('input-box name-cer', 'input-box type-cer')"/>
+            </div>
+    
+            <div class="input-container-certificates type">
+                <input id="input-box type-cer" class="input-box cer" type="text" style="display: none" placeholder="Enter type" oninput="showElement('input-box type-cer', 'input-box url-cer')"/>
+            </div>
+    
+            <div class="input-container-certificates url">
+                <input id="input-box url-cer" class="input-box cer" type="text" style="display: none" placeholder="Enter URL" oninput="showElement('input-box url-cer', 'add-cer-btn')"/>
+            </div>
+    
+            <button id= "add-cer-btn" class="add cer-btn" style="display: none" onclick="addCertificate()">+</button>
+
+            <button id= "save" class="med-btn save">Save Changes</button>
 
         </div>
-        
-        
 
+        <footer class="footer">
+        
+            <div class="footer-content">
+                <img id="encora2" class="encora2" src="{% static 'encora.png' %}" />
+                <img id="fb3" class="fb3" src="{% static 'fb2.png' %}"/>
+                <img id="ig3" class="ig3" src="{% static 'ig2.png' %}" />
+                <img id="lin3" class="lin3" src="{% static 'lin2.png' %}" />
+                <img id="gmail3" class="gmail3" src="{% static 'gmail2.png' %}" />
+                <nav class="footer-nav">
+                    <a href="#features">Features</a>
+                    <a href="#about">About</a>
+                    <a href="#support">Support</a>
+                    <a href="#resources">Resources</a>
+                    <a href="#places">Places</a>
+                    <a href="#jobs">Jobs</a>
+                </nav>
+                <div id='footertext' class='footertext'> 
+                    © 2024 Online Marketplace
+                </div>
+            </div>
+    
+        </footer>
+
+    </div>
+
+    <div id="profilePictureModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <div id='change-pic-title' class='ptext change-pic-title'>Change Profile Picture</div>
+            <img id="profile_picture4" class="profile_picture4" src="{{ p.profile_picture.url }}" alt="Profile Picture"/>
+            <div class="file-select" id="src-file1" >
+                <input type="file" id="profile-picture-input" accept="image/*" onchange="previewImage(event)">
+            </div>
+            <button id="delete-button" class="med-btn delete" onclick="deletePicture()">Delete Picture</button>
+            <button id="save-button" class="med-btn savepic" onclick="savePicture()">Accept</button>
+        </div>
     </div>
 
     <script>
 
-        let removedItems = [];  
+        const htmlElement = document.querySelector('html');
+        let skillCount = parseInt(htmlElement.dataset.skillCount, 10) || 0;
+        let socialCount = parseInt(htmlElement.dataset.socialsCount, 10) || 0;
+        let certificateCount = parseInt(htmlElement.dataset.certificatesCount, 10) || 0;
 
-        // Función para eliminar un elemento temporalmente
-        function markForRemoval(itemId) {
-            console.log('ID que está llegando a markForRemoval:', itemId);
-            // Ocultar el contenedor del elemento
-            const element = document.getElementById('social-' + itemId) ||
-                            document.getElementById('certificate-' + itemId) ||
-                            document.getElementById('hability-' + itemId);
-            if (element) {
-                element.style.display = 'none';
-                removedItems.push(itemId);
+        let skillIdCounter = skillCount + 1;
+        let socialIdCounter = socialCount + 1;
+        let certificateIdCounter = certificateCount + 1;
+
+        function showElement(input, element){
+            const userInput = document.getElementById(input);
+            const elementToShow = document.getElementById(element);
+            if (userInput.value){
+                elementToShow.style.display = 'block';
+            } else {
+                elementToShow.style.display = 'none';
             }
         }
 
-        function previewImage(event) {
-            var reader = new FileReader();
-            reader.onload = function() {
-                var output = document.getElementById('profileImage');
-                output.src = reader.result;  // Previsualiza la imagen
-            };
-            reader.readAsDataURL(event.target.files[0]); // Lee el archivo seleccionado
+        function addSkill(){
+            const userInput = document.getElementById('input-box-skill');
+            const skillsList = document.getElementById('habilities-container');
+            const button = document.getElementById('add-skill-btn');
+            const newSkillId = skillIdCounter++;
+            const newSkillDiv = document.createElement('div');
+            newSkillDiv.classList.add('hability-container');
+            newSkillDiv.id = 'hability-' + newSkillId;
+
+            newSkillDiv.innerHTML = `
+                <div class="hability">${userInput.value}
+                    <button class="delete-btn skill" onclick="markForRemoval('hability', '${newSkillId}')">X</button>
+                </div>
+            `;
+
+            skillsList.appendChild(newSkillDiv);
+            userInput.value = '';
+            button.style.display = 'none';
+        }
+
+        function addCertificate(){
+
+            const name = document.getElementById('input-box name-cer');
+            const type = document.getElementById('input-box type-cer');
+            const url = document.getElementById('input-box url-cer');
+
+            const certificatesList = document.getElementById('certificates-container');
+            const button = document.getElementById('add-cer-btn');
+
+            const newCertificateId = certificateIdCounter++;
+            const newCertificateDiv = document.createElement('div');
+            newCertificateDiv.classList.add('certificate-container');
+            newCertificateDiv.id = 'certificate-' + newCertificateId;
+
+            newCertificateDiv.innerHTML = `
+                <div class="name">${name.value}</div>
+                    <div class="rectangle20">
+                        <img id="card" class="card" src="{% static 'card.png' %}" alt="Card"/>
+                        <div class="type">${type.value}</div>
+                        <button class="delete-btn cer" onclick="markForRemoval('certificate', '${newCertificateId}')">X</button>
+                    </div>
+                    <a href="${url.value}" target="_blank">
+                        <img id="view" class="view" src="{% static 'view.png' %}" alt="View"/>
+                    </a>
+                </div>
+            `;
+
+            certificatesList.appendChild(newCertificateDiv);
+            name.value = '';
+            type.value = '';
+            url.value = '';
+            type.style.display = 'none';
+            url.style.display = 'none';
+            button.style.display = 'none';
+        }
+
+        let removedItems = [];
+
+        function markForRemoval(type, itemId) {
+            console.log(type + " " + itemId)
+            console.log(typeof itemId);
+            const element = document.getElementById(type + '-' + itemId);
+            if (element) {
+                console.log('exists')
+                element.style.display = 'none';
+                removedItems.push({ type, itemId });
+            } else {
+                console.error('Element not found:', itemId); // Para depuración
+            }
         }
 
         function updateSocialMedia() {
@@ -144,6 +329,7 @@
             const selectedValue = selectElement.value;
             const userInput = document.getElementById('user-input');
             const iconElement = document.getElementById('selected-icon');
+            const button = document.getElementById('add-social-btn');
 
             const urlMap = {
                 'facebook': 'facebook.com/',
@@ -166,9 +352,11 @@
                 userInput.style.display = 'block';
                 iconElement.src = iconMap[selectedValue];
                 iconElement.style.display = 'block';
+                button.style.display = 'block';
             } else {
                 userInput.style.display = 'none'; 
                 iconElement.style.display = 'none';
+                button.style.display = 'none';
             }
         }
 
@@ -178,6 +366,7 @@
             const userInput = document.getElementById('user-input');
             const socialNetworksContainer = document.getElementById('social-networks');
             const iconElement = document.getElementById('selected-icon');
+            const button = document.getElementById('add-social-btn');
 
             // Mapa de URL para cada red social
             const urlMap = {
@@ -199,16 +388,18 @@
 
             // Verifica que una red social y un usuario hayan sido seleccionados
             if (selectedValue && userInput.value) {
-                console.log(`Adding social network: ${selectedValue} with URL: www.${urlMap[selectedValue]}${userInput.value}`);
-                // Crear un nuevo elemento HTML
+
+                const newSocialId = socialIdCounter++;
                 const newSocialDiv = document.createElement('div');
                 newSocialDiv.classList.add('container-media');
+                newSocialDiv.id = 'social-' + newSocialId;
+
 
                 // Agregar el HTML dinámicamente
                 newSocialDiv.innerHTML = `
                     <img class="media-pic" src="${iconMap[selectedValue]}" alt="${selectedValue} icon"/>
                     <textarea class="mediainput">www.${urlMap[selectedValue]}${userInput.value}</textarea>
-                    <button class="delete-btn social" onclick="removeTemporarySocial(this, '${selectedValue}')">X</button>
+                    <button class="delete-btn social" onclick="removeTemporarySocial('${newSocialId}', '${selectedValue}')">X</button>
                 `;
 
                 // Añadir el nuevo div al contenedor
@@ -222,21 +413,60 @@
                 userInput.value = '';
                 userInput.style.display = 'none';
                 iconElement.style.display = 'none';
+                button.style.display = 'none';
             }
         }
 
-        // Función para eliminar la red social agregada temporalmente y restaurarla en el selector
         function removeTemporarySocial(element, selectedValue) {
-            markForRemoval(element)
-            console.log('Elemento:', element);
-            console.log('Valor seleccionado:', selectedValue);
-            
-            // Restaurar la red social eliminada al selector
+            markForRemoval('social', element);
             const selectElement = document.getElementById('social-media');
             const option = document.createElement('option');
             option.value = selectedValue;
-            option.textContent = selectedValue.charAt(0).toUpperCase() + selectedValue.slice(1); // Capitalizar la primera letra
+            option.textContent = selectedValue.charAt(0).toUpperCase() + selectedValue.slice(1);
             selectElement.appendChild(option);
+        }
+
+        var modal = document.getElementById("profilePictureModal");
+
+        function changePicture(){
+            modal.style.display = "block";
+            const span = document.getElementsByClassName("close")[0];
+
+            span.onclick = function() {
+                modal.style.display = "none";
+            }
+
+            window.onclick = function(event) {
+                if (event.target == modal) {
+                    modal.style.display = "none";
+                }
+            }
+        }
+
+        var reader = new FileReader();
+        var imageResult = "";
+
+        function previewImage(event) {
+            reader.onload = function() {
+                imageResult = reader.result;
+                var output = document.getElementById('profile_picture4');
+                output.src = imageResult; 
+            };
+            reader.readAsDataURL(event.target.files[0]);
+        }
+
+        function savePicture() {
+            const currentPic = document.getElementById('profile_picture3');
+            currentPic.src = imageResult;
+            modal.style.display = "none";
+        }
+
+        function deletePicture(){
+            const output = document.getElementById('profile_picture4');
+            output.src = "{% static 'user.jpg' %}";
+            imageResult = "{% static 'user.jpg' %}";
+            const input = document.getElementById("profile-picture-input");
+            input.value = '';
         }
 
     </script>
