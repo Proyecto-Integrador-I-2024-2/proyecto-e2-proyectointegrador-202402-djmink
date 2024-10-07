@@ -9,7 +9,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Edit Profile</title>
-    <link rel="stylesheet" href="{% static 'epa.css' %}">
+    <link rel="stylesheet" href="{% static 'epa2.css' %}">
 </head>
 <body>
     <div id="editsection" class="editsection">
@@ -42,85 +42,52 @@
 
         <div class="fields">
 
-            <div class="ptext myaccount">
-                My Account
-            </div>
-
             <form action="/save_changes" method="post">
+
+                <div class="ptext myaccount">
+                    My Account
+                </div>
+    
+                <div class="ptext basic-info">
+                    Basic Information
+                </div>
                 
                 <div class="input-container name">
-                    <label for="name">Name</label>
-                    <textarea class="input-box">{{ p.name }}</textarea>
+                    <div class="ptext name">Name</div>
+                    <textarea class="input-box name">{{ p.name }}</textarea>
                 </div>
 
                 <div class="input-container username">
-                    <label for="username">Username</label>
-                    <textarea class="input-box">{{ p.username }}</textarea>
+                    <div class="ptext name">Username</div>
+                    <textarea class="input-box name">{{ p.username }}</textarea>
                 </div>
 
                 <div class="input-container email">
-                    <label for="username">Email</label>
-                    <textarea class="input-box">{{ p.email }}</textarea>
+                    <div class="ptext name">Email</div>
+                    <textarea class="input-box name">{{ p.email }}</textarea>
                 </div>
 
                 <div class="input-container phone">
-                    <label for="number">Enter Number</label>
-                    <img class="arrow" src="{% static 'arrow.png' %}" alt="arrow">
-                    <textarea class="input-box code">{{ code }}</textarea>
+                    <div class="ptext name">Phone</div>
+                    <img class="arrow" src="{% static 'arrow.png' %}" alt="arrow" id="arrow" onclick="toggleCodeList()">
+                    <textarea id="code-box" class="input-box code">{{ code }}</textarea>
                     <textarea class="input-box tel">{{ phone }}</textarea>
+
+                    <!-- Reemplazar con un for -->
+                    <div class="code-list" id="code-list">
+                        <div class="code-item" onclick="selectCode('+1')">+1 (USA)</div>
+                        <div class="code-item" onclick="selectCode('+44')">+44 (UK)</div>
+                        <div class="code-item" onclick="selectCode('+91')">+91 (India)</div>
+                        <div class="code-item" onclick="selectCode('+57')">+57 (Col)</div>
+                        <div class="code-item" onclick="selectCode('+58')">+58 (Ven)</div>
+                    </div>
                 </div>
-
-                <button id= "change-password" class="med-btn pass" onclick="changePassword()">Change Password</button>
-
-                <button type="submit" id= "save-changes" class='med-btn save'>Save Changes</button>
 
             </form>
 
-            <div class="password">
-                Password
-            </div>
-
-            <div id="passwordModal" class="modal">
-                <div class="modal-content">
-                    <span class="close">&times;</span>
-                    <div id='change-password-title' class='ptext change-password-title'>Change Password</div>
-                    <form action="/change_password" method="post">
-                
-                        <div class="input-container">
-                            <label for="currentpassword">Current Password</label>
-                            <div class="password-wrapper">
-                                <input id="currentpassword" class="input-box e" type="password" placeholder="Enter your current password" />
-                                <img class="eye-icon" src="{% static 'eye_icon.png' %}" alt="Show Password" 
-                                     onmousedown="showPassword('currentpassword')" 
-                                     onmouseup="hidePassword('currentpassword')" 
-                                     onmouseleave="hidePassword('currentpassword')" />
-                            </div>
-                        </div>
-                        
-                        <div class="input-container">
-                            <label for="newpassword">New Password</label>
-                            <div class="password-wrapper">
-                                <input id="newpassword" class="input-box e" type="password" placeholder="Enter your new password"></textarea>
-                                <img class="eye-icon" src="{% static 'eye_icon.png' %}" alt="Show Password" 
-                                     onmousedown="showPassword('newpassword')" 
-                                     onmouseup="hidePassword('newpassword')" 
-                                     onmouseleave="hidePassword('newpassword')" />
-                            </div>
-                        </div>  
-        
-                        <div class="input-container">
-                            <label for="newpassword">Confirm New Password</label>
-                            <div class="password-wrapper">
-                                <input id="confirmnewpassword" class="input-box e" type="password" placeholder="Confirm your new password"></textarea>
-                                <img class="eye-icon" src="{% static 'eye_icon.png' %}" alt="Show Password" 
-                                     onmousedown="showPassword('confirmnewpassword')" 
-                                     onmouseup="hidePassword('confirmnewpassword')" 
-                                     onmouseleave="hidePassword('confirmnewpassword')" />
-                            </div>
-                        </div>  
-                    </form>
-                </div>
-            </div>
+            <button id= "change-password" class="med-btn pass" onclick="changePassword()">Change Password</button>
+            <!--Poner dentro del form después -->
+            <button type="submit" id= "save-changes" class='med-btn save'>Save Changes</button>
 
         </div>
         
@@ -149,6 +116,47 @@
         </footer>
     </div>
 
+    <div id="passwordModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <div id='change-password-title' class='ptext change-password-title'>Change Password</div>
+            <form action="/change_password" method="post">
+        
+                <div class="input-container2 current-pass">
+                    <div class="ptext name">Current Password</div>
+                    <input id="currentpassword" class="input-box e" type="password" placeholder="Enter your current password" />
+                    <img class="eye-icon" src="{% static 'eye_icon.png' %}" alt="Show Password" 
+                            onmousedown="showPassword('currentpassword')" 
+                            onmouseup="hidePassword('currentpassword')" 
+                            onmouseleave="hidePassword('currentpassword')" />
+                </div>
+                
+                <div class="input-container2 new-pass">
+                    <div class="ptext name">Enter New Password</div>
+                    <input id="newpassword" class="input-box e" type="password" placeholder="Enter your new password"></textarea>
+                    <img class="eye-icon" src="{% static 'eye_icon.png' %}" alt="Show Password" 
+                            onmousedown="showPassword('newpassword')" 
+                            onmouseup="hidePassword('newpassword')" 
+                            onmouseleave="hidePassword('newpassword')" />
+                </div>  
+
+                <div class="input-container2 confirm-pass">
+                    <div class="ptext name">Confirm New Password</div>
+                    <input id="confirmnewpassword" class="input-box e" type="password" placeholder="Confirm your new password"></textarea>
+                    <img class="eye-icon" src="{% static 'eye_icon.png' %}" alt="Show Password" 
+                            onmousedown="showPassword('confirmnewpassword')" 
+                            onmouseup="hidePassword('confirmnewpassword')" 
+                            onmouseleave="hidePassword('confirmnewpassword')" />
+                </div>
+
+            </form>
+
+            <!--Poner dentro del form después -->
+            <button id= "change-password" class='med-btn change-pass' onclick="savePassword()">Change</button>
+
+        </div>
+    </div>
+
     <script>
         function showPassword(id) {
             const passwordField = document.getElementById(id);
@@ -159,6 +167,57 @@
             const passwordField = document.getElementById(id);
             passwordField.setAttribute('type', 'password');
         }
+
+        var modal = document.getElementById("passwordModal");
+
+        function changePassword(){
+            modal.style.display = "block";
+            const span = document.getElementsByClassName("close")[0];
+
+            span.onclick = function() {
+                modal.style.display = "none";
+            }
+
+            window.onclick = function(event) {
+                if (event.target == modal) {
+                    modal.style.display = "none";
+                }
+            }
+        }
+
+        function savePassword() {
+            modal.style.display = "none";
+        }
+
+        function toggleCodeList() {
+            const arrow = document.getElementById('arrow');
+            const codeList = document.getElementById('code-list');
+
+            if (codeList.style.display === "block") {
+                codeList.style.display = "none";
+                arrow.classList.remove('rotated');
+            } else {
+                codeList.style.display = "block";
+                arrow.classList.add('rotated');
+            }
+        }
+
+        function selectCode(code) {
+            const codeBox = document.getElementById('code-box');
+            codeBox.value = code;
+            toggleCodeList(); 
+        }
+
+        window.onclick = function(event) {
+            const codeList = document.getElementById('code-list');
+            const arrow = document.getElementById('arrow');
+
+            if (event.target !== codeList && event.target !== arrow) {
+                codeList.style.display = 'none';
+                arrow.classList.remove('rotated');
+            }
+        }
+
     </script>
 
 </body>
