@@ -29,51 +29,50 @@
             <div id="onlinemarketplace2" class="onlinemarketplace2">
                 Online Marketplace
             </div>
-        </div>
+        </div>     
 
-        <div class="editprofile">
+        <div class="ptext ep">
             Edit profile
         </div>     
 
-        <div class="options">
-            <a href="#myaccount">My account</a>
-            <a href="{% url 'editProfile' p.id %}">Profile</a> 
-            <a href="#deteleaccount">Delete account</a>
-        </div>
+        <a href="#myaccount" class="ptext my-account">My account</a>
+        <a href="{% url 'editProfile' p.id %}" class="ptext profile">Profile</a>
+        <a href="#editPortfolio" class="ptext portfolio">Portfolio</a>
+        <a href="#deteleaccount" class="ptext delete-account">Delete account</a>    
 
         <div class="fields">
 
-            <div class="myaccount">
+            <div class="ptext myaccount">
                 My Account
             </div>
 
             <form action="/save_changes" method="post">
                 
-                <div class="input-container">
+                <div class="input-container name">
                     <label for="name">Name</label>
                     <textarea class="input-box">{{ p.name }}</textarea>
                 </div>
 
-                <div class="input-container">
+                <div class="input-container username">
                     <label for="username">Username</label>
                     <textarea class="input-box">{{ p.username }}</textarea>
                 </div>
 
-                <div class="input-container">
+                <div class="input-container email">
                     <label for="username">Email</label>
                     <textarea class="input-box">{{ p.email }}</textarea>
                 </div>
 
-                <div class="input-container">
+                <div class="input-container phone">
                     <label for="number">Enter Number</label>
                     <img class="arrow" src="{% static 'arrow.png' %}" alt="arrow">
                     <textarea class="input-box code">{{ code }}</textarea>
                     <textarea class="input-box tel">{{ phone }}</textarea>
                 </div>
 
-                <button type="submit"  class='savebutton'>
-                    <div class='savebuttontext'>Save</div>
-                </button>
+                <button id= "change-password" class="med-btn pass" onclick="changePassword()">Change Password</button>
+
+                <button type="submit" id= "save-changes" class='med-btn save'>Save Changes</button>
 
             </form>
 
@@ -81,48 +80,47 @@
                 Password
             </div>
 
-            
-
-            <form action="/change_password" method="post">
+            <div id="passwordModal" class="modal">
+                <div class="modal-content">
+                    <span class="close">&times;</span>
+                    <div id='change-password-title' class='ptext change-password-title'>Change Password</div>
+                    <form action="/change_password" method="post">
                 
-                <div class="input-container">
-                    <label for="currentpassword">Current Password</label>
-                    <div class="password-wrapper">
-                        <input id="currentpassword" class="input-box e" type="password" placeholder="Enter your current password" />
-                        <img class="eye-icon" src="{% static 'eye_icon.png' %}" alt="Show Password" 
-                             onmousedown="showPassword('currentpassword')" 
-                             onmouseup="hidePassword('currentpassword')" 
-                             onmouseleave="hidePassword('currentpassword')" />
-                    </div>
+                        <div class="input-container">
+                            <label for="currentpassword">Current Password</label>
+                            <div class="password-wrapper">
+                                <input id="currentpassword" class="input-box e" type="password" placeholder="Enter your current password" />
+                                <img class="eye-icon" src="{% static 'eye_icon.png' %}" alt="Show Password" 
+                                     onmousedown="showPassword('currentpassword')" 
+                                     onmouseup="hidePassword('currentpassword')" 
+                                     onmouseleave="hidePassword('currentpassword')" />
+                            </div>
+                        </div>
+                        
+                        <div class="input-container">
+                            <label for="newpassword">New Password</label>
+                            <div class="password-wrapper">
+                                <input id="newpassword" class="input-box e" type="password" placeholder="Enter your new password"></textarea>
+                                <img class="eye-icon" src="{% static 'eye_icon.png' %}" alt="Show Password" 
+                                     onmousedown="showPassword('newpassword')" 
+                                     onmouseup="hidePassword('newpassword')" 
+                                     onmouseleave="hidePassword('newpassword')" />
+                            </div>
+                        </div>  
+        
+                        <div class="input-container">
+                            <label for="newpassword">Confirm New Password</label>
+                            <div class="password-wrapper">
+                                <input id="confirmnewpassword" class="input-box e" type="password" placeholder="Confirm your new password"></textarea>
+                                <img class="eye-icon" src="{% static 'eye_icon.png' %}" alt="Show Password" 
+                                     onmousedown="showPassword('confirmnewpassword')" 
+                                     onmouseup="hidePassword('confirmnewpassword')" 
+                                     onmouseleave="hidePassword('confirmnewpassword')" />
+                            </div>
+                        </div>  
+                    </form>
                 </div>
-                
-                <div class="input-container">
-                    <label for="newpassword">New Password</label>
-                    <div class="password-wrapper">
-                        <input id="newpassword" class="input-box e" type="password" placeholder="Enter your new password"></textarea>
-                        <img class="eye-icon" src="{% static 'eye_icon.png' %}" alt="Show Password" 
-                             onmousedown="showPassword('newpassword')" 
-                             onmouseup="hidePassword('newpassword')" 
-                             onmouseleave="hidePassword('newpassword')" />
-                    </div>
-                </div>  
-
-                <div class="input-container">
-                    <label for="newpassword">Confirm New Password</label>
-                    <div class="password-wrapper">
-                        <input id="confirmnewpassword" class="input-box e" type="password" placeholder="Confirm your new password"></textarea>
-                        <img class="eye-icon" src="{% static 'eye_icon.png' %}" alt="Show Password" 
-                             onmousedown="showPassword('confirmnewpassword')" 
-                             onmouseup="hidePassword('confirmnewpassword')" 
-                             onmouseleave="hidePassword('confirmnewpassword')" />
-                    </div>
-                </div>  
-                
-                <button type="submit"  class='changebutton'>
-                    <div class='changebuttontext'>Change</div>
-                </button>
-                
-            </form>
+            </div>
 
         </div>
         

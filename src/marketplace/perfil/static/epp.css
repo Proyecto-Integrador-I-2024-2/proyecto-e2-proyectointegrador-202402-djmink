@@ -571,21 +571,21 @@ button.add.social-btn {
 }
 
 .hability-container:nth-child(6n+3) .hability {
-    background-color: #f6e6e6; /* Rosa Claro */
+    background-color: #f6e6e6;
 }
 
 .hability-container:nth-child(6n+4) .hability {
-    background-color: #3c3838; /* Negro */
+    background-color: #3c3838; 
     color: white;
 }
 
 .hability-container:nth-child(6n+5) .hability {
-    background-color: #c87cff; /* Morado */
+    background-color: #c87cff;
     color: white;
 }
 
 .hability-container:nth-child(6n+6) .hability {
-    background-color: #dbe4c2; /* Verde Claro */
+    background-color: #dbe4c2;
 }
 
 .ptext.add-new-skill{
