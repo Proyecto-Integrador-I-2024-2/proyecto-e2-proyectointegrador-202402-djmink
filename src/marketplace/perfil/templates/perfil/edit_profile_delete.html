@@ -83,13 +83,13 @@
     <div id="deleteAccountModal" class="modal">
         <div class="modal-content">
             <span class="close">&times;</span>
-            <div class='ptext are-you-sure-delete'>Are you sure you want to delete your account?</div>
+            <div class='ptext are-you-sure'>Are you sure?</div>
             <form action="/delete_account" method="post">
 
             </form>
 
             <!--Poner dentro del form después -->
-            <button id= "delete-btn-yes" class='med-btn delete-yes' onclick="confirmDeleteAccount()">Delete</button>
+            <button id= "delete-btn-yes" class='med-btn delete-disable' onclick="confirmDeleteAccount()">Delete</button>
 
             <button id= "cancel-delete" class='med-btn cancel' onclick="cancel()">Cancel</button>
         </div>
@@ -98,13 +98,13 @@
     <div id="disableAccountModal" class="modal">
         <div class="modal-content">
             <span class="close">&times;</span>
-            <div class='ptext are-you-sure-disable'>Are you sure you want to disable your account?</div>
+            <div class='ptext are-you-sure'>Are you sure?</div>
             <form action="/disable_account" method="post">
 
             </form>
 
             <!--Poner dentro del form después -->
-            <button id= "disable-btn-yes" class='med-btn disable-yes' onclick="confirmDisableAccount()">Disable</button>
+            <button id= "disable-btn-yes" class='med-btn delete-disable' onclick="confirmDisableAccount()">Disable</button>
 
             <button id= "cancel-disable" class='med-btn cancel' onclick="cancel()">Cancel</button>
         </div>
