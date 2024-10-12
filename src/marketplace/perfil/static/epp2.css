@@ -4,6 +4,12 @@ html {
     scroll-behavior: smooth;
 }
 
+.editsection{
+    background-color: #F2F2F2;
+    height:1446px;
+    width: 1440px; 
+}
+
 /* Heading section */
 
 .heading {
