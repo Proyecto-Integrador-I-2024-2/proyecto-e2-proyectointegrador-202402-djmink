@@ -9,17 +9,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Main</title>
-    <link rel="stylesheet" href="{% static 'mainFreelancer.css' %}">
+    <link rel="stylesheet" href="{% static 'mfree.css' %}">
 </head>
 <body>
 
-    
     <div id="heading" class="heading">
-
         <div id="rectangleheading" class="rectangleheading"></div>
         <div id="hometext" class="hometext">Home</div>
-        <img id="chat_icon" class="chat_icon" src="{% static 'Chat_Icon.png' %}"/>
-        <img id="notification_icon" class="notification_icon" src="{% static 'Notification_Icon.png' %}"/>
+        <img id="chat_icon" class="chat_icon" src="{% static 'Chat_Icon.svg' %}"/>
+        <img id="notification_icon" class="notification_icon" src="{% static 'Notification_Icon.svg' %}"/>
         <a href="{% url 'perfilFreelancer' profile.id %}">
             <img id="profile_picture2" class="profile_picture2" src="{{ profile.profile_picture.url }}" alt="Profile Picture"/>
         </a>
@@ -63,14 +61,12 @@
         </div>
     </div>    
 
-    <div class="welcome">Discover</div>
-    <div class="your">
-        Your <span class="proyect">Project</span>
-    </div>
+    <div class="ptext discover">Discover</div>
+    <div class="ptext your">Your <span class="ptext project"> Project</span> </div>
 
-    <div class="search-container">
-        <input type="text" placeholder="Search">
-        <img src="{% static 'search.png' %}" alt="Search Icon">
+    <div class="input-container">
+        <input class= "input-box" type="text" placeholder="Search">
+        <img class ="search" src="{% static 'search.png' %}" alt="Search Icon">
     </div>
 
     <nav class="cat-nav">
@@ -82,29 +78,30 @@
         <a href="#image_editing">Image Editing</a>
     </nav>
        
-    <div class="publicacions-container"></div>
+    <div class="publications-container">
         {% for publication in publications %}
-            <div class="publicacion-container">
+            <div class="publication-container">
                 <div class="card">
-                    <img class="project_picture" src="{{ publication.project.project_picture.url }}" alt="Project Picture"/>
-                    <img class="publication_profile_picture" src="{{ publication.project.profile.profile_picture.url }}" alt="Profile Picture"/>
-                    <div class="publication_profile_name">{{ publication.project.profile.name }}</div>
-                    <img class="star" src="{% static 'Star.png' %}" />
-                    <div class="publication_rate">{{ publication.rate }}</div>
-                    <div class="comments_amount">{{ publication.comments.count }}</div>
+                    <img class="project-picture" src="{{ publication.project.project_picture.url }}" alt="Project Picture"/>
+                    <img class="publication-profile-picture" src="{{ publication.profile.profile_picture.url }}" alt="Profile Picture"/>
+                    <div class="publication-profile-name">{{ publication.profile.name }}</div>
+                    <img class="star" src="{% static 'Star.svg' %}" />
+                    <img class="fav" src="{% static 'Fav.svg' %}" />
+                    <div class="publication-rate">{{ publication.profile.rating }}</div>
+                    <div class="comments-amount">{{ publication.commentsPublication.count }}</div>
                 </div>
                 <div class="project-name">{{ publication.project.name }}</div>
                 <div class="project-description">{{ publication.project.description }}</div>
                 <div class="project-budget">{{ publication.project.budget }}</div>
                 <div class="categories-container">
-                {% for category in publication.project.projectcategories.all %}
-                    <div class="hability-container">
-                        <div class="hability">{{ category.name }}</div>
-                    </div>
-                {% empty %}
-                    <p>No categories for this project registered yet.</p>
-                {% endfor %}
-        </div>
+                    {% for category in publication.project.projectcategories.all %}
+                        <div class="category-container">
+                            <div class="cateogry">{{ category.name }}</div>
+                        </div>
+                    {% empty %}
+                        <p>No categories for this project registered yet.</p>
+                    {% endfor %}
+                </div>
             </div>
         {% empty %}
             <p>There are no publications registered yet.</p>
@@ -112,9 +109,9 @@
     </div>
 
     <footer class="footer">
-    
+        
         <div class="footer-content">
-            <img id="encora2" class="encora2" src="{% static 'encora.png' %}" />
+            <img id="encora2" class="encora2" src="{% static 'Encora1.svg' %}" />
             <img id="fb3" class="fb3" src="{% static 'fb2.png' %}"/>
             <img id="ig3" class="ig3" src="{% static 'ig2.png' %}" />
             <img id="lin3" class="lin3" src="{% static 'lin2.png' %}" />

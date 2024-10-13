@@ -19,8 +19,8 @@
 
             <div id="rectangleheading" class="rectangleheading"></div>
             <div id="hometext" class="hometext">Home</div>
-            <img id="chat_icon" class="chat_icon" src="{% static 'Chat_Icon.png' %}"/>
-            <img id="notification_icon" class="notification_icon" src="{% static 'Notification_Icon.png' %}"/>
+            <img id="chat_icon" class="chat_icon" src="{% static 'Chat_Icon.svg' %}"/>
+            <img id="notification_icon" class="notification_icon" src="{% static 'Notification_Icon.svg' %}"/>
             <a href="{% url 'perfilFreelancer' p.id %}">
                 <img id="profile_picture2" class="profile_picture2" src="{{ p.profile_picture.url }}" alt="Profile Picture"/>
             </a>
@@ -55,7 +55,7 @@
             <div class="projects-container" id="projects-container">
                 {% for project in p.contents.all %}
                     <div class="project-container" id="project-{{ project.id }}">
-                        <img id="edit-btn" class="edit-btn" src="{% static 'Edit.png' %}" alt="Edit" onclick="openEditModal('{{ project.id }}')"/>
+                        <img id="edit-btn" class="edit-btn" src="{% static 'Edit.svg' %}" alt="Edit" onclick="openEditModal('{{ project.id }}')"/>
                         <button class="delete-btn project" onclick="markForRemoval('project', '{{ project.id }}')">X</button>
                         <div id="project-name-{{ project.id }}" class="ptext project-name">{{ project.name }}</div>
                         <div id="project-company-{{ project.id }}" class="ptext info-project">{{ project.type }}</div>
@@ -74,7 +74,7 @@
         <footer class="footer">
         
             <div class="footer-content">
-                <img id="encora2" class="encora2" src="{% static 'encora.png' %}" />
+                <img id="encora2" class="encora2" src="{% static 'Encora1.svg' %}" />
                 <img id="fb3" class="fb3" src="{% static 'fb2.png' %}"/>
                 <img id="ig3" class="ig3" src="{% static 'ig2.png' %}" />
                 <img id="lin3" class="lin3" src="{% static 'lin2.png' %}" />
@@ -224,7 +224,7 @@
             newContentDiv.id = 'project-' + newProjectId;
 
             newContentDiv.innerHTML = `
-                <img id="edit-btn" class="edit-btn" src="{% static 'Edit.png' %}" alt="Edit" onclick="openEditModal('${newProjectId}')"/>
+                <img id="edit-btn" class="edit-btn" src="{% static 'Edit.svg' %}" alt="Edit" onclick="openEditModal('${newProjectId}')"/>
                 <button class="delete-btn project" onclick="markForRemoval('project', '${newProjectId}')">X</button>
                 <div id="project-name-${newProjectId}" class="ptext project-name">${name.value}</div>
                 <div id="project-company-${newProjectId}" class="ptext info-project">${company.value}</div>

@@ -107,10 +107,10 @@ class Project(models.Model):
         return self.name
     
 class Publication(models.Model):
+    profile = models.ForeignKey(ClientProfile, related_name='publications', on_delete=models.CASCADE, null=True)
     project = models.ForeignKey(Project, related_name='publications', on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
     favorites = models.IntegerField()
-
 
 
 class CommentPublication(models.Model):
