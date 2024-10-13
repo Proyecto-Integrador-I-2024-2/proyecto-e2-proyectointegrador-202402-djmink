@@ -10,7 +10,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Edit Profile</title>
-    <link rel="stylesheet" href="{% static '.css' %}">
+    <link rel="stylesheet" href="{% static 'ep.css' %}">
 </head>
 <body>
     <div id="editsection" class="editsection">
@@ -46,30 +46,28 @@
             <div class="ptext portfolio-title">
                 Portfolio
             </div>
-    
-            <div class="ptext danger-zone">
-                Danger zone
-            </div>
 
             <div class="add-button">
                 <div class="ptext add">Add</div>
                 <button id= "add-content-btn" class="add content-btn" onclick="openAddModal()">+</button>
             </div>    
                 
-            <div class="projects-container" id="projectsContainer">
+            <div class="projects-container" id="projects-container">
                 {% for project in p.contents.all %}
                     <div class="project-container" id="project-{{ project.id }}">
-                        <img id="edit-btn" class="edit-btn" src="{% static 'Edit.png' %}" alt="Edit" onclick="openEditModal('{{ project.id }}', '{{ project.name }}', '{{ project.company }}', '{{ project.duration }}', '{{ project.url }}')"/>
+                        <img id="edit-btn" class="edit-btn" src="{% static 'Edit.png' %}" alt="Edit" onclick="openEditModal('{{ project.id }}')"/>
                         <button class="delete-btn project" onclick="markForRemoval('project', '{{ project.id }}')">X</button>
-                        <div id="project-name-{{ project.id }}" class="project-name">{{ project.name }}</div>
-                        <div id="project-company-{{ project.id }}" class="info-project">{{ project.company }}</div>
-                        <div id="project-duration-{{ project.id }}" class="info-project">{{ project.duration }}</div>
-                        <a id="project-url-{{ project.id }}" class="info-project" href="{{ project.url }}" target="_blank">{{ project.name }}</a>
+                        <div id="project-name-{{ project.id }}" class="ptext project-name">{{ project.name }}</div>
+                        <div id="project-company-{{ project.id }}" class="ptext info-project">{{ project.type }}</div>
+                        <div id="project-duration-{{ project.id }}" class="ptext info-project">{{ project.duration }}</div>
+                        <a id="project-url-{{ project.id }}" class="ptext info-project" href="{{ project.url }}" target="_blank">{{ project.name }}</a>
                     </div>
                 {% empty %}
                     <p>You don't have projects registered yet.</p>
                 {% endfor %}
             </div>
+
+            <button id= "save" class="med-btn save">Save Changes</button>
 
         </div>
 
@@ -132,27 +130,27 @@
             <span class="close" onclick="closeModal('editProjectModal')">&times;</span>
             <div class='ptext add-project'>Edit Project</div>
     
-            <div class="input-container name">
+            <div class="input-container2 name">
                 <div class="ptext name">Name</div>
-                <textarea id="edit-name" class="input-box name"></textarea>
+                <textarea id="edit-name" class="input-box e"></textarea>
             </div>
 
-            <div class="input-container company">
+            <div class="input-container2 company">
                 <div class="ptext name">Company</div>
-                <textarea id="edit-company" class="input-box name"></textarea>
+                <textarea id="edit-company" class="input-box e"></textarea>
             </div>
 
-            <div class="input-container duration">
+            <div class="input-container2 duration">
                 <div class="ptext name">Duration</div>
-                <textarea id="edit-duration" class="input-box name"></textarea>
+                <textarea id="edit-duration" class="input-box e"></textarea>
             </div>
 
-            <div class="input-container resources">
+            <div class="input-container2 resources">
                 <div class="ptext name">Resources</div>
-                <textarea id="edit-resources" class="input-box name"></textarea>
+                <textarea id="edit-resources" class="input-box e"></textarea>
             </div>
                 
-            <button class='med-btn' onclick="editProject()">Accept</button>
+            <button class='med-btn add-project' onclick="editProject()">Accept</button>
         </div>
     </div>
     
@@ -187,6 +185,28 @@
             }
         }
 
+        function openEditModal(projectId) {
+
+            const projectName = document.getElementById('project-name-' + projectId).textContent;
+            const projectCompany = document.getElementById('project-company-' + projectId).textContent;
+            const projectDuration = document.getElementById('project-duration-' + projectId).textContent;
+            const projectUrl = document.getElementById('project-url-' + projectId).href;
+
+            document.getElementById('edit-name').value = projectName;
+            document.getElementById('edit-company').value = projectCompany;
+            document.getElementById('edit-duration').value = projectDuration;
+            document.getElementById('edit-resources').value = projectUrl;
+
+            const modal = document.getElementById('editProjectModal');
+            modal.setAttribute('data-project-id', projectId);
+            modal.style.display = 'block';
+            window.onclick = function(event) {
+                if (event.target == modal) {
+                    closeModal('editProjectModal');
+                }
+            }
+        }
+
         function closeModal(modal){
             document.getElementById(modal).style.display = 'none';
         }
@@ -204,12 +224,12 @@
             newContentDiv.id = 'project-' + newProjectId;
 
             newContentDiv.innerHTML = `
-                <img id="edit-btn" class="edit-btn" src="{% static 'Edit.png' %}" alt="Edit" onclick="openEditModal('${name.value}', '${company.value}', '${duration.value}', '${resources.value}')"/>
+                <img id="edit-btn" class="edit-btn" src="{% static 'Edit.png' %}" alt="Edit" onclick="openEditModal('${newProjectId}')"/>
                 <button class="delete-btn project" onclick="markForRemoval('project', '${newProjectId}')">X</button>
-                <div id="project-name-${newProjectId}" class="project-name">${name.value}</div>
-                <div id="project-company-${newProjectId}" class="info-project">${company.value}</div>
-                <div id="project-duration-${newProjectId}" class="info-project">${duration.value}</div>
-                <a id="project-url-${newProjectId}" class="info-project" href="${resources.value}" target="_blank">${name.value}</a>
+                <div id="project-name-${newProjectId}" class="ptext project-name">${name.value}</div>
+                <div id="project-company-${newProjectId}" class="ptext info-project">${company.value}</div>
+                <div id="project-duration-${newProjectId}" class="ptext info-project">${duration.value}</div>
+                <a id="project-url-${newProjectId}" class="ptext info-project" href="${resources.value}" target="_blank">${name.value}</a>
             `;
 
             projectsList.appendChild(newContentDiv);
@@ -237,6 +257,16 @@
             projectUrlElement.textContent = name;
 
             closeModal('editProjectModal');
+        }
+
+        let removedItems = [];
+
+        function markForRemoval(type, itemId) {
+            const element = document.getElementById(type + '-' + itemId);
+            if (element) {
+                element.style.display = 'none';
+                removedItems.push({ type, itemId });
+            }
         }
 
     </script>

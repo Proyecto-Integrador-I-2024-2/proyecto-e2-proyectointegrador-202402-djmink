@@ -41,7 +41,7 @@
 
         <a href="{% url 'editAccount' p.id %}" class="ptext my-account">My account</a>
         <a href="#editProfile" class="ptext profile">Profile</a>
-        <a href="#editPortfolio" class="ptext portfolio">Portfolio</a>
+        <a href="{% url 'editPortfolio' p.id %}" class="ptext portfolio">Portfolio</a>
         <a href="{% url 'deleteDisable' p.id %}" class="ptext delete-account">Delete account</a>       
 
         <div class="container">

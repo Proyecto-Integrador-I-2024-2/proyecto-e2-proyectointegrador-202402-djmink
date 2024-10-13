@@ -37,7 +37,7 @@
 
         <a href="#myaccount" class="ptext my-account">My account</a>
         <a href="{% url 'editProfile' p.id %}" class="ptext profile">Profile</a>
-        <a href="#editPortfolio" class="ptext portfolio">Portfolio</a>
+        <a href="{% url 'editPortfolio' p.id %}" class="ptext portfolio">Portfolio</a>
         <a href="{% url 'deleteDisable' p.id %}" class="ptext delete-account">Delete account</a>    
 
         <div class="fields">

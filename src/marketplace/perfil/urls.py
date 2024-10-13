@@ -11,7 +11,7 @@ urlpatterns = [
     path('perfilesFreelancer/<int:id>/account/', views.editAccount, name='editAccount'),
     path('perfilesFreelancer/<int:id>/editProfile/', views.editProfile, name='editProfile'),
     path('perfilesFreelancer/<int:id>/delete&disable/', views.deleteDisable, name='deleteDisable'),
-    path('perfilesFreelancer/sessions/', views.test, name='test'),
+    path('perfilesFreelancer/<int:id>/portfolio/', views.editPortfolio, name='editPortfolio'),
 ]
 
 if settings.DEBUG:
