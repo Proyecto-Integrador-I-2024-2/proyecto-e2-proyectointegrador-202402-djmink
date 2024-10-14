@@ -1,7 +1,6 @@
-from django.http import Http404
+from django.core.paginator import Paginator
 from django.shortcuts import render, get_object_or_404
 from perfil.models import Profile, ClientProfile, Publication, ProjectCategory, SocialNetwork
- # get the current user model
 
 # Create your views here.
 def perfilesFreelancer(request, id):
@@ -11,10 +10,21 @@ def perfilesFreelancer(request, id):
 
 def mainFreelancer(request, id):        
     profile = get_object_or_404(Profile, id=id)
-    publications = Publication.objects.all()
+    publications_list = Publication.objects.all()
+    
+    paginator = Paginator(publications_list, 12)  # 12 publicaciones por página
+    page_number = request.GET.get('page')  
+    publications = paginator.get_page(page_number)
+    
     categories = ProjectCategory.objects.all()
     companies = ClientProfile.objects.filter(projects__publications__isnull=False).distinct()
-    return render(request, 'perfil/main_freelancer.html', {'profile': profile, 'publications':publications, 'categories': categories, 'companies':companies})
+    
+    return render(request, 'perfil/main_freelancer.html', {
+        'profile': profile,
+        'publications': publications,
+        'categories': categories,
+        'companies': companies
+    })
 
 def editAccount(request, id):
     p = get_object_or_404(Profile, id=id)
