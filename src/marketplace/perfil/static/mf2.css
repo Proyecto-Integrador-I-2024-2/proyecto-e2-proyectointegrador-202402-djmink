@@ -19,41 +19,36 @@ html {
     position:relative;
 }
 
-.hometext
-{
-    color:#000000;
-    text-align:left;
-    vertical-align:text-top;
-    font-size:24px;
+.ptext{
     font-family: "Poppins", sans-serif;
+    position: absolute;
+}
+
+.ptext.hometext{
+    color:#000000;
+    font-size:24px;
     font-weight: 600;
-    font-style: normal;
     line-height:auto;
-    border-style:hidden;
-    outline:none;
     top:32px;
     left:690px;
-    position:absolute;
     width:60px;
     height:30px;
 }
 
-.chat_icon{
+.icon{
     top:35px;
-    left:1268px;
     position:absolute;
     width:35px;
     height: 35px;
     cursor: pointer;
 }
 
-.notification_icon{
-    top:35px;
+.icon.chat_icon{
+    left:1268px;
+}
+
+.icon.notification_icon{
     left:1315px;
-    position:absolute;
-    width:35px;
-    height: 35px;
-    cursor: pointer;
 }
 
 .logo{
@@ -64,8 +59,7 @@ html {
     height: 80px;
 }
 
-.logoseparator
-{
+.logoseparator{
     top:45px;
     left:95px;
     width: 60px;
@@ -74,27 +68,18 @@ html {
     position:absolute;
 }
 
-.onlinemarketplace2
-{
+.ptext.onlinemarketplace{
     color:#01000c;
-    text-align:left;
-    vertical-align:text-top;
     font-size:18px;
-    font-family: "Poppins", sans-serif;
     font-weight: 500;
-    font-style: normal;
-    line-height:auto;
-    border-style:hidden;
-    outline:none;
     top:20px;
     left:150px;
-    position:absolute;
     width:100px;
     height: 66px;
     cursor: pointer;
 }
 
-.profile_picture2 {
+.profile_picture_heading {
     top:25px;
     left:1365px;
     position:absolute;
@@ -150,11 +135,6 @@ html {
     font-size: 12px;
     color: #333;
     margin-left: 10px;
-}
-
-.ptext{
-    font-family: "Poppins", sans-serif;
-    position: absolute;
 }
 
 .ptext.filter-text{
@@ -489,16 +469,11 @@ html {
     margin-top: 30px;
     position: relative;
     background-color: #F2F2F2;
-    text-align: center;
     font-family: "Poppins", sans-serif;
     font-weight: 400;
-    font-style: normal;
-    padding: 0;
-    left: 0px;
     width: 1440px; 
     height: 135px;
 }
-
 
 .footer-content {
     max-width: 1200px;
@@ -512,10 +487,6 @@ html {
     margin-top: 57px;
 }
 
-.footer-nav2 {
-    margin-top: 20px;
-}
-
 .footer-nav a {
     color: #01000C;
     margin: 0 15px;
@@ -527,7 +498,7 @@ html {
     text-decoration: underline; 
 }
 
-.encora2 {
+.encora {
     position: absolute;
     left: 37px;
     top: 10px; 
@@ -535,52 +506,34 @@ html {
     width: 113px;
 }
 
-.gmail3 {
+.social-icon{
     position: absolute;
+    top: 78px;
+    height: 24px; 
+    width: 24px;
+    cursor: pointer;
+}
+
+.social-icon.gmail {
     left: 1252px;
-    top: 78px; 
-    height: 24px; 
-    width: 24px;
-    cursor: pointer;
 }
 
-.lin3 {
-    position: absolute;
+.social-icon.lin {
     left: 1280px;
-    top: 78px; 
-    height: 24px; 
-    width: 24px;
-    cursor: pointer;
 }
 
-.ig3 {
-    position: absolute;
+.social-icon.ig{
     left: 1308px;
-    top: 78px; 
-    height: 24px; 
-    width: 24px;
-    cursor: pointer;
 }
 
-.fb3 {
-    position: absolute;
+.social-icon.fb {
     left: 1336px;
-    top: 78px; 
-    height: 24px; 
-    width: 24px;
-    cursor: pointer;
 }
 
 .footertext {
     text-align:center;
-    vertical-align:text-top;
     font-size:12px;
-    font-family: "Inter", sans-serif;
-    font-optical-sizing: auto;
     font-weight: 400;
-    line-height:auto;
-    border-style:hidden;
-    outline:none;
     top:105px;
     left:1205px;
     position:absolute;

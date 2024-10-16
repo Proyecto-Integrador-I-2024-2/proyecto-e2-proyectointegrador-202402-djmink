@@ -104,17 +104,6 @@ html {
     object-fit: cover;
 }
 
-.ptext {
-    text-align:left;
-    vertical-align:text-top;
-    font-family: "Poppins", sans-serif;
-    font-style: normal;
-    line-height:auto;
-    border-style:hidden;
-    outline:none;
-    position:absolute;
-}
-
 .ptext.ep {
     color:#7D7D7D;
     font-size:14px;
