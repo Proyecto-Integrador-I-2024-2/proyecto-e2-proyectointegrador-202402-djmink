@@ -348,7 +348,7 @@
             };
 
             if (urlMap[selectedValue]) {
-                userInput.value = `www.${urlMap[selectedValue]}your_user`;
+                userInput.value = `${urlMap[selectedValue]}your_user`;
                 userInput.style.display = 'block';
                 iconElement.src = iconMap[selectedValue];
                 iconElement.style.display = 'block';
@@ -358,6 +358,7 @@
                 iconElement.style.display = 'none';
                 button.style.display = 'none';
             }
+
         }
 
         function addSocialNetwork() {
@@ -367,15 +368,6 @@
             const socialNetworksContainer = document.getElementById('social-networks');
             const iconElement = document.getElementById('selected-icon');
             const button = document.getElementById('add-social-btn');
-
-            // Mapa de URL para cada red social
-            const urlMap = {
-                'facebook': 'facebook.com/',
-                'twitter': 'twitter.com/',
-                'instagram': 'instagram.com/',
-                'linkedin': 'linkedin.com/in/',
-                'github': 'github.com/'
-            };
 
             // Mapa de iconos para cada red social
             const iconMap = {
@@ -398,7 +390,7 @@
                 // Agregar el HTML dinámicamente
                 newSocialDiv.innerHTML = `
                     <img class="media-pic" src="${iconMap[selectedValue]}" alt="${selectedValue} icon"/>
-                    <textarea class="mediainput">www.${urlMap[selectedValue]}${userInput.value}</textarea>
+                    <textarea class="mediainput">www.${userInput.value}</textarea>
                     <button class="delete-btn social" onclick="removeTemporarySocial('${newSocialId}', '${selectedValue}')">X</button>
                 `;
 
