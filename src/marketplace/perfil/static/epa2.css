@@ -104,6 +104,11 @@ html {
     object-fit: cover;
 }
 
+.ptext {
+    font-family: "Poppins", sans-serif;
+    position:absolute;
+}
+
 .ptext.ep {
     color:#7D7D7D;
     font-size:14px;
