@@ -26,6 +26,11 @@ def mainFreelancer(request, id):
         'companies': companies
     })
 
+def projectsList(request, id):
+    
+    p = get_object_or_404(Profile, id=id)
+    return render(request, 'perfil/projects_list.html', {'profile': p})
+
 def editAccount(request, id):
     p = get_object_or_404(Profile, id=id)
 
