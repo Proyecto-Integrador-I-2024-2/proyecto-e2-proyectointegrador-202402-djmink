@@ -9,7 +9,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Main</title>
-    <link rel="stylesheet" href="{% static 'projects_list.css' %}">
+    <link rel="stylesheet" href="{% static 'pl.css' %}">
 </head>
 <body>
 
@@ -28,7 +28,7 @@
     </div>
 
     <div class="projects-title-container">
-        <h1 class="ptext Projects">Projects</h1>
+        <h1 class="ptext Projects">My Projects</h1>
     </div>
 
     <div class="projects-section">
@@ -36,12 +36,12 @@
             {% for project in profile.projects.all %}
                     <div class="project-container">
                         <div class="left">
-                            <h2 class="ptext project-name">project.name</h2>
-                            <h3 class="ptext project-info">project.description</h3>
-                            <h3 class="ptext project-info">project.state</h3>
+                            <div class="ptext project-name">{{project.name}}</div>
+                            <div class="ptext project-desc">{{project.description}}</div>
+                            <div class="ptext project-state">State: {{project.state}}</div>
                             <button class="open-btn">Open</button>
                         </div>
-                        <img class="project_picture" src="{{ project.project_picture.url }}" alt="Project Picture"/>
+                        <img class="project-picture" src="{{ project.project_picture.url }}" alt="Project Picture"/>
                     </div>
                 {% empty %}
                     <p>You don't have projects registered yet.</p>

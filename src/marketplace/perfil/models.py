@@ -105,7 +105,32 @@ class Project(models.Model):
 
     def __str__(self):
         return self.name
-    
+
+class ProjectFreelancer(models.Model):
+
+    STATE_CHOICES = [
+        ('PENDING', 'Finding freelancers'),
+        ('IN_PROGRESS', 'Developing'),
+        ('COMPLETED', 'Completed'),
+        ('CANCELLED', 'Cancelled'),
+    ]
+
+    profile = models.ForeignKey(Profile, related_name='projects', on_delete=models.CASCADE)
+    name = models.CharField(max_length=100)
+    #type = models.CharField(max_length=100)
+    #duration = models.CharField(max_length=100)
+    #url = models.URLField()
+    description = models.CharField(max_length=500, default='Description')
+    state = models.CharField(max_length=100, choices=STATE_CHOICES, default='PENDING')
+    project_picture = models.ImageField(upload_to='project_pictures/', blank=True, null=True)
+    #budget = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+
+    def __str__(self):
+        return self.name
+
+
+
+
 class Publication(models.Model):
     profile = models.ForeignKey(ClientProfile, related_name='publications', on_delete=models.CASCADE, null=True)
     project = models.ForeignKey(Project, related_name='publications', on_delete=models.CASCADE)

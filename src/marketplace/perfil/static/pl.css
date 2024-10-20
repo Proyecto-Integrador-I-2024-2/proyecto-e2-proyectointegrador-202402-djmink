@@ -4,8 +4,8 @@ html {
     scroll-behavior: smooth;
 }
 
-.body{
-
+body{
+    background-color: #F2F2F2;
 }
 
 .heading {
@@ -85,8 +85,110 @@ html {
     object-fit: cover;
 }
 
+.projects-title-container{
+    position: relative;
+    height: 100px;
+    width: 1440px;
+    align-items: center;
+}
+
+.ptext.Projects{
+    font-weight: 500;
+    font-size: 40px;
+    left: 250px;
+}
+
+.projects-section{
+    width: 1440px;
+    max-height: 650px;
+    position: relative;
+}
+
+.projects-container{
+    max-height: 650px;
+    width: 1039px;
+    position: relative;
+    left: 200px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    
+}
+
+.project-container{
+    width: 1039px;
+    height: 300px;
+    position: relative;
+    margin-bottom: 50px;
+}
+
+.project-container:last-child {
+    margin-bottom: 0;
+}
+
+.left{
+   width: 400px;
+   height: 300px;
+   position: relative; 
+   background-color: #BCBCBC;
+}
+
+.project-picture{
+    position: absolute;
+    left: 400px;
+    width: 639px;
+    height: 300px;
+    top: 0;
+}
+
+.ptext.project-name{
+    font-weight: 500px;
+    font-size: 30px;
+    left: 25px;
+    top: 15px;
+}
+
+.ptext.project-desc{
+    font-weight: 400px;
+    font-size: 16px;
+    left: 25px;
+    top: 75px;
+    width: 350px;
+    height: 116px;
+}
+
+.ptext.project-state{
+    font-weight: 400px;
+    font-size: 16px;
+    left: 25px;
+    top: 206px;
+}
+
+.open-btn{
+    height: 40px;
+    width: 350px;
+    border: none;
+    position: absolute;
+    border-radius: 10px;
+    background-color: #0040FF;
+    color: #F2F2F2;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    font-weight: 600;
+    font-family: "Poppins", sans-serif;
+    left: 25px;
+    top: 240px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.open-btn:hover{
+    background-color: #0033CC;
+    transform: scale(1.02); 
+}
 
 .footer {
+    margin-top: 25px;
     position: relative;
     background-color: #F2F2F2;
     font-family: "Poppins", sans-serif;
