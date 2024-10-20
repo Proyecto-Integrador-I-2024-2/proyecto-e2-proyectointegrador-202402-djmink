@@ -39,7 +39,9 @@
                             <div class="ptext project-name">{{project.name}}</div>
                             <div class="ptext project-desc">{{project.description}}</div>
                             <div class="ptext project-state">State: {{project.state}}</div>
-                            <button class="open-btn">Open</button>
+                            <a href="{% url 'projectWorkspace' profile.id project.id %}">
+                                <button class="open-btn">Open</button>
+                            </a>                            
                         </div>
                         <img class="project-picture" src="{{ project.project_picture.url }}" alt="Project Picture"/>
                     </div>

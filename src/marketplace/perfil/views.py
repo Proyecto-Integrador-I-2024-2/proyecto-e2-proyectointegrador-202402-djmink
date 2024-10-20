@@ -1,6 +1,6 @@
 from django.core.paginator import Paginator
 from django.shortcuts import render, get_object_or_404
-from perfil.models import Profile, ClientProfile, Publication, ProjectCategory, SocialNetwork
+from perfil.models import Profile, ClientProfile, Publication, ProjectCategory, SocialNetwork, ProjectFreelancer
 
 # Create your views here.
 def perfilesFreelancer(request, id):
@@ -30,6 +30,34 @@ def projectsList(request, id):
     
     p = get_object_or_404(Profile, id=id)
     return render(request, 'perfil/projects_list.html', {'profile': p})
+
+def projectWorkspace(request, id, id_project):
+    p = get_object_or_404(Profile, id=id)
+    pr = get_object_or_404(ProjectFreelancer, id=id_project)
+
+    project_data = {
+        'id': pr.id,
+        'name': pr.name,
+        'milestones': [
+            {
+                'id': milestone.id,
+                'name': milestone.name,
+                'tasks': [
+                    {
+                        'name': task.name,
+                        'description': task.description
+                    }
+                    for task in milestone.tasks.all() 
+                ]
+            }
+            for milestone in pr.milestones.all() 
+        ]
+    }
+
+    return render(request, 'perfil/project_workspace.html', {
+        'profile': p,
+        'project': project_data,  # Pasar el diccionario en lugar del objeto
+    })
 
 def editAccount(request, id):
     p = get_object_or_404(Profile, id=id)

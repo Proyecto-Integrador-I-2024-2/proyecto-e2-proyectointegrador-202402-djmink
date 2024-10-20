@@ -198,3 +198,24 @@ class SocialNetwork(models.Model):
 
     def __str__(self):
         return self.type
+
+class Milestone(models.Model):
+    name = models.CharField(max_length=50)
+    description = models.CharField(max_length=500)
+    deadline = models.DateField()
+    project = models.ForeignKey(ProjectFreelancer, on_delete=models.PROTECT, related_name='milestones')
+
+class Task(models.Model):
+    name = models.CharField(max_length=50)
+    description = models.CharField(max_length=500)
+    deadline = models.DateField()
+    milestone = models.ForeignKey(Milestone, on_delete=models.PROTECT, related_name='tasks')
+    freelancer = models.ForeignKey(Profile, on_delete=models.PROTECT, related_name='tasks')
+
+class Assignment(models.Model):
+    name = models.CharField(max_length=255)
+    task = models.ForeignKey(Task, on_delete=models.CASCADE, related_name='assignments')
+    date = models.DateField()
+    status = models.CharField(max_length=50)
+    file = models.FileField(upload_to='uploads/')
+    url = models.URLField(blank=True, null=True)
