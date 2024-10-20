@@ -26,6 +26,10 @@ def mainFreelancer(request, id):
         'companies': companies
     })
 
+def firstMain(request):
+    publications_list = Publication.objects.all()[:3]
+    return render(request, 'perfil/main_first.html', {'publications': publications_list})
+
 def projectsList(request, id):
     
     p = get_object_or_404(Profile, id=id)
@@ -56,7 +60,7 @@ def projectWorkspace(request, id, id_project):
 
     return render(request, 'perfil/project_workspace.html', {
         'profile': p,
-        'project': project_data,  # Pasar el diccionario en lugar del objeto
+        'project': project_data,  
     })
 
 def editAccount(request, id):

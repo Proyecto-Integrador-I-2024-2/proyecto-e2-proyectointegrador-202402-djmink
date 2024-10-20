@@ -14,6 +14,7 @@ urlpatterns = [
     path('perfilesFreelancer/<int:id>/portfolio/', views.editPortfolio, name='editPortfolio'),
     path('perfilesFreelancer/<int:id>/projects/', views.projectsList, name='projectsList'),
     path('perfilesFreelancer/<int:id>/projects/<int:id_project>/', views.projectWorkspace, name='projectWorkspace'),
+    path('home/publications', views.firstMain, name='firstMain'),
 ]
 
 if settings.DEBUG:
