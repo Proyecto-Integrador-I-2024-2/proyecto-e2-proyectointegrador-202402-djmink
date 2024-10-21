@@ -76,6 +76,19 @@ def editAccount(request, id):
 
     return render(request, 'perfil/edit_profile_account.html', {'p': p, 'code': code, 'phone': phone})
 
+def editAccountClient(request, id):
+    p = get_object_or_404(ClientProfile, id=id)
+
+    # Se debe cambiar
+    if '-' in p.phone:
+        code = p.phone.split('-')[0]
+        phone = p.phone.split('-')[1]
+    else:
+        code = p.phone
+        phone = p.phone
+
+    return render(request, 'perfil/client_edit_profile_account.html', {'p': p, 'code': code, 'phone': phone})
+
 def editProfile(request, id=id):
     p = get_object_or_404(Profile, id=id)
     existing_types = p.social_networks.values_list('type', flat=True)
@@ -83,13 +96,28 @@ def editProfile(request, id=id):
 
     return render(request, 'perfil/edit_profile.html', {'p': p, 'available_media': available_media})
 
+def editProfileClient(request, id=id):
+    p = get_object_or_404(ClientProfile, id=id)
+    existing_types = p.client_social_networks.values_list('type', flat=True)
+    available_media = [choice for choice in SocialNetwork.TYPE_CHOICES if choice[0] not in existing_types]
+
+    return render(request, 'perfil/client_edit_profile.html', {'p': p, 'available_media': available_media})
+
 def deleteDisable(request, id=id):
     p = get_object_or_404(Profile, id=id)
     return render(request, 'perfil/edit_profile_delete.html', {'p': p})
 
+def deleteDisableClient(request, id=id):
+    p = get_object_or_404(ClientProfile, id=id)
+    return render(request, 'perfil/client_edit_profile_delete.html', {'p': p})
+
 def editPortfolio(request, id=id):
     p = get_object_or_404(Profile, id=id)
     return render(request, 'perfil/edit_profile_portfolio.html', {'p': p})
+
+def editProjectsClient(request, id=id):
+    p = get_object_or_404(ClientProfile, id=id)
+    return render(request, 'perfil/client_edit_profile_projects.html', {'p': p})
         
 def perfilesCliente(request, id):        
     p = get_object_or_404(ClientProfile, id=id)

@@ -177,7 +177,8 @@ class SocialNetwork(models.Model):
         ('github', 'GitHub'),
     ]
 
-    profile = models.ForeignKey(Profile, related_name='social_networks', on_delete=models.CASCADE)
+    profile = models.ForeignKey(Profile, related_name='social_networks', on_delete=models.CASCADE, null=True, blank=True)
+    client_profile = models.ForeignKey(ClientProfile, related_name='client_social_networks', on_delete=models.CASCADE, null=True, blank=True)
     type = models.CharField(max_length=20, choices=TYPE_CHOICES, unique=True)
     url = models.URLField(max_length=200)
     image = models.ImageField(upload_to='social_networks/', default='social_networks/default_icon.png')
