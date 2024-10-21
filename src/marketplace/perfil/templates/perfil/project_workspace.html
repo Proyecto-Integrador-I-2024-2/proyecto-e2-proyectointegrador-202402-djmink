@@ -9,7 +9,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Main</title>
-    <link rel="stylesheet" href="{% static 'pw.css' %}">
+    <link rel="stylesheet" href="{% static 'pw1.css' %}">
 </head>
 <body>
 
@@ -33,7 +33,7 @@
             <div class="ptext milestones-title">Milestones</div>
             <div class="milestone-container">
                 <div class="milestones-header">
-                    <select name="milestones-select" id="milestones-select" onchange="loadTasks(this)">
+                    <select class="select" name="milestones-select" id="milestones-select" onclick="rotate('.milestones-header')" onchange="loadTasks(this)">
                         <option value="">Select Milestone</option>
                         {% for milestone in project.milestones %}
                             <option value="{{ milestone.id }}">{{ milestone.name }}</option>
@@ -42,28 +42,28 @@
                     <img class="arrow" src="{% static 'arrow.png' %}" alt="arrow">
                 </div>
                 <div class="tasks-list" id="tasks-list">
-                    <p>Select a milestone to see the tasks</p>
+                    <p class="ptext instruction">Select a milestone to see the tasks.</p>
                 </div>
             </div>
             <div class="boards-section">
                 <div class="board to-do">
                     <div class="ptext to-do">To-do</div>
-                    <hr class="separator 1-1">
+                    <hr class="separator">
                     <div class="tasks-list-to-do" id="tasks-list-to-do"></div>
                 </div>
                 <div class="board in-progress">
                     <div class="ptext to-do">In progress</div>
-                    <hr class="separator 1-2">
+                    <hr class="separator">
                     <div class="tasks-list-progress" id="tasks-list-progress"></div>
                 </div>
                 <div class="board done">
                     <div class="ptext to-do">Done</div>
-                    <hr class="separator 1-3">
+                    <hr class="separator">
                     <div class="tasks-list-done" id="tasks-list-done"></div>
                 </div>
             </div>
         </div>
-        <hr class="separator 2">
+        <hr class="separator2">
         <div class="assignments-section">
             <div class="ptext assignments-title">Assignments List</div> 
             <div class="assignments-container">
@@ -75,24 +75,24 @@
                         <div class="ptext assignment-status">{{ assignment.status }}</div>
             
                         {% if assignment.file %}
-                            <a class="btn download-btn" href="{% url 'download_file' assignment.id %}" target="_blank">Download File</a>
+                            <a class="ptext download-btn" href="{{ assignment.file }}" target="_blank">Download File</a>
                         {% else %}
-                            <div class="ptext">No file available</div>
+                            <div class="ptext info">No file available</div>
                         {% endif %}
             
                         {% if assignment.url %}
                             <a class="ptext link" href="{{ assignment.url }}" target="_blank">Link</a>
                         {% else %}
-                            <div class="ptext">No link available</div>
+                            <div class="ptext info2">No link available</div>
                         {% endif %}
                     </div>
                 {% empty %}
-                    <div class="ptext">No assignments available for this project.</div>
+                    <div class="ptext info">No assignments available for this project.</div>
                 {% endfor %}
             </div>            
-            <hr class="separator 3">
+            <hr class="separator3">
             <div class="select-task-header">
-                <select name="task-select" id="task-select" onchange="showProjectTasks(this)">
+                <select class="task-select" name="task-select" id="task-select" onclick="rotate('.select-task-header')" onchange="showProjectTasks(this)">
                     <option value="">Select Task</option>
                     {% for milestone in project.milestones %}
                         {% for task in milestone.tasks %}
@@ -102,14 +102,14 @@
                         <option>No tasks available for this project</option>
                     {% endfor %}
                 </select>                
-                <img class="arrow" src="{% static 'arrow.png' %}" alt="arrow">
+                <img class="arrow2" src="{% static 'arrow.png' %}" alt="arrow">
             </div>
-            <div class="upload-file-rec">
-                <div class="ptext upload-file">Upload file</div>
+            <div class="upload-file-con">
+                <button class="upload-file-btn">Upload File</button>
             </div>
             <div class="ptext or">Or</div>
             <input id="input-link" class="input-box" placeholder="Enter URL" />
-            <button class="add-assignment-btn" onclick="addAssignment()"></button>
+            <button class="add-assignment-btn" onclick="addAssignment()">Add assignment</button>
             
         </div>
 
@@ -143,6 +143,11 @@
     {{ project|json_script:"projectData" }}
 
     <script>
+
+        function rotate(container) {
+            const selectContainer = document.querySelector(container);
+            selectContainer.classList.toggle('expanded');
+        }
 
         const project = JSON.parse(document.getElementById('projectData').textContent);
     
@@ -181,7 +186,7 @@
                     tasksListContainer.innerHTML = '<p>No tasks available for this milestone</p>';
                 }
             } else {
-                tasksListContainer.innerHTML = '<p>Select a milestone to see the tasks</p>';
+                tasksListContainer.innerHTML = '<p class="ptext instruction">Select a milestone to see the tasks.</p>';
             }
         }
         

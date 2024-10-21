@@ -214,9 +214,10 @@ class Task(models.Model):
     freelancer = models.ForeignKey(Profile, on_delete=models.PROTECT, related_name='tasks')
 
 class Assignment(models.Model):
+    project = models.ForeignKey(ProjectFreelancer, related_name='assignments', on_delete=models.CASCADE, null=True, blank=True) 
     name = models.CharField(max_length=255)
     task = models.ForeignKey(Task, on_delete=models.CASCADE, related_name='assignments')
     date = models.DateField()
     status = models.CharField(max_length=50)
-    file = models.FileField(upload_to='uploads/')
+    file = models.FileField(upload_to='uploads/', blank=True, null=True)
     url = models.URLField(blank=True, null=True)

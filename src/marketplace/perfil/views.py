@@ -55,6 +55,17 @@ def projectWorkspace(request, id, id_project):
                 ]
             }
             for milestone in pr.milestones.all() 
+        ],
+        'assignments': [
+            {
+                'name': assignment.name,
+                'task': assignment.task.name,
+                'date': assignment.date,
+                'status': assignment.status,
+                'file': assignment.file.url if assignment.file else None,
+                'url': assignment.url
+            }
+            for assignment in pr.assignments.all()
         ]
     }
 
