@@ -22,5 +22,5 @@ urlpatterns = [
     path('app/', include('my_aplication.urls')),
     path('perfil/', include('perfil.urls')),
     path('', include('my_aplication.urls')),
-    path('project', include('project_management.urls')), 
+    path('project/', include('project_management.urls')), 
 ]

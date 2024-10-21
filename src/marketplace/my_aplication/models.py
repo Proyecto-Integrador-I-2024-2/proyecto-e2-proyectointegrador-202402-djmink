@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils import timezone
+from perfil.models import Project
 
 class Profile(models.Model):
     name = models.CharField(max_length=100)
@@ -70,9 +71,18 @@ class Payment(models.Model):
     company_manager = models.ForeignKey(CompanyManager, on_delete=models.PROTECT, related_name='payments')
     freelancer = models.ForeignKey(Freelancer, on_delete=models.PROTECT, related_name='payments')
 
+class Requirement(models.Model):
+    title = models.CharField(max_length=50, default='New Requirement')
+    description = models.CharField(max_length=500, default='No description provided.')
+    project = models.ForeignKey(Project, on_delete=models.PROTECT, related_name='requirements')
+
 class Application(models.Model):
-    date = models.DateField()
+    date = models.DateField(auto_now_add=True)  # Automatically set to the current date when created
     freelancer = models.ForeignKey(Freelancer, on_delete=models.PROTECT, related_name='applications')
+    accepted = models.BooleanField(default=False)
+    project = models.ForeignKey(Project, on_delete=models.PROTECT, related_name='applications')
+    requirement = models.ForeignKey(Requirement, on_delete=models.PROTECT, related_name='applications')
+
 
 class Reference(models.Model):
     position = models.CharField(max_length=50)

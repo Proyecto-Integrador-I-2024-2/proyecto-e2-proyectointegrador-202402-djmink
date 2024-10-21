@@ -73,10 +73,13 @@ class Content(models.Model):
 
 class Project(models.Model):
     profile = models.ForeignKey(ClientProfile, related_name='projects', on_delete=models.CASCADE)
-    name = models.CharField(max_length=100)
-    type = models.CharField(max_length=100)
-    duration = models.CharField(max_length=100)
-    url = models.URLField()
+    name = models.CharField(max_length=100, default='Untitled Project')  # Default project name
+    type = models.CharField(max_length=100, default='General')  # Default type
+    duration = models.CharField(max_length=100, default='Not Specified')  # Default duration
+    description = models.CharField(max_length=500, default='No description provided.')  # Default description
+    budget = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)  # Default budget
+    deadline = models.DateField(null=True, blank=True)  # No default, but can be left empty
+    url = models.URLField(default='http://example.com')  # Default URL
 
     def __str__(self):
         return self.name

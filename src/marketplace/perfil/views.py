@@ -1,6 +1,6 @@
 from django.http import Http404
 from django.shortcuts import render, get_object_or_404
-from perfil.models import Profile, ClientProfile
+from .models import Profile, ClientProfile
  # get the current user model
 
 # Create your views here.
