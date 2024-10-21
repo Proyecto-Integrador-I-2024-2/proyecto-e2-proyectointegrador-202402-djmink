@@ -96,7 +96,7 @@
         <footer class="footer">
         
             <div class="footer-content">
-                <img class="encora" src="{% static 'Encora.svg' %}" />
+                <img class="encora" src="{% static 'Encora1.svg' %}" />
                 <img class="social-icon fb" src="{% static 'fb.png' %}"/>
                 <img class="social-icon ig" src="{% static 'ig.png' %}" />
                 <img class="social-icon lin" src="{% static 'lin.png' %}" />
@@ -121,18 +121,17 @@
     <div id="joinModal" class="modal">
         <div class="modal-content">
             <span id="close" class="close">&times;</span>
-            <div class="ptext modal-title">
-                Online Marketplace for <span class="ptext community">Community</span>
+            <div class="ptext modal-title">Join our <span class="ptext community">Community</span></div>
+            <button id= "sign-up-btn" class='btn sign-up'>Sign Up</button>
+            <div class="separator-con">
+                <hr class="separator a">
+                <div class="ptext or">Or</div>
+                <hr class="separator b">
             </div>
-
-            <button id= "sign-up-btn" class='med-btn sign-up'>Sign Up</button>
-            <hr class="separator 1">
-            <div class="ptext or">Or</div>
-            <hr class="separator 2">
-            <button id= "login-btn" class='med-btn login'>Log In</button>
+            <button id= "login-btn" class='btn login'>Log In</button>
             <div class="google-container">
                 <img class="google-icon" src="{% static 'Google.png' %}"> 
-                <button id= "sign-google-btn" class='med-btn sign-up-google'>Sign In with Google</button>
+                <button id= "btn sign-google" class='btn sign-google'>Sign In with Google</button>
             </div>
         </div>
     </div>
@@ -142,8 +141,9 @@
         function displayJoinModal(){
 
             const thismodal = document.getElementById('joinModal');
-            thismodal.style.display = "block";
+            thismodal.style.display = "flex";
             const span = document.getElementById('close');
+            console.log('here');
 
             span.onclick = function() {
                 thismodal.style.display = "none";
