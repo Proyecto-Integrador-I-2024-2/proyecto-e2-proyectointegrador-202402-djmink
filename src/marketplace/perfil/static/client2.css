@@ -112,29 +112,30 @@ html {
 }
 
 .editprofilebutton {
-    width: 105px;
-    height: 40px;
+    width: 70px;
+    height: 18px;
     position: absolute;
     left: 1212px;
-    top: 122px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    top: 150px;
+    display: flex; /* Flexbox para centrar el contenido */
+    align-items: center; /* Centra verticalmente */
+    justify-content: center; /* Centra horizontalmente */
     background-color: #FFFFFF;
     border: 1px solid #BCBCBC;
-    color: #01000C;
-    padding: 10px 15px;
-    border-radius: 5px; 
-    cursor: pointer; 
-    transition: background-color 0.3s; 
+    color: #01000C; /* Color del texto del botón */
+    padding: 10px 15px; /* Espaciado interno */
+    border-radius: 5px; /* Bordes redondeados */
+    cursor: pointer; /* Cambia el cursor al pasar por encima */
+    transition: background-color 0.3s; /* Transición suave para el cambio de color */
     font-family: "Poppins", sans-serif;
     font-weight: 500;
     font-style: normal;
-    font-size: 12;
+    font-size: 13px;
+    text-decoration: none; /* Quita la línea de subrayado */
 }
 
 .editprofilebutton:hover {
-    background-color: #e8141444; /* Color al pasar el mouse */
+    background-color: #6ce81444; /* Color al pasar el mouse */
 }
 
 .l2 {

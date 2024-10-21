@@ -9,7 +9,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Client Profile</title>
-    <link rel="stylesheet" href="{% static 'client.css' %}">
+    <link rel="stylesheet" href="{% static 'client2.css' %}">
 </head>
 <body> 
 
@@ -43,9 +43,9 @@
         <div id="type">{{ p.type }}</div>
         <img id="profile_picture" class="profile_picture" src="{{ p.profile_picture.url }}" alt="Profile Picture"/>
         <div id="description">{{ p.description }}</div>
-        <img id="ig2" class="ig2" src="{% static 'ig2.png' %}" />
-        <img id="lin2" class="lin2" src="{% static 'lin2.png' %}" />
-        <img id="gmail2" class="gmail2" src="{% static 'gmail2.png' %}" />
+        <img id="ig2" class="ig2" src="{% static 'ig.png' %}" />
+        <img id="lin2" class="lin2" src="{% static 'lin.png' %}" />
+        <img id="gmail2" class="gmail2" src="{% static 'gmail.png' %}" />
         <img id="git2" class="git2" src="{% static 'git.png' %}"/>
         <img id="star" class="star" src="{% static 'Star.png' %}" />
         <div id="calification">{{ p.rating }}</div>
@@ -125,7 +125,7 @@
     <footer class="footer">
         
         <div class="footer-content">
-            <img class="encora" src="{% static 'Encora.svg' %}" />
+            <img class="encora" src="{% static 'Encora1.svg' %}" />
             <img class="social-icon fb" src="{% static 'fb.png' %}"/>
             <img class="social-icon ig" src="{% static 'ig.png' %}" />
             <img class="social-icon lin" src="{% static 'lin.png' %}" />
