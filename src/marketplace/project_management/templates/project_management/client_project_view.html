@@ -9,7 +9,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Main</title>
-    <link rel="stylesheet" href="{% static 'mainclient2.css' %}">
+    <link rel="stylesheet" href="{% static 'pw1.css' %}">
 </head>
 <body>
 
@@ -17,8 +17,8 @@
         <div class="ptext hometext">Home</div>
         <img class="icon chat_icon" src="{% static 'Chat_Icon.svg' %}"/>
         <img class="icon notification_icon" src="{% static 'Notification_Icon.svg' %}"/>
-        <a href="{% url 'perfilesCliente' p.id %}">
-            <img class="profile_picture_heading" src="{{ p.profile_picture.url }}" alt="Profile Picture"/>
+        <a href="{% url 'perfilFreelancer' profile.id %}">
+            <img class="profile_picture_heading" src="{{ profile.profile_picture.url }}" alt="Profile Picture"/>
         </a>
         <img class="logo" src="{% static 'logo.png' %}"/>
         <div class="logoseparator"></div>
@@ -26,46 +26,57 @@
             Online Marketplace
         </div>
     </div>
-      
-    <div class="mainback">
 
-        <div class="welcome">Welcome!</div>
-        <div class="name_profile">{{ p.name }}</div>
-
-        <div id="myprojects" class="myprojects">
-            My projects
+    <div class="upper-section">
+        <img class="project-image" src="{{ project.image.url }}"/>
+        <button class="btn edit-project">Edit project</button>
+        <div class="left">
+            <div class="ptext project-title">{{ project.name}}</div>
+            <div class="ptext project-dec">{{ project.desc }}</div>
+            <div class="ptext project-budget">From ${{ project.budget }}</div>
         </div>
+    </div>
 
-        <div id="add" class="add">
-            Add
-        </div>
+    <div class="ptext progress-title">Progress</div>
 
-        <button id="addBtn" class="nav-button">+</button>
+    <div class="progress-container">
+        <div class="progress-bar" id="progressBar"></div>
+    </div>
 
-        <div class="projects-wrapper">
-            
-            <div class="projects-container" id="projectsContainer">
-                {% for project in p.projects.all %}
-                    <div class="project-container">
-                        <img id="project_picture" class="project_picture" src="{{ project.project_picture.url }}" alt="Project Picture"/>
-                        <div class="ptext project-name">{{ project.name }}</div>
-                        <div class="ptext project-description">{{ project.description }}</div>
-                        <div class="ptext project-state">State: {{ project.state }}</div>
-                        <button class="btn preview">Preview</button>
-                        <button class="btn edit">Edit</button>
-                        <button class="btn open">Manage</button>
+    <div class="milestones-section">
+        <div class="ptext milestones-title">Milestones</div>
+        <div class="milestones-container">
+            {% for milestone in project.milestones %}
+                <div class="milestone-container">
+                    <div class="milestone-header" onclick="openMilestone()">
+                        <div class="ptext milestone-name">{{ milestone.name }}</div>
+                        <img class="arrow" src="{% static 'arrow.png' %}" alt="arrow">
                     </div>
-                {% empty %}
-                    <p>You don't have projects registered yet.</p>
-                {% endfor %}
-            </div>
-    
+                    <div class="milestone-expanded">
+                        <div class="tasks-list">
+                            {% for task in milestone.tasks %}
+                                <div class="task-container">
+                                    <div class="circle">
+                                        <img class="check" src="{% static 'Check.svg' %}">
+                                    </div>
+                                    <div class="ptext task-name">{{ task.name }}</div>
+                                </div>
+                            {% endfor %}
+                        </div>
+
+                    </div>
+                </div>
+            {% endfor %}
+
+
         </div>
 
-    </div> 
+
+    </div>
+
 
     <footer class="footer">
-        
+    
         <div class="footer-content">
             <img class="encora" src="{% static 'Encora1.svg' %}" />
             <img class="social-icon fb" src="{% static 'fb.png' %}"/>
@@ -86,5 +97,9 @@
         </div>
 
     </footer>
-    
+
+    <script>
+        
+    </script>
+
 </body>

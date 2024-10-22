@@ -13,41 +13,36 @@ html {
     position:relative;
 }
 
-.hometext
-{
-    color:#000000;
-    text-align:left;
-    vertical-align:text-top;
-    font-size:24px;
+.ptext{
     font-family: "Poppins", sans-serif;
+    position: absolute;
+}
+
+.ptext.hometext{
+    color:#000000;
+    font-size:24px;
     font-weight: 600;
-    font-style: normal;
     line-height:auto;
-    border-style:hidden;
-    outline:none;
     top:32px;
     left:690px;
-    position:absolute;
     width:60px;
     height:30px;
 }
 
-.chat_icon{
+.icon{
     top:35px;
-    left:1268px;
     position:absolute;
     width:35px;
     height: 35px;
     cursor: pointer;
 }
 
-.notification_icon{
-    top:35px;
+.icon.chat_icon{
+    left:1268px;
+}
+
+.icon.notification_icon{
     left:1315px;
-    position:absolute;
-    width:35px;
-    height: 35px;
-    cursor: pointer;
 }
 
 .logo{
@@ -58,8 +53,7 @@ html {
     height: 80px;
 }
 
-.logoseparator
-{
+.logoseparator{
     top:45px;
     left:95px;
     width: 60px;
@@ -68,27 +62,18 @@ html {
     position:absolute;
 }
 
-.onlinemarketplace2
-{
+.ptext.onlinemarketplace{
     color:#01000c;
-    text-align:left;
-    vertical-align:text-top;
     font-size:18px;
-    font-family: "Poppins", sans-serif;
     font-weight: 500;
-    font-style: normal;
-    line-height:auto;
-    border-style:hidden;
-    outline:none;
     top:20px;
     left:150px;
-    position:absolute;
     width:100px;
     height: 66px;
     cursor: pointer;
 }
 
-.profile_picture2 {
+.profile_picture_heading {
     top:25px;
     left:1365px;
     position:absolute;
@@ -189,7 +174,7 @@ html {
 
 .projects-wrapper {
     background-color:#F2F2F2;
-    position: absolute; 
+    position: relative; 
     width: 1206px;
     top: 386px;
     left: 117px;
@@ -201,43 +186,31 @@ html {
     width: 1189px;
     height: 300px;
     border-radius: 10px; 
-    
+    position: relative;
     margin-bottom: 50px;
 }
 
-.project-name{
-    position: relative;
+.ptext.project-name{
     left: 63px;
     top: 28px;
-    height: 45px;
-    width: 281px;
-    font-family: "Poppins", sans-serif;
     font-weight: 500;
-    font-style: normal;
     font-size: 30px;
 }
 
-.project-description{
-    position: relative;
+.ptext.project-description{
     left: 63px;
-    top: 40px;
-    height: 91px;
+    top: 85px;
+    height: 67px;
     width: 300px;
-    font-family: "Poppins", sans-serif;
     font-weight: 400;
-    font-style: normal;
     font-size: 16px;
 }
 
-.project-state{
-    position: relative;
+.ptext.project-state{
     left: 63px;
-    top: 60px;
+    top: 152px;
     height: 24px;
-    width: 300px;
-    font-family: "Poppins", sans-serif;
     font-weight: 400;
-    font-style: normal;
     font-size: 16px;
 }
 
@@ -248,29 +221,43 @@ html {
     width:775px;
 }
 
-.open {
-    top: 80px;
-    width: 300px;
+.btn{
     height: 40px;
-    position: relative;
-    left: 63px;
+    position: absolute;
     display: flex; 
     align-items: center; 
     justify-content: center; 
     background-color: #007BFF; 
     color: white; 
-    border: none; 
+    border: none;
     padding: 10px 15px; 
     border-radius: 5px; 
     cursor: pointer; 
     transition: background-color 0.3s;
     font-family: "Poppins", sans-serif;
     font-weight: 400;
-    font-style: normal;
     font-size: 16;
 }
 
-.joinbutton:hover {
+.btn.preview{
+    top: 183px;
+    width: 145px;
+    left: 63px;
+}
+
+.btn.edit{
+    top: 183px;
+    width: 145px;
+    left: 216px;
+}
+
+.btn.open{
+    top: 233px;
+    width: 300px;
+    left: 63px;
+}
+
+.btn:hover {
     background-color: #0056b3; 
 }
 
@@ -291,19 +278,13 @@ html {
 }
 
 .footer {
+    position: relative;
     background-color: #F2F2F2;
-    text-align: center;
     font-family: "Poppins", sans-serif;
     font-weight: 400;
-    font-style: normal;
-    padding: 0;
-    position: relative;
-    bottom: 0;
-    left: 0px;
     width: 1440px; 
     height: 135px;
 }
-
 
 .footer-content {
     max-width: 1200px;
@@ -317,10 +298,6 @@ html {
     margin-top: 57px;
 }
 
-.footer-nav2 {
-    margin-top: 20px;
-}
-
 .footer-nav a {
     color: #01000C;
     margin: 0 15px;
@@ -332,7 +309,7 @@ html {
     text-decoration: underline; 
 }
 
-.encora2 {
+.encora {
     position: absolute;
     left: 37px;
     top: 10px; 
@@ -340,52 +317,34 @@ html {
     width: 113px;
 }
 
-.gmail3 {
+.social-icon{
     position: absolute;
+    top: 78px;
+    height: 24px; 
+    width: 24px;
+    cursor: pointer;
+}
+
+.social-icon.gmail {
     left: 1252px;
-    top: 78px; 
-    height: 24px; 
-    width: 24px;
-    cursor: pointer;
 }
 
-.lin3 {
-    position: absolute;
+.social-icon.lin {
     left: 1280px;
-    top: 78px; 
-    height: 24px; 
-    width: 24px;
-    cursor: pointer;
 }
 
-.ig3 {
-    position: absolute;
+.social-icon.ig{
     left: 1308px;
-    top: 78px; 
-    height: 24px; 
-    width: 24px;
-    cursor: pointer;
 }
 
-.fb3 {
-    position: absolute;
+.social-icon.fb {
     left: 1336px;
-    top: 78px; 
-    height: 24px; 
-    width: 24px;
-    cursor: pointer;
 }
 
 .footertext {
     text-align:center;
-    vertical-align:text-top;
     font-size:12px;
-    font-family: "Inter", sans-serif;
-    font-optical-sizing: auto;
     font-weight: 400;
-    line-height:auto;
-    border-style:hidden;
-    outline:none;
     top:105px;
     left:1205px;
     position:absolute;
