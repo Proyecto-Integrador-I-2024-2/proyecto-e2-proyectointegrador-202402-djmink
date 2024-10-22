@@ -8,16 +8,15 @@
   
   .frame .view-project {
     position: relative;
-    height: 2090px;
+    height: 2100px;
     background-color: var(--variable-collection-white-smoke);
   }
   
   .frame .footer {
     position: absolute;
     width: 100%;
-    max-width: 100vw;
     height: 100px;
-    top: 1955px;
+    top: 2000px;
     left: 0;
     background-color: var(--variable-collection-white-smoke);
   }
@@ -35,8 +34,8 @@
     position: absolute;
     width: 143px;
     height: 24px;
-    top: 68px;
-    left: 1241px;
+    top: 35px;
+    right: 1%;
   }
   
   .frame .text-wrapper {
@@ -256,28 +255,38 @@
     width: 90%;
     height: 93%;
     /* left: 5%; */
+    /* width: 1500px;
+    height: 2000px; */
   /* } */
 
   .frame .torso {
     position: absolute;
+    width: 90%;
+    height: 93%;
+    max-width: 1500px;
+    max-height: 2000px;
+    min-width: 600px;
+    min-height: fit-content;
+    left: 5%;
+    top: 2%;
   }
   
-  .frame .owner {
-    position: absolute;
-    width: 175px;
-    height: 36px;
-    top: 230px;
-    left: 170px;
-  }
+    .frame .torso .owner {
+      position: absolute;
+      width: 175px;
+      height: 36px;
+      top: 230px;
+      left: 170px;
+    }
   
-  .frame .ellipse {
-    width: 36px;
-    height: 36px;
-    position: absolute;
-    top: 0;
-    left: 0;
-    object-fit: cover;
-  }
+    .frame .torso .ellipse {
+      width: 36px;
+      height: 36px;
+      position: absolute;
+      top: 0;
+      left: 0;
+      object-fit: cover;
+    }
   
   .frame .text-wrapper-11 {
     position: absolute;
@@ -481,6 +490,14 @@
     height: 24px;
     top: 17px;
     left: 93px;
+  }
+
+  .frame .requirements {
+    position: absolute;
+    width: 1500px;
+    height: 240px;
+    top: 919px;
+    left: 150px;
   }
   
   .frame .requirement {
@@ -889,33 +906,6 @@
     font-style: var(--h5-font-style);
   }
   
-  .frame .apply-button {
-    all: unset;
-    box-sizing: border-box;
-    position: absolute;
-    width: 100px;
-    height: 40px;
-    top: 228px;
-    left: 83%;
-    background-color: #0040ff;
-    border-radius: 10px;
-  }
-  
-  .frame .save-changes-2 {
-    position: absolute;
-    width: 85px;
-    top: 30%;
-    left: 8px;
-    font-family: var(--small-bold-font-family);
-    font-weight: var(--small-bold-font-weight);
-    color: #ffffff;
-    font-size: var(--small-bold-font-size);
-    text-align: center;
-    letter-spacing: var(--small-bold-letter-spacing);
-    line-height: var(--small-bold-line-height);
-    font-style: var(--small-bold-font-style);
-  }
-  
   .frame .date {
     position: absolute;
     width: 223px;
@@ -964,7 +954,7 @@
   
   .frame .the-sonic-landscapes {
     position: absolute;
-    width: 1140px;
+    width: 80%;
     top: 690px;
     left: 150px;
     font-family: var(--normal-font-family);
@@ -1002,17 +992,30 @@
     border-radius: 10px 10px 10px 10px;
 }
   
+  .frame .action-div {
+    position: absolute;
+    width: 240px;
+    height: 50px;
+    top: 228px;
+    right: 10.3%;
+  }
+
   .frame .save-button {
     position: absolute;
     width: 40px;
     height: 40px;
-    top: 228px;
-    left: 1040px;
+    top: 4%;
+    left: 1%;
+    margin: 2px;
+    margin-left: 5px;
+    margin-right: 5px;
     background-color: #ffffff;
     border-radius: 10px;
     border: 1px solid;
     border-color: var(--variable-collection-silver);
   }
+
+  
   
   .frame .save-button-2 {
     position: relative;
@@ -1028,8 +1031,11 @@
     position: absolute;
     width: 62px;
     height: 40px;
-    top: 228px;
-    left: 1095px;
+    top: 4%;
+    left: 55px;
+    margin: 2px;
+    margin-left: 5px;
+    margin-right: 5px;
   }
   
   .frame .overlap-7 {
@@ -1053,7 +1059,7 @@
   .frame .text-wrapper-25 {
     width: 22px;
     height: 23px;
-    top: 8px;
+    top: 13px;
     left: 33px;
     color: #000000;
     font-size: var(--extra-small-font-size);
@@ -1064,46 +1070,91 @@
     line-height: var(--extra-small-line-height);
     font-style: var(--extra-small-font-style);
   }
+
+  .frame .apply-button {
+    all: unset;
+    box-sizing: border-box;
+    position: absolute;
+    width: 100px;
+    height: 40px;
+    top: 4%;
+    right: 0%;
+    margin: 2px;
+    margin-left: 5px;
+    margin-right: 5px;
+    background-color: #0040ff;
+    border-radius: 10px;
+  }
+  
+  .frame .save-changes-2 {
+    position: absolute;
+    width: 85px;
+    top: 30%;
+    left: 8px;
+    font-family: var(--small-bold-font-family);
+    font-weight: var(--small-bold-font-weight);
+    color: #ffffff;
+    font-size: var(--small-bold-font-size);
+    text-align: center;
+    letter-spacing: var(--small-bold-letter-spacing);
+    line-height: var(--small-bold-line-height);
+    font-style: var(--small-bold-font-style);
+  }
   
   .frame .heading {
     position: absolute;
-    width: 1440px;
+    width: 100%;
     height: 70px;
     top: 0;
     left: 0;
     background-color: var(--variable-collection-white-smoke);
     overflow: hidden;
   }
+
+  .frame .user-elements{
+    position: absolute;
+    width: 200px;
+    height: 50px;
+    top: 25px;
+    right: 1%;
+  }
   
   .frame .profile-picture {
     position: absolute;
     width: 36px;
     height: 36px;
-    top: 17px;
-    left: 1379px;
+    top: 1px;
+    right: 29px;
+    margin: 2px;
+    margin-left: 5px;
+    margin-right: 5px;
   }
   
   .frame .chat-icon {
     position: absolute;
     width: 24px;
     height: 24px;
-    top: 23px;
-    left: 1345px;
+    top: 15%;
+    right: 73px;
+    margin: 2px;
+    margin-left: 5px;
+    margin-right: 5px;
   }
   
   .frame .notification-icon {
     position: absolute;
     width: 24px;
     height: 24px;
-    top: 23px;
-    left: 1311px;
+    top: 9.5px;
+    right: 120px;
   }
   
   .frame .text-wrapper-26 {
     position: absolute;
-    width: 783px;
+    width: 60%;
     top: 29px;
-    left: 339px;
+    left: 20%;
+    /* min-width: 200px; */
     font-family: var(--medium-font-family);
     font-weight: var(--medium-font-weight);
     color: #000000;
@@ -1113,13 +1164,19 @@
     line-height: var(--medium-line-height);
     font-style: var(--medium-font-style);
   }
+
+  @media (max-width: 800px) {
+    .frame .text-wrapper-26 {
+        display: none;
+    }
+  }
   
   .frame .logo-name {
     position: absolute;
     width: 304px;
     height: 90px;
-    top: -10px;
-    left: 25px;
+    top: 0px;
+    left: 1%;
   }
   
   .frame .line-wrapper {
@@ -1144,8 +1201,8 @@
   .frame .online-marketplace {
     position: absolute;
     width: 191px;
-    height: 67px;
-    top: 10px;
+    height: 40px;
+    top: 27px;
     left: 113px;
     font-family: var(--medium-font-family);
     font-weight: var(--medium-font-weight);
