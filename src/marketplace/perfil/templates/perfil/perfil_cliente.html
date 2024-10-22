@@ -1,0 +1,204 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Client Profile</title>
+    <link rel="stylesheet" href="{% static 'client2.css' %}">
+</head>
+<body> 
+
+    <div class="heading">
+        <div class="ptext hometext">Home</div>
+        <img class="icon chat_icon" src="{% static 'Chat_Icon.svg' %}"/>
+        <img class="icon notification_icon" src="{% static 'Notification_Icon.svg' %}"/>
+        <a href="{% url 'perfilesCliente' p.id %}">
+            <img class="profile_picture_heading" src="{{ p.profile_picture.url }}" alt="Profile Picture"/>
+        </a>
+        <img class="logo" src="{% static 'logo.png' %}"/>
+        <div class="logoseparator"></div>
+        <div class="ptext onlinemarketplace">
+            Online Marketplace
+        </div>
+    </div>
+
+    <div id="profile" class="profile">
+
+        <div id="profiletitle" class="profiletitle">
+            Profile
+        </div>
+
+        <a href="{% url 'editAccountClient' p.id %}" class="editprofilebutton">
+            <div id='editprofilebuttontext' class='editprofilebuttontext'>Edit profile</div>
+        </a>
+
+        <hr class="l2">
+
+        <div id="name_profile">{{ p.name }}</div>
+        <div id="type">{{ p.type }}</div>
+        <img id="profile_picture" class="profile_picture" src="{{ p.profile_picture.url }}" alt="Profile Picture"/>
+        <div id="description">{{ p.description }}</div>
+        <img id="ig2" class="ig2" src="{% static 'ig.png' %}" />
+        <img id="lin2" class="lin2" src="{% static 'lin.png' %}" />
+        <img id="gmail2" class="gmail2" src="{% static 'gmail.png' %}" />
+        <img id="git2" class="git2" src="{% static 'git.png' %}"/>
+        <img id="star" class="star" src="{% static 'Star.png' %}" />
+        <div id="calification">{{ p.rating }}</div>
+
+        <hr class="l3">
+
+    </div>
+
+    <div id="projectssection" class="projectssection">
+        <div id="rectangleproject" class="rectangleproject"></div>
+        <div id="projects" class="projects">
+            Projects
+        </div>
+        <div class="projects-wrapper">
+            <!-- Botón Izquierdo -->
+            <button id="prevBtn" class="nav-button left">←</button>
+            
+            <div class="projects-container" id="projectsContainer">
+                {% for project in p.projects.all %}
+                    <div class="project-container">
+                        <div class="project-name">{{ project.name }}</div>
+                        <div class="info-project">{{ project.type }}</div>
+                        <div class="info-project">{{ project.duration }}</div>
+                        <a class="info-project" href="{{ project.url }}" target="_blank">{{ project.name }}</a>
+                    </div>
+                {% empty %}
+                    <p>You don't have projects registered yet.</p>
+                {% endfor %}
+            </div>
+    
+            <!-- Botón Derecho -->
+            <button id="nextBtn" class="nav-button right">→</button>
+        </div>
+        <hr class="l4">
+    </div>
+
+    <div id="commentssection" class="commentssection">
+
+        <div id="rectanglecomment" class="rectanglecomment"></div>
+
+        <div id="commentstitle" class="commentstitle">
+            Comments
+        </div>
+
+        <div class="rectangle-container">
+            <div class="form-comment">
+                <form action="/submit_comment" method="post">
+                    <textarea name="comment" placeholder="Write your comment"></textarea><br>
+                    <button type="submit" id="publishbutton" class="joinbutton">
+                        <div id="rectangle2853" class="rectangle2853"></div>
+                        <div id="publish" class="publish">Publish</div>
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <div class="comments">
+        
+            <ul class="comments-list">
+                {% for comment in p.commentsClients.all %}
+                    <li class="comment">
+                        <div>
+                            <img id="profilecommentimg" class="profilecommentimg" src="{% static 'user.jpg' %}"/>
+                            <div class="date">{{ comment.created_at }}</div>
+                            <div class="username">{{ comment.author }}</div>
+                            <p>{{ comment.content }}</p>
+                        </div>
+                    </li>
+                {% empty %}
+                    <li>No comments yet.</li>
+                {% endfor %}
+            </ul>
+        </div>
+        
+    </div>
+   
+    <footer class="footer">
+        
+        <div class="footer-content">
+            <img class="encora" src="{% static 'Encora1.svg' %}" />
+            <img class="social-icon fb" src="{% static 'fb.png' %}"/>
+            <img class="social-icon ig" src="{% static 'ig.png' %}" />
+            <img class="social-icon lin" src="{% static 'lin.png' %}" />
+            <img class="social-icon gmail" src="{% static 'gmail.png' %}" />
+            <nav class="footer-nav">
+                <a href="#features">Features</a>
+                <a href="#about">About</a>
+                <a href="#support">Support</a>
+                <a href="#resources">Resources</a>
+                <a href="#places">Places</a>
+                <a href="#jobs">Jobs</a>
+            </nav>
+            <div class='footertext'> 
+                © 2024 Online Marketplace
+            </div>
+        </div>
+
+    </footer>
+
+    <!-- JavaScript -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const container = document.getElementById('projectsContainer');
+            const projectContainers = document.querySelectorAll('.project-container');
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+
+            let currentIndex = 0;
+            const visibleProjects = 3; // Número de proyectos visibles a la vez
+            const projectWidth = 300; // Ancho fijo de cada proyecto (ajustado a tu diseño)
+            const marginRight = 81; // Espaciado entre proyectos
+            const totalProjects = projectContainers.length;
+
+            // Definir el ancho total que se desplaza por cada clic (visibleProjects * projectWidth + margen)
+            const scrollAmount = (projectWidth + marginRight);
+
+            // Verifica si el botón "Siguiente" debería estar deshabilitado
+            function updateButtons() {
+                if (currentIndex === 0) {
+                    prevBtn.disabled = true;
+                } else {
+                    prevBtn.disabled = false;
+                }
+
+                if (currentIndex + visibleProjects >= totalProjects) {
+                    nextBtn.disabled = true;
+                } else {
+                    nextBtn.disabled = false;
+                }
+            }
+
+            // Función para moverse a la izquierda
+            prevBtn.addEventListener('click', function() {
+                if (currentIndex > 0) {
+                    currentIndex--;
+                    container.scrollLeft -= scrollAmount;
+                }
+                updateButtons();
+            });
+
+            // Función para moverse a la derecha
+            nextBtn.addEventListener('click', function() {
+                if (currentIndex + visibleProjects < totalProjects) {
+                    currentIndex++;
+                    container.scrollLeft += scrollAmount;
+                }
+                updateButtons();
+            });
+
+            // Inicializar los botones según el estado actual
+            updateButtons();
+        });
+    </script>
+
+</body>
+</html>

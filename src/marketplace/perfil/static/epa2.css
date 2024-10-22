@@ -1,0 +1,530 @@
+/* edit freelancer account */
+
+html {
+    scroll-behavior: smooth;
+}
+
+.editsection{
+    background-color:#F2F2F2;
+    width: 1440px;
+    height: 1050px;
+}
+
+/* Heading section */
+
+.heading {
+    background-color:#F2F2F2;
+    height:102px;
+    width: 1440px; 
+    position:relative;
+}
+
+.hometext
+{
+    color:#000000;
+    text-align:left;
+    vertical-align:text-top;
+    font-size:24px;
+    font-family: "Poppins", sans-serif;
+    font-weight: 600;
+    font-style: normal;
+    line-height:auto;
+    border-style:hidden;
+    outline:none;
+    top:32px;
+    left:690px;
+    position:absolute;
+    width:60px;
+    height:30px;
+}
+
+.chat_icon{
+    top:35px;
+    left:1268px;
+    position:absolute;
+    width:35px;
+    height: 35px;
+    cursor: pointer;
+}
+
+.notification_icon{
+    top:35px;
+    left:1315px;
+    position:absolute;
+    width:35px;
+    height: 35px;
+    cursor: pointer;
+}
+
+.logo{
+    top:7px;
+    left:40px;
+    position:absolute;
+    width:80px;
+    height: 80px;
+}
+
+.logoseparator
+{
+    top:45px;
+    left:95px;
+    width: 60px;
+    transform:rotate(-90deg);
+    border:1px solid #01000c;
+    position:absolute;
+}
+
+.onlinemarketplace2
+{
+    color:#01000c;
+    text-align:left;
+    vertical-align:text-top;
+    font-size:18px;
+    font-family: "Poppins", sans-serif;
+    font-weight: 500;
+    font-style: normal;
+    line-height:auto;
+    border-style:hidden;
+    outline:none;
+    top:20px;
+    left:150px;
+    position:absolute;
+    width:100px;
+    height: 66px;
+    cursor: pointer;
+}
+
+.profile_picture2 {
+    top:25px;
+    left:1365px;
+    position:absolute;
+    width:50px;
+    height: 50px;
+    border-radius: 50%; 
+    object-fit: cover;
+}
+
+.ptext {
+    font-family: "Poppins", sans-serif;
+    position:absolute;
+}
+
+.ptext.ep {
+    color:#7D7D7D;
+    font-size:14px;
+    font-weight: 700; /* Bold */
+    top:181px;
+    left:114px;
+    width:100px;
+    height:21px; 
+}
+
+.ptext.my-account {
+    color:#000000;
+    font-size:16px;
+    font-weight: 700; /* Bold */
+    top:215px;
+    left:114px;
+    width:100px;
+    height:24px;
+    text-decoration: none; 
+}
+
+.ptext.profile {
+    color:#000000;
+    font-size:16px;
+    font-weight: 400;  /* Regular */
+    top:254px;
+    left:114px;
+    width:53px;
+    height:24px;
+    text-decoration: none; 
+}
+
+.ptext.portfolio {
+    color:#000000;
+    font-size:16px;
+    font-weight: 400; /* Regular */
+    top:293px;
+    left:114px;
+    width:94px;
+    height:24px;
+    text-decoration: none; 
+}
+
+.ptext.delete-account {
+    color:#DA5F5F;
+    font-size:16px;
+    font-weight: 400; /* Regular */
+    top:332px;
+    left:114px;
+    width:122px;
+    height:24px;
+    text-decoration: none; 
+}
+
+.fields {
+    top:147px;
+    left:535px;
+    width: 492px;
+    height: 650px;
+    position: absolute;
+}
+
+.ptext.myaccount{
+    top: 18px;
+    left: 0px;
+    width: 143px;
+    height: 36px;
+    color:#000000;
+    font-size:24px;
+    font-weight: 500;
+}
+
+.ptext.basic-info{
+    top: 97px;
+    left: 0px;
+    width: 158px;
+    height: 27px;
+    color:#000000;
+    font-size:18px;
+    font-weight: 400;
+}
+
+.input-container{
+    left: 0px;
+    width: 492px;
+    height: 75px;
+    position: absolute;
+}
+
+.ptext.name{
+    top: 0px;
+    left: 0px;
+    width: 301px;
+    height: 28px;
+    color:#000000;
+    font-size:14px;
+    font-weight: 400;
+}
+
+.input-container.name{
+    top: 139px;
+}
+
+
+.input-container.username{
+    top: 220px;
+}
+
+.input-container.email{
+    top: 300px;
+}
+
+.input-container.phone{
+    top: 383px;
+}
+
+.input-box{
+    vertical-align: middle;
+    font-family: "Poppins", sans-serif;
+    font-style: normal;
+    color: #01000C;
+    background-color: #FFFFFF;
+    border: 1px solid #ccc;
+    padding-left: 10px;
+    border-radius: 10px;
+    text-align: left;
+    align-items: center;
+    position: absolute;
+    justify-content: center;
+    resize: none; 
+    line-height: 40px;
+}
+
+.input-box.name{
+    top: 28px;
+    width: 492px;
+    height: 40px;
+}
+
+.arrow{
+    width: 24px;
+    height: 24px;
+    top: 36px;
+    position: absolute;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+.arrow.rotated {
+    transform: rotate(180deg);
+}
+
+.input-box.code{
+    left: 28px;
+    top: 28px;
+    width: 40px;
+    height: 40px;
+}
+
+.input-box.tel{
+    left: 90px;
+    top: 28px;
+    width: 403px;
+    height: 40px;
+}
+
+.code-list {
+    font-family: "Poppins", sans-serif;
+    font-weight: 400;
+    font-size: 12px;
+    border-radius: 10px;
+    display: none;
+    position: absolute;
+    top: 73px;
+    left: 0;
+    background-color: white;
+    border: 1px solid #ccc;
+    width: 100px;
+    max-height: 160px;
+    overflow-y: auto;
+    z-index: 10;
+}
+
+.code-item {
+    padding: 8px;
+    cursor: pointer;
+    border-bottom: 1px solid #eee;
+}
+
+.code-item:hover {
+    background-color: #f0f0f0;
+}
+
+.med-btn{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px; 
+    font-family: "Poppins", sans-serif;
+    font-weight: 600;
+    border-radius: 8px; 
+    cursor: pointer; 
+    transition: background-color 0.3s ease, transform 0.2s ease; 
+    position: absolute;
+    color: #ffffff;
+    border: none;
+    height: 40px;
+    width: 170px;
+}
+
+.med-btn.pass{
+    left: 158px;
+    top: 514px;
+    background-color: #01000C;
+}
+
+.med-btn.save{
+    left: 158px;
+    top: 581px;
+    background-color: #0040FF;
+}
+
+.modal {
+    justify-content: center;
+    align-items: center; 
+    display: none; 
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%; 
+    height: 100%; 
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.4); 
+}
+
+.modal-content {
+    width: 515px;
+    height: 450px;
+    top: 8%;
+    left: 25%;
+    background-color: #F2F2F2;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%; 
+    max-width: 600px; 
+    text-align: center;
+    border-radius: 10px;
+    position: relative;
+}
+
+.ptext.change-password-title{
+    left: 40px;
+    top: 22px;
+    width: 242px;
+    height: 54px;
+    color:#000000;
+    font-size:24px;
+    font-weight: 500;
+    position: absolute;
+}
+
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 35px;
+    font-weight: bold;
+    margin-right: 10px; 
+}
+
+.close:hover, .close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.input-container2 {
+    left: 115px;
+    width: 400px;
+    height: 75px;
+    position: absolute;
+}
+
+.input-container2.current-pass{
+    top: 103px;
+}
+
+.input-container2.new-pass{
+    top: 189px;
+}
+
+.input-container2.confirm-pass{
+    top: 275px;
+}
+
+.input-box.e{
+    left: 0px;
+    top: 28px;
+    width: 400px;
+    height: 40px;
+}
+
+.eye-icon{
+    width: 24px;
+    height: 24px;
+    margin-left: 370px;
+    cursor: pointer;
+    position: relative;
+    top: 38px;
+}
+
+.med-btn.change-pass{
+    background-color: #0040FF;
+    top: 400px;
+    left: 235px;
+}
+
+.footer {
+    background-color: #F2F2F2;
+    text-align: center;
+    font-family: "Poppins", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    padding: 0;
+    position: absolute;
+    top: 924px;
+    left: 0px;
+    width: 1440px; 
+    height: 135px;
+}
+
+
+.footer-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.footer-nav {
+    margin-top: 57px;
+}
+
+.footer-nav2 {
+    margin-top: 20px;
+}
+
+.footer-nav a {
+    color: #01000C;
+    margin: 0 15px;
+    text-decoration: none;
+    font-size: 20px;
+}
+
+.footer-nav a:hover {
+    text-decoration: underline; 
+}
+
+.encora2 {
+    position: absolute;
+    left: 37px;
+    top: 10px; 
+    height: 111px; 
+    width: 113px;
+}
+
+.gmail3 {
+    position: absolute;
+    left: 1252px;
+    top: 78px; 
+    height: 24px; 
+    width: 24px;
+    cursor: pointer;
+}
+
+.lin3 {
+    position: absolute;
+    left: 1280px;
+    top: 78px; 
+    height: 24px; 
+    width: 24px;
+    cursor: pointer;
+}
+
+.ig3 {
+    position: absolute;
+    left: 1308px;
+    top: 78px; 
+    height: 24px; 
+    width: 24px;
+    cursor: pointer;
+}
+
+.fb3 {
+    position: absolute;
+    left: 1336px;
+    top: 78px; 
+    height: 24px; 
+    width: 24px;
+    cursor: pointer;
+}
+
+.footertext {
+    text-align:center;
+    vertical-align:text-top;
+    font-size:12px;
+    font-family: "Inter", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    line-height:auto;
+    border-style:hidden;
+    outline:none;
+    top:105px;
+    left:1205px;
+    position:absolute;
+    width:200px;
+    height:18px;
+}
