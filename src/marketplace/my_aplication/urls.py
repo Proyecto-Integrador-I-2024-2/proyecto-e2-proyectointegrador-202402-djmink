@@ -7,5 +7,4 @@ urlpatterns = [
     path('complete/<int:profile_id>/', views.complete, name='complete'),
     path('home/', views.home, name='home'),
     path('', views.home, name='home'),
-
 ]
