@@ -1,0 +1,204 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Main</title>
+    <link rel="stylesheet" href="{% static 'calendar4.css' %}">
+
+</head>
+<body>
+
+    <div class="calendar-container">
+        <div class="calendar-header">
+            <button id="prev-month">‹</button>
+            <div id="month-year"></div>
+            <button id="next-month">›</button>
+        </div>
+        <div class="calendar-grid" id="calendar-grid"></div> <!-- Eliminamos la sección de días de la semana -->
+        <div id="milestone-container" class="milestone-container">
+            <!-- Los hitos se generarán dinámicamente aquí -->
+        </div>
+    </div>
+    
+    
+
+    <script>
+
+        const milestones = [
+            { startDate: '2024-10-20', endDate: '2024-10-26', task: 'Submission of Report' }
+            
+        ];
+
+        const calendarGrid = document.getElementById('calendar-grid');
+        const monthYear = document.getElementById('month-year');
+        const today = new Date();
+
+        
+
+        // Generar el calendario alrededor del día actual
+        //generateCalendarAroundToday();
+
+        let currentDate = new Date(); // Fecha de referencia inicial es hoy
+
+        // Función para generar el calendario con 29 días alrededor de la fecha de referencia
+        function generateCalendarAround(date) {
+            calendarGrid.innerHTML = ''; // Limpiar el calendario
+            monthYear.textContent = `${new Date(date.getFullYear(), date.getMonth()).toLocaleString('en-US', { month: 'long' })} ${date.getFullYear()}`;
+
+            // Crear una lista para los 14 días anteriores y 14 días siguientes
+            const daysToShow = [];
+
+            // Agregar 14 días anteriores
+            for (let i = 14; i > 0; i--) {
+                const prevDate = new Date(date);
+                prevDate.setDate(date.getDate() - i);
+                daysToShow.push(prevDate);
+            }
+
+            // Agregar el día actual (o fecha de referencia)
+            daysToShow.push(date);
+
+            // Agregar 14 días siguientes
+            for (let i = 1; i <= 14; i++) {
+                const nextDate = new Date(date);
+                nextDate.setDate(date.getDate() + i);
+                daysToShow.push(nextDate);
+            }
+
+            // Crear contenedores para los días de cada mes
+            let currentMonth = null;
+            let monthContainer = null;
+
+            daysToShow.forEach(day => {
+                const dayMonth = day.getMonth();
+
+                // Crear un nuevo contenedor si es un mes diferente
+                if (dayMonth !== currentMonth) {
+                    currentMonth = dayMonth;
+                    monthContainer = document.createElement('div');
+                    monthContainer.classList.add('month-container');
+                    monthContainer.style.backgroundColor = currentMonth % 2 === 0 ? '#f0f0f0' : '#d0d0d0'; // Colores alternados para los meses
+                    calendarGrid.appendChild(monthContainer);
+                }
+
+                // Crear el elemento del día
+                const dayDiv = document.createElement('div');
+                dayDiv.classList.add('calendar-day');
+                dayDiv.textContent = day.getDate();
+
+                // Marcar el día actual
+                if (day.toDateString() === new Date().toDateString()) {
+                    dayDiv.classList.add('today');
+                }
+
+                // Añadir el día al contenedor del mes
+                monthContainer.appendChild(dayDiv);
+            });
+
+            generateMilestones(daysToShow);
+        }
+
+        let milestoneOffset = 0; // Variable global para manejar el offset
+
+        function generateMilestones(daysToShow) {
+            const milestoneContainer = document.getElementById('milestone-container');
+            milestoneContainer.innerHTML = ''; // Limpiar los hitos anteriores
+
+            milestones.forEach(milestone => {
+                const startDate = new Date(milestone.startDate);
+                startDate.setDate(startDate.getDate() + 1); // Sumar un día a la fecha de inicio
+
+                const endDate = new Date(milestone.endDate);
+                endDate.setDate(endDate.getDate() + 1); 
+
+                // Calcular la duración del hito en días
+                const durationInDays = (endDate - startDate) / (1000 * 60 * 60 * 24) + 1;
+
+                // Calcular la posición de inicio en base a los días del calendario
+                const startIndex = daysToShow.findIndex(day => day.toDateString() === startDate.toDateString());
+                const endIndex = daysToShow.findIndex(day => day.toDateString() === endDate.toDateString());
+
+                // Calcular el leftOffset
+                let leftOffset = (startIndex >= 0 ? startIndex : 0) * 41.5; // Posición de inicio
+                let width = durationInDays * 41.5; // Ancho total en pixels
+
+                // Verificar si el hito comienza antes del contenedor
+                if (startIndex < 0) {
+                    milestoneOffset = Math.ceil((startDate - daysToShow[0]) / (1000 * 60 * 60 * 24)); // Calcular offset si está fuera del rango
+                    milestoneOffset = milestoneOffset - 1;
+                    leftOffset = milestoneOffset * 41.5; // Ajustar la posición
+                    console.log(leftOffset);
+
+                    // Acortar el ancho si el hito se sale del contenedor
+                    if (leftOffset < 0) {
+                        width += leftOffset; // Aumentar el ancho según el offset negativo
+                        leftOffset = 0; 
+                    }
+                } else {
+                    // Verificar si el hito se sale del contenedor a la derecha
+                    const containerWidth = milestoneContainer.clientWidth;
+                    console.log(containerWidth);
+                    console.log(leftOffset);
+                    const rightEdge = leftOffset + width;
+                    if (rightEdge > containerWidth) {
+                        width = Math.max(0, containerWidth - leftOffset); // Ajustar el ancho si se sale a la derecha
+                    }
+                }
+
+                const milestoneDiv = document.createElement('div');
+                milestoneDiv.classList.add('milestone-rectangle');
+
+                if (width > 0 && leftOffset < 1200){ 
+
+                    milestoneDiv.innerHTML = `
+                        <div class="milestone" style="width: ${width}px; left: ${leftOffset}px; position: absolute;">
+                            <div class="milestone-name">${milestone.task}</div>
+                        </div>
+                    `;
+
+                }
+
+                milestoneContainer.appendChild(milestoneDiv);
+
+                
+            });
+        }
+
+
+
+
+
+        // Función para avanzar 29 días
+        function nextPeriod() {
+            currentDate.setDate(currentDate.getDate() + 1);
+            generateCalendarAround(currentDate);
+        }
+
+        // Función para retroceder 29 días
+        function prevPeriod() {
+            currentDate.setDate(currentDate.getDate() - 1);
+            generateCalendarAround(currentDate);
+        }
+
+        // Funciones para cambiar el periodo
+        document.getElementById('prev-month').addEventListener('click', () => {
+            prevPeriod();
+        });
+
+        document.getElementById('next-month').addEventListener('click', () => {
+            nextPeriod();
+        });
+
+        // Generar el calendario inicial para los 29 días alrededor del día actual
+        generateCalendarAround(currentDate);
+
+         
+    </script>
+
+</body>

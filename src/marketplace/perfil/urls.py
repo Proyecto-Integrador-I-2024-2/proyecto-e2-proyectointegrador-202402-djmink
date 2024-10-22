@@ -21,6 +21,9 @@ urlpatterns = [
     path('perfilesCliente/<int:id>/edit-projects/', views.editProjectsClient, name='editProjectsClient'),
     path('perfilesCliente/<int:id>/editProfile/', views.editProfileClient, name='editProfileClient'),
     path('perfilesCliente/<int:id>/account/', views.editAccountClient, name='editAccountClient'),
+
+    #calendar
+    path('calendar/', views.calendar, name='calendar'),
 ]
 
 if settings.DEBUG:

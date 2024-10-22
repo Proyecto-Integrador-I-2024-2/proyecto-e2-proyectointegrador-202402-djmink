@@ -27,51 +27,81 @@
         </div>
     </div>
 
-    <div class="upper-section">
-        <img class="project-image" src="{{ project.image.url }}"/>
-        <button class="btn edit-project">Edit project</button>
-        <div class="left">
-            <div class="ptext project-title">{{ project.name}}</div>
-            <div class="ptext project-dec">{{ project.desc }}</div>
-            <div class="ptext project-budget">From ${{ project.budget }}</div>
+    <div class="back">
+        <div class="ptext project-name">{{ project.name}} </div>
+        <div class="progress-container">
+            <div class="ptext progress">Progress</div>
+            <div class="progress-bar" id="progressBar"></div>
         </div>
-    </div>
-
-    <div class="ptext progress-title">Progress</div>
-
-    <div class="progress-container">
-        <div class="progress-bar" id="progressBar"></div>
-    </div>
-
-    <div class="milestones-section">
-        <div class="ptext milestones-title">Milestones</div>
-        <div class="milestones-container">
-            {% for milestone in project.milestones %}
-                <div class="milestone-container">
-                    <div class="milestone-header" onclick="openMilestone()">
-                        <div class="ptext milestone-name">{{ milestone.name }}</div>
-                        <img class="arrow" src="{% static 'arrow.png' %}" alt="arrow">
-                    </div>
-                    <div class="milestone-expanded">
-                        <div class="tasks-list">
-                            {% for task in milestone.tasks %}
-                                <div class="task-container">
-                                    <div class="circle">
-                                        <img class="check" src="{% static 'Check.svg' %}">
-                                    </div>
-                                    <div class="ptext task-name">{{ task.name }}</div>
+        <div class="middle-section">
+            <div class="milestones-section">
+                <div class="ptext milestones-title">Milestones</div>
+                <div class="milestones-container">
+                    {% for milestone in project.milestones %}
+                        <div class="milestone-container">
+                            <div class="milestone-header" onclick="openMilestone()">
+                                <div class="ptext milestone-name">{{ milestone.name }}</div>
+                                {% if milestone.freelancer %}
+                                    <img class="freelancer-picture-1" src="{{ milestone.freelancer.profile_picture.url }}"/>
+                                    <div class="ptext freelancer-name-1">{{ milestone.freelancer.name }}</div>
+                                {% else %}
+                                    <div class="ptext info">No assigned yet.</div>
+                                {% endif %}
+                                <div class="ptext milestone-progress">{{ milestone.progress }}%</div>
+                                <div class="ptext milestone-deadline">{{ milestone.deadline }}</div>
+                                <button class="btn assignment" onclick="openAssignmentModal()" >Assigment</button>
+                                <img class="arrow" src="{% static 'arrow.png' %}" alt="arrow">
+                            </div>
+                            <div class="milestone-expanded">
+                                <div class="tasks-list">
+                                    {% for task in milestone.tasks %}
+                                        <div class="task-container">
+                                            <div class="circle">
+                                                <img class="check" src="{% static 'Check.svg' %}">
+                                            </div>
+                                            <div class="ptext task-name">{{ task.name }}</div>
+                                        </div>
+                                    {% empty %}
+                                        <div class="ptext info">No tasks assigned yet.</div>
+                                    {% endfor %}
                                 </div>
-                            {% endfor %}
+                            </div>
                         </div>
-
-                    </div>
+                    {% empty %}
+                        <div class="ptext info">No milestones for this project registered yet.</div>
+                    {% endfor %}
                 </div>
-            {% endfor %}
+            </div>
 
+            <hr class="separator1">
+
+            <div class="applications-section">
+                <div class="applications-title">Applications</div>
+                <div class="milestones-applications-container">
+                    {% for milestone in project.milestones %}
+                        <div class="milestone-application-container">
+                            <div class="milestone-application-name">{{ milestone.name }}</div>
+                            <div class="applications-container">
+                                {% for application in milestone.applications %}
+                                    <div class="application-container">
+                                        <img class="freelancer-picture-2" src="{{ application.freelancer.profile_picture.url }}"/>
+                                        <div class="ptext application-freelancer-name">{{ application.freelancer.name }}</div>
+                                        <button class="btn accept">Accept</button>
+                                        <button class="btn reject">Reject</button>
+                                        <button class="btn view-profile">View Profile</button>
+                                    </div>
+                                {% empty %}
+                                    <div class="ptext info">No applications for this milestone yet.</div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    {% empty %}
+                       <div class="ptext info">No milestones for this project registered yet.</div>
+                    {% endfor %}
+                </div>
+            </div>
 
         </div>
-
-
     </div>
 
 

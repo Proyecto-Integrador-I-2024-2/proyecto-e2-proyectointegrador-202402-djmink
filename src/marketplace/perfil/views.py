@@ -2,6 +2,9 @@ from django.core.paginator import Paginator
 from django.shortcuts import render, get_object_or_404
 from perfil.models import Profile, ClientProfile, Publication, ProjectCategory, SocialNetwork, ProjectFreelancer
 
+def calendar(request):
+    return render(request, 'perfil/calendar.html')
+
 # Create your views here.
 def perfilesFreelancer(request, id):
     

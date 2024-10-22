@@ -1,0 +1,85 @@
+.calendar-container {
+    width: 1204px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #ea1f1f;
+    border-radius: 10px;
+}
+
+.calendar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+#month-year {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.calendar-grid {
+    display: flex; /* Mantener en una fila */
+    justify-content: flex-start; /* Alineación horizontal */
+    overflow-x: auto; /* Permitir desplazamiento horizontal */
+    padding-bottom: 20px;
+}
+
+/* Contenedores de meses con diferentes colores */
+.month-container {
+    display: flex;
+    border-radius: 8px;
+}
+
+.calendar-day {
+    width: 41.5px;
+    height: 26px;
+    text-align: center;
+    background-color: #e0e0e0;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.calendar-day.holiday {
+    background-color: #ffeb3b; /* Color para los días con hitos */
+}
+
+.calendar-day.today {
+    background-color: #03a9f4; /* Color para el día actual */
+    color: white;
+}
+
+.milestone-container {
+    position: relative;
+    height: 400px;
+    margin-top: 10px;
+    background-color: #3ff151;
+}
+
+.milestone-rectangle{
+    height: 30px;
+    position: relative;
+    width: 1204px;
+    background-color: #222118;
+    margin-bottom: 30px;
+}
+
+.milestone {
+    position: absolute;
+    height: 30px;
+    background-color: #8bc34a;
+    color: white;
+    text-align: center;
+    border-radius: 5px;
+    line-height: 30px;
+}
+
+.milestone-name {
+    overflow: hidden; /* Ocultar el desbordamiento */
+    white-space: nowrap; /* No permitir que el texto se divida en varias líneas */
+    text-overflow: ellipsis; /* Agregar puntos suspensivos para el texto que no cabe */
+    height: 30px; /* Asegúrate de que la altura sea la misma que el hito */
+    flex: 1; /* Hacer que el nombre del hito ocupe el espacio disponible */
+    padding: 0 5px; /* Espaciado lateral */
+}
+
