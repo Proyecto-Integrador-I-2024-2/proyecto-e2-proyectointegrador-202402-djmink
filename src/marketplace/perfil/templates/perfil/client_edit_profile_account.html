@@ -1,0 +1,223 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Profile</title>
+    <link rel="stylesheet" href="{% static 'epa2.css' %}">
+</head>
+<body>
+    <div id="editsection" class="editsection">
+
+        <div id="heading" class="heading">
+
+            <div id="rectangleheading" class="rectangleheading"></div>
+            <div id="hometext" class="hometext">Home</div>
+            <img id="chat_icon" class="chat_icon" src="{% static 'Chat_Icon.svg' %}"/>
+            <img id="notification_icon" class="notification_icon" src="{% static 'Notification_Icon.svg' %}"/>
+            <a href="{% url 'perfilesCliente' p.id %}">
+                <img id="profile_picture2" class="profile_picture2" src="{{ p.profile_picture.url }}" alt="Profile Picture"/>
+            </a>
+            <img id="logo" class="logo" src="{% static 'logo.png' %}"/>
+            <div id="logoseparator" class="logoseparator"></div>
+        
+            <div id="onlinemarketplace2" class="onlinemarketplace2">
+                Online Marketplace
+            </div>
+        </div>     
+
+        <div class="ptext ep">
+            Edit profile
+        </div>     
+
+        <a href="#myaccount" class="ptext my-account">My account</a>
+        <a href="{% url 'editProfileClient' p.id %}" class="ptext profile">Profile</a>
+        <a href="{% url 'editProjectsClient' p.id %}" class="ptext portfolio">Projects</a>
+        <a href="{% url 'deleteDisableClient' p.id %}" class="ptext delete-account">Delete account</a>    
+
+        <div class="fields">
+
+            <form action="/save_changes" method="post">
+
+                <div class="ptext myaccount">
+                    My Account
+                </div>
+    
+                <div class="ptext basic-info">
+                    Basic Information
+                </div>
+                
+                <div class="input-container name">
+                    <div class="ptext name">Company name</div>
+                    <textarea class="input-box name">{{ p.name }}</textarea>
+                </div>
+
+                <div class="input-container username">
+                    <div class="ptext name">Username</div>
+                    <textarea class="input-box name">{{ p.username }}</textarea>
+                </div>
+
+                <div class="input-container email">
+                    <div class="ptext name">Email</div>
+                    <textarea class="input-box name">{{ p.email }}</textarea>
+                </div>
+
+                <div class="input-container phone">
+                    <div class="ptext name">Phone</div>
+                    <img class="arrow" src="{% static 'arrow.png' %}" alt="arrow" id="arrow" onclick="toggleCodeList()">
+                    <textarea id="code-box" class="input-box code">{{ code }}</textarea>
+                    <textarea class="input-box tel">{{ phone }}</textarea>
+
+                    <!-- Reemplazar con un for -->
+                    <div class="code-list" id="code-list">
+                        <div class="code-item" onclick="selectCode('+1')">+1 (USA)</div>
+                        <div class="code-item" onclick="selectCode('+44')">+44 (UK)</div>
+                        <div class="code-item" onclick="selectCode('+91')">+91 (India)</div>
+                        <div class="code-item" onclick="selectCode('+57')">+57 (Col)</div>
+                        <div class="code-item" onclick="selectCode('+58')">+58 (Ven)</div>
+                    </div>
+                </div>
+
+            </form>
+
+            <button id= "change-password" class="med-btn pass" onclick="changePassword()">Change Password</button>
+            <!--Poner dentro del form después -->
+            <button type="submit" id= "save-changes" class='med-btn save'>Save Changes</button>
+
+        </div>
+        
+
+        <footer class="footer">
+        
+            <div class="footer-content">
+                <img id="encora2" class="encora2" src="{% static 'Encora1.svg' %}" />
+                <img id="fb3" class="fb3" src="{% static 'fb.png' %}"/>
+                <img id="ig3" class="ig3" src="{% static 'ig.png' %}" />
+                <img id="lin3" class="lin3" src="{% static 'lin.png' %}" />
+                <img id="gmail3" class="gmail3" src="{% static 'gmail.png' %}" />
+                <nav class="footer-nav">
+                    <a href="#features">Features</a>
+                    <a href="#about">About</a>
+                    <a href="#support">Support</a>
+                    <a href="#resources">Resources</a>
+                    <a href="#places">Places</a>
+                    <a href="#jobs">Jobs</a>
+                </nav>
+                <div id='footertext' class='footertext'> 
+                    © 2024 Online Marketplace
+                </div>
+            </div>
+    
+        </footer>
+    </div>
+
+    <div id="passwordModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <div id='change-password-title' class='ptext change-password-title'>Change Password</div>
+            <form action="/change_password" method="post">
+        
+                <div class="input-container2 current-pass">
+                    <div class="ptext name">Current Password</div>
+                    <input id="currentpassword" class="input-box e" type="password" placeholder="Enter your current password" />
+                    <img class="eye-icon" src="{% static 'eye_icon.png' %}" alt="Show Password" 
+                            onmousedown="showPassword('currentpassword')" 
+                            onmouseup="hidePassword('currentpassword')" 
+                            onmouseleave="hidePassword('currentpassword')" />
+                </div>
+                
+                <div class="input-container2 new-pass">
+                    <div class="ptext name">Enter New Password</div>
+                    <input id="newpassword" class="input-box e" type="password" placeholder="Enter your new password"></textarea>
+                    <img class="eye-icon" src="{% static 'eye_icon.png' %}" alt="Show Password" 
+                            onmousedown="showPassword('newpassword')" 
+                            onmouseup="hidePassword('newpassword')" 
+                            onmouseleave="hidePassword('newpassword')" />
+                </div>  
+
+                <div class="input-container2 confirm-pass">
+                    <div class="ptext name">Confirm New Password</div>
+                    <input id="confirmnewpassword" class="input-box e" type="password" placeholder="Confirm your new password"></textarea>
+                    <img class="eye-icon" src="{% static 'eye_icon.png' %}" alt="Show Password" 
+                            onmousedown="showPassword('confirmnewpassword')" 
+                            onmouseup="hidePassword('confirmnewpassword')" 
+                            onmouseleave="hidePassword('confirmnewpassword')" />
+                </div>
+
+            </form>
+
+            <!--Poner dentro del form después -->
+            <button id= "change-password" class='med-btn change-pass' onclick="savePassword()">Change</button>
+
+        </div>
+    </div>
+
+    <script>
+        function showPassword(id) {
+            const passwordField = document.getElementById(id);
+            passwordField.setAttribute('type', 'text');
+        }
+
+        function hidePassword(id) {
+            const passwordField = document.getElementById(id);
+            passwordField.setAttribute('type', 'password');
+        }
+
+        var modal = document.getElementById("passwordModal");
+
+        function changePassword(){
+            modal.style.display = "block";
+            const span = document.getElementsByClassName("close")[0];
+
+            span.onclick = function() {
+                modal.style.display = "none";
+            }
+
+            window.onclick = function(event) {
+                if (event.target == modal) {
+                    modal.style.display = "none";
+                }
+            }
+        }
+
+        function savePassword() {
+            modal.style.display = "none";
+        }
+
+        function toggleCodeList() {
+            const arrow = document.getElementById('arrow');
+            const codeList = document.getElementById('code-list');
+
+            if (codeList.style.display === "block") {
+                codeList.style.display = "none";
+                arrow.classList.remove('rotated');
+            } else {
+                codeList.style.display = "block";
+                arrow.classList.add('rotated');
+            }
+        }
+
+        function selectCode(code) {
+            const codeBox = document.getElementById('code-box');
+            codeBox.value = code;
+            toggleCodeList(); 
+        }
+
+        window.onclick = function(event) {
+            const codeList = document.getElementById('code-list');
+            const arrow = document.getElementById('arrow');
+
+            if (event.target !== codeList && event.target !== arrow) {
+                codeList.style.display = 'none';
+                arrow.classList.remove('rotated');
+            }
+        }
+
+    </script>
+
+</body>
