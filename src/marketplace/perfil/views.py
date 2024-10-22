@@ -77,6 +77,46 @@ def projectWorkspace(request, id, id_project):
         'project': project_data,  
     })
 
+def manageProject(request, id, id_project):
+    p = get_object_or_404(Profile, id=id)
+    pr = get_object_or_404(ProjectFreelancer, id=id_project)
+
+    project_data = {
+        'id': pr.id,
+        'name': pr.name,
+        'milestones': [
+            {
+                'id': milestone.id,
+                'name': milestone.name,
+                'tasks': [
+                    {
+                        'name': task.name,
+                        'description': task.description
+                    }
+                    for task in milestone.tasks.all() 
+                ]
+            }
+            for milestone in pr.milestones.all() 
+        ],
+        'assignments': [
+            {
+                'name': assignment.name,
+                'task': assignment.task.name,
+                'date': assignment.date,
+                'status': assignment.status,
+                'file': assignment.file.url if assignment.file else None,
+                'url': assignment.url
+            }
+            for assignment in pr.assignments.all()
+        ]
+    }
+
+    return render(request, 'perfil/project_workspace.html', {
+        'profile': p,
+        'project': project_data,  
+    })
+
+
 def editAccount(request, id):
     p = get_object_or_404(Profile, id=id)
 
@@ -143,3 +183,5 @@ def mainCliente(request, id):
 
 def test(request):        
     return render(request, 'perfil/test.html')
+
+
