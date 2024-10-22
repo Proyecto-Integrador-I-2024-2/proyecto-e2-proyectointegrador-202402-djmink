@@ -1,0 +1,149 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Freelancer Marketplace</title>
+    <link rel="stylesheet" href="{% static 'fp.css' %}">
+</head>
+<body>
+    <div id="firstsection" class="firstsection">
+        
+        <a href="#freelancersection">
+            <button id="joinbutton" class="joinbutton">
+                <div id="rectangle2853" class="rectangle2853"></div>
+                <div id="savechanges" class="savechanges">Join Us</div>
+            </button>
+        </a>
+        
+        <div id="searchbar" class="searchbar">
+            <div id="rectangle20" class="rectangle20"></div>
+            <img id="frame" class="frame" src="{% static 'search.png' %}"/>
+            <input id="search2" class="search2" type="text" placeholder="Search" />
+        </div>
+        
+        <div id="onlinemarketplaceforfreelancers" class="onlinemarketplaceforfreelancers">
+            Online Marketplace for <span class="freelancers">Freelancers</span>
+        </div>
+        
+        <div id="developyourproject" class="developyourproject">
+            DEVELOP YOUR PROJECT
+        </div>
+        
+        <a id="login" class="login" href="{% url 'login' %}">
+            Log In
+        </a>
+        
+        <img id="logo" class="logo" src="{% static 'logo.png' %}"/>
+        <div id="logoseparator" class="logoseparator"></div>
+        
+        <div id="onlinemarketplace2" class="onlinemarketplace2">
+            Online Marketplace
+        </div>
+
+        
+    </div>
+
+    <div id='freelancersection' class='freelancersection'>
+
+        <img id='backgroundfreelancer' class='backgroundfreelancer' src="{% static 'freelancer_home_section.png' %}" />
+
+        <div id='forfreelancers' class='forfreelancers'> 
+            For Freelancers
+        </div>
+
+        <div id='freelancerdescription' class='freelancerdescription'>
+            Work in projects with companies all around the world.
+        </div>
+
+        <button id='joinfreelancerbutton' class='joinfreelancerbutton'>
+            <div id='joinfreelancerbuttonrec' class='joinfreelancerbuttonrec'></div>
+            <div id='joinfreelancerbuttontext' class='joinfreelancerbuttontext'>Join as a Freelancer</div>
+        </button>
+
+        <img id='b2' class='b2' src="{% static 'b2.png' %}" />
+
+    </div>
+
+    <!-- company section -->
+    <div id='companysection' class='companysection'>
+
+        <img id='pexels-cottonbro-40692911' class='pexels-cottonbro-40692911' src="{% static 'company_home_section.png' %}" />
+
+        <div id='forcompanies' class='forcompanies'> 
+            For Companies
+        </div>
+
+        <div id='developyourprojectswithourcommunitytoachieveyourgoals' class='developyourprojectswithourcommunitytoachieveyourgoals'>
+            Develop your projects with our community to achieve your goals. 
+        </div>
+
+        <button id='emptybutton' class='emptybutton'>
+            <div id='rectangle2854' class='rectangle2854'></div>
+            <div id='uploadnewpicture' class='uploadnewpicture'>
+            Join as a Company</div>
+        </button>
+
+    </div>
+
+    <!-- last section -->
+    <div id='lastsection' class='lastsection'>
+
+        <div id='eoctitle' class='eoctitle'> 
+            EXPLORE OUR COMUNITY
+        </div>
+
+        <div class="container1">
+            <img id='eoc1' class='eoc1' src="{% static 'eoc1.png' %}" />
+            <div class="overlay1"></div>
+            <div class="text1">Find Projects</div>
+        </div>
+
+        <div class="container2">
+            <img id='eoc2' class='eoc2' src="{% static 'eoc2.png' %}" />
+            <div class="overlay2"></div>
+            <div class="text2">Find Developers</div>
+        </div>
+
+        <div class="container3">
+            <img id='eoc3' class='eoc3' src="{% static 'eoc3.png' %}" />
+            <div class="overlay3"></div>
+            <div class="text3">Work Together</div>
+        </div>
+        
+        <footer class="footer">
+          
+            <div class="footer-content">
+                <img id="encora" class="encora" src="{% static 'encora.png' %}" />
+                <img id="fb" class="fb" src="{% static 'fb.png' %}"/>
+                <img id="ig" class="ig" src="{% static 'ig.png' %}" />
+                <img id="lin" class="lin" src="{% static 'lin.png' %}" />
+                <img id="gmail" class="gmail" src="{% static 'gmail.png' %}" />
+                <nav class="footer-nav">
+                    <a href="#features">Features</a>
+                    <a href="#about">About</a>
+                    <a href="#support">Support</a>
+                    <a href="#resources">Resources</a>
+                    <a href="#places">Places</a>
+                    <a href="#jobs">Jobs</a>
+                </nav>
+                <nav class="footer-nav2">
+                    <a href="#terms">Terms</a>
+                    <a href="#privacy">Privacy</a>
+                    <a href="#cookies">Cookies</a>
+                </nav>
+                <div id='footertext' class='footertext'> 
+                    © 2024 Online Marketplace
+                </div>
+            </div>
+        </footer>
+
+    </div>
+
+</body>
+</html>

@@ -1,0 +1,55 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'css/signUp1.css' %}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    <title>Sing Up</title>
+</head>
+<body>
+    <nav>
+        <div class="logo">
+            <img src="{% static 'images/Logo.png' %}"/>
+            <div class="lineNav"></div>
+            <div class="navText">
+                <span>Online</span>
+                <span>Marketplace</span>
+            </div>
+        </div>
+        <a>Home</a>
+        <div></div>
+    </nav>
+    <div class="content">
+        <h1 class="title">Join our Community</h1>
+        <span>Singing up as <a class="freelancer">Freelancer</a></span>
+        <a class="googleButton"><img src="{% static 'images/google.png' %}"> sing in with Google</a>
+        <span>Or</span>
+        <form>
+            <div class="inputContainer">
+                <span>Username or Email</span>
+                <input type="text" class="inputText" name="username" id="username" required>
+            </div>
+            <div class="inputContainer">
+                <span>Full Name</span>
+                <input type="text" class="inputText" name="password" id="password" required>
+            </div>
+            <div class="inputContainerNumber">
+                <span>Phone Number</span>
+                <div>
+                    <input type="number" class="codeNumber">
+                    <input type="number" class="numberPhone" name="password" id="password" required>
+                </div>
+            </div>
+            <div class="inputContainer">
+                <span>Password</span>
+                <input type="password" class="inputText" name="password" id="password" required>
+            </div>
+            <button class="buttonSubmit" type="submit">Sign Up</button>
+        </form>
+    </div>
+</body>
+</html>
