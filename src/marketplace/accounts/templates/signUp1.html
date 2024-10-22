@@ -28,20 +28,21 @@
         <span>Singing up as <a class="freelancer">Freelancer</a></span>
         <a class="googleButton"><img src="{% static 'images/google.png' %}"> sing in with Google</a>
         <span>Or</span>
-        <form>
+        <form method = "POST">
+            {% csrf_token %}
             <div class="inputContainer">
                 <span>Username or Email</span>
                 <input type="text" class="inputText" name="username" id="username" required>
             </div>
             <div class="inputContainer">
                 <span>Full Name</span>
-                <input type="text" class="inputText" name="password" id="password" required>
+                <input type="text" class="inputText" name="fullname" id="fullname" required>
             </div>
             <div class="inputContainerNumber">
                 <span>Phone Number</span>
                 <div>
                     <input type="number" class="codeNumber">
-                    <input type="number" class="numberPhone" name="password" id="password" required>
+                    <input type="number" class="numberPhone" name="phone_number" id="phone_number" required>
                 </div>
             </div>
             <div class="inputContainer">

@@ -32,10 +32,9 @@
             <div class="inputContainer">
                 <span>Country</span>
                 <select>
-                    <option>Country 1</option>
-                    <option>Country 2</option>
-                    <option>Country 3</option>
-                    <option>Country 4</option>
+                    {% for country in countries %}
+                        <option>{{ country }}</option>
+                    {% endfor %}
                 </select>
             </div>
         </form>
