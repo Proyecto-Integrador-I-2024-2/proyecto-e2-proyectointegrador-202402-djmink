@@ -23,28 +23,30 @@
         <a>Home</a>
         <div></div>
     </nav>
-    <div class="content">
+    <form class="content" method = "POST">
+        {% csrf_token %}
         <div class="title">
             <span class="titleSpan">Complete your Profile</span>
             <span class="text-1">Youre <span class="text-2">unique</span></span>
         </div>
-        <form>
+        <div>
+            {% csrf_token %}
             <div class="inputContainer">
                 <span>Country</span>
-                <select>
+                <select id = "country" name = "country">
                     {% for country in countries %}
                         <option>{{ country }}</option>
                     {% endfor %}
                 </select>
             </div>
-        </form>
-        <div class="inputContainer">
-            <span>id</span>
-            <input type="text">
+            <div class="inputContainer">
+                <span>id</span>
+                <input type="text" id = "identification" name = "identification">
+            </div>
         </div>
         <a>Why is it important?</a>
         <button>Done</button>
-    </div>
+    </form>
     
 </body>
 </html>

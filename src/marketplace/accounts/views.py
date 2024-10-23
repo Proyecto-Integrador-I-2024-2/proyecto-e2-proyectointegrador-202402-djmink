@@ -40,33 +40,40 @@ def registerf1(request):
     if request.method == 'POST':
         username = request.POST.get('username')
         fullname = request.POST.get('fullname')
+        print('name:', fullname)
         phone_number = request.POST.get('phone_number')
         password = request.POST.get('password')
 
-        freelancer_profile = FreelancerProfile.objects.create(name=fullname, email=username, phone=phone_number)
+        freelancer_profile = FreelancerProfile.objects.create(name=fullname, email=username, phone=phone_number, image=None)
         user = Freelancer.objects.create(username=username, password=password, profile=freelancer_profile)
-        return render(request, 'singup2.html', {'id': user.profile.id})
+        return redirect('registerf2', id = user.profile.id)
     else:
         return render(request, 'signUp1.html')
     
-def registerf2(request):
+def registerf2(request, id):
     if request.method == 'POST':
-        if 'file-input' not in request.FILES:
-            return redirect('registerf3', {'id': request.POST.get('id'), 'countries': countries})
+        if 'image_input' not in request.FILES:
+            return redirect('registerf3', id = id)
         else:
-            #image = request.FILES.get('file-input')
-            #freelancer_profile = FreelancerProfile.objects.get(id=request.POST.get('id'))
-            #freelancer_profile.image = image
-            #freelancer_profile.save()
-            return redirect('registerf3',{'id': request.POST.get('id'), 'countries': countries})#acá debería ir freelancer_profile
+            image = request.FILES.get('image_input')
+            freelancer_profile = FreelancerProfile.objects.get(id=id)
+            freelancer_profile.image = image
+            freelancer_profile.save()
+            return redirect('registerf3', id = id)
     else:
-        return render(request, 'singup2.html')
+        return render(request, 'singup2.html', {'id': id})
 
-def registerf3(request):
+def registerf3(request, id):
     if request.method == 'POST':
-        pass
+        freelancer_profile = FreelancerProfile.objects.get(id=id)
+        country = request.POST.get('country')
+        user = Freelancer.objects.get(profile=freelancer_profile)
+        user.country = country
+        user.identification = id
+        user.save()
+        return redirect('login')
     else:
-        return render(request, 'SignUp3.html')
+        return render(request, 'SignUp3.html', {'countries': countries})
 
 #Registro de Company
 def registerc1(request):

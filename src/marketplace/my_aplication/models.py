@@ -2,9 +2,10 @@ from django.db import models
 from django.utils import timezone
 
 class Profile(models.Model):
-    name = models.CharField(max_length=100)
+    name = models.CharField(max_length=100, null=True, blank=True)
     email = models.CharField(max_length=100)
     phone = models.CharField(max_length=100)
+    image = models.ImageField(upload_to='images/', null=True, blank=True)
 
     class Meta:
         abstract = True
@@ -54,6 +55,8 @@ class CompanyManager(User):
 
 class Freelancer(User):
     profile = models.ForeignKey(FreelancerProfile, on_delete=models.PROTECT, related_name='freelancers')
+    identification = models.CharField(null=True, blank=True, max_length=100)
+    country = models.CharField(null=True, blank=True, max_length=100)
 
 class Publication(models.Model):
     date = models.DateField()
