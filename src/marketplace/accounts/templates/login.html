@@ -27,7 +27,8 @@
                     <span>Don't have an account yet? <a href="{% url 'registerc1'%}">Sign up</a></span>
                 </div>
                 <div class="form">
-                    <form>
+                    <form method = "POST">
+                        {% csrf_token %}
                         <div class="email">
                             <span>Username or Email</span>
                             <input type="text" class="inputText" name="username" id="username" required>
