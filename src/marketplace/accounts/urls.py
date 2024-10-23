@@ -10,7 +10,7 @@ urlpatterns = [
     path('register/freelancer2/<int:id>', views.registerf2, name='registerf2'),
     path('register/freelancer3/<int:id>', views.registerf3, name='registerf3'),
     path('register/company1', views.registerc1, name='registerc1'),
-    path('register/company2', views.registerc2, name='registerc2'),
+    path('register/company2/<int:id>', views.registerc2, name='registerc2'),
     path('addproject/', views.addproject, name='addproject'),
 
 ]

@@ -4,7 +4,7 @@ from django.utils import timezone
 class Profile(models.Model):
     name = models.CharField(max_length=100, null=True, blank=True)
     email = models.CharField(max_length=100)
-    phone = models.CharField(max_length=100)
+    phone = models.CharField(max_length=100, null=True, blank=True)
     image = models.ImageField(upload_to='images/', null=True, blank=True)
 
     class Meta:
@@ -35,6 +35,10 @@ class Content(models.Model):
 
 class CompanyProfile(Profile):
     address = models.CharField(max_length=100)
+    legal_agent = models.CharField(max_length=100, null=True, blank=True)
+    address = models.CharField(max_length=100, null=True, blank=True)
+    business_vertical = models.CharField(max_length=100, null=True, blank=True)
+    company_type = models.CharField(max_length=100, null=True, blank=True)
 
 class Rate(models.Model):
     value = models.DecimalField(max_digits=3, decimal_places=1)

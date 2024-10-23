@@ -5,7 +5,7 @@ from django.http import HttpResponse
 from .forms import CompanyRegistrationForm, FreelancerRegistrationForm, LoginForm
 from django.contrib.auth.views import LoginView
 
-from my_aplication.models import FreelancerProfile, CompanyProfile, Freelancer
+from my_aplication.models import FreelancerProfile, CompanyProfile, Freelancer, CompanyManager
 
 #SMTP libraries
 from django.core.mail import send_mail
@@ -38,17 +38,24 @@ def send_recovery_email(email, password):
 #Registro de Freelancers
 def registerf1(request):
     if request.method == 'POST':
+        #verificacion del usuario (que no exista)
         username = request.POST.get('username')
-        fullname = request.POST.get('fullname')
-        print('name:', fullname)
-        phone_number = request.POST.get('phone_number')
-        password = request.POST.get('password')
+        object = Freelancer.objects.filter(username=username)
+        if object.exists():
+            #devolver alerta tipo js
+            return render(request, 'signUp1.html', {'username_exists': True})
+        else:
+            username = request.POST.get('username')
+            fullname = request.POST.get('fullname')
+            print('name:', fullname)
+            phone_number = request.POST.get('phone_number')
+            password = request.POST.get('password')
 
-        freelancer_profile = FreelancerProfile.objects.create(name=fullname, email=username, phone=phone_number, image=None)
-        user = Freelancer.objects.create(username=username, password=password, profile=freelancer_profile)
-        return redirect('registerf2', id = user.profile.id)
+            freelancer_profile = FreelancerProfile.objects.create(name=fullname, email=username, phone=phone_number, image=None)
+            user = Freelancer.objects.create(username=username, password=password, profile=freelancer_profile)
+            return redirect('registerf2', id = user.profile.id)
     else:
-        return render(request, 'signUp1.html')
+        return render(request, 'signUp1.html', {'username_exists': False})
     
 def registerf2(request, id):
     if request.method == 'POST':
@@ -77,16 +84,43 @@ def registerf3(request, id):
 
 #Registro de Company
 def registerc1(request):
+    username = request.POST.get('username')
+    object = CompanyManager.objects.filter(username=username)
     if request.method == 'POST':
-        pass
+        #verificacion del usuario (que no exista)
+        if object.exists():
+            #devolver alerta tipo js
+            return render(request, 'signUp1Company.html', {'username_exists': True})
+        else:
+            username = request.POST.get('username')
+            company_name = request.POST.get('name')
+            legal_agent = request.POST.get('legal_agent')
+            password = request.POST.get('password')
+
+            company_profile = CompanyProfile.objects.create(name=company_name, email=username, phone=None, image=None, address=None, legal_agent=legal_agent, business_vertical=None, company_type=None)
+            user = CompanyManager.objects.create(username=username, password=password, profile=company_profile)
+            return redirect('registerc2', id = user.profile.id)
     else:
-        return render(request, 'signUp1Company.html')
+        return render(request, 'signUp1Company.html', {'username_exists': False})
     
-def registerc2(request):
+def registerc2(request, id):
     if request.method == 'POST':
-        pass
+        company_profile = CompanyProfile.objects.get(id=id)
+        country = request.POST.get('country')
+        phone = request.POST.get('phone')
+        address = request.POST.get('address')
+        business_vertical = request.POST.get('business_vertical')
+        company_type = request.POST.get('company_type')
+        user = CompanyManager.objects.get(profile=company_profile)
+        user.country = country
+        user.phone = phone
+        user.address = address
+        user.business_vertical = business_vertical
+        user.company_type = company_type
+        user.save()
+        return redirect('login')
     else:
-        return render(request, 'signUp2Company.html')
+        return render(request, 'signUp2Company.html', {'countries': countries})
     
 def addproject(request):
     return render(request, 'EditProject.html')
