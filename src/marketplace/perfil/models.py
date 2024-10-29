@@ -205,6 +205,9 @@ class Milestone(models.Model):
     description = models.CharField(max_length=500)
     deadline = models.DateField()
     project = models.ForeignKey(ProjectFreelancer, on_delete=models.PROTECT, related_name='milestones')
+    deadline = models.DateField()
+    progress = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+    freelancer = models.ForeignKey(Profile, on_delete=models.PROTECT, related_name='milestones')
 
 class Task(models.Model):
     name = models.CharField(max_length=50)

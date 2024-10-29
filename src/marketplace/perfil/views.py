@@ -1,6 +1,6 @@
 from django.core.paginator import Paginator
 from django.shortcuts import render, get_object_or_404
-from perfil.models import Profile, ClientProfile, Publication, ProjectCategory, SocialNetwork, ProjectFreelancer
+from perfil.models import Profile, ClientProfile, Publication, ProjectCategory, SocialNetwork, ProjectFreelancer, Project
 
 def calendar(request):
     return render(request, 'perfil/calendar.html')
@@ -78,8 +78,8 @@ def projectWorkspace(request, id, id_project):
     })
 
 def manageProject(request, id, id_project):
-    p = get_object_or_404(Profile, id=id)
-    pr = get_object_or_404(ProjectFreelancer, id=id_project)
+    p = get_object_or_404(ClientProfile, id=id)
+    pr = get_object_or_404(Project, id=id_project)
 
     project_data = {
         'id': pr.id,
@@ -88,21 +88,33 @@ def manageProject(request, id, id_project):
             {
                 'id': milestone.id,
                 'name': milestone.name,
+                'progress': milestone.progress,
+                'deadline': milestone.deadline.strftime('%Y-%m-%d'),  # Formato de fecha
                 'tasks': [
                     {
-                        'name': task.name,
-                        'description': task.description
+                        'name': task.name
                     }
-                    for task in milestone.tasks.all() 
+                    for task in milestone.tasks.all()
+                ],
+                'freelancer': {
+                    'name': milestone.freelancer.name if milestone.freelancer else None,
+                    'profile_picture': milestone.freelancer.profile_picture.url if milestone.freelancer and milestone.freelancer.profile_picture else None,
+                } if milestone.freelancer else None,
+                'applications': [
+                    {
+                        'freelancer_name': application.freelancer.name,
+                        'freelancer_picture': application.freelancer.profile_picture.url if application.freelancer.profile_picture else None,
+                    }
+                    for application in milestone.applications.all()
                 ]
             }
-            for milestone in pr.milestones.all() 
+            for milestone in pr.milestones.all()
         ],
         'assignments': [
             {
                 'name': assignment.name,
                 'task': assignment.task.name,
-                'date': assignment.date,
+                'date': assignment.date.strftime('%Y-%m-%d'),  # Formato de fecha
                 'status': assignment.status,
                 'file': assignment.file.url if assignment.file else None,
                 'url': assignment.url
@@ -111,10 +123,11 @@ def manageProject(request, id, id_project):
         ]
     }
 
-    return render(request, 'perfil/project_workspace.html', {
+    return render(request, 'perfil/client_project_view.html', {
         'profile': p,
-        'project': project_data,  
+        'project': project_data,
     })
+
 
 
 def editAccount(request, id):
@@ -183,5 +196,3 @@ def mainCliente(request, id):
 
 def test(request):        
     return render(request, 'perfil/test.html')
-
-
