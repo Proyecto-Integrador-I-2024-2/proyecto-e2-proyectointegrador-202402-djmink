@@ -1,0 +1,105 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Main</title>
+    <link rel="stylesheet" href="{% static 'pw1.css' %}">
+</head>
+<body>
+
+    <div class="heading">
+        <div class="ptext hometext">Home</div>
+        <img class="icon chat_icon" src="{% static 'Chat_Icon.svg' %}"/>
+        <img class="icon notification_icon" src="{% static 'Notification_Icon.svg' %}"/>
+        <a href="{% url 'perfilFreelancer' profile.id %}">
+            <img class="profile_picture_heading" src="{{ profile.profile_picture.url }}" alt="Profile Picture"/>
+        </a>
+        <img class="logo" src="{% static 'logo.png' %}"/>
+        <div class="logoseparator"></div>
+        <div class="ptext onlinemarketplace">
+            Online Marketplace
+        </div>
+    </div>
+
+    <div class="upper-section">
+        <img class="project-image" src="{{ project.image.url }}"/>
+        <button class="btn edit-project">Edit project</button>
+        <div class="left">
+            <div class="ptext project-title">{{ project.name}}</div>
+            <div class="ptext project-dec">{{ project.desc }}</div>
+            <div class="ptext project-budget">From ${{ project.budget }}</div>
+        </div>
+    </div>
+
+    <div class="ptext progress-title">Progress</div>
+
+    <div class="progress-container">
+        <div class="progress-bar" id="progressBar"></div>
+    </div>
+
+    <div class="milestones-section">
+        <div class="ptext milestones-title">Milestones</div>
+        <div class="milestones-container">
+            {% for milestone in project.milestones %}
+                <div class="milestone-container">
+                    <div class="milestone-header" onclick="openMilestone()">
+                        <div class="ptext milestone-name">{{ milestone.name }}</div>
+                        <img class="arrow" src="{% static 'arrow.png' %}" alt="arrow">
+                    </div>
+                    <div class="milestone-expanded">
+                        <div class="tasks-list">
+                            {% for task in milestone.tasks %}
+                                <div class="task-container">
+                                    <div class="circle">
+                                        <img class="check" src="{% static 'Check.svg' %}">
+                                    </div>
+                                    <div class="ptext task-name">{{ task.name }}</div>
+                                </div>
+                            {% endfor %}
+                        </div>
+
+                    </div>
+                </div>
+            {% endfor %}
+
+
+        </div>
+
+
+    </div>
+
+
+    <footer class="footer">
+    
+        <div class="footer-content">
+            <img class="encora" src="{% static 'Encora1.svg' %}" />
+            <img class="social-icon fb" src="{% static 'fb.png' %}"/>
+            <img class="social-icon ig" src="{% static 'ig.png' %}" />
+            <img class="social-icon lin" src="{% static 'lin.png' %}" />
+            <img class="social-icon gmail" src="{% static 'gmail.png' %}" />
+            <nav class="footer-nav">
+                <a href="#features">Features</a>
+                <a href="#about">About</a>
+                <a href="#support">Support</a>
+                <a href="#resources">Resources</a>
+                <a href="#places">Places</a>
+                <a href="#jobs">Jobs</a>
+            </nav>
+            <div class='footertext'> 
+                © 2024 Online Marketplace
+            </div>
+        </div>
+
+    </footer>
+
+    <script>
+        
+    </script>
+
+</body>

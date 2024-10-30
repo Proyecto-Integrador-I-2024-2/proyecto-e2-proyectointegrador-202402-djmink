@@ -1,0 +1,179 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Main</title>
+    <link rel="stylesheet" href="{% static 'mf2.css' %}">
+</head>
+<body>
+
+    <div class="back">
+
+        <div class="heading">
+            <div class="ptext hometext">Home</div>
+            <img class="icon chat_icon" src="{% static 'Chat_Icon.svg' %}"/>
+            <img class="icon notification_icon" src="{% static 'Notification_Icon.svg' %}"/>
+            <a href="{% url 'perfilFreelancer' profile.id %}">
+                <img class="profile_picture_heading" src="{{ profile.profile_picture.url }}" alt="Profile Picture"/>
+            </a>
+            <img class="logo" src="{% static 'logo.png' %}"/>
+            <div class="logoseparator"></div>
+            <div class="ptext onlinemarketplace">
+                Online Marketplace
+            </div>
+        </div>
+
+        <div class="upper-section">
+            <div class="filter-container">
+                <div class="filter-header" onclick="toggleFilters()">
+                    <img src="{% static 'lines.png' %}" alt="Lines">
+                    <span class="ptext filter-text">Filter</span>
+                    <img class="arrow" src="{% static 'arrow.png' %}" alt="arrow">
+                </div>
+                <div class="filter-options">
+                    <label>Category</label>
+                    <select name="category" id="category">
+                        <option value="">Select Category</option>
+                        {% for category in categories %}
+                            <option value="{{ category.id }}">{{ category.name }}</option>
+                        {% empty %}
+                            <option>No categories available</option>
+                        {% endfor %}
+                    </select>
+            
+                    <label>Company</label>
+                    <select name="company" id="company">
+                        <option value="">Select Company</option>
+                        {% for company in companies %}
+                            <option value="{{ company.id }}">{{ company.name }}</option>
+                        {% empty %}
+                            <option>No companies available</option>
+                        {% endfor %}
+                    </select>
+            
+                    <label>Budget</label>
+                    <input type="text" placeholder="Enter Budget">
+                </div>
+            </div>    
+        
+            <div class="ptext discover">Discover</div>
+            <div class="ptext your">Your <span class="ptext project"> Project</span> </div>
+        
+            <div class="input-container">
+                <input class= "input-box" type="text" placeholder="Search">
+                <img class ="search" src="{% static 'search.png' %}" alt="Search Icon">
+            </div>
+        
+            <nav class="cat-nav">
+                <a href="#branding">Branding</a>
+                <a href="#illustration">Illustration</a>
+                <a href="#Web_design">Web Design</a>
+                <a href="#print">Print</a>
+                <a href="#video_editing">Video Editing</a>
+                <a href="#image_editing">Image Editing</a>
+            </nav>
+            
+        </div>
+
+        <div class="publications-section">
+
+            <div class="publications-container">
+                {% for publication in publications %}
+                    <div class="publication-container">
+                        <div class="card">
+                            <div class="project-picture-container">
+                                <img class="fav" src="{% static 'Fav.svg' %}" />
+                                <img class="project-picture" src="{{ publication.project.project_picture.url }}" alt="Project Picture"/>
+                            </div>
+                            <div class="project-data-1">
+                                <img class="publication-profile-picture" src="{{ publication.profile.profile_picture.url }}" alt="Profile Picture"/>
+                                <div class="ptext publication-profile-name">{{ publication.profile.name }}</div>
+                                <img class="star" src="{% static 'Star.svg' %}" />
+                                <div class="ptext publication-rate">{{ publication.profile.rating }}</div>
+                                <div class="ptext comments-amount">({{ publication.commentsPublication.count }}+)</div>
+                            </div>
+                        </div>
+                        <div class="project-data-2">
+                            <div class="ptext project-name">{{ publication.project.name }}</div>
+                            <div class="ptext project-description">{{ publication.project.description }}</div>
+                            <div class="ptext project-budget">From ${{ publication.project.budget }}</div>
+                        </div>
+                        <div class="categories-container">
+                            {% for category in publication.project.projectcategories.all %}
+                                <div class="category-container">
+                                    <div class="category">{{ category.name }}</div>
+                                </div>
+                            {% empty %}
+                                <p>No categories for this project registered yet.</p>
+                            {% endfor %}
+                        </div> 
+                    </div>
+                {% empty %}
+                    <p>There are no publications registered yet.</p>
+                {% endfor %}
+            </div>
+
+            <div class="buttons-container">
+                {% if publications.has_previous %}
+                    <a href="?page={{ publications.previous_page_number }}" class="page-btn" id="left">&#8249;</a>
+                {% else %}
+                    <button id="left" class="page-btn" disabled>&#8249;</button>
+                {% endif %}
+            
+                {% for num in publications.paginator.page_range %}
+                    {% if publications.number == num %}
+                        <span class="current-page">{{ num }}</span> 
+                    {% else %}
+                        <a href="?page={{ num }}" class="page-btn">{{ num }}</a>  
+                    {% endif %}
+                {% endfor %}
+            
+                {% if publications.has_next %}
+                    <a href="?page={{ publications.next_page_number }}" class="page-btn" id="right">&#8250;</a>
+                {% else %}
+                    <button id="right" class="page-btn" disabled>&#8250;</button>
+                {% endif %}
+            </div>
+        </div>
+
+        <footer class="footer">
+        
+            <div class="footer-content">
+                <img class="encora" src="{% static 'Encora.svg' %}" />
+                <img class="social-icon fb" src="{% static 'fb.png' %}"/>
+                <img class="social-icon ig" src="{% static 'ig.png' %}" />
+                <img class="social-icon lin" src="{% static 'lin.png' %}" />
+                <img class="social-icon gmail" src="{% static 'gmail.png' %}" />
+                <nav class="footer-nav">
+                    <a href="#features">Features</a>
+                    <a href="#about">About</a>
+                    <a href="#support">Support</a>
+                    <a href="#resources">Resources</a>
+                    <a href="#places">Places</a>
+                    <a href="#jobs">Jobs</a>
+                </nav>
+                <div class='footertext'> 
+                    © 2024 Online Marketplace
+                </div>
+            </div>
+    
+        </footer>
+
+        
+
+    </div>
+    
+
+    <script>
+        function toggleFilters() {
+          const filterContainer = document.querySelector('.filter-container');
+          filterContainer.classList.toggle('expanded');
+        }
+    </script>
+</body>

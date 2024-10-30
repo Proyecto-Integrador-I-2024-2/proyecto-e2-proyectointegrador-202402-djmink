@@ -1,0 +1,866 @@
+/* Freelancer Profile */
+html {
+    scroll-behavior: smooth;
+}
+
+.heading {
+    background-color:#F2F2F2;
+    height:752px;
+    width: 1440px; 
+    position:relative;
+    border-bottom-left-radius: 50px; 
+    border-bottom-right-radius: 50px;
+}
+
+.hometext
+{
+color:#000000;
+text-align:left;
+vertical-align:text-top;
+font-size:24px;
+font-family: "Poppins", sans-serif;
+font-weight: 600;
+font-style: normal;
+line-height:auto;
+border-style:hidden;
+outline:none;
+top:32px;
+left:690px;
+position:absolute;
+width:60px;
+height:30px;
+}
+
+.chat_icon{
+top:35px;
+left:1268px;
+position:absolute;
+width:35px;
+height: 35px;
+cursor: pointer;
+}
+
+.notification_icon{
+    top:35px;
+    left:1315px;
+    position:absolute;
+    width:35px;
+    height: 35px;
+    cursor: pointer;
+}
+
+.logo{
+    top:7px;
+    left:40px;
+    position:absolute;
+    width:80px;
+    height: 80px;
+}
+
+.logoseparator
+{
+    top:45px;
+    left:95px;
+    width: 60px;
+    transform:rotate(-90deg);
+    border:1px solid #01000c;
+    position:absolute;
+}
+
+.onlinemarketplace2
+{
+color:#01000c;
+text-align:left;
+vertical-align:text-top;
+font-size:18px;
+font-family: "Poppins", sans-serif;
+font-weight: 500;
+font-style: normal;
+line-height:auto;
+border-style:hidden;
+outline:none;
+top:20px;
+left:150px;
+position:absolute;
+width:100px;
+height: 66px;
+cursor: pointer;
+}
+
+#profiletitle
+{
+color:#000000;
+text-align:left;
+vertical-align:text-top;
+font-size:64px;
+font-family: "Poppins", sans-serif;
+font-weight: 600;
+font-style: normal;
+line-height:auto;
+border-style:hidden;
+outline:none;
+top:194px;
+left:163px;
+position:absolute;
+width:203px;
+height:96px;
+}
+
+.editprofilebutton {
+    width: 70px;
+    height: 18px;
+    position: absolute;
+    left: 1212px;
+    top: 224px;
+    display: flex; /* Flexbox para centrar el contenido */
+    align-items: center; /* Centra verticalmente */
+    justify-content: center; /* Centra horizontalmente */
+    background-color: #FFFFFF;
+    border: 1px solid #BCBCBC;
+    color: #01000C; /* Color del texto del botón */
+    padding: 10px 15px; /* Espaciado interno */
+    border-radius: 5px; /* Bordes redondeados */
+    cursor: pointer; /* Cambia el cursor al pasar por encima */
+    transition: background-color 0.3s; /* Transición suave para el cambio de color */
+    font-family: "Poppins", sans-serif;
+    font-weight: 500;
+    font-style: normal;
+    font-size: 13px;
+    text-decoration: none; /* Quita la línea de subrayado */
+}
+
+.editprofilebutton:hover {
+    background-color: #6ce81444; /* Color al pasar el mouse */
+}
+
+.l2 {
+position: absolute;
+top:307px;
+left: 120px;
+width:1200px;
+transform:rotate(0deg);
+border:1px solid #000000;
+}
+
+#name_profile{
+    width: 328px;
+    left: 439px;
+    top: 360px;
+    height: 72px;
+    position: absolute;
+    font-family: "Poppins", sans-serif;
+    font-weight: 500;
+    font-style: normal;
+    font-size: 48px;
+}
+
+#profession {
+    width: 283px;
+    left: 439px;
+    top: 432px;
+    height: 31px;
+    position: absolute;
+    font-family: "Poppins", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    font-size: 20px;
+}
+
+.profile_picture {
+    top:360px;
+    left:146px;
+    position:absolute;
+    width:250px;
+    height: 250px;
+    border-radius: 50%; 
+    object-fit: cover; 
+}
+
+.profile_picture2 {
+    top:25px;
+    left:1365px;
+    position:absolute;
+    width:50px;
+    height: 50px;
+    border-radius: 50%; 
+    object-fit: cover;
+}
+
+#description {
+    width: 826px;
+    left: 439px;
+    top: 485px;
+    height: 186px;
+    position: absolute;
+    font-family: "Poppins", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    font-size: 16px;
+}
+
+#email {
+    width: 200px;
+    left: 439px;
+    top: 600px;
+    height: 30px;
+    position: absolute;
+    font-family: "Poppins", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    font-size: 16px;
+    color: #007BFF;
+}
+
+.social-networks {
+    position: absolute;
+    left: 438px;
+    top: 639px; 
+    display: flex; /* Para alinear horizontalmente las imágenes */
+    gap: 10px; /* Espacio entre las imágenes */
+}
+
+.social-icon {
+    width: 32px; /* Ajusta el tamaño según lo que necesites */
+    height: 32px; /* Ajusta el tamaño según lo que necesites */
+    cursor: pointer; /* Cambia el cursor al pasar sobre la imagen */
+    transition: transform 0.2s; /* Para un efecto al pasar el mouse */
+}
+
+.social-icon:hover {
+    transform: scale(1.1); /* Efecto de aumento al pasar el mouse */
+}
+
+.star {
+    position: absolute;
+    left: 233px;
+    top: 630px; 
+    height: 30px; 
+    width: 30px;
+    cursor: pointer;
+}
+
+#calification {
+    position: absolute;
+    left: 270px;
+    top: 636px; 
+    height: 46px; 
+    width: 23px;
+    font-family: "Inter", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 600;
+    font-style: normal;
+    font-size:35;
+}
+
+.aboutsection {
+    height:436px;
+    width:1440px;
+    padding:0px;
+    top:0px;
+    position:relative;
+}
+
+.rectangleabout
+{
+    height:436px;
+    width:1440px;
+    background-color: #FFFFFF;
+    position: relative;
+}
+
+.abouttitle{
+    color: black;
+    width: 203px;
+    left: 619px;
+    top: 40px;
+    height: 60px;
+    position: absolute;
+    font-family: "Poppins", sans-serif;
+    font-weight: 500;
+    font-style: normal;
+    font-size: 40px; 
+}
+
+.experience {
+    position: absolute;
+    left: 118px;
+    top: 140px;
+    width: 265px;
+    height: 200px;
+    border: 1px solid #ccc;
+    border-radius: 15px;
+    background-color: #f2f2f2;
+    text-align: center;
+    font-family: "Poppins", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+}
+
+.experience-header {
+    background-color: #f6c6c6;
+    color: black;
+    font-size: 24px;
+    font-weight: 500;
+    padding: 10px;
+    border-radius: 10px 10px 0 0; 
+    margin-bottom: 15px;
+}
+
+.experience-body {
+    color: #333;
+}
+
+.jobs-done {
+    font-size: 20px;
+    margin-bottom: 10px;
+}
+
+.percentage {
+    color: #007bff;
+    font-weight: bold;
+}
+
+.price {
+    font-size: 20px;
+    margin-bottom: 10px;
+}
+
+.join-date {
+    font-size: 20px;
+}
+
+.habilities-container {
+    position: absolute;
+    left: 522px;
+    top: 120px;
+    width: 391px;
+    max-height: 250px;
+    overflow-y: auto;
+}
+
+.hability-container {
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+.hability {
+    background-color: #f0f0f0;
+    padding: 10px 20px;
+    border-radius: 20px;
+    display: inline-block; 
+    color: #333;
+    font-size: 14px;
+    font-family: "Poppins", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    max-width: 90%; 
+    white-space: nowrap; 
+}
+
+.hability-container:nth-child(6n+1) .hability {
+    background-color: #f6c6c6;
+}
+
+.hability-container:nth-child(6n+2) .hability {
+    background-color: #7ddac1; 
+}
+
+.hability-container:nth-child(6n+3) .hability {
+    background-color: #f6e6e6; /* Rosa Claro */
+}
+
+.hability-container:nth-child(6n+4) .hability {
+    background-color: #3c3838; /* Negro */
+    color: white;
+}
+
+.hability-container:nth-child(6n+5) .hability {
+    background-color: #c87cff; /* Morado */
+    color: white;
+}
+
+.hability-container:nth-child(6n+6) .hability {
+    background-color: #dbe4c2; /* Verde Claro */
+}
+
+.certificates-container {
+    position: absolute;
+    left: 1030px;
+    top: 135px;
+    width: 335px; /* Ancho del contenedor de certificados */
+    max-height: 180px; /* Altura máxima */
+    overflow-y: auto; /* Habilita el scroll si es necesario */
+    padding: 10px; /* Espaciado interno */
+    margin: 0 auto; /* Centra el contenedor */
+}
+
+.certificate-container { 
+    margin-bottom: -5px; /* Espaciado inferior entre certificados */
+}
+
+.name {
+    font-size: 14px; /* Tamaño de fuente del nombre */
+    font-family: "Poppins", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    margin-bottom: 5px;
+    margin-left: 10px; /* Espaciado inferior del nombre */
+}
+
+.rectangle20 {
+    background-color: #FFFFFF; /* Color de fondo del rectángulo */
+    border-radius: 10px;
+    border: 1px solid #BCBCBC; /* Bordes redondeados */ /* Espaciado interno del rectángulo */
+    width: 260px;
+    height: 50px;
+    position: relative; 
+    align-items: center;
+    display: flex; /* Necesario para posicionar elementos dentro */
+}
+
+.card {
+    margin-left: 16px; 
+    width: 24px;
+    height: 24px;
+}
+
+.type {
+    font-family: "Poppins", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    font-size: 12px; /* Tamaño de fuente del tipo de certificado */
+    color: #0040FF; /* Color del texto */
+    margin-left: 20px; /* Espaciado inferior del tipo */
+}
+
+.view {
+    height: 24px;
+    width: 24px; /* Ancho de la imagen del ícono de vista */
+    cursor: pointer; /* Cambia el cursor al pasar sobre la imagen */
+    position: relative; /* Posiciona el ícono de vista */
+    left: 280px;
+    top: -37px; /* Centra verticalmente */
+}
+
+.rectangle20 a {
+    text-decoration: none; 
+}
+
+
+
+.projectssection {
+    height:429px;
+    width:1440px;
+    padding:0px;
+    top:0px;
+    position:relative;
+}
+
+.rectangleproject
+{
+    height:429px;
+    width:1440px;
+    background-color: #F2F2F2;
+    position: relative;
+}
+
+.projects{
+    color: black;
+    width: 161px;
+    left: 639px;
+    top: 50px;
+    height: 60px;
+    position: absolute;
+    font-family: "Poppins", sans-serif;
+    font-weight: 500;
+    font-style: normal;
+    font-size: 40px; 
+}
+
+.projects-wrapper {
+    position: absolute; /* Para que los botones se posicionen en relación al contenedor */
+    width: 1339px;
+    top: 143px;
+    left: 49px;
+    height: 209px;
+}
+
+.project-name{
+    position: relative;
+    left: 30px;
+    top: 5px;
+    height: 36px;
+    width: 270px;
+    font-family: "Poppins", sans-serif;
+    font-weight: 500;
+    font-style: normal;
+    font-size: 26px;
+}
+
+.info-project{
+    position: relative;
+    left: 30px;
+    top: 20px;
+    height: 36px;
+    width: 270px;
+    font-family: "Poppins", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    font-size: 16px;
+}
+
+.nav-button {
+    position: absolute; /* Posiciona el botón de forma absoluta dentro del contenedor */
+    top: 50%; /* Centra el botón verticalmente */
+    transform: translateY(-50%); /* Ajusta la posición para estar en el centro verticalmente */
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    z-index: 1; /* Asegura que los botones se muestren por encima del contenido */
+}
+
+.nav-button:hover {
+    background-color: #0056b3; /* Color al pasar el mouse */
+}
+
+.nav-button.left {
+    left: 10px; /* Alinea el botón izquierdo */
+}
+
+.nav-button.right {
+    right: 10px; /* Alinea el botón derecho */
+}
+
+.projects-container {
+    left: 125px;
+    top: 10px;
+    width: 1083px;
+    height: 191px;
+    margin: 0 auto; /* Centra el contenedor */
+    position: absolute;
+    display: flex; /* Muestra los elementos en una fila */
+    overflow: hidden; 
+}
+
+.project-container {
+    width: 300px;
+    border-radius: 10px; /* Bordes redondeados */
+    padding: 10px; /* Espaciado interno */
+    margin-right: 61px; /* Espaciado a la derecha entre proyectos */
+    min-width: 150px; /* Ancho mínimo de cada proyecto */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Sombra para dar profundidad */
+    flex-shrink: 0; 
+}
+
+.project-container:nth-child(4n+1) {
+    background-color: #CAD0FF; /* Color 1: gris claro */
+}
+
+.project-container:nth-child(4n+2) {
+    background-color: #FFA4A4; /* Color 2: azul claro */
+}
+
+.project-container:nth-child(4n+3) {
+    background-color: #D2FFB6; /* Color 3: naranja claro */
+}
+
+.project-container:nth-child(4n+4) {
+    background-color: #CC94F7; /* Color 4: verde claro */
+}
+
+.l3 {
+    position: absolute;
+    top:420px;
+    left: 120px;
+    width:1200px;
+    transform:rotate(0deg);
+    border:1px solid #000000;
+}
+
+.commentssection {
+    height:584px;
+    width:1440px;
+    padding:0px;
+    top:0px;
+    position:relative;
+}
+
+.rectanglecomment
+{
+    height:584px;
+    width:1440px;
+    background-color: #F2F2F2;
+    position: relative;
+}
+
+.commentstitle{
+    color: black;
+    width: 232px;
+    left: 144px;
+    top: 81px;
+    height: 32px;
+    position: absolute;
+    font-family: "Poppins", sans-serif;
+    font-weight: 500;
+    font-style: normal;
+    font-size: 36px; 
+}
+
+/* Estilo general del contenedor */
+.rectangle-container {
+    position: absolute;
+    left: 131px;
+    top:131px;
+    width: 1178px; /* Ancho del contenedor */
+    height: 188px;
+    margin: 20px auto; /* Centra el contenedor en la página */
+    border-radius: 10px; /* Bordes redondeados */
+    background-color: #F2F2F2;
+}
+
+/* Estilo del formulario */
+.form-comment {
+    width: 1137px;
+}
+
+/* Estilo del textarea */
+textarea {
+    background-color: #F2F2F2;
+    width: 100%; /* Ancho completo */
+    height: 80px; /* Altura del textarea */
+    border: 1px solid #ccc; /* Borde del textarea */
+    border-radius: 5px; /* Bordes redondeados */
+    padding: 20px; /* Espaciado interno */
+    font-size: 16px; /* Tamaño de fuente */
+    resize: none; /* Desactiva el redimensionamiento */
+    margin-bottom: 20px; /* Espacio debajo del textarea */
+    font-family: "Poppins", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+}
+
+/* Estilo del botón */
+.joinbutton {
+    width: 119px;
+    height: 40px;
+    position: absolute;
+    left: 1050px;
+    display: flex; /* Flexbox para centrar el contenido */
+    align-items: center; /* Centra verticalmente */
+    justify-content: center; /* Centra horizontalmente */
+    background-color: #007BFF; /* Color de fondo del botón */
+    color: white; /* Color del texto del botón */
+    border: none; /* Sin borde */
+    padding: 10px 15px; /* Espaciado interno */
+    border-radius: 5px; /* Bordes redondeados */
+    cursor: pointer; /* Cambia el cursor al pasar por encima */
+    transition: background-color 0.3s; /* Transición suave para el cambio de color */
+    font-family: "Poppins", sans-serif;
+    font-weight: 600;
+    font-style: normal;
+    font-size: 14;
+}
+
+.joinbutton:hover {
+    background-color: #0056b3; /* Color al pasar el mouse */
+}
+
+.comments {
+    overflow-x: hidden; 
+    position: absolute;
+    left: 131px;
+    top:348px;
+    width: 1178px; /* Ancho del contenedor */
+    height: 188px;
+    max-height: 209px; /* Altura máxima */
+    overflow-y: auto; 
+    margin: 20px auto; /* Centra el contenedor en la página */
+    border-radius: 10px; /* Bordes redondeados */
+    background-color: #f9f9f9; /* Color de fondo del contenedor */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra sutil */
+}
+
+/* Estilo de la lista de comentarios */
+.comments-list {
+    font-family: "Poppins", sans-serif;
+    list-style: none; /* Eliminar viñetas de la lista */
+    padding: 0; /* Sin espaciado */
+    margin: 0; /* Sin margen */
+    font-style: normal;
+}
+
+/* Estilo de cada comentario */
+.comment {
+    display: flex; /* Usar flexbox para la alineación */
+    margin-bottom: 15px; /* Espacio entre comentarios */
+    padding: 10px; /* Espaciado interno */
+    border: 1px solid #e0e0e0; /* Borde del comentario */
+    border-radius: 5px; /* Bordes redondeados */
+    background-color: #fff; /* Color de fondo del comentario */
+}
+
+/* Estilo de la imagen del perfil */
+.profilecommentimg {
+    width: 50px; /* Ancho de la imagen */
+    height: 50px; /* Altura de la imagen */
+    border-radius: 50%; /* Hacer la imagen redonda */
+    margin-right: 15px; /* Espacio a la derecha de la imagen */
+}
+
+/* Estilo del contenedor de texto */
+.comment div {
+    text-align: justify; 
+    width: 1110px;
+    display: flex; /* Usar flexbox para la alineación vertical */
+    flex-direction: column; /* Alinear verticalmente */
+}
+
+/* Estilo del nombre del autor */
+.username {
+    font-size: 16px;
+    position: relative;
+    left: 70px;
+    top: -65px;
+    font-weight: bold; /* Negrita para el nombre */
+    margin-bottom: 5px; /* Espacio debajo del nombre */
+}
+
+/* Estilo de la fecha */
+.date {
+    position: relative;
+    left: 70px;
+    top: -20px;
+    font-size: 12px; /* Tamaño de fuente más pequeño */
+    color: #888; /* Color gris para la fecha */
+    margin-bottom: 5px; /* Espacio debajo de la fecha */
+    font-weight: 400;
+}
+
+/* Estilo del contenido del comentario */
+.comment p {
+    position: relative;
+    left: 15px;
+    top: -40px;
+    margin: 0; /* Sin margen */
+    font-size: 1em;
+    margin-bottom: -25px; /* Tamaño de fuente normal */
+}
+
+.footer {
+    background-color: #F2F2F2;
+    text-align: center;
+    font-family: "Poppins", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    padding: 0;
+    position: relative;
+    bottom: 0;
+    left: 0px;
+    width: 1440px; 
+    height: 135px;
+}
+
+
+.footer-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.footer-nav {
+    margin-top: 57px;
+}
+
+.footer-nav2 {
+    margin-top: 20px;
+}
+
+.footer-nav a {
+    color: #01000C;
+    margin: 0 15px;
+    text-decoration: none;
+    font-size: 20px;
+}
+
+.footer-nav a:hover {
+    text-decoration: underline; 
+}
+
+.encora2 {
+    position: absolute;
+    left: 37px;
+    top: 10px; 
+    height: 111px; 
+    width: 113px;
+}
+
+.gmail3 {
+    position: absolute;
+    left: 1252px;
+    top: 78px; 
+    height: 24px; 
+    width: 24px;
+    cursor: pointer;
+}
+
+.lin3 {
+    position: absolute;
+    left: 1280px;
+    top: 78px; 
+    height: 24px; 
+    width: 24px;
+    cursor: pointer;
+}
+
+.ig3 {
+    position: absolute;
+    left: 1308px;
+    top: 78px; 
+    height: 24px; 
+    width: 24px;
+    cursor: pointer;
+}
+
+.fb3 {
+    position: absolute;
+    left: 1336px;
+    top: 78px; 
+    height: 24px; 
+    width: 24px;
+    cursor: pointer;
+}
+
+.footertext {
+    text-align:center;
+    vertical-align:text-top;
+    font-size:12px;
+    font-family: "Inter", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    line-height:auto;
+    border-style:hidden;
+    outline:none;
+    top:105px;
+    left:1205px;
+    position:absolute;
+    width:200px;
+    height:18px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+

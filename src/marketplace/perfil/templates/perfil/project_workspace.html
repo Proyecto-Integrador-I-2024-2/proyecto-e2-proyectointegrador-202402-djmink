@@ -1,0 +1,195 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Main</title>
+    <link rel="stylesheet" href="{% static 'pw1.css' %}">
+</head>
+<body>
+
+    <div class="heading">
+        <div class="ptext hometext">Home</div>
+        <img class="icon chat_icon" src="{% static 'Chat_Icon.svg' %}"/>
+        <img class="icon notification_icon" src="{% static 'Notification_Icon.svg' %}"/>
+        <a href="{% url 'perfilFreelancer' profile.id %}">
+            <img class="profile_picture_heading" src="{{ profile.profile_picture.url }}" alt="Profile Picture"/>
+        </a>
+        <img class="logo" src="{% static 'logo.png' %}"/>
+        <div class="logoseparator"></div>
+        <div class="ptext onlinemarketplace">
+            Online Marketplace
+        </div>
+    </div>
+
+    <div class="main">
+        <div class="milestone-section">
+            <div class="ptext workspace-title">Workspace</div>
+            <div class="ptext milestones-title">Milestones</div>
+            <div class="milestone-container">
+                <div class="milestones-header">
+                    <select class="select" name="milestones-select" id="milestones-select" onclick="rotate('.milestones-header')" onchange="loadTasks(this)">
+                        <option value="">Select Milestone</option>
+                        {% for milestone in project.milestones %}
+                            <option value="{{ milestone.id }}">{{ milestone.name }}</option>
+                        {% endfor %}
+                    </select>
+                    <img class="arrow" src="{% static 'arrow.png' %}" alt="arrow">
+                </div>
+                <div class="tasks-list" id="tasks-list">
+                    <p class="ptext instruction">Select a milestone to see the tasks.</p>
+                </div>
+            </div>
+            <div class="boards-section">
+                <div class="board to-do">
+                    <div class="ptext to-do">To-do</div>
+                    <hr class="separator">
+                    <div class="tasks-list-to-do" id="tasks-list-to-do"></div>
+                </div>
+                <div class="board in-progress">
+                    <div class="ptext to-do">In progress</div>
+                    <hr class="separator">
+                    <div class="tasks-list-progress" id="tasks-list-progress"></div>
+                </div>
+                <div class="board done">
+                    <div class="ptext to-do">Done</div>
+                    <hr class="separator">
+                    <div class="tasks-list-done" id="tasks-list-done"></div>
+                </div>
+            </div>
+        </div>
+        <hr class="separator2">
+        <div class="assignments-section">
+            <div class="ptext assignments-title">Assignments List</div> 
+            <div class="assignments-container">
+                {% for assignment in project.assignments %}
+                    <div class="assignment-container">
+                        <div class="ptext assignment-name">{{ assignment.name }}</div>
+                        <div class="ptext assignment-task">{{ assignment.task.name }}</div>
+                        <div class="ptext assignment-date">{{ assignment.date }}</div>
+                        <div class="ptext assignment-status">{{ assignment.status }}</div>
+            
+                        {% if assignment.file %}
+                            <a class="ptext download-btn" href="{{ assignment.file }}" target="_blank">Download File</a>
+                        {% else %}
+                            <div class="ptext info">No file available</div>
+                        {% endif %}
+            
+                        {% if assignment.url %}
+                            <a class="ptext link" href="{{ assignment.url }}" target="_blank">Link</a>
+                        {% else %}
+                            <div class="ptext info2">No link available</div>
+                        {% endif %}
+                    </div>
+                {% empty %}
+                    <div class="ptext info">No assignments available for this project.</div>
+                {% endfor %}
+            </div>            
+            <hr class="separator3">
+            <div class="select-task-header">
+                <select class="task-select" name="task-select" id="task-select" onclick="rotate('.select-task-header')" onchange="showProjectTasks(this)">
+                    <option value="">Select Task</option>
+                    {% for milestone in project.milestones %}
+                        {% for task in milestone.tasks %}
+                            <option value="{{ task.id }}">{{ task.name }}</option>
+                        {% endfor %}
+                    {% empty %}
+                        <option>No tasks available for this project</option>
+                    {% endfor %}
+                </select>                
+                <img class="arrow2" src="{% static 'arrow.png' %}" alt="arrow">
+            </div>
+            <div class="upload-file-con">
+                <button class="upload-file-btn">Upload File</button>
+            </div>
+            <div class="ptext or">Or</div>
+            <input id="input-link" class="input-box" placeholder="Enter URL" />
+            <button class="add-assignment-btn" onclick="addAssignment()">Add assignment</button>
+            
+        </div>
+
+    </div>
+
+    <footer class="footer">
+    
+        <div class="footer-content">
+            <img class="encora" src="{% static 'Encora1.svg' %}" />
+            <img class="social-icon fb" src="{% static 'fb.png' %}"/>
+            <img class="social-icon ig" src="{% static 'ig.png' %}" />
+            <img class="social-icon lin" src="{% static 'lin.png' %}" />
+            <img class="social-icon gmail" src="{% static 'gmail.png' %}" />
+            <nav class="footer-nav">
+                <a href="#features">Features</a>
+                <a href="#about">About</a>
+                <a href="#support">Support</a>
+                <a href="#resources">Resources</a>
+                <a href="#places">Places</a>
+                <a href="#jobs">Jobs</a>
+            </nav>
+            <div class='footertext'> 
+                © 2024 Online Marketplace
+            </div>
+        </div>
+
+    </footer>
+
+
+
+    {{ project|json_script:"projectData" }}
+
+    <script>
+
+        function rotate(container) {
+            const selectContainer = document.querySelector(container);
+            selectContainer.classList.toggle('expanded');
+        }
+
+        const project = JSON.parse(document.getElementById('projectData').textContent);
+    
+        function loadTasks(select) {
+
+            const tasksListContainer = document.getElementById('tasks-list');
+            tasksListContainer.innerHTML = ''; 
+            const selectedMilestoneId = select.value;
+    
+            if (selectedMilestoneId) {
+                const selectedMilestone = project.milestones.find(m => m.id == selectedMilestoneId);
+    
+                if (selectedMilestone && selectedMilestone.tasks.length > 0) {
+                    selectedMilestone.tasks.forEach(task => {
+                        const taskDiv = document.createElement('div');
+                        taskDiv.classList.add('task-container');
+    
+                        taskDiv.innerHTML = `
+                            <div class="up">
+                                <img class="check" src="{% static 'Check.svg' %}">
+                                <div class="ptext task-name">${task.name}</div>
+                                <select class="status-select" onchange="updateTaskStatus(${task.id}, this.value)">
+                                    <option value="to-do">To-Do</option>
+                                    <option value="in-progress">In Progress</option>
+                                    <option value="done">Done</option>
+                                </select>
+                            </div>
+                            <div class="down">
+                                <div class="ptext task-desc">${task.description}</div>
+                            </div>
+                        `;
+    
+                        tasksListContainer.appendChild(taskDiv);
+                    });
+                } else {
+                    tasksListContainer.innerHTML = '<p>No tasks available for this milestone</p>';
+                }
+            } else {
+                tasksListContainer.innerHTML = '<p class="ptext instruction">Select a milestone to see the tasks.</p>';
+            }
+        }
+        
+    </script>
+
+</body>
