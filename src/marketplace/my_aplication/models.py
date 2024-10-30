@@ -113,9 +113,6 @@ class User(models.Model):
 
     # Datos compartidos de Freelancers y Companies
     date_joined = models.DateField(default=timezone.now)
-    
-    def __str__(self):
-        return f"{self.username} ({'Admin' if self.is_admin else 'User'})"
 
 class Freelancer(User):
     # Datos específicos para Freelancer
@@ -154,10 +151,40 @@ class Project(models.Model):
     # Elementos del proyecto
     requirements = models.ManyToManyField('Requirement', related_name='projects', blank=True)
     milestones = models.ManyToManyField('Milestone', related_name='projects', blank=True)
-    tasks = models.ManyToManyField('Task', related_name='projects', blank=True)
+    assigments = models.ManyToManyField('Assignment', related_name='projects', blank=True)
 
     def __str__(self):
         return self.name
+
+class SocialNetwork(models.Model):
+
+    TYPE_CHOICES = [
+        ('facebook', 'Facebook'),
+        ('twitter', 'Twitter'),
+        ('instagram', 'Instagram'),
+        ('linkedin', 'LinkedIn'),
+        ('github', 'GitHub'),
+    ]
+
+    profile = models.ForeignKey(Freelancer, related_name='social_networks', on_delete=models.CASCADE, null=True, blank=True)
+    client_profile = models.ForeignKey(CompanyManager, related_name='client_social_networks', on_delete=models.CASCADE, null=True, blank=True)
+    type = models.CharField(max_length=20, choices=TYPE_CHOICES, unique=True)
+    url = models.URLField(max_length=200)
+    image = models.ImageField(upload_to='social_networks/', default='social_networks/default_icon.png')
+
+    def save(self, *args, **kwargs):
+        if self.image.name == 'social_networks/default_icon.png':
+            if self.type == 'facebook':
+                self.image = 'social_networks/facebook_icon.png'
+            elif self.type == 'twitter':
+                self.image = 'social_networks/twitter_icon.jpg'
+            elif self.type == 'instagram':
+                self.image = 'social_networks/instagram_icon.png'
+            elif self.type == 'linkedin':
+                self.image = 'social_networks/linkedin_icon.png'
+            elif self.type == 'github':
+                self.image = 'social_networks/github_icon.png'
+        super().save(*args, **kwargs)
 
 class Requirement(models.Model):
     # Requisitos para el proyecto
@@ -182,6 +209,7 @@ class Task(models.Model):
     description = models.CharField(max_length=500)
     deadline = models.DateField()
     assigned_freelancer = models.ForeignKey(Freelancer, on_delete=models.PROTECT, related_name='tasks', null=True)
+    milestone = models.ForeignKey(Milestone, on_delete=models.PROTECT, related_name='tasks', null=True)
 
     def __str__(self):
         return self.title
@@ -193,14 +221,14 @@ class Experience(models.Model):
     start_date = models.DateField()
     end_date = models.DateField(null=True, blank=True)
     description = models.CharField(max_length=1000)
-    freelancer = models.ForeignKey(User, on_delete=models.PROTECT, related_name='experiences')
+    freelancer = models.ForeignKey(Freelancer, on_delete=models.PROTECT, related_name='experiences')
 
     def __str__(self):
         return f"{self.job} at {self.company_name}"
 
 class Portfolio(models.Model):
     # Portafolio del freelancer
-    freelancer = models.ForeignKey(User, on_delete=models.PROTECT, related_name='portfolios')
+    freelancer = models.ForeignKey(Freelancer, on_delete=models.PROTECT, related_name='portfolios')
 
 class Content(models.Model):
     # Contenidos en el portafolio
@@ -213,30 +241,30 @@ class Rate(models.Model):
     value = models.DecimalField(max_digits=3, decimal_places=1)
     date = models.DateField(default=timezone.now)
     comment = models.CharField(max_length=200)
-    freelancer = models.ForeignKey(User, on_delete=models.PROTECT, related_name='rates')
+    freelancer = models.ForeignKey(Freelancer, on_delete=models.PROTECT, related_name='rates')
 
 class Publication(models.Model):
     # Publicaciones de proyectos por parte de una compañía
     date = models.DateField()
-    company_manager = models.ForeignKey(User, on_delete=models.PROTECT, related_name='publications', null=True)
+    company_manager = models.ForeignKey(CompanyManager, on_delete=models.PROTECT, related_name='publications', null=True)
 
 class Contract(models.Model):
     # Contratos entre freelancers y compañías
     date = models.DateField()
-    company_manager = models.ForeignKey(User, on_delete=models.PROTECT, related_name='contracts_as_manager', null=True)
-    freelancer = models.ForeignKey(User, on_delete=models.PROTECT, related_name='contracts_as_freelancer', null=True)
+    company_manager = models.ForeignKey(CompanyManager, on_delete=models.PROTECT, related_name='contracts_as_manager', null=True)
+    freelancer = models.ForeignKey(Freelancer, on_delete=models.PROTECT, related_name='contracts_as_freelancer', null=True)
 
 class Payment(models.Model):
     # Pagos de la compañía al freelancer
     date = models.DateField()
     amount = models.DecimalField(max_digits=10, decimal_places=2)
-    company_manager = models.ForeignKey(User, on_delete=models.PROTECT, related_name='payments_made', null=True)
-    freelancer = models.ForeignKey(User, on_delete=models.PROTECT, related_name='payments_received', null=True)
+    company_manager = models.ForeignKey(CompanyManager, on_delete=models.PROTECT, related_name='payments_made', null=True)
+    freelancer = models.ForeignKey(Freelancer, on_delete=models.PROTECT, related_name='payments_received', null=True)
 
 class Application(models.Model):
     # Aplicación de freelancers a proyectos
     date = models.DateField(default=timezone.now)
-    freelancer = models.ForeignKey(User, on_delete=models.PROTECT, related_name='applications')
+    freelancer = models.ForeignKey(Freelancer, on_delete=models.PROTECT, related_name='applications')
 
 class Reference(models.Model):
     # Referencias de experiencias previas
@@ -245,9 +273,11 @@ class Reference(models.Model):
     email = models.CharField(max_length=50)
     experience = models.ForeignKey(Experience, on_delete=models.PROTECT, related_name='references')
 
-class Chat(models.Model):
-    # Sistema de mensajería básica
-    sender = models.ForeignKey(User, on_delete=models.PROTECT, related_name='sent_messages')
-    receiver = models.ForeignKey(User, on_delete=models.PROTECT, related_name='received_messages')
-    message = models.TextField()
-    timestamp = models.DateTimeField(auto_now_add=True)
+class Assignment(models.Model):
+    project = models.ForeignKey(Project, related_name='assignments', on_delete=models.CASCADE, null=True, blank=True) 
+    name = models.CharField(max_length=255)
+    task = models.ForeignKey(Task, on_delete=models.CASCADE, related_name='assignments')
+    date = models.DateField()
+    status = models.CharField(max_length=50)
+    file = models.FileField(upload_to='uploads/', blank=True, null=True)
+    url = models.URLField(blank=True, null=True)
