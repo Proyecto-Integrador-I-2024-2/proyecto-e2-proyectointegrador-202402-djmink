@@ -18,8 +18,9 @@ def login(request):
     if request.method == 'POST':
         username = request.POST.get('username')
         password = request.POST.get('password')
+        #realizar la autenticacion, que se quede logeado toda la app
         user = authenticate(request, username=username, password=password)
-        return redirect('home')
+        return redirect('home')#cambiar a dashboard
     else:
         return render(request, 'login.html')
 
