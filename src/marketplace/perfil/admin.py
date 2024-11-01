@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Profile, Skill, Certificate, Comment, Content, ClientProfile, Project, CommentClient, Publication, CommentPublication, Requirement, Profession, ProjectCategory, SocialNetwork, ProjectFreelancer, Milestone, Task, Assignment
+from .models import Profile, Skill, Certificate, Comment, Content, ClientProfile, Project, CommentClient, Publication, CommentPublication, Requirement, Profession, ProjectCategory, SocialNetwork, ProjectFreelancer, Milestone, Task, Assignment, ClientMilestone, ApplicationMilestone, TaskClient, AssignmentClient
 
 admin.site.register(Profile)
 admin.site.register(Skill)
@@ -20,6 +20,11 @@ admin.site.register(ProjectFreelancer)
 admin.site.register(Milestone)
 admin.site.register(Task)
 admin.site.register(Assignment)
+admin.site.register(ClientMilestone)
+admin.site.register(TaskClient)
+admin.site.register(AssignmentClient)
+admin.site.register(ApplicationMilestone)
+
 
 
 

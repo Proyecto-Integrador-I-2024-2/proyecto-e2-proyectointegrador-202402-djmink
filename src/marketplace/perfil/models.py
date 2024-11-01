@@ -205,8 +205,7 @@ class Milestone(models.Model):
     description = models.CharField(max_length=500)
     deadline = models.DateField()
     project = models.ForeignKey(ProjectFreelancer, on_delete=models.PROTECT, related_name='milestones')
-    deadline = models.DateField()
-    progress = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+    progress = models.DecimalField(max_digits=10, decimal_places=2, default=0, blank=True, null=True )
     freelancer = models.ForeignKey(Profile, on_delete=models.PROTECT, related_name='milestones')
 
 class Task(models.Model):
@@ -224,3 +223,36 @@ class Assignment(models.Model):
     status = models.CharField(max_length=50)
     file = models.FileField(upload_to='uploads/', blank=True, null=True)
     url = models.URLField(blank=True, null=True)
+
+#SOLO PARA PROBAR EL CLIENT PROJECT VIEW
+
+class ClientMilestone(models.Model):
+    name = models.CharField(max_length=50)
+    deadline = models.DateField()
+    project = models.ForeignKey(Project, on_delete=models.PROTECT, related_name='clientmilestones')
+    progress = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+    freelancer = models.ForeignKey(Profile, on_delete=models.PROTECT, related_name='clientmilestones')
+
+class TaskClient(models.Model):
+    STATE_CHOICES = [
+        ('NS', 'Not started'),
+        ('IP', 'In Progress'),
+        ('CP', 'Completed'),
+    ]
+    name = models.CharField(max_length=50)
+    milestone = models.ForeignKey(ClientMilestone, on_delete=models.PROTECT, related_name='tasksclient')
+    state = models.CharField(max_length=100, choices=STATE_CHOICES, default='NS')
+    freelancer = models.ForeignKey(Profile, on_delete=models.PROTECT, related_name='tasksclient', blank=True, null=True)
+
+class AssignmentClient(models.Model):
+    project = models.ForeignKey(Project, related_name='assignmentsclient', on_delete=models.CASCADE, null=True, blank=True) 
+    name = models.CharField(max_length=255)
+    task = models.ForeignKey(TaskClient, on_delete=models.CASCADE, related_name='assignmentsclient')
+    date = models.DateField()
+    status = models.CharField(max_length=50)
+    file = models.FileField(upload_to='uploads/', blank=True, null=True)
+    url = models.URLField(blank=True, null=True)
+
+class ApplicationMilestone(models.Model):
+    milestone = models.ForeignKey(ClientMilestone, on_delete=models.PROTECT, related_name='applications')
+    freelancer = models.ForeignKey(Profile, on_delete=models.PROTECT, related_name='applications')

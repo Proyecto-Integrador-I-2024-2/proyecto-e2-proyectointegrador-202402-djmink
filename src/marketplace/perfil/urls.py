@@ -4,10 +4,11 @@ from django.conf.urls.static import static
 from . import views
 
 urlpatterns = [
-    path('home/publications/', views.firstMain, name='firstMain'),
+    #en todas falta linkear los del footer
+    path('home/publications/', views.firstMain, name='firstMain'), #solo falta linkear con login y signup
     #freelancer
     path('perfilesFreelancer/<int:id>/', views.perfilesFreelancer, name='perfilFreelancer'),
-    path('perfilesFreelancer/<int:id>/main/', views.mainFreelancer, name='mainFreelancer'),
+    path('perfilesFreelancer/<int:id>/main/', views.mainFreelancer, name='mainFreelancer'), #linkear lo del footer
     path('perfilesFreelancer/<int:id>/account/', views.editAccount, name='editAccount'),
     path('perfilesFreelancer/<int:id>/editProfile/', views.editProfile, name='editProfile'),
     path('perfilesFreelancer/<int:id>/delete&disable/', views.deleteDisable, name='deleteDisable'),
@@ -23,6 +24,14 @@ urlpatterns = [
     path('perfilesCliente/<int:id>/account/', views.editAccountClient, name='editAccountClient'),
 
     path('perfilesCliente/<int:id>/main/<int:id_project>/', views.manageProject, name='manageProject'),
+
+    #para ver el perfil del freelancer
+    # urls.py
+    path('freelancer/profile/<int:idclient>/<int:id>/', views.freelancerProfile, name='freelancerProfile'),
+
+
+    
+
 
     #calendar
     path('calendar/', views.calendar, name='calendar'),

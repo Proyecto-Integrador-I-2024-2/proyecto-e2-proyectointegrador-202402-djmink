@@ -1,0 +1,473 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en" class="whatever" 
+    data-skill-count="{{ p.skills.count|default:0 }}" 
+    data-socials-count="{{ p.social_networks.count|default:0 }}"
+    data-certificates-count="{{p.certificates.count|default:0}}">
+<head>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Profile</title>
+    <link rel="icon" type="image/png" href="{% static 'img/Logo.png' %}">
+    <link rel="stylesheet" href="{% static 'css/freelancer_edit_profile.css' %}">
+</head>
+
+<body>
+    <div class="editsection">
+
+        <div class="heading">
+
+            <div class="rectangleheading"></div>
+            <div class="hometext">Home</div>
+            <img class="chat_icon" src="{% static 'img/Chat_Icon.svg' %}"/>
+            <img class="notification_icon" src="{% static 'img/Notification_Icon.svg' %}"/>
+            <a href="{% url 'perfilFreelancer' p.id %}">
+                <img class="profile_picture2" src="{{ p.profile_picture.url }}" alt="Profile Picture"/>
+            </a>
+            <img class="logo" src="{% static 'img/Logo.svg' %}"/>
+            <div class="logoseparator"></div>
+        
+            <div class="onlinemarketplace2">
+                Online Marketplace
+            </div>
+        </div>
+
+        <div class="ptext ep">
+            Edit profile
+        </div>     
+
+        <a href="{% url 'editAccount' p.id %}" class="ptext my-account">My account</a>
+        <a href="#editProfile" class="ptext profile">Profile</a>
+        <a href="{% url 'editPortfolio' p.id %}" class="ptext portfolio">Portfolio</a>
+        <a href="{% url 'deleteDisable' p.id %}" class="ptext delete-account">Delete account</a>       
+
+        <div class="container">
+
+            <div class="ptext profiletitle">
+                Profile
+            </div>
+
+            <div class="container-pic">
+                <img id="profile_picture3" class="profile_picture3" src="{{ p.profile_picture.url }}" alt="Profile Picture"/>
+                <div class="ptext name">{{ p.name }}</div>
+                <button id='change-picture-button' class='change-picture-button' onclick="changePicture()">
+                    <div class='ptext change'>Change profile picture</div>
+                </button>
+            </div>
+
+            <div class="ptext about-you">
+                About you
+            </div>
+
+            <div class="input-container-major">
+                <div class="ptext about">Major</div>
+                <textarea class="input-box major">{{ p.profession }}</textarea>
+            </div>
+
+            <div class="input-container-bio">
+                <div class="ptext about">Bio</div>
+                <textarea class="input-box bio">{{ p.description }}</textarea>
+            </div>
+
+            <div class="input-container-mail">
+                <div class="ptext about">Contact email</div>
+                <textarea class="input-box mail">{{ p.contact_email }}</textarea>
+            </div>
+
+            <div class="ptext links">
+                Social Media
+            </div>
+
+            <div class="social-networks" id="social-networks">
+                {% for network in p.social_networks.all %}
+                    <div class="container-media" id="social-{{ network.id }}">
+                        <img class="media-pic" src="{{ network.image.url }}"/>
+                        <textarea class="mediainput">{{ network.url }}</textarea>
+                        <button class="delete-btn social" onclick="removeTemporarySocial('{{ network.id }}', '{{ network.type }}')">X</button>
+                    </div>
+                {% endfor %}
+            </div>   
+
+            <div class="ptext add-new-social">
+                Add new
+            </div>
+
+            <div class="social-selector-container">
+                <select name="social-media" id="social-media" onchange="updateSocialMedia()">
+                    <option value="">Select Social Media</option>
+                    {% for media in available_media %}
+                        <option value="{{ media.0 }}">{{ media.1 }}</option>
+                    {% empty %}
+                        <option>No social media available</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <textarea id="user-input" class="newmediainput" style="display: none;"></textarea>
+            <img id="selected-icon" src="" alt="Social Media Icon" style="display: none;">
+            <button id= "add-social-btn" class="add social-btn" style="display: none" onclick="addSocialNetwork()">+</button>
+
+            <div class="ptext professional">
+                Your Professional Path
+            </div>
+
+            <div class="input-container-exp">
+                <div class="ptext exp">Experience</div>
+                <textarea class="input-box exp">{{ p.experience }}</textarea>
+            </div>
+    
+            <div class="input-container-hour">
+                <div class="ptext exp">Hourly Rate</div>
+                <textarea class="input-box exp">{{ p.price }}</textarea>
+            </div>
+
+            <div class="ptext skills">
+                Skills
+            </div>
+
+            <div class="habilities-container" id="habilities-container">
+                {% for hability in p.skills.all %}
+                    <div class="hability-container" id="hability-{{ hability.id }}">
+                        <div class="hability">{{ hability.name }}
+                            <button class="delete-btn skill" onclick="markForRemoval('hability', '{{ hability.id }}')">X</button>
+                        </div>
+                    </div>
+                {% empty %}
+                    <p>You don't have skills registered yet.</p>
+                {% endfor %}
+            </div> 
+
+            <div class="ptext add-new-skill">
+                Add new
+            </div>
+            
+            <div class="input-container-skill">
+                <input id="input-box-skill" class="input-box skill" type="text" placeholder="New skill" oninput="showElement('input-box-skill', 'add-skill-btn')"/>
+            </div>
+
+            <button id= "add-skill-btn" class="add skill-btn" style="display: none" onclick="addSkill()">+</button>
+
+            <div class="ptext certificates">
+                Certificates
+            </div>
+
+            <div class="certificates-container" id="certificates-container">
+                {% for certificate in p.certificates.all %}
+                    <div class="certificate-container" id="certificate-{{ certificate.id }}">
+                        <div class="name">{{ certificate.name }}</div>
+                        <div class="rectangle20">
+                            <img id="card" class="card" src="{% static 'img/card.svg' %}" alt="Card"/>
+                            <div class="type">{{ certificate.type }}</div>
+                            <button class="delete-btn cer" onclick="markForRemoval('certificate', '{{ certificate.id }}')">X</button>
+                        </div>
+                        <a href="{{ certificate.url }}" target="_blank">
+                            <img id="view" class="view" src="{% static 'img/view.svg' %}" alt="View"/>
+                        </a>
+                    </div>
+                {% empty %}
+                    <p>You don't have certificates registered yet.</p>
+                {% endfor %}
+            </div>
+
+            <div class="ptext add-new-cer">
+                Add new
+            </div>
+    
+            <div class="input-container-certificates name">
+                <input id="input-box name-cer" class="input-box cer" type="text"  placeholder="Enter name" oninput="showElement('input-box name-cer', 'input-box type-cer')"/>
+            </div>
+    
+            <div class="input-container-certificates type">
+                <input id="input-box type-cer" class="input-box cer" type="text" style="display: none" placeholder="Enter type" oninput="showElement('input-box type-cer', 'input-box url-cer')"/>
+            </div>
+    
+            <div class="input-container-certificates url">
+                <input id="input-box url-cer" class="input-box cer" type="text" style="display: none" placeholder="Enter URL" oninput="showElement('input-box url-cer', 'add-cer-btn')"/>
+            </div>
+    
+            <button id= "add-cer-btn" class="add cer-btn" style="display: none" onclick="addCertificate()">+</button>
+
+            <button id= "save" class="med-btn save">Save Changes</button>
+
+        </div>
+
+        <footer class="footer">
+        
+            <div class="footer-content">
+                <img id="encora2" class="encora2" src="{% static 'img/Encora1.svg' %}" />
+                <a href="https://www.facebook.com/encorainc" target="_blank">
+                    <img class="fb3" src="{% static 'img/fb.png' %}"/>
+                </a>
+                <a href="https://www.instagram.com/encorainc/" target="_blank">
+                    <img class="ig3" src="{% static 'img/ig.png' %}" />
+                </a>
+                <a href="https://www.linkedin.com/company/encorainc/" target="_blank">
+                    <img class="lin3" src="{% static 'img/lin.png' %}" />
+                </a>
+                <img class="gmail3" src="{% static 'img/gmail.png' %}" />
+                <nav class="footer-nav">
+                    <a href="#features">Features</a>
+                    <a href="#about">About</a>
+                    <a href="#support">Support</a>
+                    <a href="#resources">Resources</a>
+                    <a href="#places">Places</a>
+                    <a href="#jobs">Jobs</a>
+                </nav>
+                <div id='footertext' class='footertext'> 
+                    © 2024 Online Marketplace
+                </div>
+            </div>
+    
+        </footer>
+
+    </div>
+
+    <div id="profilePictureModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <div id='change-pic-title' class='ptext change-pic-title'>Change Profile Picture</div>
+            <img id="profile_picture4" class="profile_picture4" src="{{ p.profile_picture.url }}" alt="Profile Picture"/>
+            <div class="file-select" id="src-file1" >
+                <input type="file" id="profile-picture-input" accept="image/*" onchange="previewImage(event)">
+            </div>
+            <button id="delete-button" class="med-btn delete" onclick="deletePicture()">Delete Picture</button>
+            <button id="save-button" class="med-btn savepic" onclick="savePicture()">Accept</button>
+        </div>
+    </div>
+
+    <script>
+
+        const htmlElement = document.querySelector('html');
+        let skillCount = parseInt(htmlElement.dataset.skillCount, 10) || 0;
+        let socialCount = parseInt(htmlElement.dataset.socialsCount, 10) || 0;
+        let certificateCount = parseInt(htmlElement.dataset.certificatesCount, 10) || 0;
+
+        let skillIdCounter = skillCount + 1;
+        let socialIdCounter = socialCount + 1;
+        let certificateIdCounter = certificateCount + 1;
+
+        function showElement(input, element){
+            const userInput = document.getElementById(input);
+            const elementToShow = document.getElementById(element);
+            if (userInput.value){
+                elementToShow.style.display = 'block';
+            } else {
+                elementToShow.style.display = 'none';
+            }
+        }
+
+        function addSkill(){
+            const userInput = document.getElementById('input-box-skill');
+            const skillsList = document.getElementById('habilities-container');
+            const button = document.getElementById('add-skill-btn');
+            const newSkillId = skillIdCounter++;
+            const newSkillDiv = document.createElement('div');
+            newSkillDiv.classList.add('hability-container');
+            newSkillDiv.id = 'hability-' + newSkillId;
+
+            newSkillDiv.innerHTML = `
+                <div class="hability">${userInput.value}
+                    <button class="delete-btn skill" onclick="markForRemoval('hability', '${newSkillId}')">X</button>
+                </div>
+            `;
+
+            skillsList.appendChild(newSkillDiv);
+            userInput.value = '';
+            button.style.display = 'none';
+        }
+
+        function addCertificate(){
+
+            const name = document.getElementById('input-box name-cer');
+            const type = document.getElementById('input-box type-cer');
+            const url = document.getElementById('input-box url-cer');
+
+            const certificatesList = document.getElementById('certificates-container');
+            const button = document.getElementById('add-cer-btn');
+
+            const newCertificateId = certificateIdCounter++;
+            const newCertificateDiv = document.createElement('div');
+            newCertificateDiv.classList.add('certificate-container');
+            newCertificateDiv.id = 'certificate-' + newCertificateId;
+
+            newCertificateDiv.innerHTML = `
+                <div class="name">${name.value}</div>
+                    <div class="rectangle20">
+                        <img id="card" class="card" src="{% static 'img/card.svg' %}" alt="Card"/>
+                        <div class="type">${type.value}</div>
+                        <button class="delete-btn cer" onclick="markForRemoval('certificate', '${newCertificateId}')">X</button>
+                    </div>
+                    <a href="${url.value}" target="_blank">
+                        <img id="view" class="view" src="{% static 'img/view.svg' %}" alt="View"/>
+                    </a>
+                </div>
+            `;
+
+            certificatesList.appendChild(newCertificateDiv);
+            name.value = '';
+            type.value = '';
+            url.value = '';
+            type.style.display = 'none';
+            url.style.display = 'none';
+            button.style.display = 'none';
+        }
+
+        let removedItems = [];
+
+        function markForRemoval(type, itemId) {
+            console.log(type + " " + itemId)
+            console.log(typeof itemId);
+            const element = document.getElementById(type + '-' + itemId);
+            if (element) {
+                console.log('exists')
+                element.style.display = 'none';
+                removedItems.push({ type, itemId });
+            } else {
+                console.error('Element not found:', itemId); // Para depuración
+            }
+        }
+
+        function updateSocialMedia() {
+            const selectElement = document.getElementById('social-media');
+            const selectedValue = selectElement.value;
+            const userInput = document.getElementById('user-input');
+            const iconElement = document.getElementById('selected-icon');
+            const button = document.getElementById('add-social-btn');
+
+            const urlMap = {
+                'facebook': 'facebook.com/',
+                'twitter': 'twitter.com/',
+                'instagram': 'instagram.com/',
+                'linkedin': 'linkedin.com/in/',
+                'github': 'github.com/'
+            };
+
+            const iconMap = {
+                'facebook': "{% static 'img/fb.png' %}", 
+                'twitter': "{% static 'img/twitter_icon.jpg' %}",    
+                'instagram': "{% static 'img/ig.png' %}",
+                'linkedin': "{% static 'img/lin.png' %}",  
+                'github': "{% static 'img/git.png' %}" 
+            };
+
+            if (urlMap[selectedValue]) {
+                userInput.value = `${urlMap[selectedValue]}your_user`;
+                userInput.style.display = 'block';
+                iconElement.src = iconMap[selectedValue];
+                iconElement.style.display = 'block';
+                button.style.display = 'block';
+            } else {
+                userInput.style.display = 'none'; 
+                iconElement.style.display = 'none';
+                button.style.display = 'none';
+            }
+
+        }
+
+        function addSocialNetwork() {
+            const selectElement = document.getElementById('social-media');
+            const selectedValue = selectElement.value;
+            const userInput = document.getElementById('user-input');
+            const socialNetworksContainer = document.getElementById('social-networks');
+            const iconElement = document.getElementById('selected-icon');
+            const button = document.getElementById('add-social-btn');
+
+            // Mapa de iconos para cada red social
+            const iconMap = {
+                'facebook': "{% static 'img/fb.png' %}", 
+                'twitter': "{% static 'img/twitter_icon.jpg' %}",    
+                'instagram': "{% static 'img/ig.png' %}",
+                'linkedin': "{% static 'img/lin.png' %}",  
+                'github': "{% static 'img/git.png' %}" 
+            };
+
+            // Verifica que una red social y un usuario hayan sido seleccionados
+            if (selectedValue && userInput.value) {
+
+                const newSocialId = socialIdCounter++;
+                const newSocialDiv = document.createElement('div');
+                newSocialDiv.classList.add('container-media');
+                newSocialDiv.id = 'social-' + newSocialId;
+
+
+                // Agregar el HTML dinámicamente
+                newSocialDiv.innerHTML = `
+                    <img class="media-pic" src="${iconMap[selectedValue]}" alt="${selectedValue} icon"/>
+                    <textarea class="mediainput">www.${userInput.value}</textarea>
+                    <button class="delete-btn social" onclick="removeTemporarySocial('${newSocialId}', '${selectedValue}')">X</button>
+                `;
+
+                // Añadir el nuevo div al contenedor
+                socialNetworksContainer.appendChild(newSocialDiv);
+
+                // Eliminar la opción seleccionada del selector
+                selectElement.querySelector(`option[value="${selectedValue}"]`).remove();
+
+                // Limpiar el input y el select
+                selectElement.value = '';
+                userInput.value = '';
+                userInput.style.display = 'none';
+                iconElement.style.display = 'none';
+                button.style.display = 'none';
+            }
+        }
+
+        function removeTemporarySocial(element, selectedValue) {
+            markForRemoval('social', element);
+            const selectElement = document.getElementById('social-media');
+            const option = document.createElement('option');
+            option.value = selectedValue;
+            option.textContent = selectedValue.charAt(0).toUpperCase() + selectedValue.slice(1);
+            selectElement.appendChild(option);
+        }
+
+        var modal = document.getElementById("profilePictureModal");
+
+        function changePicture(){
+            modal.style.display = "block";
+            const span = document.getElementsByClassName("close")[0];
+
+            span.onclick = function() {
+                modal.style.display = "none";
+            }
+
+            window.onclick = function(event) {
+                if (event.target == modal) {
+                    modal.style.display = "none";
+                }
+            }
+        }
+
+        var reader = new FileReader();
+        var imageResult = "";
+
+        function previewImage(event) {
+            reader.onload = function() {
+                imageResult = reader.result;
+                var output = document.getElementById('profile_picture4');
+                output.src = imageResult; 
+            };
+            reader.readAsDataURL(event.target.files[0]);
+        }
+
+        function savePicture() {
+            const currentPic = document.getElementById('profile_picture3');
+            currentPic.src = imageResult;
+            modal.style.display = "none";
+        }
+
+        function deletePicture(){
+            const output = document.getElementById('profile_picture4');
+            output.src = "{% static 'img/user.jpg' %}";
+            imageResult = "{% static 'img/user.jpg' %}";
+            const input = document.getElementById("profile-picture-input");
+            input.value = '';
+        }
+
+    </script>
+
+</body>

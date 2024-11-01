@@ -1,0 +1,82 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Projects</title>
+    <link rel="icon" type="image/png" href="{% static 'img/Logo.png' %}">
+    <link rel="stylesheet" href="{% static 'css/freelancer_projects_list.css' %}">
+</head>
+<body>
+
+    <div class="heading">
+        <div class="ptext hometext">Home</div>
+        <img class="icon chat_icon" src="{% static 'img/Chat_Icon.svg' %}"/>
+        <img class="icon notification_icon" src="{% static 'img/Notification_Icon.svg' %}"/>
+        <a href="{% url 'perfilFreelancer' profile.id %}">
+            <img class="profile_picture_heading" src="{{ profile.profile_picture.url }}" alt="Profile Picture"/>
+        </a>
+        <img class="logo" src="{% static 'img/logo.svg' %}"/>
+        <div class="logoseparator"></div>
+        <div class="ptext onlinemarketplace">
+            Online Marketplace
+        </div>
+    </div>
+
+    <div class="projects-title-container">
+        <h1 class="ptext Projects">My Projects</h1>
+    </div>
+
+    <div class="projects-section">
+        <div class="projects-container">
+            {% for project in profile.projects.all %}
+                    <div class="project-container">
+                        <div class="left">
+                            <div class="ptext project-name">{{project.name}}</div>
+                            <div class="ptext project-desc">{{project.description}}</div>
+                            <div class="ptext project-state">State: {{project.state}}</div>
+                            <a href="{% url 'projectWorkspace' profile.id project.id %}">
+                                <button class="open-btn">Open</button>
+                            </a>                            
+                        </div>
+                        <img class="project-picture" src="{{ project.project_picture.url }}" alt="Project Picture"/>
+                    </div>
+                {% empty %}
+                    <p>You don't have projects registered yet.</p>
+                {% endfor %}
+        </div>
+    </div> 
+
+    <footer class="footer">
+        <div class="footer-content">
+            <img class="encora" src="{% static 'img/Encora1.svg' %}" />
+            <a href="https://www.facebook.com/encorainc" target="_blank">
+                <img class="social-icon fb" src="{% static 'img/fb.png' %}"/>
+            </a>
+            <a href="https://www.instagram.com/encorainc/" target="_blank">
+                <img class="social-icon ig" src="{% static 'img/ig.png' %}" />
+            </a>
+            <a href="https://www.linkedin.com/company/encorainc/" target="_blank">
+                <img class="social-icon lin" src="{% static 'img/lin.png' %}" />
+            </a>
+            <img class="social-icon gmail" src="{% static 'img/gmail.png' %}" />
+            <nav class="footer-nav">
+                <a href="#features">Features</a>
+                <a href="#about">About</a>
+                <a href="#support">Support</a>
+                <a href="#resources">Resources</a>
+                <a href="#places">Places</a>
+                <a href="#jobs">Jobs</a>
+            </nav>
+            <div class='footertext'> 
+                © 2024 Online Marketplace
+            </div>
+        </div>
+    </footer>
+
+</body>

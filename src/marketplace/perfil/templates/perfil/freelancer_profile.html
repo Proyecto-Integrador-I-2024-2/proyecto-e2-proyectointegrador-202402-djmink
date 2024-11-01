@@ -1,0 +1,243 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Profile</title>
+    <link rel="icon" type="image/png" href="{% static 'img/Logo.png' %}">
+    <link rel="stylesheet" href="{% static 'css/freelancer_profile.css' %}">
+</head>
+<body> 
+
+    <div id="heading" class="heading"></div>
+        <div id="hometext" class="hometext">Home</div>
+        <img id="chat_icon" class="chat_icon" src="{% static 'img/Chat_Icon.svg' %}"/>
+        <img id="notification_icon" class="notification_icon" src="{% static 'img/Notification_Icon.svg' %}"/>
+        <img id="profile_picture2" class="profile_picture2" src="{{ p.profile_picture.url }}" alt="Profile Picture"/>
+        <img id="logo" class="logo" src="{% static 'img/logo.svg' %}"/>
+        <div id="logoseparator" class="logoseparator"></div>
+    
+        <div id="onlinemarketplace2" class="onlinemarketplace2">
+            Online Marketplace
+        </div>
+
+        <div id="profiletitle" class="profiletitle">
+            Profile
+        </div>
+
+        <a href="{% url 'editAccount' p.id %}" class="editprofilebutton">
+            <div id='editprofilebuttontext' class='editprofilebuttontext'>Edit profile</div>
+        </a>
+
+        <hr class="l2">
+
+        <div id="name_profile">{{ p.name }}</div>
+        <div id="profession">{{ p.profession }}</div>
+        <img id="profile_picture" class="profile_picture" src="{{ p.profile_picture.url }}" alt="Profile Picture"/>
+        <div id="description">{{ p.description }}</div>
+        <div id="email">{{ p.contact_email }}</div>
+        <div class="social-networks">
+            {% for network in p.social_networks.all %}
+                <a href="{{ network.url }}" target="_blank">
+                    <img class="social-icon" src="{{ network.image.url }}" alt="{{ network.type }}">
+                </a>
+            {% endfor %}
+        </div>
+        <div id="calification">{{ p.rating }}</div>
+        <img id="star" class="star" src="{% static 'img/Star.svg' %}" />
+    </div> 
+
+    <div id="aboutsection" class="aboutsection">
+
+        <div id="rectangleabout" class="rectangleabout"></div>
+
+        <div id="abouttitle" class="abouttitle">
+            About Me
+        </div>
+
+        <div class="habilities-container">
+            {% for hability in p.skills.all %}
+                <div class="hability-container">
+                    <div class="hability">{{ hability.name }}</div>
+                </div>
+            {% empty %}
+                <p>You don't have skills registered yet.</p>
+            {% endfor %}
+        </div>        
+
+        <div class="experience">
+            <div class="experience-header">{{ p.experience }}</div>
+            <div class="experience-body">
+                <div class="jobs-done">
+                    <span class="percentage">{{ p.jobs_completed }}%</span> Jobs Completed
+                </div>
+                <div class="price">
+                    {{ p.price }}
+                </div>
+                <div class="join-date">
+                    Joined {{ p.join_date }}
+                </div>
+            </div>
+        </div>
+
+        <div class="certificates-container">
+            {% for certificate in p.certificates.all %}
+                <div class="certificate-container">
+                    <div class="name">{{ certificate.name }}</div>
+                    <div class="rectangle20">
+                        <img id="card" class="card" src="{% static 'img/card.svg' %}" alt="Card"/>
+                        <div class="type">{{ certificate.type }}</div>
+                    </div>
+                    <a href="{{ certificate.url }}" target="_blank">
+                        <img id="view" class="view" src="{% static 'img/view.svg' %}" alt="View"/>
+                    </a>
+                </div>
+            {% empty %}
+                <p>You don't have certificates registered yet.</p>
+            {% endfor %}
+        </div>     
+    
+    </div>   
+
+    <div id="projectssection" class="projectssection">
+        <div id="rectangleproject" class="rectangleproject"></div>
+        <div id="projects" class="projects">
+            Projects
+        </div>
+        <div class="projects-wrapper">
+         
+            <button id="prevBtn" class="nav-button left">←</button>
+            
+            <div class="projects-container" id="projectsContainer">
+                {% for project in p.contents.all %}
+                    <div class="project-container">
+                        <div class="project-name">{{ project.name }}</div>
+                        <div class="info-project">{{ project.type }}</div>
+                        <div class="info-project">{{ project.duration }}</div>
+                        <a class="info-project" href="{{ project.url }}" target="_blank">{{ project.name }}</a>
+                    </div>
+                {% empty %}
+                    <p>You don't have projects registered yet.</p>
+                {% endfor %}
+            </div>
+    
+            <button id="nextBtn" class="nav-button right">→</button>
+        </div>
+        <hr class="l3">
+    </div>
+    
+
+    <div id="commentssection" class="commentssection">
+
+        <div id="rectanglecomment" class="rectanglecomment"></div>
+
+        <div id="commentstitle" class="commentstitle">
+            Comments
+        </div>
+
+        <div class="comments">
+        
+            <ul class="comments-list">
+                {% for comment in p.comments.all %}
+                    <li class="comment">
+                        <div>
+                            <img id="profilecommentimg" class="profilecommentimg" src="{% static 'user.jpg' %}"/>
+                            <div class="date">{{ comment.created_at }}</div>
+                            <div class="username">{{ comment.author }}</div>
+                            <p>{{ comment.content }}</p>
+                        </div>
+                    </li>
+                {% empty %}
+                    <li>No comments yet.</li>
+                {% endfor %}
+            </ul>
+        </div>
+        
+    </div>
+   
+
+    <footer class="footer">
+        
+        <div class="footer-content">
+            <img id="encora2" class="encora2" src="{% static 'img/Encora1.svg' %}" />
+            <a href="https://www.facebook.com/encorainc" target="_blank">
+                <img class="fb3" src="{% static 'img/fb.png' %}"/>
+            </a>
+            <a href="https://www.instagram.com/encorainc/" target="_blank">
+                <img class="ig3" src="{% static 'img/ig.png' %}" />
+            </a>
+            <a href="https://www.linkedin.com/company/encorainc/" target="_blank">
+                <img class="lin3" src="{% static 'img/lin.png' %}" />
+            </a>
+            <img class="gmail3" src="{% static 'img/gmail.png' %}" />
+            <nav class="footer-nav">
+                <a href="#features">Features</a>
+                <a href="#about">About</a>
+                <a href="#support">Support</a>
+                <a href="#resources">Resources</a>
+                <a href="#places">Places</a>
+                <a href="#jobs">Jobs</a>
+            </nav>
+            <div id='footertext' class='footertext'> 
+                © 2024 Online Marketplace
+            </div>
+        </div>
+
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const container = document.getElementById('projectsContainer');
+            const projectContainers = document.querySelectorAll('.project-container');
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+
+            let currentIndex = 0;
+            const visibleProjects = 3; 
+            const projectWidth = 300;
+            const marginRight = 81; 
+            const totalProjects = projectContainers.length;
+
+            const scrollAmount = (projectWidth + marginRight);
+
+            function updateButtons() {
+                if (currentIndex === 0) {
+                    prevBtn.disabled = true;
+                } else {
+                    prevBtn.disabled = false;
+                }
+
+                if (currentIndex + visibleProjects >= totalProjects) {
+                    nextBtn.disabled = true;
+                } else {
+                    nextBtn.disabled = false;
+                }
+            }
+
+            prevBtn.addEventListener('click', function() {
+                if (currentIndex > 0) {
+                    currentIndex--;
+                    container.scrollLeft -= scrollAmount;
+                }
+                updateButtons();
+            });
+
+            nextBtn.addEventListener('click', function() {
+                if (currentIndex + visibleProjects < totalProjects) {
+                    currentIndex++;
+                    container.scrollLeft += scrollAmount;
+                }
+                updateButtons();
+            });
+
+            updateButtons();
+        });
+    </script>
+
+</body>
+</html>
