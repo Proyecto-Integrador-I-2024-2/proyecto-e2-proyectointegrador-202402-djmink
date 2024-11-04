@@ -1,11 +1,12 @@
 from django.shortcuts import render, redirect
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login as auth_login
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 #from .forms import CompanyRegistrationForm, FreelancerRegistrationForm, LoginForm
 from django.contrib.auth.views import LoginView
+from django.contrib.auth.hashers import make_password
 
-from my_aplication.models import Freelancer, CompanyManager
+from my_aplication.models import Freelancer, CompanyManager, User
 
 #SMTP libraries
 from django.core.mail import send_mail
@@ -18,11 +19,27 @@ def login(request):
     if request.method == 'POST':
         username = request.POST.get('username')
         password = request.POST.get('password')
-        #realizar la autenticacion, que se quede logeado toda la app
+
+        # Realizar la autenticación
         user = authenticate(request, username=username, password=password)
-        return redirect('home')#cambiar a dashboard
-    else:
-        return render(request, 'login.html')
+
+        if user is not None:
+            auth_login(request, user)  # Iniciar sesión
+
+            # Verificar si el usuario es un Freelancer o un CompanyManager
+            if Freelancer.objects.filter(id=user.id).exists():
+                return redirect('mainFreelancer', id=user.id)  # Redirigir a la vista de Freelancer
+            elif CompanyManager.objects.filter(id=user.id).exists():
+                return redirect('mainCompany', id=user.id)  # Redirigir a la vista de CompanyManager
+            else:
+                return redirect('home')  # Redirigir a una vista predeterminada si no es Freelancer ni CompanyManager
+
+        else:
+            # En caso de error en la autenticación, volver a mostrar el formulario con un mensaje de error
+            return render(request, 'login.html', {'incorrect_credentials': True})
+
+    # Si el método de la solicitud no es POST, simplemente muestra el formulario de inicio de sesión
+    return render(request, 'login.html')
 
 def recover(request):
     if request.method == 'POST':
@@ -43,25 +60,41 @@ def send_recovery_email(email, password):
 
 #Registro de Freelancers
 def registerf1(request):
-    if request.method == 'POST':
-        #verificacion del usuario (que no exista)
-        username = request.POST.get('username')
-        object = Freelancer.objects.filter(username=username)
-        if object.exists():
-            #devolver alerta tipo js
-            return render(request, 'signUp1.html', {'username_exists': True})
-        else:
-            username = request.POST.get('username')
-            fullname = request.POST.get('fullname')
-            print('name:', fullname)
-            phone_number = request.POST.get('phone_number')
-            password = request.POST.get('password')
 
-            freelancer_profile = Freelancer.objects.create(name=fullname, email=username, phone=phone_number, image=None)
-            user = Freelancer.objects.create(username=username, password=password, profile=freelancer_profile)
-            return redirect('registerf2', id = user.profile.id)
+    if request.method == 'POST':
+        # Obtener datos del formulario
+        username = request.POST.get('username')
+        name = request.POST.get('fullname')
+        phone = request.POST.get('phone_number')
+        password = request.POST.get('password')
+
+        # Comprobar si el valor es un correo electrónico
+        if '@' in username:
+            email = username
+            username = email
+        else:
+            email = None
+            username = username
+
+        # Comprobar si el nombre de usuario ya existe
+        if username and User.objects.filter(username=username).exists():
+            print('hehehhehe')
+            return render(request, 'signUp1.html', {'username_exists': True})
+
+        freelancer = Freelancer.objects.create(
+            username=username,
+            email=email,
+            password=make_password(password),
+            name=name,
+            phone=phone
+        )
+
+        return redirect('registerf2', id=freelancer.id)  # Redirigir al siguiente paso con el ID del freelancer
+
     else:
-        return render(request, 'signUp1.html', {'username_exists': False})
+        return render(request, 'signUp1.html', {'username_exists': False, 'email_exists': False})
+
+
     
 def registerf2(request, id):
     if request.method == 'POST':
@@ -80,10 +113,10 @@ def registerf3(request, id):
     if request.method == 'POST':
         freelancer_profile = Freelancer.objects.get(id=id)
         country = request.POST.get('country')
-        user = Freelancer.objects.get(profile=freelancer_profile)
-        user.country = country
-        user.identification = id
-        user.save()
+        identification = request.POST.get('identification')
+        freelancer_profile.country = country
+        freelancer_profile.identification = identification
+        freelancer_profile.save()
         return redirect('login')
     else:
         return render(request, 'SignUp3.html', {'countries': countries})

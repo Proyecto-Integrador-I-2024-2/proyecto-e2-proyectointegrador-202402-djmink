@@ -101,14 +101,14 @@ class Chat(models.Model):
 
 from django.db import models
 from django.utils import timezone
+from django.contrib.auth.models import BaseUserManager
+from django.contrib.auth.hashers import make_password
+from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, BaseUserManager
 
 class User(models.Model):
-    # Datos básicos del usuario
     username = models.CharField(max_length=100, unique=True)
-    email = models.EmailField(max_length=100, unique=True)
+    email = models.EmailField(max_length=100, null=True)
     password = models.CharField(max_length=100)
-    
-    # Datos del perfil común para Freelancers y Companies
     name = models.CharField(max_length=100, blank=True, null=True)
     phone = models.CharField(max_length=100, blank=True, null=True)
     image = models.ImageField(upload_to='profile_pictures/', blank=True, null=True)
@@ -117,8 +117,13 @@ class User(models.Model):
     contact_email = models.CharField(max_length=100, default='example@example.com')
     date_joined = models.DateField(default=timezone.now)
 
-class Freelancer(User):
+    REQUIRED_FIELDS = ['email']  # Campos requeridos al crear un usuario
+    USERNAME_FIELD = 'username'
 
+    def __str__(self):
+        return self.username
+
+class Freelancer(User):
     EXPERIENCE_CHOICES = [
         ('junior', 'Junior'),
         ('semi_senior', 'Semi-senior'),
@@ -133,7 +138,6 @@ class Freelancer(User):
     jobs_completed = models.IntegerField(default=0)
     price = models.CharField(max_length=100)
     experience = models.CharField(max_length=20, choices=EXPERIENCE_CHOICES, default='junior')
-
 
 class CompanyManager(User):
     legal_agent = models.CharField(max_length=255, blank=True, null=True)

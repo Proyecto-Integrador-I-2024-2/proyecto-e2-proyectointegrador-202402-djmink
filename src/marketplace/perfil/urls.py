@@ -8,7 +8,7 @@ urlpatterns = [
     path('home/publications/', views.firstMain, name='firstMain'), #solo falta linkear con login y signup
     #freelancer
     path('perfilesFreelancer/<int:id>/', views.perfilesFreelancer, name='perfilFreelancer'),
-    path('perfilesFreelancer/<int:id>/main/', views.mainFreelancer, name='mainFreelancer'), #linkear lo del footer
+    path('perfilesFreelancer/<int:id>/main/', views.mainFreelancer, name='mainFreelancer'),
     path('perfilesFreelancer/<int:id>/account/', views.editAccount, name='editAccount'),
     path('perfilesFreelancer/<int:id>/editProfile/', views.editProfile, name='editProfile'),
     path('perfilesFreelancer/<int:id>/delete&disable/', views.deleteDisable, name='deleteDisable'),
