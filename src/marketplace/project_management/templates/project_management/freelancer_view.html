@@ -9,171 +9,397 @@
   </head>
   <body>
     <div class="frame">
-      <div class="view-project">
-        <footer class="footer">
-          <img class="image" src="{% static 'image-4.png' %}" />
-          <div class="overlap-group">
-            <div class="text-wrapper">2024 Online Marketplace</div>
-            <img class="img" src="{% static 'image-8-1.png' %}" />
-            <img class="image-2" src="{% static 'image-9-1.png' %}" />
-            <img class="image-3" src="{% static 'image-11-1.png' %}" />
-            <img class="image-4" src="{% static 'image-12-1.png' %}" />
+      <div id="view-project" class="view-project" data-project-id="{{ p.id }}">
+
+        <div class="heading">  
+          <a href="http://127.0.0.1:8000/">
+            <button class="logo-name">
+              <img class="logo" src="{% static 'Marketplace_1.png' %}" />
+              <div class="line-wrapper"><img class="line-2" src="{% static 'line-1.svg' %}" /></div>
+              <div class="online-marketplace">Online<br />Marketplace</div>
+            </button>
+          </a>
+          <div class="text-wrapper-26">Freelancer Project View</div>
+          <div class = "user-elements">
+            <img class="notification-icon" src="{% static 'notification-icon-1.svg' %}" />
+            <img class="chat-icon" src="{% static 'chat-icon-1.svg' %}" />
+            <img class="profile-picture" src="{% static 'profile-picture.png' %}" />
           </div>
-          <div class="div">©</div>
-          <div class="overlap">
-            <div class="text-wrapper-2">Terms</div>
-            <div class="text-wrapper-3">Privacy</div>
-            <div class="text-wrapper-4">Cookies</div>
-            <div class="group">
-              <div class="text-wrapper-5">Support</div>
-              <div class="text-wrapper-6">About</div>
-              <div class="text-wrapper-7">Features</div>
-              <div class="text-wrapper-8">Jobs</div>
-              <div class="text-wrapper-9">Places</div>
-              <div class="text-wrapper-10">Resources</div>
-            </div>
-          </div>
-        </footer>
+        </div>
+        <div id="applied" class="blue-notification"><div id="applied-text" class="your-account-has">Application sent</div></div>
+
         <div class="torso">
-          <div class="owner">
-            <img class="ellipse" src="{% static 'ellipse-274.png' %}" />
-            <div class="text-wrapper-11">Universidad ICESI</div>
-          </div>
-          <div class="comment-list">
-            <div class="overlap-2">
-              <div class="comment">
-                <img class="ellipse-2" src="{% static 'ellipse-257.png' %}" />
-                <div class="overlap-group-2">
-                  <div class="user">Mark</div>
-                  <div class="element-moths-ago">1.2 Moths ago</div>
+          <div class = "introduction">
+            <div class="project_name">{{ p.name }}</div>
+            <div class = "second-half">
+              <div class = "left-half">  
+                <div class="owner">
+                  <img class="ellipse" src="{% static 'ellipse-274.png' %}" />
+                  <div class="text-wrapper-11">{{p.profile.name}}</div>
                 </div>
-                <div class="comment-text">Such an interesting project!</div>
+                <button class="grade-label" onclick="toggleStar()">
+                  <img id="star-image" class="grade" src="{% static 'grade-1.svg' %}" />
+                  <div id="rating" class="text-wrapper-23">{{ rating }}</div>
+                </button>
+                <p class="date">Creation date: {{ p.date_created|date:"F jS, Y" }}</p>
               </div>
-              <img class="line" src="{% static 'line-10.svg' %}" />
-            </div>
-            <div class="comment-2">
-              <img class="ellipse-2" src="{% static 'ellipse-257-1.png' %}" />
-              <div class="overlap-group-2">
-                <div class="user">Rebeka</div>
-                <div class="element-moths-ago">9 Moths ago</div>
+              <div class="action-div">
+                <button id="save-button" class="save-button" onclick="toggleSave()"><img id= "saved-icon" class="save-button-2" src="{% static 'bookmark-2.svg' %}"/></button>
+                <button id="like-button" class="like-button" onclick="toggleLike()">
+                  <div class="overlap-7">
+                    <img id="like-icon" class="favorite" src="{% static 'favorite.svg' %}" />
+                    <div id=like-count class="text-wrapper-25">{{ p.likes }}</div>
+                  </div>
+                </button>
+                <button id="apply-button" class="apply-button"><div class="save-changes-2">Apply</div></button>
               </div>
-              <p class="comment-text">It was really nice working with this community!</p>
-            </div>
+            </div>  
           </div>
-          <div class="make-comment">
-            <div class="overlap-3">
-              <div class="text-wrapper-12">Write your comment</div>
-              <div class="rectangle"></div>
-            </div>
-            <div class="component"><div class="save-changes">Publish</div></div>
-            <img class="bold" src="{% static 'bold.svg' %}" />
-            <img class="italic" src="{% static 'italic-1.svg' %}" />
-            <img class="underline" src="{% static 'underline-1.svg' %}" />
+          <div class = "bigger-column-spacing">
+            <img class="picture" src="{% static 'picture.png' %}" />
+            <pre class="the-sonic-landscapes">
+              {{d|linebreaksbr}}
+            </pre>
           </div>
-          <p class="requirements">
-            <div class="requirement">
-              <div class="type">
-                <div class="div-wrapper"><div class="text-wrapper-13">musicologist</div></div>
-              </div>
-              <div class="overlap-wrapper">
-                <div class="overlap-4"><div class="text-wrapper-14">Ethnomusicologist</div></div>
-              </div>
-              <p class="p">
-                Transcribe musical elements such as rhythms, melodies, and instruments from the collected sounds for further
-                analysis and integration into modern compositions.
-              </p>
-              <div class="status">
-                <div class="text-wrapper-15">Taken</div>
-                <img class="img-2" src="{% static 'uncheck-1.svg' %}" />
-              </div>
-              <div class="title">Transcription and Analysis</div>
-              <div class="number">
-                <div class="overlap-5"><div class="text-wrapper-16">3</div></div>
-              </div>
-            </div>
-            <div class="requirement-2">
-              <div class="overlap-group-wrapper">
-                <div class="overlap-group-3"><div class="text-wrapper-18">Audio technician</div></div>
-              </div>
-              <div class="type-2">
-                <div class="sound-engineer-wrapper"><div class="sound-engineer">Sound engineer</div></div>
-              </div>
-              <p class="p">
-                Travel to selected regions to record traditional sounds, instruments, and local musicians. Properly catalog
-                the sounds and maintain high-quality audio recordings.
-              </p>
-              <div class="status">
-                <div class="text-wrapper-15">Taken</div>
-                <img class="img-2" src="{% static 'uncheck-1.svg' %}" />
-              </div>
-              <div class="title-2">Sound Collection and Documentation</div>
-              <div class="number">
-                <div class="overlap-5"><div class="text-wrapper-16">2</div></div>
-              </div>
-            </div>
+          <div class="text-wrapper-22">Requirements</div>
+          <div class="requirements">
             <div class="requirement-3">
-              <div class="type-3">
-                <div class="overlap-group-4"><div class="text-wrapper-19">Ethnographer</div></div>
-              </div>
-              <div class="type-4">
-                <div class="overlap-6"><div class="text-wrapper-20">Cultural anthropologist</div></div>
+              <div class = "row-flex-div">
+                <div class="number">
+                  <div class="overlap-5"><div class="text-wrapper-16">1</div></div>
+                </div>  
+                <div class = "req-title-div">
+                  <div class="title-3">Ethnographic Fieldwork Planning</div>
+                  <div class="row-flex-div">
+                    <img class="img-2" src="{% static 'check.svg' %}" />
+                    <div class="text-wrapper-21">Available</div>
+                  </div>
+                </div>
               </div>
               <p class="p">
                 Organize and plan visits to different Colombian regions to collect traditional sounds and musical elements.
                 This includes identifying communities, securing permissions, and arranging logistics for interviews and
                 sound recordings.
               </p>
-              <div class="status">
-                <div class="text-wrapper-21">Available</div>
-                <img class="img-2" src="{% static 'check.svg' %}" />
-              </div>
-              <div class="title-3">Ethnographic Fieldwork Planning</div>
-              <div class="number">
-                <div class="overlap-5"><div class="text-wrapper-16">1</div></div>
-              </div>
+              <div class = "row-flex-div">
+                <div class="type-4">
+                  <div class="overlap-6">
+                    <div class="text-wrapper-20">Cultural anthropologist</div>
+                  </div>
+                  <div class="type-3">
+                    <div class="overlap-group-4">
+                      <div class="text-wrapper-19">Ethnographer</div>
+                    </div>
+                  </div>
+                </div>
+              </div>  
             </div>
-          </p>
-          <div class="text-wrapper-17">Comments</div>
-          <div class="text-wrapper-22">Requirements</div>
-          <p class="date">Creation date: november 24th, 2024</p>
-          <div class="grade-label">
-            <img class="grade" src="{% static 'grade-1.svg' %}" />
-            <div class="text-wrapper-23">5.0</div>
+            <div class="requirement-3">
+              <div class = "row-flex-div">
+                <div class="number">
+                  <div class="overlap-5"><div class="text-wrapper-16">1</div></div>
+                </div>  
+                <div class = "req-title-div">
+                  <div class="title-3">Ethnographic Fieldwork Planning</div>
+                  <div class="row-flex-div">
+                    <img class="img-2" src="{% static 'check.svg' %}" />
+                    <div class="text-wrapper-21">Available</div>
+                  </div>
+                </div>
+              </div>
+              <p class="p">
+                Organize and plan visits to different Colombian regions to collect traditional sounds and musical elements.
+                This includes identifying communities, securing permissions, and arranging logistics for interviews and
+                sound recordings.
+              </p>
+              <div class = "row-flex-div">
+                <div class="type-4">
+                  <div class="overlap-6">
+                    <div class="text-wrapper-20">Cultural anthropologist</div>
+                  </div>
+                  <div class="type-3">
+                    <div class="overlap-group-4">
+                      <div class="text-wrapper-19">Ethnographer</div>
+                    </div>
+                  </div>
+                </div>
+              </div>  
+            </div>
           </div>
-          <p class="the-sonic-landscapes">
-            The &#34;Sonic Landscapes&#34; project aims to explore and document the rich cultural diversity of Colombia
-            through music. By combining ethnographic research with modern music production techniques, the project seeks
-            to create a series of original compositions that reflect the unique soundscapes of various Colombian regions.
-            Students will engage in fieldwork, collecting traditional sounds and musical elements from different
-            communities, and then use this material to produce contemporary music that honors and celebrates
-            Colombia&#39;s cultural heritage.
-          </p>
-          <div class="text-wrapper-24">Sonic Landscapes</div>
-          <img class="picture" src="{% static 'picture.png' %}" />
-          <div class="action-div">
-            <div class="save-button"><div class="save-button-2"></div></div>
-            <div class="like-button">
-              <div class="overlap-7">
-                <img class="favorite" src="{% static 'favorite.svg' %}" />
-                <div class="text-wrapper-25">54</div>
+          <div class="text-wrapper-17">Comments</div>
+          <div class="make-comment">
+            <div class = "row-space-out">
+              <div class="row-flex-div">
+                <img class="bold" src="{% static 'bold.svg' %}" />
+                <img class="italic" src="{% static 'italic-1.svg' %}" />
+                <img class="underline" src="{% static 'underline-1.svg' %}" />
               </div>
+              <button id="publish-comment" class="component"><div class="save-changes">Publish</div></button>
             </div>
-            <button class="apply-button"><div class="save-changes-2">Apply</div></button>
-          </div>  
-        </div>  
-        <div class="heading">
-          <div class = "user-elements">
-            <img class="profile-picture" src="{% static 'profile-picture.png' %}" />
-            <img class="chat-icon" src="{% static 'chat-icon-1.svg' %}" />
-            <img class="notification-icon" src="{% static 'notification-icon-1.svg' %}" />
-          </div>  
-          <div class="text-wrapper-26">Home</div>
-          <div class="logo-name">
-            <div class="line-wrapper"><img class="line-2" src="{% static 'line-1.svg' %}" /></div>
-            <div class="online-marketplace">Online<br />Marketplace</div>
+            <div class="overlap-3">
+              <textarea id="comment-box" class="rectangle" placeholder="Write your comment"></textarea>
+              <!-- <div id="placeholder" class="text-wrapper-12">Write your comment</div> -->
+            </div>
+          </div>
+          <ul class="comment-list">
+            {% for comment in c %}
+            <li class="overlap-2">
+              <div class = "whole-comment">
+                <div class="comment">
+                  <img class="ellipse-2" src="{% static 'ellipse-257.png' %}" />
+                  <div class="overlap-group-2">
+                    <div class="user">{{ comment.author }}</div>
+                    <div class="element-moths-ago">{{ comment.created_at|date:"F jS, Y" }}</div>
+                  </div>
+                </div>
+                <div class = "comment-message">
+                  <div class="comment-text">{{comment.content}}</div>
+                  <img class="line" src="{% static 'line-10.svg' %}" />
+                </div>  
+              </div>  
+            </li>
+            <!-- <div class="comment-2">
+              <img class="ellipse-2" src="{% static 'ellipse-257-1.png' %}" />
+              <div class="overlap-group-2">
+                <div class="user">Rebeka</div>
+                <div class="element-moths-ago">October 21st, 2024</div>
+              </div>
+              <p class="comment-text">It was really nice working with this community!</p>
+              <img class="line" src="{% static 'line-10.svg' %}" />
+            </div> -->
+            {% endfor %}
+          </ul>  
+        </div>
+        
+        <div class="footer">
+          <img class="image" src="{% static 'image-4.png' %}" />
+          <div class="overlap">
+            <div class="group">
+              <div class="text-wrapper-7">Features</div>
+              <div class="text-wrapper-6">About</div>
+              <div class="text-wrapper-5">Support</div>
+              <div class="text-wrapper-10">Resources</div>
+              <div class="text-wrapper-9">Places</div>
+              <div class="text-wrapper-8">Jobs</div>
+            </div>
+          </div>
+          <div class="overlap-group">
+            <img class="image-2" src="{% static 'image-9-1.png' %}" />
+            <img class="image-3" src="{% static 'image-11-1.png' %}" />
+            <img class="img" src="{% static 'image-8-1.png' %}" />
+            <img class="image-4" src="{% static 'image-12-1.png' %}" />
           </div>
         </div>
       </div>
     </div>
+    {% include 'project_management\application_form.html' %}
   </body>
+  <script>
+    // Track the current "liked" state
+    let isLiked = false;
+  
+    // Function to toggle like state
+    function toggleLike() {
+      // Get the like count element
+      const likeCountElement = document.getElementById('like-count');
+      // Get the image element
+      const likeIcon = document.getElementById('like-icon');
+      // Parse the current like count as an integer
+      let likeCount = parseInt(likeCountElement.innerText, 10);
+  
+      if (isLiked) {
+        // If already liked, decrease the count and change the image to "not liked" state
+        likeCount--;
+        likeIcon.src = "{% static 'favorite.svg' %}"; // Change back to "not liked" image
+      } else {
+        // If not liked, increase the count and change the image to "liked" state
+        likeCount++;
+        likeIcon.src = "{% static 'favorite_filled.svg' %}"; // Change to "liked" image
+      }
+  
+      // Update the displayed like count
+      likeCountElement.innerText = likeCount;
+  
+      // Toggle the liked state
+      isLiked = !isLiked;
+    }
+  </script>
+  <script>
+    //Track the current "saved" state
+    let isSaved = false;
+  
+    // Function to toggle like state
+    function toggleSave() {
+      // Get the image element
+      const savedIcon = document.getElementById('saved-icon');
+  
+      if (isSaved) {
+        savedIcon.src = "{% static 'bookmark-2.svg' %}"; // Change back to "not liked" image
+      } else {
+        savedIcon.src = "{% static 'bookmark-filled.svg' %}"; // Change to "liked" image
+      }
+      // Toggle the liked state
+      isSaved = !isSaved;
+    }
+  </script>
+  <script>
+    // Track the current "liked" state
+    let isStarred = false;
+  
+    // Function to toggle like state
+    function toggleStar() {
+      // Get the like count element
+      const ratingCountElement = document.getElementById('rating');
+      // Get the image element
+      const starIcon = document.getElementById('star-image');
+      // Parse the current like count as an integer
+      // let starCount = parseInt(likeCountElement.innerText, 10);
+  
+      if (isStarred) {
+        // If already liked, decrease the count and change the image to "not liked" state
+        // likeCount--;
+        starIcon.src = "{% static 'grade-1.svg' %}"; // Change back to "not liked" image
+      } else {
+        // If not liked, increase the count and change the image to "liked" state
+        // likeCount++;
+        starIcon.src = "{% static 'star-filled.svg' %}"; // Change to "liked" image
+      }
+  
+      // Update the displayed like count
+      // likeCountElement.innerText = likeCount;
+  
+      // Toggle the liked state
+      isStarred = !isStarred;
+    }
+  </script>
+  <script>
+    //Track the current "saved" state
+    let isApplying = false;
+  
+    // Function to toggle like state
+    function toggleApplying() {
+      // Get the image element
+      const savedIcon = document.getElementById('saved-icon');
+  
+      if (isSaved) {
+        savedIcon.src = "{% static 'bookmark-2.svg' %}"; // Change back to "not liked" image
+      } else {
+        savedIcon.src = "{% static 'bookmark-filled.svg' %}"; // Change to "liked" image
+      }
+      // Toggle the liked state
+      isSaved = !isSaved;
+    }
+  </script>
+  <script>
+  var applyButton2 = document.getElementById('basic-button');
+  var appliedDiv = document.getElementById('applied')
+  var appliedTextDiv = document.getElementById('applied-text')
+
+    // Get the modal
+    var modal = document.getElementById('application-modal');
+
+    // Get the button that opens the modal
+    var applyButton = document.getElementById('apply-button');
+
+    // Get the elements that close the modal
+    var closeModal = document.getElementById('close-modal');
+    var closeImage = document.querySelector('.close-image');
+
+    // When the user clicks the apply button, open the modal
+    applyButton.onclick = function() {
+      modal.style.display = 'block';
+    }
+
+    // When the user clicks on <span> (x), close the modal
+    closeModal.onclick = function() {
+      modal.style.display = 'none';
+    }
+
+    // When the user clicks the close image, close the modal
+    closeImage.onclick = function() {
+      modal.style.display = 'none';
+    }
+
+    // When the user clicks outside of the modal content, close it
+    window.onclick = function(event) {
+      if (event.target == modal) {
+        modal.style.display = 'none';
+      }
+    }
+
+    applyButton2.onclick = function() {
+    modal.style.display = 'none';  
+    appliedDiv.style.display = 'block';
+    appliedTextDiv.style.display = 'block';
+    appliedDiv.classList.remove('fade-out'); // Ensure the element is fully opaque
+    appliedTextDiv.classList.remove('fade-out'); // Ensure the element is fully opaque
+
+    wait = setTimeout(function() {
+    appliedDiv.classList.add('fade-out'); // Start the fade-out transition
+    appliedTextDiv.classList.add('fade-out'); // Start the fade-out transition
+
+    setTimeout(function() {
+      appliedDiv.style.display = 'none'; // Hide the element after the transition
+      appliedTextDiv.style.display = 'none'; // Hide the element after the transition 
+      }, 1000); // Match this duration with the CSS transition duration
+    }, 3000);
+    }
+  </script>
+  <script>
+    
+    const commentBox = document.getElementById('comment-box');
+    const placeholder = document.getElementById('placeholder');
+
+    commentBox.addEventListener('focus', function() {
+    placeholder.style.display = 'none'; // Hide the placeholder on focus
+    });
+
+    commentBox.addEventListener('blur', function() {
+    if (commentBox.value.trim() === '') {
+    placeholder.style.display = 'block'; // Show placeholder again if no text
+    }
+    });
+
+    // Automatically grow the text area as user types
+    // commentBox.addEventListener('input', function() {
+    // commentBox.style.height = 'auto';
+    // commentBox.style.height = (commentBox.scrollHeight) + 'px';
+    // });
+  </script>  
+  <script>
+    document.getElementById('publish-comment').addEventListener('click', function() {
+      const projectId = document.getElementById('view-project').dataset.projectId;
+      const commentBox = document.getElementById('comment-box');
+      const content = commentBox.value;
+
+      // Assuming you have a way to get author and project_id; update accordingly
+      const author = "Anonymous"; // Update with the actual author if needed
+
+      fetch('/project/post_comment/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+          'X-CSRFToken': '{{ csrf_token }}'  // Include CSRF token for security
+        },
+        body: new URLSearchParams({
+          'author': author,
+          'content': content,
+          'project_id': projectId
+        })
+      })
+      .then(response => response.json())
+      .then(data => {
+        if (data.success) {
+          alert(data.message);
+          commentBox.value = '';  // Clear the comment box
+          // Optionally, refresh comments here or append the new comment to the list
+        } else {
+          alert(data.message);
+        }
+      })
+      .catch(error => {
+        console.error('Error:', error);
+      });
+    });
+  </script>
 </html>
