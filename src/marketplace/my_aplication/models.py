@@ -1,3 +1,6 @@
+from django.contrib.contenttypes.models import ContentType
+from django.contrib.contenttypes.fields import GenericForeignKey
+
 '''
 from django.db import models
 from django.utils import timezone
@@ -108,26 +111,73 @@ class User(models.Model):
     # Datos del perfil común para Freelancers y Companies
     name = models.CharField(max_length=100, blank=True, null=True)
     phone = models.CharField(max_length=100, blank=True, null=True)
-    image = models.ImageField(upload_to='images/', blank=True, null=True)
-    
-
-    # Datos compartidos de Freelancers y Companies
+    image = models.ImageField(upload_to='profile_pictures/', blank=True, null=True)
+    description = models.TextField()
+    rating = models.FloatField(default=0.0)
+    contact_email = models.CharField(max_length=100, default='example@example.com')
     date_joined = models.DateField(default=timezone.now)
 
 class Freelancer(User):
-    # Datos específicos para Freelancer
-    portfolio_url = models.URLField(max_length=255, blank=True, null=True)
-    skills = models.TextField(blank=True, null=True)
+
+    EXPERIENCE_CHOICES = [
+        ('junior', 'Junior'),
+        ('semi_senior', 'Semi-senior'),
+        ('senior', 'Senior'),
+        ('manager', 'Manager'),
+        ('lead', 'Lead'),
+    ]
+
     identification = models.CharField(max_length=100, blank=True, null=True)
     country = models.CharField(max_length=100, blank=True, null=True)
+    jobs_completed = models.IntegerField(default=0)
+    price = models.CharField(max_length=100)
+    experience = models.CharField(max_length=20, choices=EXPERIENCE_CHOICES, default='junior')
 
 
 class CompanyManager(User):
-    # Datos específicos para Company
     legal_agent = models.CharField(max_length=255, blank=True, null=True)
     address = models.CharField(max_length=100, blank=True, null=True)
     business_vertical = models.CharField(max_length=100, blank=True, null=True)
     company_type = models.CharField(max_length=100, blank=True, null=True)
+
+class Rating(models.Model):
+    content_type = models.ForeignKey(ContentType, on_delete=models.PROTECT)
+    object_id = models.PositiveIntegerField()
+    user = GenericForeignKey('content_type', 'object_id')
+    score = models.FloatField()
+    date_rated = models.DateField(default=timezone.now)
+
+    def __str__(self):
+        return f'{self.rated_by} rated {self.user} - {self.score}'
+
+class Skill(models.Model):
+    profile = models.ForeignKey(Freelancer, related_name='skills', on_delete=models.CASCADE)
+    name = models.CharField(max_length=100)
+
+    def __str__(self):
+        return self.name
+
+class Certificate(models.Model):
+    profile = models.ForeignKey(Freelancer, related_name='certificates', on_delete=models.CASCADE)
+    name = models.CharField(max_length=100)
+    type = models.CharField(max_length=100)
+    url = models.URLField()
+
+    def __str__(self):
+        return self.name
+    
+class CommentProfile(models.Model):
+    content_type = models.ForeignKey(ContentType, on_delete=models.PROTECT)
+    object_id = models.PositiveIntegerField()
+    user = GenericForeignKey('content_type', 'object_id')
+    author = models.CharField(max_length=100)
+    content = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    comment = models.ForeignKey('self', on_delete=models.PROTECT, related_name='replies', null=True, blank=True)  # can have a reply
+
+    def __str__(self):
+        return f"{self.author}: {self.content}"  
+    
 
 class Project(models.Model):
 
@@ -137,24 +187,40 @@ class Project(models.Model):
         ('COMPLETED', 'Completed'),
         ('CANCELLED', 'Cancelled'),
     ]
-    # Información básica del proyecto
-    name = models.CharField(max_length=50)
-    description = models.CharField(max_length=500)
-    budget = models.DecimalField(max_digits=10, decimal_places=2) 
-    type = models.CharField(max_length=100)
-    duration = models.CharField(max_length=100)
-    url = models.URLField()
-    state = models.CharField(max_length=100, choices=STATE_CHOICES, default='PENDING')
+    
+    manager = models.ForeignKey(CompanyManager, related_name='projects', on_delete=models.CASCADE)
+    name = models.CharField(max_length=100, default='Untitled Project')  # Default project name
+    type = models.CharField(max_length=100, default='General')  # Default type
+    duration = models.CharField(max_length=100, default='Not Specified')  # Default duration
+    description = models.TextField(default='No description provided.')  # Default description
+    budget = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)  # Default budget
+    deadline = models.DateField(null=True, blank=True)  # No default, but can be left empty
+    date_created = models.DateField(auto_now_add=True)  # Automatically set to the current date when created
     project_picture = models.ImageField(upload_to='project_pictures/', blank=True, null=True)
-    manager = models.ForeignKey(CompanyManager, on_delete=models.PROTECT, related_name='managed_projects', null=True)
+    state = models.CharField(max_length=100, choices=STATE_CHOICES, default='PENDING')
+    
 
-    # Elementos del proyecto
-    requirements = models.ManyToManyField('Requirement', related_name='projects', blank=True)
-    milestones = models.ManyToManyField('Milestone', related_name='projects', blank=True)
-    assigments = models.ManyToManyField('Assignment', related_name='projects', blank=True)
-
-    def __str__(self):
+    def _str_(self):
         return self.name
+    
+class Like(models.Model):
+    project = models.ForeignKey(Project, related_name='likes', on_delete=models.CASCADE)
+    content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
+    object_id = models.PositiveIntegerField()
+    user = GenericForeignKey('content_type', 'object_id')
+
+    def _str_(self):
+        return f"{self.user} likes {self.project}"
+    
+class ProjectComment(models.Model):
+    author = models.CharField(max_length=100, default='Anonymous')
+    content = models.TextField(default='No content provided.')
+    created_at = models.DateTimeField(auto_now_add=True)
+    project = models.ForeignKey(Project, on_delete=models.PROTECT, related_name='comments')
+    content_type = models.ForeignKey(ContentType, on_delete=models.PROTECT)
+    object_id = models.PositiveIntegerField()
+    user = GenericForeignKey('content_type', 'object_id')
+    comment = models.ForeignKey('self', on_delete=models.PROTECT, related_name='replies', null=True, blank=True)  # can have a reply
 
 class SocialNetwork(models.Model):
 
@@ -186,33 +252,66 @@ class SocialNetwork(models.Model):
                 self.image = 'social_networks/github_icon.png'
         super().save(*args, **kwargs)
 
-class Requirement(models.Model):
-    # Requisitos para el proyecto
-    title = models.CharField(max_length=50)
-    description = models.CharField(max_length=500)
-
-    def __str__(self):
-        return self.title
+class ProjectCategory(models.Model):
+    project = models.ForeignKey(Project, related_name='projectcategories', on_delete=models.CASCADE) 
+    name = models.CharField(max_length=100)
 
 class Milestone(models.Model):
-    # Hitos del proyecto
-    title = models.CharField(max_length=50)
-    description = models.CharField(max_length=500)
-    deadline = models.DateField()
 
-    def __str__(self):
-        return self.title
+    STATE_CHOICES = [
+        ('Available', 'available'),
+        ('Taken', 'taken'),
+    ]
+
+    name = models.CharField(max_length=50)
+    description = models.CharField(max_length=500)
+    start_date = models.DateField()
+    end_date = models.DateField() 
+    project = models.ForeignKey(Project, on_delete=models.PROTECT, related_name='milestones')
+    progress = models.DecimalField(max_digits=10, decimal_places=2, default=0, blank=True, null=True)
+    freelancer = models.ForeignKey(Freelancer, on_delete=models.PROTECT, related_name='milestones')
+    state = models.CharField(max_length=100, choices=STATE_CHOICES, default='Available')
 
 class Task(models.Model):
-    # Tareas individuales dentro de hitos y proyectos
-    title = models.CharField(max_length=50)
+    name = models.CharField(max_length=50)
     description = models.CharField(max_length=500)
     deadline = models.DateField()
-    assigned_freelancer = models.ForeignKey(Freelancer, on_delete=models.PROTECT, related_name='tasks', null=True)
-    milestone = models.ForeignKey(Milestone, on_delete=models.PROTECT, related_name='tasks', null=True)
+    milestone = models.ForeignKey(Milestone, on_delete=models.PROTECT, related_name='tasks')
+    freelancer = models.ForeignKey(Freelancer, on_delete=models.PROTECT, related_name='tasks')
+
+class Assignment(models.Model):
+    project = models.ForeignKey(Project, related_name='assignments', on_delete=models.CASCADE, null=True, blank=True) 
+    name = models.CharField(max_length=255)
+    task = models.ForeignKey(Task, on_delete=models.CASCADE, related_name='assignments')
+    date = models.DateField()
+    status = models.CharField(max_length=50)
+    file = models.FileField(upload_to='uploads/', blank=True, null=True)
+    url = models.URLField(blank=True, null=True)
+
+class Content(models.Model):
+    profile = models.ForeignKey(Freelancer, related_name='contents', on_delete=models.CASCADE)
+    name = models.CharField(max_length=100)
+    type = models.CharField(max_length=100)
+    duration = models.CharField(max_length=100)
+    url = models.URLField()
 
     def __str__(self):
-        return self.title
+        return self.name
+
+class Application(models.Model):
+    STATE_CHOICES = [
+        ('Sent', 'sent'),
+        ('Approved', 'approved'),
+        ('Rejected', 'rejected'),
+    ]
+    date = models.DateField(auto_now_add=True)
+    freelancer = models.ForeignKey(Freelancer, on_delete=models.PROTECT, related_name='applications')
+    accepted = models.BooleanField(default=False)
+    project = models.ForeignKey(Project, on_delete=models.PROTECT, related_name='applications')
+    requirement = models.ForeignKey(Milestone, on_delete=models.PROTECT, related_name='applications')
+    state = models.CharField(max_length=100, choices=STATE_CHOICES, default='Sent')
+
+#Los del modelo pero que no usamos
 
 class Experience(models.Model):
     # Experiencia de los freelancers
@@ -229,19 +328,6 @@ class Experience(models.Model):
 class Portfolio(models.Model):
     # Portafolio del freelancer
     freelancer = models.ForeignKey(Freelancer, on_delete=models.PROTECT, related_name='portfolios')
-
-class Content(models.Model):
-    # Contenidos en el portafolio
-    name = models.CharField(max_length=100)
-    url = models.CharField(max_length=300)
-    portfolio = models.ForeignKey(Portfolio, on_delete=models.PROTECT, related_name='contents')
-
-class Rate(models.Model):
-    # Calificación de freelancer
-    value = models.DecimalField(max_digits=3, decimal_places=1)
-    date = models.DateField(default=timezone.now)
-    comment = models.CharField(max_length=200)
-    freelancer = models.ForeignKey(Freelancer, on_delete=models.PROTECT, related_name='rates')
 
 class Publication(models.Model):
     # Publicaciones de proyectos por parte de una compañía
@@ -261,10 +347,6 @@ class Payment(models.Model):
     company_manager = models.ForeignKey(CompanyManager, on_delete=models.PROTECT, related_name='payments_made', null=True)
     freelancer = models.ForeignKey(Freelancer, on_delete=models.PROTECT, related_name='payments_received', null=True)
 
-class Application(models.Model):
-    # Aplicación de freelancers a proyectos
-    date = models.DateField(default=timezone.now)
-    freelancer = models.ForeignKey(Freelancer, on_delete=models.PROTECT, related_name='applications')
 
 class Reference(models.Model):
     # Referencias de experiencias previas
@@ -272,12 +354,3 @@ class Reference(models.Model):
     phone = models.CharField(max_length=15)
     email = models.CharField(max_length=50)
     experience = models.ForeignKey(Experience, on_delete=models.PROTECT, related_name='references')
-
-class Assignment(models.Model):
-    project = models.ForeignKey(Project, related_name='assignments', on_delete=models.CASCADE, null=True, blank=True) 
-    name = models.CharField(max_length=255)
-    task = models.ForeignKey(Task, on_delete=models.CASCADE, related_name='assignments')
-    date = models.DateField()
-    status = models.CharField(max_length=50)
-    file = models.FileField(upload_to='uploads/', blank=True, null=True)
-    url = models.URLField(blank=True, null=True)
