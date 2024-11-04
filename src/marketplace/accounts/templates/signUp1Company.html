@@ -20,17 +20,18 @@
                 <span>Marketplace</span>
             </div>
         </div>
-        <a>Home</a>
+        <a href="{%url 'home'%}"">Home</a>
     </nav>
 
     <div class="content">
         <h1 class="title">Join our Community</h1>
-        <span>Signing up as <a class="freelancer">Freelancer</a></span>
+        <span>Signing up as <a class="freelancer" href="{% url 'registerf1'%}">Freelancer</a></span>
         <a class="googleButton">
             <img src="{% static 'images/google.png' %}" alt="Google Login"> Sign in with Google
         </a>
         <span>Or</span>
-        <form>
+        <form method = "POST">
+            {% csrf_token %}
             <div class="inputContainer">
                 <span>Id or NIT</span>
                 <input type="text" class="inputText" name="username" id="username" required>
@@ -51,4 +52,10 @@
         </form>
     </div>
 </body>
+{% if username_exists %}
+    <script>
+        alert('El nombre de usuario ya está en uso. Por favor, escoge otro.');
+        window.location.href = window.location.href;  // Redirige a la misma página
+    </script>
+{% endif %}
 </html>

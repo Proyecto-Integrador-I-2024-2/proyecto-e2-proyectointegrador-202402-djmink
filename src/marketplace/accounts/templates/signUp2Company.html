@@ -25,33 +25,30 @@
         <h2 class="form-title">Complete your Profile</h2>
         <p class="form-subtitle">You’re <span class="highlight">one</span> step closer</p>
 
-        <form>
+        <form method = "POST">
+            {% csrf_token %}
             <div class="form-row">
                 <div class="form-group">
                     <label for="country">Country</label>
                     <select id="country" name="country" required>
-                        <option value="">Enter Text</option>
-                        <option value="us">United States</option>
-                        <option value="ca">Canada</option>
+                        {% for country in countries %}
+                            <option>{{ country }}</option>
+                        {% endfor %}
                     </select>
                 </div>
-                <div class="form-group">
+                <!--<div class="form-group">
                     <label for="city">City</label>
                     <select id="city" name="city" required>
                         <option value="">Enter Text</option>
                         <option value="ny">New York</option>
                         <option value="to">Toronto</option>
                     </select>
-                </div>
+                </div>-->
             </div>
 
             <div class="form-group">
                 <label for="phone">Phone number</label>
                 <div class="phone-input">
-                    <select class="country-code">
-                        <option value="+1">+1</option>
-                        <option value="+44">+44</option>
-                    </select>
                     <input type="text" id="phone" name="phone" required>
                 </div>
             </div>

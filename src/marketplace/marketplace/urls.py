@@ -21,9 +21,9 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('app/', include('my_aplication.urls')),
     path('perfil/', include('perfil.urls')),
-    path('', include('my_aplication.urls')), 
+    path('accounts/', include('accounts.urls')),
+    path('', include('my_aplication.urls')), #aqui solo esta el home
 ]
 
 if settings.DEBUG:

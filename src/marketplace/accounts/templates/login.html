@@ -24,10 +24,11 @@
             <div class="LogInContent">
                 <div class="logInText">
                     <h1>Log In</h1>
-                    <span>Don't have an account yet? <a href="#">Sign up</a></span>
+                    <span>Don't have an account yet? <a href="{% url 'registerc1'%}">Sign up</a></span>
                 </div>
                 <div class="form">
-                    <form>
+                    <form method = "POST">
+                        {% csrf_token %}
                         <div class="email">
                             <span>Username or Email</span>
                             <input type="text" class="inputText" name="username" id="username" required>
@@ -38,7 +39,7 @@
                         </div>
                         <button class="buttonSubmit" type="submit">Log In</button>
                     </form>
-                    <span class="recoverPassword">Forgot password? <a href="#">Recover it</a></span>
+                    <span class="recoverPassword">Forgot password? <a href="{% url 'recover'%}">Recover it</a></span>
                     <div class="separator"></div>
                     <a class="googleButton"><img src="{% static 'images/google.png' %}"> sing in with Google</a>
                 </div>

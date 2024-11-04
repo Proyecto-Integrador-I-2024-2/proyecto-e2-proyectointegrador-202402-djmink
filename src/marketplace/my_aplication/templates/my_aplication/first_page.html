@@ -35,9 +35,9 @@
             DEVELOP YOUR PROJECT
         </div>
         
-        <div id="login" class="login">
+        <a id="login" class="login" href="{% url 'login' %}">
             Log In
-        </div>
+        </a>
         
         <img id="logo" class="logo" src="{% static 'logo.png' %}"/>
         <div id="logoseparator" class="logoseparator"></div>
@@ -63,7 +63,7 @@
 
         <button id='joinfreelancerbutton' class='joinfreelancerbutton'>
             <div id='joinfreelancerbuttonrec' class='joinfreelancerbuttonrec'></div>
-            <div id='joinfreelancerbuttontext' class='joinfreelancerbuttontext'>Join as a Freelancer</div>
+            <div id='joinfreelancerbuttontext' class='joinfreelancerbuttontext'><a href="{% url 'registerc1'%}" style="text-decoration: none; color: whitesmoke;">Join as a Freelancer</a></div>
         </button>
 
         <img id='b2' class='b2' src="{% static 'b2.png' %}" />
@@ -85,8 +85,7 @@
 
         <button id='emptybutton' class='emptybutton'>
             <div id='rectangle2854' class='rectangle2854'></div>
-            <div id='uploadnewpicture' class='uploadnewpicture'>
-            Join as a Company</div>
+            <div id='uploadnewpicture' class='uploadnewpicture'><a href="{% url 'registerc1'%}" style="text-decoration: none; color: whitesmoke;">Join as a Company</a></div>
         </button>
 
     </div>
