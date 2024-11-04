@@ -127,6 +127,7 @@ class Freelancer(User):
         ('lead', 'Lead'),
     ]
 
+    profession = models.CharField(max_length=100)
     identification = models.CharField(max_length=100, blank=True, null=True)
     country = models.CharField(max_length=100, blank=True, null=True)
     jobs_completed = models.IntegerField(default=0)
@@ -256,6 +257,20 @@ class ProjectCategory(models.Model):
     project = models.ForeignKey(Project, related_name='projectcategories', on_delete=models.CASCADE) 
     name = models.CharField(max_length=100)
 
+
+class ProjectRating(models.Model):
+    value = models.DecimalField(max_digits=3, decimal_places=1, default=0.0)
+    project = models.ForeignKey(Project, on_delete=models.PROTECT, related_name='ratings')
+    content_type = models.ForeignKey(ContentType, on_delete=models.PROTECT)
+    object_id = models.PositiveIntegerField()
+    user = GenericForeignKey('content_type', 'object_id')
+
+class SavedProject(models.Model):
+    content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
+    user_id = models.PositiveIntegerField()
+    user = GenericForeignKey('content_type', 'user_id')
+    project = models.ForeignKey(Project, related_name='saved_projects', on_delete=models.CASCADE)
+
 class Milestone(models.Model):
 
     STATE_CHOICES = [
@@ -272,12 +287,24 @@ class Milestone(models.Model):
     freelancer = models.ForeignKey(Freelancer, on_delete=models.PROTECT, related_name='milestones')
     state = models.CharField(max_length=100, choices=STATE_CHOICES, default='Available')
 
+class Profession(models.Model):
+    requeriment = models.ForeignKey(Milestone, related_name='professions', on_delete=models.CASCADE)
+    name = models.CharField(max_length=100)
+
 class Task(models.Model):
+
+    STATE_CHOICES = [
+        ('NS', 'Not started'),
+        ('IP', 'In Progress'),
+        ('CP', 'Completed'),
+    ]
+
     name = models.CharField(max_length=50)
     description = models.CharField(max_length=500)
     deadline = models.DateField()
     milestone = models.ForeignKey(Milestone, on_delete=models.PROTECT, related_name='tasks')
     freelancer = models.ForeignKey(Freelancer, on_delete=models.PROTECT, related_name='tasks')
+    state = models.CharField(max_length=100, choices=STATE_CHOICES, default='NS')
 
 class Assignment(models.Model):
     project = models.ForeignKey(Project, related_name='assignments', on_delete=models.CASCADE, null=True, blank=True) 
@@ -308,7 +335,7 @@ class Application(models.Model):
     freelancer = models.ForeignKey(Freelancer, on_delete=models.PROTECT, related_name='applications')
     accepted = models.BooleanField(default=False)
     project = models.ForeignKey(Project, on_delete=models.PROTECT, related_name='applications')
-    requirement = models.ForeignKey(Milestone, on_delete=models.PROTECT, related_name='applications')
+    milestone = models.ForeignKey(Milestone, on_delete=models.PROTECT, related_name='applications')
     state = models.CharField(max_length=100, choices=STATE_CHOICES, default='Sent')
 
 #Los del modelo pero que no usamos
