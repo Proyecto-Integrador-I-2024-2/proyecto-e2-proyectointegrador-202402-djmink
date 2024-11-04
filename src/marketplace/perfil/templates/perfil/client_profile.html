@@ -96,10 +96,11 @@
                 {% for comment in p.commentsClients.all %}
                     <li class="comment">
                         <div>
-                            <img id="profilecommentimg" class="profilecommentimg" src="{% static 'user.jpg' %}"/>
+                            <img id="profilecommentimg" class="profilecommentimg" src="{% static 'img/user.jpg' %}"/>
                             <div class="date">{{ comment.created_at }}</div>
                             <div class="username">{{ comment.author }}</div>
                             <p>{{ comment.content }}</p>
+                            <button class="btn reply">Reply</button>
                         </div>
                     </li>
                 {% empty %}
@@ -113,17 +114,17 @@
     <footer class="footer">
         
         <div class="footer-content">
-            <img class="encora" src="{% static 'Encora1.svg' %}" />
+            <img class="encora" src="{% static 'img/Encora1.svg' %}" />
             <a href="https://www.facebook.com/encorainc" target="_blank">
-                <img class="social-icon fb" src="{% static 'fb.png' %}"/>
+                <img class="social-icon fb" src="{% static 'img/fb.png' %}"/>
             </a>
             <a href="https://www.instagram.com/encorainc/" target="_blank">
-                <img class="social-icon ig" src="{% static 'ig.png' %}" />
+                <img class="social-icon ig" src="{% static 'img/ig.png' %}" />
             </a>
             <a href="https://www.linkedin.com/company/encorainc/" target="_blank">
-                <img class="social-icon lin" src="{% static 'lin.png' %}" />
+                <img class="social-icon lin" src="{% static 'img/lin.png' %}" />
             </a>
-            <img class="social-icon gmail" src="{% static 'gmail.png' %}" />
+            <img class="social-icon gmail" src="{% static 'img/gmail.png' %}" />
             <nav class="footer-nav">
                 <a href="#features">Features</a>
                 <a href="#about">About</a>

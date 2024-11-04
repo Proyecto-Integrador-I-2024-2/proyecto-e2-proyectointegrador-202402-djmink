@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Edit Profile - Account</title>
     <link rel="icon" type="image/png" href="{% static 'img/Logo.png' %}">
-    <link rel="stylesheet" href="{% static 'css/edit_profile_account.css' %}">
+    <link rel="stylesheet" href="{% static 'css/edit_account.css' %}">
 </head>
 <body>
     <div class="editsection">
@@ -70,7 +70,7 @@
 
                 <div class="input-container phone">
                     <div class="ptext name">Phone</div>
-                    <img class="arrow" src="{% static 'arrow.svg' %}" alt="arrow" id="arrow" onclick="toggleCodeList()">
+                    <img class="arrow" src="{% static 'img/arrow.svg' %}" alt="arrow" id="arrow" onclick="toggleCodeList()">
                     <textarea id="code-box" class="input-box code">{{ code }}</textarea>
                     <textarea class="input-box tel">{{ phone }}</textarea>
 

@@ -10,37 +10,37 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Profile</title>
     <link rel="icon" type="image/png" href="{% static 'img/Logo.png' %}">
-    <link rel="stylesheet" href="{% static 'css/freelancer_profile.css' %}">
+    <link rel="stylesheet" href="{% static 'css/fpp.css' %}">
 </head>
-<body> 
-
-    <div id="heading" class="heading"></div>
-        <div id="hometext" class="hometext">Home</div>
-        <img id="chat_icon" class="chat_icon" src="{% static 'img/Chat_Icon.svg' %}"/>
-        <img id="notification_icon" class="notification_icon" src="{% static 'img/Notification_Icon.svg' %}"/>
-        <img id="profile_picture2" class="profile_picture2" src="{{ p.profile_picture.url }}" alt="Profile Picture"/>
-        <img id="logo" class="logo" src="{% static 'img/logo.svg' %}"/>
-        <div id="logoseparator" class="logoseparator"></div>
+<body>
     
-        <div id="onlinemarketplace2" class="onlinemarketplace2">
+    <div class="upper-section">
+
+        <div class="ptext hometext">Home</div>
+        <img class="icon chat_icon" src="{% static 'img/Chat_Icon.svg' %}"/>
+        <img class="icon notification_icon" src="{% static 'img/Notification_Icon.svg' %}"/>
+        <a href="{% url 'perfilFreelancer' profile.id %}">
+            <img class="profile_picture_heading" src="{{ profile.profile_picture.url }}" alt="Profile Picture"/>
+        </a>
+        <img class="logo" src="{% static 'img/Logo.svg' %}"/>
+        <div class="logoseparator"></div>
+        <div class="ptext onlinemarketplace">
             Online Marketplace
         </div>
 
-        <div id="profiletitle" class="profiletitle">
-            Profile
-        </div>
+        <div class="ptext profiletitle">Profile</div>
 
         <a href="{% url 'editAccount' p.id %}" class="editprofilebutton">
-            <div id='editprofilebuttontext' class='editprofilebuttontext'>Edit profile</div>
+            <div>Edit profile</div>
         </a>
 
-        <hr class="l2">
+        <hr class="line-separator">
 
-        <div id="name_profile">{{ p.name }}</div>
-        <div id="profession">{{ p.profession }}</div>
-        <img id="profile_picture" class="profile_picture" src="{{ p.profile_picture.url }}" alt="Profile Picture"/>
-        <div id="description">{{ p.description }}</div>
-        <div id="email">{{ p.contact_email }}</div>
+        <div class="ptext name-profile">{{ p.name }}</div>
+        <div class="ptext profession">{{ p.profession }}</div>
+        <img class="profile_picture" src="{{ p.profile_picture.url }}" alt="Profile Picture"/>
+        <div class="ptext description">{{ p.description }}</div>
+        <div class="ptext email">{{ p.contact_email }}</div>
         <div class="social-networks">
             {% for network in p.social_networks.all %}
                 <a href="{{ network.url }}" target="_blank">
@@ -48,27 +48,14 @@
                 </a>
             {% endfor %}
         </div>
-        <div id="calification">{{ p.rating }}</div>
-        <img id="star" class="star" src="{% static 'img/Star.svg' %}" />
-    </div> 
+        <div class="ptext calification">{{ p.rating }}</div>
+        <img class="star" src="{% static 'img/Star.svg' %}" />
 
-    <div id="aboutsection" class="aboutsection">
+    </div>
 
-        <div id="rectangleabout" class="rectangleabout"></div>
+    <div class="aboutsection">
 
-        <div id="abouttitle" class="abouttitle">
-            About Me
-        </div>
-
-        <div class="habilities-container">
-            {% for hability in p.skills.all %}
-                <div class="hability-container">
-                    <div class="hability">{{ hability.name }}</div>
-                </div>
-            {% empty %}
-                <p>You don't have skills registered yet.</p>
-            {% endfor %}
-        </div>        
+        <div class="ptext about-title">About Me</div>
 
         <div class="experience">
             <div class="experience-header">{{ p.experience }}</div>
@@ -84,6 +71,16 @@
                 </div>
             </div>
         </div>
+
+        <div class="habilities-container">
+            {% for hability in p.skills.all %}
+                <div class="hability-container">
+                    <div class="hability">{{ hability.name }}</div>
+                </div>
+            {% empty %}
+                <p>You don't have skills registered yet.</p>
+            {% endfor %}
+        </div>        
 
         <div class="certificates-container">
             {% for certificate in p.certificates.all %}
@@ -132,30 +129,33 @@
     </div>
     
 
-    <div id="commentssection" class="commentssection">
+    <div class="commentssection">
 
-        <div id="rectanglecomment" class="rectanglecomment"></div>
+        <div class="rectanglecomment"></div>
 
-        <div id="commentstitle" class="commentstitle">
+        <div class="commentstitle">
             Comments
         </div>
 
         <div class="comments">
-        
-            <ul class="comments-list">
-                {% for comment in p.comments.all %}
-                    <li class="comment">
-                        <div>
-                            <img id="profilecommentimg" class="profilecommentimg" src="{% static 'user.jpg' %}"/>
-                            <div class="date">{{ comment.created_at }}</div>
-                            <div class="username">{{ comment.author }}</div>
-                            <p>{{ comment.content }}</p>
+            {% for comment in p.comments.all %}
+                <div class="comment">
+                    <img class="profilecommentimg" src="{% static 'img/user.jpg' %}"/>
+                    <div class="date">{{ comment.created_at }}</div>
+                    <div class="username">{{ comment.author }}</div>
+                    <div class="comment-text">{{ comment.content }}</p>
+                    <button class="reply" onclick="showReplyInput(this)">Reply</button>
+                    {% if comment.response %}
+                        <div class="response">
+                            <img class="response-profile-img" src="{% static 'img/user.jpg' %}"/>
+                            <div class="reponse-content">Response</div>
+                            <div class="response-date">Date</div>
                         </div>
-                    </li>
-                {% empty %}
-                    <li>No comments yet.</li>
-                {% endfor %}
-            </ul>
+                    {% endif %}
+                </div>
+            {% empty %}
+                <p>No comments yet.<p>
+            {% endfor %}
         </div>
         
     </div>
@@ -191,6 +191,33 @@
     </footer>
 
     <script>
+
+        function showReplyInput(button) {
+    
+            const commentElement = button.closest('.comment');
+
+            if (!commentElement.querySelector('.reply-input')) {
+
+                const inputBox = document.createElement('input');
+                inputBox.type = 'text';
+                inputBox.placeholder = 'Escribe tu respuesta aquí...';
+                inputBox.className = 'reply-input';
+
+                const sendButton = document.createElement('button');
+                sendButton.innerText = 'Enviar';
+                sendButton.className = 'send-reply';
+
+                commentElement.appendChild(inputBox);
+                commentElement.appendChild(sendButton);
+
+                sendButton.onclick = function() {
+                    alert('Respuesta enviada: ' + inputBox.value);
+                    inputBox.remove(); 
+                    sendButton.remove(); 
+                };
+            }
+        }
+
         document.addEventListener('DOMContentLoaded', function() {
             const container = document.getElementById('projectsContainer');
             const projectContainers = document.querySelectorAll('.project-container');

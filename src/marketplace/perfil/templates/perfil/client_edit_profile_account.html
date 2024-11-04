@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Edit Profile - Account</title>
     <link rel="icon" type="image/png" href="{% static 'img/Logo.png' %}">
-    <link rel="stylesheet" href="{% static 'css/edit_profile_account.css' %}">
+    <link rel="stylesheet" href="{% static 'css/edit_account.css' %}">
 </head>
 <body>
     <div id="editsection" class="editsection">
@@ -70,18 +70,11 @@
 
                 <div class="input-container phone">
                     <div class="ptext name">Phone</div>
-                    <img class="arrow" src="{% static 'arrow.png' %}" alt="arrow" id="arrow" onclick="toggleCodeList()">
+                    <img class="arrow" src="{% static 'img/arrow.svg' %}" alt="arrow" id="arrow" onclick="toggleCodeList()">
                     <textarea id="code-box" class="input-box code">{{ code }}</textarea>
                     <textarea class="input-box tel">{{ phone }}</textarea>
 
-                    <!-- Reemplazar con un for -->
-                    <div class="code-list" id="code-list">
-                        <div class="code-item" onclick="selectCode('+1')">+1 (USA)</div>
-                        <div class="code-item" onclick="selectCode('+44')">+44 (UK)</div>
-                        <div class="code-item" onclick="selectCode('+91')">+91 (India)</div>
-                        <div class="code-item" onclick="selectCode('+57')">+57 (Col)</div>
-                        <div class="code-item" onclick="selectCode('+58')">+58 (Ven)</div>
-                    </div>
+                    <div class="code-list" id="code-list"></div>
                 </div>
 
             </form>
@@ -165,6 +158,41 @@
     </div>
 
     <script>
+
+            document.addEventListener('DOMContentLoaded', () => {
+                
+                fetch('https://restcountries.com/v3.1/all')
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Network response was not ok');
+                        }
+                        return response.json();
+                    })
+                    .then(countries => {
+                        const codeList = document.getElementById('code-list');
+                        countries.sort((a, b) => a.name.common.localeCompare(b.name.common));
+                        codeList.innerHTML = '';
+    
+                        countries.forEach(country => {
+    
+                            if (country.idd && country.idd.root && country.idd.suffixes && country.idd.suffixes.length > 0) { 
+                                const fullCode = `${country.idd.root}${country.idd.suffixes[0]}`;
+                                const codeItem = document.createElement('div');
+                                codeItem.className = 'code-item';
+                                codeItem.onclick = () => selectCode(fullCode);
+                                codeItem.innerText = `${fullCode} (${country.name.common})`;
+                                codeList.appendChild(codeItem);
+                            }
+                        });
+                    })
+                    .catch(error => {
+                        console.error('Error fetching countries:', error);
+                    });
+    
+    
+            });
+
+
         function showPassword(id) {
             const passwordField = document.getElementById(id);
             passwordField.setAttribute('type', 'text');
