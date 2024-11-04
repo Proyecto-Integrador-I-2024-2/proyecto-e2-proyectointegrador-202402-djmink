@@ -20,7 +20,6 @@
                 <span>Marketplace</span>
             </div>
         </div>
-        <a>Home</a>
         <div></div>
     </nav>
     <div class="container">
@@ -28,15 +27,16 @@
             <h1>Complete your Profile</h1>
             <span class="text1">Lets start with your <span class="text2">profile picture</span></span>
         </div>
-        <div class="profile-upload">
-            <input type="file" id="file-input" accept="image/*" />
+        <form class="profile-upload" method="POST">
+            {% csrf_token %}
+            <input type="file" id="file-input" accept="image/*" name = "image_input"/>
             <label for="file-input" class="profile-circle">
                 <img id="profile-img" src="{% static 'images/Vector.png' %}" alt="Profile" />
             </label>
             <span>Upload Picture</span>
             <button type="submit" class="buttonSubmit">Continue</button>
-        </div>
-        <button class="skipButton">skip</button>
+        </form>
+        <a href="{% url 'registerf3' id %}"><button class="skipButton">skip</button></a>
     </div>
     
 </body>

@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Lista de usuarios</title>
+</head>
+<body>
+    <h1>Lista de usuarios</h1>
+    <ul>
+        {% for user in users %}
+            <li>
+                <strong>Username:</strong> {{ user.username }}<br>
+                <strong>Password:</strong> {{ user.password }}<br>
+                <strong>Nombre</strong> {{ user.profile.name }}<br>
+            </li>
+        {% endfor %}
+    </ul>
+    <a href="{% url 'register' %}">Volver</a>
+</body>
+</html>
