@@ -9,20 +9,21 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Edit Profile</title>
-    <link rel="stylesheet" href="{% static 'edit-client-profile.css' %}">
+    <title>Edit Profile - Projects</title>
+    <link rel="icon" type="image/png" href="{% static 'img/Logo.png' %}">
+    <link rel="stylesheet" href="{% static 'css/client_edit_profile.css' %}">
 </head>
 
 <body>
 
     <div class="heading">
         <div class="ptext hometext">Home</div>
-        <img class="icon chat_icon" src="{% static 'Chat_Icon.svg' %}"/>
-        <img class="icon notification_icon" src="{% static 'Notification_Icon.svg' %}"/>
+        <img class="icon chat_icon" src="{% static 'img/Chat_Icon.svg' %}"/>
+        <img class="icon notification_icon" src="{% static 'img/Notification_Icon.svg' %}"/>
         <a href="{% url 'perfilesCliente' p.id %}">
             <img class="profile_picture_heading" src="{{ p.profile_picture.url }}" alt="Profile Picture"/>
         </a>
-        <img class="logo" src="{% static 'logo.png' %}"/>
+        <img class="logo" src="{% static 'img/Logo.svg' %}"/>
         <div class="logoseparator"></div>
         <div class="ptext onlinemarketplace">
             Online Marketplace
@@ -109,13 +110,18 @@
     </div>
 
     <footer class="footer">
-        
         <div class="footer-content">
-            <img class="encora" src="{% static 'Encora1.svg' %}" />
-            <img class="social-icon fb" src="{% static 'fb.png' %}"/>
-            <img class="social-icon ig" src="{% static 'ig.png' %}" />
-            <img class="social-icon lin" src="{% static 'lin.png' %}" />
-            <img class="social-icon gmail" src="{% static 'gmail.png' %}" />
+            <img class="encora" src="{% static 'img/Encora1.svg' %}" />
+            <a href="https://www.facebook.com/encorainc" target="_blank">
+                <img class="social-icon fb" src="{% static 'img/fb.png' %}"/>
+            </a>
+            <a href="https://www.instagram.com/encorainc/" target="_blank">
+                <img class="social-icon ig" src="{% static 'img/ig.png' %}" />
+            </a>
+            <a href="https://www.linkedin.com/company/encorainc/" target="_blank">
+                <img class="social-icon lin" src="{% static 'img/lin.png' %}" />
+            </a>
+            <img class="social-icon gmail" src="{% static 'img/gmail.png' %}" />
             <nav class="footer-nav">
                 <a href="#features">Features</a>
                 <a href="#about">About</a>
@@ -128,7 +134,6 @@
                 © 2024 Online Marketplace
             </div>
         </div>
-
     </footer>
 
     <div id="profilePictureModal" class="modal">

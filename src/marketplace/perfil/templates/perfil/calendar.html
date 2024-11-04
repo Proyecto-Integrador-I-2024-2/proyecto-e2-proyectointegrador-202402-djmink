@@ -1,0 +1,41 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Main</title>
+    <link rel="stylesheet" href="{% static 'calendar6.css' %}">
+
+</head>
+<body>
+
+    <div class="calendar-container">
+        <div class="up-calendar">
+            <button id="today-button" onclick="focusToday()">Today</button>
+            <div class="calendar-header">
+                <button class="calendar-btn" id="prev-month">
+                    <img class="arrow-btn" src="{% static 'arrow-left.svg' %}" alt="Anterior" />
+                </button>
+                <div id="month-year"></div>
+                <button class="calendar-btn" id="next-month">
+                    <img class="arrow-btn right" src="{% static 'arrow-left.svg' %}" alt="Anterior" />
+                </button>
+            </div>
+            <div class="calendar-grid" id="calendar-grid"></div>
+        </div>
+        <div id="milestone-container" class="milestone-container">
+            <!-- Los hitos se generarán dinámicamente aquí -->
+        </div>
+    </div>
+    
+
+    <script>
+         
+    </script>
+
+</body>

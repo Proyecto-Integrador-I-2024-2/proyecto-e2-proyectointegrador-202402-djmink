@@ -8,9 +8,9 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Edit Profile - Projects</title>
+    <title>My Projects List</title>
     <link rel="icon" type="image/png" href="{% static 'img/Logo.png' %}">
-    <link rel="stylesheet" href="{% static 'css/client_edit_profile_projects.css' %}">
+    <link rel="stylesheet" href="{% static 'css/client_projects_list.css' %}">
 </head>
 <body>
 
@@ -26,49 +26,44 @@
         <div class="ptext onlinemarketplace">
             Online Marketplace
         </div>
-    </div>    
-
-    <div class="ptext ep">
-        Edit profile
-    </div>     
-
-    <a href="{% url 'editAccountClient' p.id %}" class="ptext my-account">My account</a>
-    <a href="{% url 'editProfileClient' p.id %}" class="ptext profile">Profile</a>
-    <a href="#editProjects" class="ptext portfolio">Projects</a>
-    <a href="{% url 'deleteDisableClient' p.id %}" class="ptext delete-account">Delete account</a>    
-
-    <div class="body">
-
-        <div class="ptext portfolio-title">
-            Projects
-        </div>
-        
-        <div class="add-button">
-            <div class="ptext add">Add</div>
-            <a href="{% url 'perfilesCliente' p.id %}">
-                <button id= "add-content-btn" class="add content-btn">+</button>
-            </a>   
-        </div>
-            
-        <div class="projects-container" id="projects-container">
-            {% for project in p.projects.all %}
-                <div class="project-container" id="project-{{ project.id }}">          
-                    <button class="delete-btn project" onclick="markForRemoval('project', '{{ project.id }}')">X</button>
-                    <a href="{% url 'perfilesCliente' p.id %}">
-                        <img class="edit-btn" src="{% static 'img/Edit.svg' %}"/>
-                    </a>  
-                    <div id="project-name-{{ project.id }}" class="ptext project-name">{{ project.name }}</div>
-                    <div id="project-company-{{ project.id }}" class="ptext info-project">{{ project.type }}</div>
-                    <div id="project-duration-{{ project.id }}" class="ptext info-project">{{ project.duration }}</div>
-                </div>
-            {% empty %}
-                <p>You don't have projects registered yet.</p>
-            {% endfor %}
-        </div>
-
-        <button id= "save" class="med-btn save">Save Changes</button>
-
     </div>
+      
+    <div class="mainback">
+
+        <div class="welcome">Welcome!</div>
+        <div class="name_profile">{{ p.name }}</div>
+
+        <div id="myprojects" class="myprojects">
+            My projects
+        </div>
+
+        <div id="add" class="add">
+            Add
+        </div>
+
+        <button id="addBtn" class="nav-button">+</button>
+
+        <div class="projects-wrapper">
+            
+            <div class="projects-container" id="projectsContainer">
+                {% for project in p.projects.all %}
+                    <div class="project-container">
+                        <img id="project_picture" class="project_picture" src="{{ project.project_picture.url }}" alt="Project Picture"/>
+                        <div class="ptext project-name">{{ project.name }}</div>
+                        <div class="ptext project-description">{{ project.description }}</div>
+                        <div class="ptext project-state">State: {{ project.state }}</div>
+                        <button class="btn preview">Preview</button>
+                        <button class="btn edit">Edit</button>
+                        <button class="btn open">Manage</button>
+                    </div>
+                {% empty %}
+                    <p>You don't have projects registered yet.</p>
+                {% endfor %}
+            </div>
+    
+        </div>
+
+    </div> 
 
     <footer class="footer">
         <div class="footer-content">
@@ -97,20 +92,4 @@
         </div>
     </footer>
     
-    <script>
-
-        let removedItems = [];
-
-        function markForRemoval(type, itemId) {
-            const element = document.getElementById(type + '-' + itemId);
-            if (element) {
-                element.style.display = 'none';
-                removedItems.push({ type, itemId });
-            }
-        }
-
-
-
-    </script>
-
 </body>
