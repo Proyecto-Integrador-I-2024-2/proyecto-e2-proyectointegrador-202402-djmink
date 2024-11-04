@@ -1,10 +1,9 @@
 from django.http import Http404, JsonResponse
 from django.db.models import Avg
 from django.shortcuts import render, get_object_or_404
-from .models import Project
+from my_aplication.models import Project, FreelancerProfile
 from .forms import createCommentForm, createRatingForm, createApplicationForm
 from django.contrib.contenttypes.models import ContentType
-from my_aplication.models import FreelancerProfile
 
  # get the current user model
 
