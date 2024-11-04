@@ -1,6 +1,6 @@
 from django.core.paginator import Paginator
 from django.shortcuts import render, get_object_or_404
-from perfil.models import Profile, ClientProfile, Publication, ProjectCategory, SocialNetwork, ProjectFreelancer, Project
+from my_aplication.models import Freelancer, CompanyManager, ProjectCategory, SocialNetwork, Project
 
 def calendar(request):
     return render(request, 'perfil/calendar.html')
@@ -8,77 +8,74 @@ def calendar(request):
 # Create your views here.
 def perfilesFreelancer(request, id):
     
-    p = get_object_or_404(Profile, id=id)
+    p = get_object_or_404(Freelancer, id=id)
     return render(request, 'perfil/freelancer_profile.html', {'p': p})
 
-def mainFreelancer(request, id):        
-    profile = get_object_or_404(Profile, id=id)
-    
+def mainFreelancer(request, id):
+    profile = get_object_or_404(Freelancer, id=id)
+
     # Obtener el término de búsqueda (si se proporciona)
     search_query = request.GET.get('search', '')
-    
-    # Filtrar publicaciones por el término de búsqueda
-    publications_list = Publication.objects.all()
+
+    # Filtrar proyectos por el término de búsqueda
+    projects_list = Project.objects.all()
     if search_query:
-        publications_list = publications_list.filter(
-            project__name__icontains=search_query
-        )
-    
+        projects_list = projects_list.filter(name__icontains=search_query)
+
     # Filtrar por categoría
     category_id = request.GET.get('category')
     if category_id:
-        publications_list = publications_list.filter(project__projectcategories__id=category_id)
+        projects_list = projects_list.filter(projectcategories__id=category_id)
 
     # Filtrar por compañía
     company_id = request.GET.get('company')
     if company_id:
-        publications_list = publications_list.filter(profile_id=company_id)  # Filtra directamente por el perfil del cliente
+        projects_list = projects_list.filter(clientprofile_id=company_id)  # Filtra directamente por el perfil del cliente
 
     # Filtrar por presupuesto
     budget = request.GET.get('budget')
     if budget:
         try:
             budget_value = float(budget)
-            publications_list = publications_list.filter(project__budget__lte=budget_value)  # Filtra por presupuesto del proyecto
+            projects_list = projects_list.filter(budget__lte=budget_value)  # Filtra por presupuesto del proyecto
         except ValueError:
             pass  # Maneja el caso en que el presupuesto no es un número válido
-    
+
     # Filtrar por tipo de proyecto
     project_type = request.GET.get('type')  # Obtiene el tipo de proyecto desde la URL
     if project_type:
-        publications_list = publications_list.filter(project__type=project_type)
+        projects_list = projects_list.filter(type=project_type)
 
     # Configuración de paginación
-    paginator = Paginator(publications_list, 12)  # 12 publicaciones por página
+    paginator = Paginator(projects_list, 12)  # 12 proyectos por página
     page_number = request.GET.get('page')  
     publications = paginator.get_page(page_number)
 
     # Obtener categorías y compañías para los filtros
     categories = ProjectCategory.objects.all()
-    companies = ClientProfile.objects.filter(projects__publications__isnull=False).distinct()
-    
+    companies = CompanyManager.objects.filter(projects__isnull=False).distinct()
+
     return render(request, 'perfil/freelancer_home.html', {
         'profile': profile,
-        'publications': publications,
+        'projects': publications,
         'categories': categories,
         'companies': companies,
         'search_query': search_query,  # Pasar el término de búsqueda para mostrarlo en el campo
-        'budget': budget  # Pasar el presupuesto para mostrarlo en el campo
+        'budget': budget  
     })
 
 
 def firstMain(request):
-    publications_list = Publication.objects.all()[:3]
+    publications_list = Project.objects.all()[:3]
     return render(request, 'perfil/home_page.html', {'publications': publications_list})
 
 def projectsList(request, id):
-    
-    p = get_object_or_404(Profile, id=id)
+    p = get_object_or_404(Freelancer, id=id)
     return render(request, 'perfil/freelancer_projects_list.html', {'profile': p})
 
 def projectWorkspace(request, id, id_project):
-    p = get_object_or_404(Profile, id=id)
-    pr = get_object_or_404(ProjectFreelancer, id=id_project)
+    p = get_object_or_404(Freelancer, id=id)
+    pr = get_object_or_404(Freelancer, id=id_project)
 
     project_data = {
         'id': pr.id,
@@ -116,7 +113,7 @@ def projectWorkspace(request, id, id_project):
     })
 
 def manageProject(request, id, id_project):
-    p = get_object_or_404(ClientProfile, id=id)
+    p = get_object_or_404(CompanyManager, id=id)
     pr = get_object_or_404(Project, id=id_project)
 
     #progress bar
@@ -124,8 +121,8 @@ def manageProject(request, id, id_project):
     total_tasks = 0
     completed_tasks = 0
 
-    for milestone in pr.clientmilestones.all():
-        tasks = milestone.tasksclient.all()
+    for milestone in pr.milestones.all():
+        tasks = milestone.tasks.all()
         total_tasks += len(tasks)
         completed_tasks += sum(1 for task in tasks if task.state == 'CP')
 
@@ -144,7 +141,7 @@ def manageProject(request, id, id_project):
                     {
                         'name': task.name
                     }
-                    for task in milestone.tasksclient.all()
+                    for task in milestone.tasks.all()
                 ],
                 'freelancer': {
                     'name': milestone.freelancer.name if milestone.freelancer else None,
@@ -159,7 +156,7 @@ def manageProject(request, id, id_project):
                     for application in milestone.applications.all()
                 ]
             }
-            for milestone in pr.clientmilestones.all()
+            for milestone in pr.milestones.all()
         ],
         'assignments': [
             {
@@ -172,7 +169,7 @@ def manageProject(request, id, id_project):
                 'file': assignment.file.url if assignment.file else None,
                 'url': assignment.url
             }
-            for assignment in pr.assignmentsclient.all()
+            for assignment in pr.assignments.all()
         ]
     }
 
@@ -184,7 +181,7 @@ def manageProject(request, id, id_project):
 
 
 def editAccount(request, id):
-    p = get_object_or_404(Profile, id=id)
+    p = get_object_or_404(Freelancer, id=id)
 
     # Se debe cambiar
     if '-' in p.phone:
@@ -197,7 +194,7 @@ def editAccount(request, id):
     return render(request, 'perfil/freelancer_edit_profile_account.html', {'p': p, 'code': code, 'phone': phone})
 
 def editAccountClient(request, id):
-    p = get_object_or_404(ClientProfile, id=id)
+    p = get_object_or_404(CompanyManager, id=id)
 
     # Se debe cambiar
     if '-' in p.phone:
@@ -210,47 +207,47 @@ def editAccountClient(request, id):
     return render(request, 'perfil/client_edit_profile_account.html', {'p': p, 'code': code, 'phone': phone})
 
 def editProfile(request, id=id):
-    p = get_object_or_404(Profile, id=id)
+    p = get_object_or_404(Freelancer, id=id)
     existing_types = p.social_networks.values_list('type', flat=True)
     available_media = [choice for choice in SocialNetwork.TYPE_CHOICES if choice[0] not in existing_types]
 
     return render(request, 'perfil/freelancer_edit_profile.html', {'p': p, 'available_media': available_media})
 
 def editProfileClient(request, id=id):
-    p = get_object_or_404(ClientProfile, id=id)
+    p = get_object_or_404(CompanyManager, id=id)
     existing_types = p.client_social_networks.values_list('type', flat=True)
     available_media = [choice for choice in SocialNetwork.TYPE_CHOICES if choice[0] not in existing_types]
 
     return render(request, 'perfil/client_edit_profile.html', {'p': p, 'available_media': available_media})
 
 def deleteDisable(request, id=id):
-    p = get_object_or_404(Profile, id=id)
+    p = get_object_or_404(Freelancer, id=id)
     return render(request, 'perfil/freelancer_edit_profile_delete.html', {'p': p})
 
 def deleteDisableClient(request, id=id):
-    p = get_object_or_404(ClientProfile, id=id)
+    p = get_object_or_404(CompanyManager, id=id)
     return render(request, 'perfil/client_edit_profile_delete.html', {'p': p})
 
 def editPortfolio(request, id=id):
-    p = get_object_or_404(Profile, id=id)
+    p = get_object_or_404(Freelancer, id=id)
     return render(request, 'perfil/freelancer_edit_profile_portfolio.html', {'p': p})
 
 def editProjectsClient(request, id=id):
-    p = get_object_or_404(ClientProfile, id=id)
+    p = get_object_or_404(CompanyManager, id=id)
     return render(request, 'perfil/client_edit_profile_projects.html', {'p': p})
         
 def perfilesCliente(request, id):        
-    p = get_object_or_404(ClientProfile, id=id)
+    p = get_object_or_404(CompanyManager, id=id)
     return render(request, 'perfil/client_profile.html', {'p':p})
 
 def mainCliente(request, id):        
-    p = get_object_or_404(ClientProfile, id=id)
+    p = get_object_or_404(CompanyManager, id=id)
     return render(request, 'perfil/client_projects_list.html', {'p':p})
 
 
 #ver el perfil de un freelancer:
 def freelancerProfile(request, id, idclient):
     # Obtiene el perfil del freelancer usando el id proporcionado
-    p = get_object_or_404(Profile, id=id)
-    client = get_object_or_404(ClientProfile, id=idclient)
+    p = get_object_or_404(Freelancer, id=id)
+    client = get_object_or_404(CompanyManager, id=idclient)
     return render(request, 'perfil/freelancer_profile_view.html', {'p': p, 'client': client})

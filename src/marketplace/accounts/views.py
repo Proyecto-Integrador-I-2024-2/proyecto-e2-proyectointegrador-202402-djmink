@@ -2,10 +2,10 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
-from .forms import CompanyRegistrationForm, FreelancerRegistrationForm, LoginForm
+#from .forms import CompanyRegistrationForm, FreelancerRegistrationForm, LoginForm
 from django.contrib.auth.views import LoginView
 
-from my_aplication.models import FreelancerProfile, CompanyProfile, Freelancer, CompanyManager
+from my_aplication.models import Freelancer, CompanyManager
 
 #SMTP libraries
 from django.core.mail import send_mail
@@ -57,7 +57,7 @@ def registerf1(request):
             phone_number = request.POST.get('phone_number')
             password = request.POST.get('password')
 
-            freelancer_profile = FreelancerProfile.objects.create(name=fullname, email=username, phone=phone_number, image=None)
+            freelancer_profile = Freelancer.objects.create(name=fullname, email=username, phone=phone_number, image=None)
             user = Freelancer.objects.create(username=username, password=password, profile=freelancer_profile)
             return redirect('registerf2', id = user.profile.id)
     else:
@@ -69,7 +69,7 @@ def registerf2(request, id):
             return redirect('registerf3', id = id)
         else:
             image = request.FILES.get('image_input')
-            freelancer_profile = FreelancerProfile.objects.get(id=id)
+            freelancer_profile = Freelancer.objects.get(id=id)
             freelancer_profile.image = image
             freelancer_profile.save()
             return redirect('registerf3', id = id)
@@ -78,7 +78,7 @@ def registerf2(request, id):
 
 def registerf3(request, id):
     if request.method == 'POST':
-        freelancer_profile = FreelancerProfile.objects.get(id=id)
+        freelancer_profile = Freelancer.objects.get(id=id)
         country = request.POST.get('country')
         user = Freelancer.objects.get(profile=freelancer_profile)
         user.country = country
@@ -103,7 +103,7 @@ def registerc1(request):
             legal_agent = request.POST.get('legal_agent')
             password = request.POST.get('password')
 
-            company_profile = CompanyProfile.objects.create(name=company_name, email=username, phone=None, image=None, address=None, legal_agent=legal_agent, business_vertical=None, company_type=None)
+            company_profile = CompanyManager.objects.create(name=company_name, email=username, phone=None, image=None, address=None, legal_agent=legal_agent, business_vertical=None, company_type=None)
             user = CompanyManager.objects.create(username=username, password=password, profile=company_profile)
             return redirect('registerc2', id = user.profile.id)
     else:
@@ -111,7 +111,7 @@ def registerc1(request):
     
 def registerc2(request, id):
     if request.method == 'POST':
-        company_profile = CompanyProfile.objects.get(id=id)
+        company_profile = CompanyManager.objects.get(id=id)
         country = request.POST.get('country')
         phone = request.POST.get('phone')
         address = request.POST.get('address')
