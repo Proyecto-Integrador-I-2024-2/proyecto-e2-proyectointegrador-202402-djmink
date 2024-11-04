@@ -1,0 +1,166 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home Page</title>
+    <link rel="icon" type="image/png" href="{% static 'img/Logo.png' %}">
+    <link rel="stylesheet" href="{% static 'css/home_page.css' %}">
+</head>
+<body>
+
+    <div class="back">
+
+        <div class="heading">
+            <img class="logo" src="{% static 'img/Logo.svg' %}"/>
+            <div class="logoseparator"></div>
+            <div class="ptext onlinemarketplace">
+                Online Marketplace
+            </div>
+            <div class="ptext login">Login</div>
+            <button class="btn join-btn">Join Us</button>
+        </div>
+
+        <div class="upper-section">
+            <div class="filter-container">
+                <div class="filter-header" onclick="displayJoinModal()">
+                    <img src="{% static 'img/lines.svg' %}" alt="Lines">
+                    <span class="ptext filter-text">Filter</span>
+                    <img class="arrow" src="{% static 'img/arrow.svg' %}" alt="arrow">
+                </div>
+            </div>    
+        
+            <div class="ptext discover">Discover</div>
+            <div class="ptext your">Your <span class="ptext project"> Project</span> </div>
+        
+            <div class="input-container">
+                <input class= "input-box" type="text" placeholder="Search">
+                <img class ="search" src="{% static 'img/search.svg' %}" onclick="displayJoinModal()" alt="Search Icon">
+            </div>
+        
+            <nav class="cat-nav">
+                <a href="#branding" onclick="displayJoinModal()">Branding</a>
+                <a href="#illustration" onclick="displayJoinModal()" >Illustration</a>
+                <a href="#Web_design" onclick="displayJoinModal()" >Web Design</a>
+                <a href="#print" onclick="displayJoinModal()" >Print</a>
+                <a href="#video_editing" onclick="displayJoinModal()" >Video Editing</a>
+                <a href="#image_editing" onclick="displayJoinModal()" >Image Editing</a>
+            </nav>
+            
+        </div>
+
+        <div class="publications-section">
+
+            <div class="publications-container">
+                {% for project in publications %}
+                    <div class="publication-container" onclick="displayJoinModal()">
+                        <div class="card">
+                            <div class="project-picture-container">
+                                <img class="fav" src="{% static 'img/Fav.svg' %}" />
+                                <img class="project-picture" src="{{ publication.project.project_picture.url }}" alt="Project Picture"/>
+                            </div>
+                            <div class="project-data-1">
+                                <img class="publication-profile-picture" src="{{ publication.profile.profile_picture.url }}" alt="Profile Picture"/>
+                                <div class="ptext publication-profile-name">{{ publication.profile.name }}</div>
+                                <img class="star" src="{% static 'img/Star.svg' %}" />
+                                <div class="ptext publication-rate">{{ publication.profile.rating }}</div>
+                                <div class="ptext comments-amount">({{ publication.commentsPublication.count }}+)</div>
+                            </div>
+                        </div>
+                        <div class="project-data-2">
+                            <div class="ptext project-name">{{ publication.project.name }}</div>
+                            <div class="ptext project-description">{{ publication.project.description }}</div>
+                            <div class="ptext project-budget">From ${{ publication.project.budget }}</div>
+                        </div>
+                        <div class="categories-container">
+                            {% for category in publication.project.projectcategories.all %}
+                                <div class="category-container">
+                                    <div class="category">{{ category.name }}</div>
+                                </div>
+                            {% empty %}
+                                <p>No categories for this project registered yet.</p>
+                            {% endfor %}
+                        </div> 
+                    </div>
+                {% empty %}
+                    <p>There are no publications registered yet.</p>
+                {% endfor %}
+            </div>
+
+        </div>
+
+        <footer class="footer">
+            <div class="footer-content">
+                <img class="encora" src="{% static 'img/Encora1.svg' %}" />
+                <a href="https://www.facebook.com/encorainc" target="_blank">
+                    <img class="social-icon fb" src="{% static 'img/fb.png' %}"/>
+                </a>
+                <a href="https://www.instagram.com/encorainc/" target="_blank">
+                    <img class="social-icon ig" src="{% static 'img/ig.png' %}" />
+                </a>
+                <a href="https://www.linkedin.com/company/encorainc/" target="_blank">
+                    <img class="social-icon lin" src="{% static 'img/lin.png' %}" />
+                </a>
+                <img class="social-icon gmail" src="{% static 'img/gmail.png' %}" />
+                <nav class="footer-nav">
+                    <a href="#features">Features</a>
+                    <a href="#about">About</a>
+                    <a href="#support">Support</a>
+                    <a href="#resources">Resources</a>
+                    <a href="#places">Places</a>
+                    <a href="#jobs">Jobs</a>
+                </nav>
+                <div class='footertext'> 
+                    © 2024 Online Marketplace
+                </div>
+            </div>
+        </footer>
+
+    </div>
+
+    <div id="joinModal" class="modal">
+        <div class="modal-content">
+            <span id="close" class="close">&times;</span>
+            <div class="ptext modal-title">Join our <span class="ptext community">Community</span></div>
+            <button id= "sign-up-btn" class='btn sign-up'>Sign Up</button>
+            <div class="separator-con">
+                <hr class="separator a">
+                <div class="ptext or">Or</div>
+                <hr class="separator b">
+            </div>
+            <button id= "login-btn" class='btn login'>Log In</button>
+            <div class="google-container">
+                <img class="google-icon" src="{% static 'img/Google.png' %}"> 
+                <button id= "btn sign-google" class='btn sign-google'>Sign In with Google</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+
+        function displayJoinModal(){
+
+            const thismodal = document.getElementById('joinModal');
+            thismodal.style.display = "flex";
+            const span = document.getElementById('close');
+            console.log('here');
+
+            span.onclick = function() {
+                thismodal.style.display = "none";
+            }
+
+            window.onclick = function(event) {
+                if (event.target == thismodal) {
+                    thismodal.style.display = "none";
+                }
+            }
+        
+        }
+
+    </script>
+</body>

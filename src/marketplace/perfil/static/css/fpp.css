@@ -1,0 +1,756 @@
+/* Freelancer Profile */
+html {
+    scroll-behavior: smooth;
+}
+
+.upper-section {
+    background-color:#f81515;
+    height:752px;
+    width: 1440px; 
+    position:relative;
+    border-bottom-left-radius: 50px; 
+    border-bottom-right-radius: 50px;
+}
+
+.ptext{
+    font-family: "Poppins", sans-serif;
+    position: absolute;
+}
+
+.ptext.hometext{
+    color:#000000;
+    font-size:24px;
+    font-weight: 600;
+    line-height:auto;
+    top:32px;
+    left:690px;
+    width:60px;
+    height:30px;
+}
+
+.icon{
+    top:35px;
+    position:absolute;
+    width:35px;
+    height: 35px;
+    cursor: pointer;
+}
+
+.icon.chat_icon{
+    left:1268px;
+}
+
+.icon.notification_icon{
+    left:1315px;
+}
+
+.logo{
+    top:7px;
+    left:40px;
+    position:absolute;
+    width:80px;
+    height: 80px;
+}
+
+.logoseparator{
+    top:45px;
+    left:95px;
+    width: 60px;
+    transform:rotate(-90deg);
+    border:1px solid #01000c;
+    position:absolute;
+}
+
+.ptext.onlinemarketplace{
+    color:#01000c;
+    font-size:18px;
+    font-weight: 500;
+    top:20px;
+    left:150px;
+    width:100px;
+    height: 66px;
+    cursor: pointer;
+}
+
+.profile_picture_heading {
+    top:25px;
+    left:1365px;
+    position:absolute;
+    width:50px;
+    height: 50px;
+    border-radius: 50%; 
+    object-fit: cover;
+}
+
+.ptext.profiletitle{
+    color:#000000;
+    font-size:64px;
+    font-weight: 600;
+    top:194px;
+    left:163px;
+}
+
+.editprofilebutton {
+    width: 70px;
+    height: 18px;
+    position: absolute;
+    left: 1212px;
+    top: 224px;
+    display: flex; 
+    align-items: center;
+    justify-content: center;
+    background-color: #FFFFFF;
+    border: 1px solid #BCBCBC;
+    color: #01000C; 
+    padding: 10px 15px; 
+    border-radius: 5px; 
+    cursor: pointer; 
+    transition: background-color 0.3s; 
+    font-family: "Poppins", sans-serif;
+    font-weight: 500;
+    font-size: 13px;
+    text-decoration: none; 
+}
+
+.editprofilebutton:hover {
+    background-color: #6ce81444;
+}
+
+.line-separator {
+    position: absolute;
+    top:307px;
+    left: 120px;
+    width:1200px;
+    transform:rotate(0deg);
+    border:1px solid #000000;
+}
+
+.ptext.name-profile{
+    left: 439px;
+    top: 360px;
+    position: absolute;
+    font-weight: 500;
+    font-size: 48px;
+}
+
+.ptext.profession {
+    left: 439px;
+    top: 432px;
+    height: 31px;
+    font-weight: 400;
+    font-style: normal;
+    font-size: 20px;
+}
+
+.profile_picture {
+    top:360px;
+    left:146px;
+    position:absolute;
+    width:250px;
+    height: 250px;
+    border-radius: 50%; 
+    object-fit: cover; 
+}
+
+.ptext.description {
+    width: 826px;
+    left: 439px;
+    top: 485px;
+    height: 186px;
+    font-weight: 400;
+    font-size: 16px;
+}
+
+.ptext.email {
+    left: 439px;
+    top: 600px;
+    font-weight: 400;
+    font-size: 16px;
+    color: #007BFF;
+}
+
+.social-networks {
+    position: absolute;
+    left: 438px;
+    top: 639px; 
+    display: flex;
+    gap: 10px; 
+}
+
+.social-icon {
+    width: 32px;
+    height: 32px; 
+    cursor: pointer; 
+    transition: transform 0.2s; 
+}
+
+.social-icon:hover {
+    transform: scale(1.1); 
+}
+
+.ptext.calification {
+    left: 270px;
+    top: 636px; 
+    font-weight: 600;
+    font-size:35;
+}
+
+.star {
+    position: absolute;
+    left: 233px;
+    top: 630px; 
+    height: 30px; 
+    width: 30px;
+    cursor: pointer;
+}
+
+.aboutsection {
+    height:436px;
+    width:1440px;
+    position:relative;
+}
+
+.ptext.about-title{
+    width: 203px;
+    left: 619px;
+    top: 40px;
+    height: 60px;
+    font-weight: 500;
+    font-size: 40px; 
+}
+
+
+
+.experience {
+    position: relative;
+    left: 118px;
+    top: 140px;
+    width: 265px;
+    height: 200px;
+    border: 1px solid #ccc;
+    border-radius: 15px;
+    background-color: #f2f2f2;
+    text-align: center;
+    font-family: "Poppins", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+}
+
+.experience-header {
+    background-color: #f6c6c6;
+    color: black;
+    font-size: 24px;
+    font-weight: 500;
+    padding: 10px;
+    border-radius: 10px 10px 0 0; 
+    margin-bottom: 15px;
+}
+
+.experience-body {
+    color: #333;
+}
+
+.jobs-done {
+    font-size: 20px;
+    margin-bottom: 10px;
+}
+
+.percentage {
+    color: #007bff;
+    font-weight: bold;
+}
+
+.price {
+    font-size: 20px;
+    margin-bottom: 10px;
+}
+
+.join-date {
+    font-size: 20px;
+}
+
+.habilities-container {
+    position: absolute;
+    left: 522px;
+    top: 120px;
+    width: 391px;
+    max-height: 250px;
+    overflow-y: auto;
+}
+
+.hability-container {
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+.hability {
+    background-color: #f0f0f0;
+    padding: 10px 20px;
+    border-radius: 20px;
+    display: inline-block; 
+    color: #333;
+    font-size: 14px;
+    font-family: "Poppins", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    max-width: 90%; 
+    white-space: nowrap; 
+}
+
+.hability-container:nth-child(6n+1) .hability {
+    background-color: #f6c6c6;
+}
+
+.hability-container:nth-child(6n+2) .hability {
+    background-color: #7ddac1; 
+}
+
+.hability-container:nth-child(6n+3) .hability {
+    background-color: #f6e6e6; /* Rosa Claro */
+}
+
+.hability-container:nth-child(6n+4) .hability {
+    background-color: #3c3838; /* Negro */
+    color: white;
+}
+
+.hability-container:nth-child(6n+5) .hability {
+    background-color: #c87cff; /* Morado */
+    color: white;
+}
+
+.hability-container:nth-child(6n+6) .hability {
+    background-color: #dbe4c2; /* Verde Claro */
+}
+
+.certificates-container {
+    position: absolute;
+    left: 1030px;
+    top: 135px;
+    width: 335px; /* Ancho del contenedor de certificados */
+    max-height: 180px; /* Altura máxima */
+    overflow-y: auto; /* Habilita el scroll si es necesario */
+    padding: 10px; /* Espaciado interno */
+    margin: 0 auto; /* Centra el contenedor */
+}
+
+.certificate-container { 
+    margin-bottom: -5px; /* Espaciado inferior entre certificados */
+}
+
+.name {
+    font-size: 14px; /* Tamaño de fuente del nombre */
+    font-family: "Poppins", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    margin-bottom: 5px;
+    margin-left: 10px; /* Espaciado inferior del nombre */
+}
+
+.rectangle20 {
+    background-color: #FFFFFF; /* Color de fondo del rectángulo */
+    border-radius: 10px;
+    border: 1px solid #BCBCBC; /* Bordes redondeados */ /* Espaciado interno del rectángulo */
+    width: 260px;
+    height: 50px;
+    position: relative; 
+    align-items: center;
+    display: flex; /* Necesario para posicionar elementos dentro */
+}
+
+.card {
+    margin-left: 16px; 
+    width: 24px;
+    height: 24px;
+}
+
+.type {
+    font-family: "Poppins", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    font-size: 12px; /* Tamaño de fuente del tipo de certificado */
+    color: #0040FF; /* Color del texto */
+    margin-left: 20px; /* Espaciado inferior del tipo */
+}
+
+.view {
+    height: 24px;
+    width: 24px; /* Ancho de la imagen del ícono de vista */
+    cursor: pointer; /* Cambia el cursor al pasar sobre la imagen */
+    position: relative; /* Posiciona el ícono de vista */
+    left: 280px;
+    top: -37px; /* Centra verticalmente */
+}
+
+.rectangle20 a {
+    text-decoration: none; 
+}
+
+
+
+.projectssection {
+    height:429px;
+    width:1440px;
+    padding:0px;
+    top:0px;
+    position:relative;
+}
+
+.rectangleproject
+{
+    height:429px;
+    width:1440px;
+    background-color: #F2F2F2;
+    position: relative;
+}
+
+.projects{
+    color: black;
+    width: 161px;
+    left: 639px;
+    top: 50px;
+    height: 60px;
+    position: absolute;
+    font-family: "Poppins", sans-serif;
+    font-weight: 500;
+    font-style: normal;
+    font-size: 40px; 
+}
+
+.projects-wrapper {
+    position: absolute; /* Para que los botones se posicionen en relación al contenedor */
+    width: 1339px;
+    top: 143px;
+    left: 49px;
+    height: 209px;
+}
+
+.project-name{
+    position: relative;
+    left: 30px;
+    top: 5px;
+    height: 36px;
+    width: 270px;
+    font-family: "Poppins", sans-serif;
+    font-weight: 500;
+    font-style: normal;
+    font-size: 26px;
+}
+
+.info-project{
+    position: relative;
+    left: 30px;
+    top: 20px;
+    height: 36px;
+    width: 270px;
+    font-family: "Poppins", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    font-size: 16px;
+}
+
+.nav-button {
+    position: absolute; /* Posiciona el botón de forma absoluta dentro del contenedor */
+    top: 50%; /* Centra el botón verticalmente */
+    transform: translateY(-50%); /* Ajusta la posición para estar en el centro verticalmente */
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    z-index: 1; /* Asegura que los botones se muestren por encima del contenido */
+}
+
+.nav-button:hover {
+    background-color: #0056b3; /* Color al pasar el mouse */
+}
+
+.nav-button.left {
+    left: 10px; /* Alinea el botón izquierdo */
+}
+
+.nav-button.right {
+    right: 10px; /* Alinea el botón derecho */
+}
+
+.projects-container {
+    left: 125px;
+    top: 10px;
+    width: 1083px;
+    height: 191px;
+    margin: 0 auto; /* Centra el contenedor */
+    position: absolute;
+    display: flex; /* Muestra los elementos en una fila */
+    overflow: hidden; 
+}
+
+.project-container {
+    width: 300px;
+    border-radius: 10px; /* Bordes redondeados */
+    padding: 10px; /* Espaciado interno */
+    margin-right: 61px; /* Espaciado a la derecha entre proyectos */
+    min-width: 150px; /* Ancho mínimo de cada proyecto */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Sombra para dar profundidad */
+    flex-shrink: 0; 
+}
+
+.project-container:nth-child(4n+1) {
+    background-color: #CAD0FF; /* Color 1: gris claro */
+}
+
+.project-container:nth-child(4n+2) {
+    background-color: #FFA4A4; /* Color 2: azul claro */
+}
+
+.project-container:nth-child(4n+3) {
+    background-color: #D2FFB6; /* Color 3: naranja claro */
+}
+
+.project-container:nth-child(4n+4) {
+    background-color: #CC94F7; /* Color 4: verde claro */
+}
+
+.l3 {
+    position: absolute;
+    top:420px;
+    left: 120px;
+    width:1200px;
+    transform:rotate(0deg);
+    border:1px solid #000000;
+}
+
+.commentssection {
+    height:430px;
+    width:1440px;
+    padding:0px;
+    top:0px;
+    position:relative;
+}
+
+.rectanglecomment
+{
+    height:430px;
+    width:1440px;
+    background-color: #F2F2F2;
+    position: relative;
+}
+
+.commentstitle{
+    color: black;
+    width: 232px;
+    left: 144px;
+    top: 81px;
+    height: 32px;
+    position: absolute;
+    font-family: "Poppins", sans-serif;
+    font-weight: 500;
+    font-style: normal;
+    font-size: 36px; 
+}
+
+.comments {
+    overflow-x: hidden; 
+    position: absolute;
+    left: 131px;
+    top:160px;
+    width: 1178px; 
+    height: 188px;
+    max-height: 209px;
+    overflow-y: auto; 
+    margin: 20px auto;
+    border-radius: 10px; 
+    background-color: #f9f9f9; 
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+}
+
+.comment {
+    display: flex; /* Usar flexbox para la alineación */
+    margin-bottom: 15px; /* Espacio entre comentarios */
+    padding: 10px; /* Espaciado interno */
+    border: 1px solid #e0e0e0; /* Borde del comentario */
+    border-radius: 5px; /* Bordes redondeados */
+    background-color: #fff; /* Color de fondo del comentario */
+}
+
+.reply{
+    position: relative;
+    display: flex; 
+    align-items: center;
+    justify-content: center;
+    cursor: pointer; 
+    font-family: "Poppins", sans-serif;
+    font-weight: 500;
+    font-size: 13px;
+    border-radius: 5px; 
+    left: 1050px;
+    top: 0px;
+    width: 70px;
+    height: 18px;
+    background-color: #FFFFFF;
+    border: 1px solid #BCBCBC;
+    color: #01000C; 
+}
+
+.reply-input {
+    background-color: rebeccapurple;
+    position: relative;
+    left: -100px;
+    display: block;
+    width: 90%; 
+    margin-top: 10px;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 1em;
+    box-sizing: border-box;
+}
+
+
+.profilecommentimg {
+    width: 50px; 
+    height: 50px; 
+    border-radius: 50%; 
+    margin-right: 15px; 
+}
+
+/* Estilo del contenedor de texto */
+.comment div {
+    text-align: justify; 
+    width: 1110px;
+    display: flex;
+    flex-direction: column;
+}
+
+.username {
+    font-size: 16px;
+    position: relative;
+    left: 70px;
+    top: -65px;
+    font-weight: bold; 
+    margin-bottom: 5px; 
+}
+
+/* Estilo de la fecha */
+.date {
+    position: relative;
+    left: 70px;
+    top: -20px;
+    font-size: 12px; /* Tamaño de fuente más pequeño */
+    color: #888; /* Color gris para la fecha */
+    margin-bottom: 5px; /* Espacio debajo de la fecha */
+    font-weight: 400;
+}
+
+/* Estilo del contenido del comentario */
+.comment p {
+    position: relative;
+    left: 15px;
+    top: -40px;
+    margin: 0; /* Sin margen */
+    font-size: 1em;
+    margin-bottom: -25px; /* Tamaño de fuente normal */
+}
+
+.footer {
+    background-color: #F2F2F2;
+    text-align: center;
+    font-family: "Poppins", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    padding: 0;
+    position: relative;
+    bottom: 0;
+    left: 0px;
+    width: 1440px; 
+    height: 135px;
+}
+
+
+.footer-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.footer-nav {
+    margin-top: 57px;
+}
+
+.footer-nav2 {
+    margin-top: 20px;
+}
+
+.footer-nav a {
+    color: #01000C;
+    margin: 0 15px;
+    text-decoration: none;
+    font-size: 20px;
+}
+
+.footer-nav a:hover {
+    text-decoration: underline; 
+}
+
+.encora2 {
+    position: absolute;
+    left: 37px;
+    top: 10px; 
+    height: 111px; 
+    width: 113px;
+}
+
+.gmail3 {
+    position: absolute;
+    left: 1252px;
+    top: 78px; 
+    height: 24px; 
+    width: 24px;
+    cursor: pointer;
+}
+
+.lin3 {
+    position: absolute;
+    left: 1280px;
+    top: 78px; 
+    height: 24px; 
+    width: 24px;
+    cursor: pointer;
+}
+
+.ig3 {
+    position: absolute;
+    left: 1308px;
+    top: 78px; 
+    height: 24px; 
+    width: 24px;
+    cursor: pointer;
+}
+
+.fb3 {
+    position: absolute;
+    left: 1336px;
+    top: 78px; 
+    height: 24px; 
+    width: 24px;
+    cursor: pointer;
+}
+
+.footertext {
+    text-align:center;
+    vertical-align:text-top;
+    font-size:12px;
+    font-family: "Inter", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    line-height:auto;
+    border-style:hidden;
+    outline:none;
+    top:105px;
+    left:1205px;
+    position:absolute;
+    width:200px;
+    height:18px;
+}
