@@ -1,6 +1,5 @@
 from django.urls import path
 from . import views
-from my_aplication.models import Rate
 
 urlpatterns = [
         #Recomendaciones para urls:
