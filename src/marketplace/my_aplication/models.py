@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes.fields import GenericForeignKey
 
@@ -381,3 +382,5 @@ class Reference(models.Model):
     phone = models.CharField(max_length=15)
     email = models.CharField(max_length=50)
     experience = models.ForeignKey(Experience, on_delete=models.PROTECT, related_name='references')
+=======
+>>>>>>> feat/backend_project_management

@@ -1,0 +1,38 @@
+{% load static %}
+<div id="application-modal" class="modal">
+    <div class="modal-content">
+      <span id="close-modal" class="close-button">&times;</span>
+      <!-- Modal Content Starts Here -->
+      <div class="application-form">
+        <div class="overlap-group">
+          <div class="profile">
+            <div class="status">
+              <div class="text-wrapper">Ready</div>
+              <img class="check" src="{% static 'check.svg' %}" />
+            </div>
+            <img class="ellipse" src="{% static 'profile-picture.png' %}" />
+            <div class="div">EmpanadaSinAzucar123</div>
+          </div>
+          <div class="text-wrapper-2">Check your profile</div>
+          <button class="component"><div class="delete">Check</div></button>
+        </div>
+        <div class="text-wrapper-3">Application to {{p.name}}</div>
+        <p class="p">Select the requirement you are interested to work in</p>
+        <div class="option">
+          <div class="ellipse-2"></div>
+          <div class="text-wrapper-4">Ethnographic Fieldwork Planning</div>
+        </div>
+        <div class="option-2">
+          <div class="ellipse-2"></div>
+          <div class="text-wrapper-5">Sound Collection and Documentation</div>
+        </div>
+        <div class="option-3">
+          <div class="ellipse-2"></div>
+          <div class="text-wrapper-4">Transcription and Analysis</div>
+        </div>
+        <button id="basic-button" class="basic-button"><div class="log-in">Apply</div></button>
+        <img class="close-image" src="{% static 'close.svg' %}" />
+      </div>
+      <!-- Modal Content Ends Here -->
+    </div>
+  </div>

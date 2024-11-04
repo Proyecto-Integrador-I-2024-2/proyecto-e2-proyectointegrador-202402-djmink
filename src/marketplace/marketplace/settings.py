@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     'my_aplication',
     'perfil',
     'accounts',
+    'project_management',
 ]
 
 MIDDLEWARE = [

@@ -7,4 +7,8 @@ urlpatterns = [
     path('register/', views.register, name='register'),
     path('complete/<int:profile_id>/', views.complete, name='complete'),
     path('', views.home, name='home'),
+<<<<<<< HEAD
+=======
+
+>>>>>>> feat/backend_project_management
 ]
