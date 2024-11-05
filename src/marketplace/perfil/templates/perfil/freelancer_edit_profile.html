@@ -26,7 +26,7 @@
             <img class="chat_icon" src="{% static 'img/Chat_Icon.svg' %}"/>
             <img class="notification_icon" src="{% static 'img/Notification_Icon.svg' %}"/>
             <a href="{% url 'perfilFreelancer' p.id %}">
-                <img class="profile_picture2" src="{{ p.profile_picture.url }}" alt="Profile Picture"/>
+                <img class="profile_picture2" src="{{ p.image.url }}" alt="Profile Picture"/>
             </a>
             <img class="logo" src="{% static 'img/Logo.svg' %}"/>
             <div class="logoseparator"></div>
@@ -51,147 +51,160 @@
                 Profile
             </div>
 
-            <div class="container-pic">
-                <img id="profile_picture3" class="profile_picture3" src="{{ p.profile_picture.url }}" alt="Profile Picture"/>
-                <div class="ptext name">{{ p.name }}</div>
-                <button id='change-picture-button' class='change-picture-button' onclick="changePicture()">
-                    <div class='ptext change'>Change profile picture</div>
-                </button>
-            </div>
+            <form method = "POST" enctype="multipart/form-data">
 
-            <div class="ptext about-you">
-                About you
-            </div>
+                {% csrf_token %}
 
-            <div class="input-container-major">
-                <div class="ptext about">Major</div>
-                <textarea class="input-box major">{{ p.profession }}</textarea>
-            </div>
+                <div class="container-pic">
+                    <img id="profile_picture3" class="profile_picture3" src="{{ p.image.url }}" alt="Profile Picture"/>
+                    <div class="ptext name">{{ p.name }}</div>
+                    <button type="button" id='change-picture-button' class='change-picture-button' onclick="changePicture()">
+                        <div class='ptext change'>Change profile picture</div>
+                    </button>
+                    <div id="input-container" style="display: none;"></div>
+                </div>
 
-            <div class="input-container-bio">
-                <div class="ptext about">Bio</div>
-                <textarea class="input-box bio">{{ p.description }}</textarea>
-            </div>
+                <div class="ptext about-you">
+                    About you
+                </div>
+    
+                <div class="input-container-major">
+                    <div class="ptext about">Major</div>
+                    <textarea class="input-box major" name="profession">{{ p.profession }}</textarea>
+                </div>
+                
+                <div class="input-container-bio">
+                    <div class="ptext about">Bio</div>
+                    <textarea class="input-box bio" name="description">{{ p.description }}</textarea>
+                </div>
 
-            <div class="input-container-mail">
-                <div class="ptext about">Contact email</div>
-                <textarea class="input-box mail">{{ p.contact_email }}</textarea>
-            </div>
+                <div class="input-container-mail">
+                    <div class="ptext about">Contact email</div>
+                    <textarea class="input-box mail" name="contact_email">{{ p.contact_email }}</textarea>
+                </div>
 
-            <div class="ptext links">
-                Social Media
-            </div>
+                <div class="ptext links">
+                    Social Media
+                </div>
 
-            <div class="social-networks" id="social-networks">
-                {% for network in p.social_networks.all %}
-                    <div class="container-media" id="social-{{ network.id }}">
-                        <img class="media-pic" src="{{ network.image.url }}"/>
-                        <textarea class="mediainput">{{ network.url }}</textarea>
-                        <button class="delete-btn social" onclick="removeTemporarySocial('{{ network.id }}', '{{ network.type }}')">X</button>
-                    </div>
-                {% endfor %}
-            </div>   
-
-            <div class="ptext add-new-social">
-                Add new
-            </div>
-
-            <div class="social-selector-container">
-                <select name="social-media" id="social-media" onchange="updateSocialMedia()">
-                    <option value="">Select Social Media</option>
-                    {% for media in available_media %}
-                        <option value="{{ media.0 }}">{{ media.1 }}</option>
-                    {% empty %}
-                        <option>No social media available</option>
+                <div class="social-networks" id="social-networks">
+                    {% for network in p.social_networks.all %}
+                        <div class="container-media" id="social-{{ network.id }}">
+                            <img class="media-pic" src="{{ network.image.url }}" alt="{{ network.type }} icon"/>
+                            <textarea class="mediainput" name="social_url_{{ network.id }}">{{ network.url }}</textarea>
+                            <input type="hidden" name="social_type_{{ network.id }}" value="{{ network.type }}"/>
+                            <input type="hidden" name="social_id" value="{{ network.id }}"/>
+                            <button type="button" class="delete-btn social" onclick="removeTemporarySocial('{{ network.id }}', '{{ network.type }}')">X</button>
+                        </div>
                     {% endfor %}
-                </select>
-            </div>
+                </div>                             
 
-            <textarea id="user-input" class="newmediainput" style="display: none;"></textarea>
-            <img id="selected-icon" src="" alt="Social Media Icon" style="display: none;">
-            <button id= "add-social-btn" class="add social-btn" style="display: none" onclick="addSocialNetwork()">+</button>
+                <div class="ptext add-new-social">
+                    Add new
+                </div>
 
-            <div class="ptext professional">
-                Your Professional Path
-            </div>
+                <div class="social-selector-container">
+                    <select name="social-media" id="social-media" onchange="updateSocialMedia()">
+                        <option value="">Select Social Media</option>
+                        {% for media in available_media %}
+                            <option value="{{ media.0 }}">{{ media.1 }}</option>
+                        {% empty %}
+                            <option>No social media available</option>
+                        {% endfor %}
+                    </select>
+                </div>
 
-            <div class="input-container-exp">
-                <div class="ptext exp">Experience</div>
-                <textarea class="input-box exp">{{ p.experience }}</textarea>
-            </div>
-    
-            <div class="input-container-hour">
-                <div class="ptext exp">Hourly Rate</div>
-                <textarea class="input-box exp">{{ p.price }}</textarea>
-            </div>
+                <textarea id="user-input" class="newmediainput" style="display: none;"></textarea>
+                <img id="selected-icon" src="" alt="Social Media Icon" style="display: none;">
+                <button type="button" id= "add-social-btn" class="add social-btn" style="display: none" onclick="addSocialNetwork()">+</button>
 
-            <div class="ptext skills">
-                Skills
-            </div>
+                <div class="ptext professional">
+                    Your Professional Path
+                </div>
 
-            <div class="habilities-container" id="habilities-container">
-                {% for hability in p.skills.all %}
-                    <div class="hability-container" id="hability-{{ hability.id }}">
-                        <div class="hability">{{ hability.name }}
-                            <button class="delete-btn skill" onclick="markForRemoval('hability', '{{ hability.id }}')">X</button>
+                <div class="input-container-exp">
+                    <div class="ptext exp">Experience</div>
+                    <textarea class="input-box exp" name="experience">{{ p.experience }}</textarea>
+                </div>
+        
+                <div class="input-container-hour">
+                    <div class="ptext exp">Hourly Rate</div>
+                    <textarea class="input-box exp" name="price">{{ p.price }}</textarea>
+                </div>
+
+                <div class="ptext skills">
+                    Skills
+                </div>
+
+                <div class="habilities-container" id="habilities-container">
+                    {% for hability in p.skills.all %}
+                        <div class="hability-container" id="hability-{{ hability.id }}">
+                            <div class="hability">{{ hability.name }}
+                                <input type="hidden" name="skill_id" value="{{ hability.id }}"/>
+                                <input type="hidden" name="skill_name_{{ hability.id }}" value="{{ hability.name }}"/>
+                                <button type="button" class="delete-btn skill" onclick="markForRemoval('hability', '{{ hability.id }}')">X</button>
+                            </div>
                         </div>
-                    </div>
-                {% empty %}
-                    <p>You don't have skills registered yet.</p>
-                {% endfor %}
-            </div> 
+                    {% endfor %}
+                </div>                
 
-            <div class="ptext add-new-skill">
-                Add new
-            </div>
-            
-            <div class="input-container-skill">
-                <input id="input-box-skill" class="input-box skill" type="text" placeholder="New skill" oninput="showElement('input-box-skill', 'add-skill-btn')"/>
-            </div>
+                <div class="ptext add-new-skill">
+                    Add new
+                </div>
+                
+                <div class="input-container-skill">
+                    <input id="input-box-skill" class="input-box skill" type="text" placeholder="New skill" oninput="showElement('input-box-skill', 'add-skill-btn')"/>
+                </div>
 
-            <button id= "add-skill-btn" class="add skill-btn" style="display: none" onclick="addSkill()">+</button>
+                <button type="button" id= "add-skill-btn" class="add skill-btn" style="display: none" onclick="addSkill()">+</button>
 
-            <div class="ptext certificates">
-                Certificates
-            </div>
+                <div class="ptext certificates">
+                    Certificates
+                </div>
 
-            <div class="certificates-container" id="certificates-container">
-                {% for certificate in p.certificates.all %}
-                    <div class="certificate-container" id="certificate-{{ certificate.id }}">
-                        <div class="name">{{ certificate.name }}</div>
-                        <div class="rectangle20">
-                            <img id="card" class="card" src="{% static 'img/card.svg' %}" alt="Card"/>
-                            <div class="type">{{ certificate.type }}</div>
-                            <button class="delete-btn cer" onclick="markForRemoval('certificate', '{{ certificate.id }}')">X</button>
+                <div class="certificates-container" id="certificates-container">
+                    {% for certificate in p.certificates.all %}
+                        <div class="certificate-container" id="certificate-{{ certificate.id }}">
+                            <div class="name">{{ certificate.name }}</div>
+                            <div class="rectangle20">
+                                <img id="card" class="card" src="{% static 'img/card.svg' %}" alt="Card"/>
+                                <div class="type">{{ certificate.type }}</div>
+                                <button class="delete-btn cer" onclick="markForRemoval('certificate', '{{ certificate.id }}')">X</button>
+                            </div>
+                            <a href="{{ certificate.url }}" target="_blank">
+                                <img id="view" class="view" src="{% static 'img/view.svg' %}" alt="View"/>
+                            </a>
                         </div>
-                        <a href="{{ certificate.url }}" target="_blank">
-                            <img id="view" class="view" src="{% static 'img/view.svg' %}" alt="View"/>
-                        </a>
-                    </div>
-                {% empty %}
-                    <p>You don't have certificates registered yet.</p>
-                {% endfor %}
-            </div>
+                    {% empty %}
+                        <p>You don't have certificates registered yet.</p>
+                    {% endfor %}
+                </div>
 
-            <div class="ptext add-new-cer">
-                Add new
-            </div>
-    
-            <div class="input-container-certificates name">
-                <input id="input-box name-cer" class="input-box cer" type="text"  placeholder="Enter name" oninput="showElement('input-box name-cer', 'input-box type-cer')"/>
-            </div>
-    
-            <div class="input-container-certificates type">
-                <input id="input-box type-cer" class="input-box cer" type="text" style="display: none" placeholder="Enter type" oninput="showElement('input-box type-cer', 'input-box url-cer')"/>
-            </div>
-    
-            <div class="input-container-certificates url">
-                <input id="input-box url-cer" class="input-box cer" type="text" style="display: none" placeholder="Enter URL" oninput="showElement('input-box url-cer', 'add-cer-btn')"/>
-            </div>
-    
-            <button id= "add-cer-btn" class="add cer-btn" style="display: none" onclick="addCertificate()">+</button>
+                <div class="ptext add-new-cer">
+                    Add new
+                </div>
+        
+                <div class="input-container-certificates name">
+                    <input id="input-box name-cer" class="input-box cer" type="text"  placeholder="Enter name" oninput="showElement('input-box name-cer', 'input-box type-cer')"/>
+                </div>
+        
+                <div class="input-container-certificates type">
+                    <input id="input-box type-cer" class="input-box cer" type="text" style="display: none" placeholder="Enter type" oninput="showElement('input-box type-cer', 'input-box url-cer')"/>
+                </div>
+        
+                <div class="input-container-certificates url">
+                    <input id="input-box url-cer" class="input-box cer" type="text" style="display: none" placeholder="Enter URL" oninput="showElement('input-box url-cer', 'add-cer-btn')"/>
+                </div>
+        
+                <button id= "add-cer-btn" class="add cer-btn" style="display: none" onclick="addCertificate()">+</button>
 
-            <button id= "save" class="med-btn save">Save Changes</button>
+                <input type="hidden" name="removed_social_ids" id="removed-social-ids" value="">
+                <input type="hidden" name="removed_skill_ids" id="removed-skill-ids" value="">
+                <input type="hidden" name="removed_certificate_ids" id="removed-certificate-ids" value="">
+
+                <button class="med-btn save" type ="submit">Save Changes</button>
+
+            </form>
 
         </div>
 
@@ -230,12 +243,12 @@
         <div class="modal-content">
             <span class="close">&times;</span>
             <div id='change-pic-title' class='ptext change-pic-title'>Change Profile Picture</div>
-            <img id="profile_picture4" class="profile_picture4" src="{{ p.profile_picture.url }}" alt="Profile Picture"/>
+            <img id="profile_picture4" class="profile_picture4" src="{{ p.image.url }}" alt="Profile Picture"/>
             <div class="file-select" id="src-file1" >
-                <input type="file" id="profile-picture-input" accept="image/*" onchange="previewImage(event)">
+                <input name="image" type="file" id="profile-picture-input" accept="image/*" onchange="previewImage(event)">
             </div>
-            <button id="delete-button" class="med-btn delete" onclick="deletePicture()">Delete Picture</button>
-            <button id="save-button" class="med-btn savepic" onclick="savePicture()">Accept</button>
+            <button type="button" id="delete-button" class="med-btn delete" onclick="deletePicture()">Delete Picture</button>
+            <button type="button" id="save-button" class="med-btn savepic" onclick="savePicture()">Accept</button>
         </div>
     </div>
 
@@ -271,7 +284,9 @@
 
             newSkillDiv.innerHTML = `
                 <div class="hability">${userInput.value}
-                    <button class="delete-btn skill" onclick="markForRemoval('hability', '${newSkillId}')">X</button>
+                    <input type="hidden" name="skill_id" value="${newSkillId}"/>
+                    <input type="hidden" name="skill_name_${newSkillId}" value="${userInput.value}"/>
+                    <button type="button" class="delete-btn skill" onclick="markForRemoval('hability', '${newSkillId}')">X</button>
                 </div>
             `;
 
@@ -316,18 +331,27 @@
             button.style.display = 'none';
         }
 
-        let removedItems = [];
+
+        const removedSocialItems = [];
+        const removedSkillItems = [];
+        const removedCertificateItems = [];
 
         function markForRemoval(type, itemId) {
-            console.log(type + " " + itemId)
-            console.log(typeof itemId);
             const element = document.getElementById(type + '-' + itemId);
             if (element) {
-                console.log('exists')
                 element.style.display = 'none';
-                removedItems.push({ type, itemId });
+                if (type === 'social') {
+                    removedSocialItems.push(itemId);
+                    document.getElementById('removed-social-ids').value = removedSocialItems.join(',');
+                } else if (type === 'hability') {
+                    removedSkillItems.push(itemId);
+                    document.getElementById('removed-skill-ids').value = removedSkillItems.join(',');
+                } else if (type === 'certificate') {
+                    removedCertificateItems.push(itemId);
+                    document.getElementById('removed-certificate-ids').value = removedCertificateItems.join(',');
+                }
             } else {
-                console.error('Element not found:', itemId); // Para depuración
+                console.error('Element not found:', itemId);
             }
         }
 
@@ -397,8 +421,10 @@
                 // Agregar el HTML dinámicamente
                 newSocialDiv.innerHTML = `
                     <img class="media-pic" src="${iconMap[selectedValue]}" alt="${selectedValue} icon"/>
-                    <textarea class="mediainput">www.${userInput.value}</textarea>
-                    <button class="delete-btn social" onclick="removeTemporarySocial('${newSocialId}', '${selectedValue}')">X</button>
+                    <textarea class="mediainput" name="social_url_${newSocialId}">www.${userInput.value}</textarea>
+                    <input type="hidden" name="social_type_${newSocialId}" value="${selectedValue}"/>
+                    <input type="hidden" name="social_id" value="${newSocialId}"/>
+                    <button type="button" class="delete-btn social" onclick="removeTemporarySocial('${newSocialId}', '${selectedValue}')">X</button>
                 `;
 
                 // Añadir el nuevo div al contenedor
@@ -457,6 +483,12 @@
         function savePicture() {
             const currentPic = document.getElementById('profile_picture3');
             currentPic.src = imageResult;
+
+            const inputContainer = document.getElementById('input-container');
+            const fileInput = document.getElementById('profile-picture-input');
+            inputContainer.innerHTML = '';
+            inputContainer.appendChild(fileInput);
+
             modal.style.display = "none";
         }
 

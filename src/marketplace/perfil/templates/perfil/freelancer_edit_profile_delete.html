@@ -22,7 +22,7 @@
             <img class="chat_icon" src="{% static 'img/Chat_Icon.svg' %}"/>
             <img class="notification_icon" src="{% static 'img/Notification_Icon.svg' %}"/>
             <a href="{% url 'perfilFreelancer' p.id %}">
-                <img class="profile_picture2" src="{{ p.profile_picture.url }}" alt="Profile Picture"/>
+                <img class="profile_picture2" src="{{ p.image.url }}" alt="Profile Picture"/>
             </a>
             <img class="logo" src="{% static 'img/Logo.svg' %}"/>
             <div class="logoseparator"></div>

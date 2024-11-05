@@ -21,7 +21,7 @@
             <img class="icon chat_icon" src="{% static 'img/Chat_Icon.svg' %}"/>
             <img class="icon notification_icon" src="{% static 'img/Notification_Icon.svg' %}"/>
             <a href="{% url 'perfilFreelancer' profile.id %}">
-                <img class="profile_picture_heading" src="{{ profile.profile_picture.url }}" alt="Profile Picture"/>
+                <img class="profile_picture_heading" src="{{ profile.image.url }}" alt="Profile Picture"/>
             </a>
             <img class="logo" src="{% static 'img/Logo.svg' %}"/>
             <div class="logoseparator"></div>
@@ -91,28 +91,28 @@
         <div class="publications-section">
 
             <div class="publications-container">
-                {% for publication in publications %}
+                {% for project in projects %}
                     <div class="publication-container">
                         <div class="card">
                             <div class="project-picture-container">
                                 <img class="fav" src="{% static 'img/Fav.svg' %}" />
-                                <img class="project-picture" src="{{ publication.project.project_picture.url }}" alt="Project Picture"/>
+                                <img class="project-picture" src="{{ project.project_picture.url }}" alt="Project Picture"/>
                             </div>
                             <div class="project-data-1">
-                                <img class="publication-profile-picture" src="{{ publication.profile.profile_picture.url }}" alt="Profile Picture"/>
-                                <div class="ptext publication-profile-name">{{ publication.profile.name }}</div>
+                                <img class="publication-profile-picture" src="{{ project.manager.image.url }}" alt="Profile Picture"/>
+                                <div class="ptext publication-profile-name">{{ project.manager.name }}</div>
                                 <img class="star" src="{% static 'img/Star.svg' %}" />
-                                <div class="ptext publication-rate">{{ publication.profile.rating }}</div>
-                                <div class="ptext comments-amount">({{ publication.commentsPublication.count }}+)</div>
+                                <div class="ptext publication-rate">{{ project.manager.rating }}</div>
+                                <div class="ptext comments-amount">({{ project.comments.count }}+)</div>
                             </div>
                         </div>
                         <div class="project-data-2">
-                            <div class="ptext project-name">{{ publication.project.name }}</div>
-                            <div class="ptext project-description">{{ publication.project.description }}</div>
-                            <div class="ptext project-budget">From ${{ publication.project.budget }}</div>
+                            <div class="ptext project-name">{{ project.name }}</div>
+                            <div class="ptext project-description">{{ project.description }}</div>
+                            <div class="ptext project-budget">From ${{ project.budget }}</div>
                         </div>
                         <div class="categories-container">
-                            {% for category in publication.project.projectcategories.all %}
+                            {% for category in project.projectcategories.all %}
                                 <div class="category-container">
                                     <div class="category">{{ category.name }}</div>
                                 </div>
@@ -123,22 +123,22 @@
             </div>
 
             <div class="buttons-container">
-                {% if publications.has_previous %}
-                    <a href="?page={{ publications.previous_page_number }}" class="page-btn" id="left">&#8249;</a>
+                {% if projects.has_previous %}
+                    <a href="?page={{ projects.previous_page_number }}" class="page-btn" id="left">&#8249;</a>
                 {% else %}
                     <button id="left" class="page-btn" disabled>&#8249;</button>
                 {% endif %}
             
-                {% for num in publications.paginator.page_range %}
-                    {% if publications.number == num %}
+                {% for num in projects.paginator.page_range %}
+                    {% if projects.number == num %}
                         <span class="current-page">{{ num }}</span> 
                     {% else %}
                         <a href="?page={{ num }}" class="page-btn">{{ num }}</a>  
                     {% endif %}
                 {% endfor %}
             
-                {% if publications.has_next %}
-                    <a href="?page={{ publications.next_page_number }}" class="page-btn" id="right">&#8250;</a>
+                {% if projects.has_next %}
+                    <a href="?page={{ projects.next_page_number }}" class="page-btn" id="right">&#8250;</a>
                 {% else %}
                     <button id="right" class="page-btn" disabled>&#8250;</button>
                 {% endif %}

@@ -4,7 +4,7 @@ html {
 }
 
 .upper-section {
-    background-color:#f81515;
+    background-color:#F2F2F2;
     height:752px;
     width: 1440px; 
     position:relative;
@@ -220,7 +220,6 @@ html {
 }
 
 
-
 .experience {
     position: relative;
     left: 118px;
@@ -327,59 +326,59 @@ html {
     position: absolute;
     left: 1030px;
     top: 135px;
-    width: 335px; /* Ancho del contenedor de certificados */
-    max-height: 180px; /* Altura máxima */
-    overflow-y: auto; /* Habilita el scroll si es necesario */
-    padding: 10px; /* Espaciado interno */
-    margin: 0 auto; /* Centra el contenedor */
+    width: 335px; 
+    max-height: 180px; 
+    overflow-y: auto; 
+    padding: 10px; 
+    margin: 0 auto;
 }
 
-.certificate-container { 
-    margin-bottom: -5px; /* Espaciado inferior entre certificados */
+.certificate-container {
+    height: 76px; 
+    position: relative;
+    margin-bottom: 10px;
 }
 
-.name {
-    font-size: 14px; /* Tamaño de fuente del nombre */
-    font-family: "Poppins", sans-serif;
+.ptext.name-certificate {
+    font-size: 14px; 
     font-weight: 400;
-    font-style: normal;
     margin-bottom: 5px;
-    margin-left: 10px; /* Espaciado inferior del nombre */
 }
 
 .rectangle20 {
-    background-color: #FFFFFF; /* Color de fondo del rectángulo */
+    top: 25px;
+    background-color: #FFFFFF;
     border-radius: 10px;
-    border: 1px solid #BCBCBC; /* Bordes redondeados */ /* Espaciado interno del rectángulo */
+    border: 1px solid #BCBCBC; 
     width: 260px;
     height: 50px;
     position: relative; 
     align-items: center;
-    display: flex; /* Necesario para posicionar elementos dentro */
+    display: flex;
 }
 
 .card {
+    position: absolute;
+    top: 25%;
     margin-left: 16px; 
     width: 24px;
     height: 24px;
 }
 
-.type {
-    font-family: "Poppins", sans-serif;
-    font-weight: 400;
-    font-style: normal;
-    font-size: 12px; /* Tamaño de fuente del tipo de certificado */
-    color: #0040FF; /* Color del texto */
-    margin-left: 20px; /* Espaciado inferior del tipo */
+.ptext.type-certificate {
+    font-weight: 500;
+    font-size: 12px;
+    color: #0040FF;
+    margin-left: 50px;
 }
 
 .view {
     height: 24px;
-    width: 24px; /* Ancho de la imagen del ícono de vista */
-    cursor: pointer; /* Cambia el cursor al pasar sobre la imagen */
-    position: relative; /* Posiciona el ícono de vista */
+    width: 24px; 
+    cursor: pointer; 
+    position: absolute;
     left: 280px;
-    top: -37px; /* Centra verticalmente */
+    top: 35px;
 }
 
 .rectangle20 a {
@@ -387,111 +386,101 @@ html {
 }
 
 
-
 .projectssection {
+    background-color: #F2F2F2;
     height:429px;
     width:1440px;
-    padding:0px;
-    top:0px;
     position:relative;
 }
 
-.rectangleproject
-{
-    height:429px;
-    width:1440px;
-    background-color: #F2F2F2;
-    position: relative;
-}
 
-.projects{
-    color: black;
+.ptext.projects-title{
     width: 161px;
     left: 639px;
     top: 50px;
     height: 60px;
-    position: absolute;
-    font-family: "Poppins", sans-serif;
     font-weight: 500;
-    font-style: normal;
     font-size: 40px; 
 }
 
 .projects-wrapper {
-    position: absolute; /* Para que los botones se posicionen en relación al contenedor */
+    position: relative;
     width: 1339px;
     top: 143px;
     left: 49px;
     height: 209px;
 }
 
-.project-name{
+.projects-container {
+    top: 10px;
+    width: 1083px;
+    height: 191px;
+    margin: 0 auto;
     position: relative;
+    display: flex;
+    overflow: hidden; 
+}
+
+.ptext.project-name{
     left: 30px;
-    top: 5px;
+    top: 10px;
     height: 36px;
     width: 270px;
-    font-family: "Poppins", sans-serif;
     font-weight: 500;
-    font-style: normal;
     font-size: 26px;
 }
 
-.info-project{
-    position: relative;
+.ptext.info-project{
     left: 30px;
-    top: 20px;
-    height: 36px;
-    width: 270px;
-    font-family: "Poppins", sans-serif;
     font-weight: 400;
-    font-style: normal;
     font-size: 16px;
 }
 
+.ptext.info-project.a{
+    top: 60px;
+}
+
+.ptext.info-project.b{
+    top: 100px;
+}
+
+.ptext.info-project.c{
+    top: 140px;
+}
+
 .nav-button {
-    position: absolute; /* Posiciona el botón de forma absoluta dentro del contenedor */
-    top: 50%; /* Centra el botón verticalmente */
-    transform: translateY(-50%); /* Ajusta la posición para estar en el centro verticalmente */
+    position: absolute;
+    top: 50%; 
+    transform: translateY(-50%); 
     background-color: #007BFF;
     color: white;
     border: none;
     padding: 10px 15px;
     border-radius: 5px;
     cursor: pointer;
-    z-index: 1; /* Asegura que los botones se muestren por encima del contenido */
+    z-index: 1; 
 }
 
 .nav-button:hover {
-    background-color: #0056b3; /* Color al pasar el mouse */
+    background-color: #0056b3; 
 }
 
 .nav-button.left {
-    left: 10px; /* Alinea el botón izquierdo */
+    left: 10px;
 }
 
 .nav-button.right {
-    right: 10px; /* Alinea el botón derecho */
-}
-
-.projects-container {
-    left: 125px;
-    top: 10px;
-    width: 1083px;
-    height: 191px;
-    margin: 0 auto; /* Centra el contenedor */
-    position: absolute;
-    display: flex; /* Muestra los elementos en una fila */
-    overflow: hidden; 
+    right: 10px; 
 }
 
 .project-container {
+    position: relative;
     width: 300px;
-    border-radius: 10px; /* Bordes redondeados */
-    padding: 10px; /* Espaciado interno */
-    margin-right: 61px; /* Espaciado a la derecha entre proyectos */
-    min-width: 150px; /* Ancho mínimo de cada proyecto */
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Sombra para dar profundidad */
+    border-radius: 10px;
+    padding: 10px; 
+    margin-right: 61px; 
+    min-width: 150px; 
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     flex-shrink: 0; 
 }
 
@@ -511,7 +500,7 @@ html {
     background-color: #CC94F7; /* Color 4: verde claro */
 }
 
-.l3 {
+.separator-3 {
     position: absolute;
     top:420px;
     left: 120px;
@@ -521,38 +510,27 @@ html {
 }
 
 .commentssection {
+    margin-top: -20px;
+    background-color: #F2F2F2;
     height:430px;
     width:1440px;
-    padding:0px;
-    top:0px;
     position:relative;
 }
 
-.rectanglecomment
-{
-    height:430px;
-    width:1440px;
-    background-color: #F2F2F2;
-    position: relative;
-}
-
-.commentstitle{
-    color: black;
+.ptext.commentstitle{
     width: 232px;
     left: 144px;
     top: 81px;
     height: 32px;
-    position: absolute;
-    font-family: "Poppins", sans-serif;
     font-weight: 500;
-    font-style: normal;
     font-size: 36px; 
 }
 
 .comments {
+    background-color: #f4f5f8;
     overflow-x: hidden; 
-    position: absolute;
-    left: 131px;
+    position: relative;
+    left: 0px;
     top:160px;
     width: 1178px; 
     height: 188px;
@@ -560,21 +538,60 @@ html {
     overflow-y: auto; 
     margin: 20px auto;
     border-radius: 10px; 
-    background-color: #f9f9f9; 
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
 }
 
 .comment {
-    display: flex; /* Usar flexbox para la alineación */
-    margin-bottom: 15px; /* Espacio entre comentarios */
-    padding: 10px; /* Espaciado interno */
-    border: 1px solid #e0e0e0; /* Borde del comentario */
-    border-radius: 5px; /* Bordes redondeados */
-    background-color: #fff; /* Color de fondo del comentario */
+    position: relative;
+    display: flex; 
+    margin-bottom: 15px; 
+    padding: 10px;
+    border: 1px solid #e0e0e0; 
+    border-radius: 5px; 
+    background-color: #fff; 
+    text-align: justify; 
+    width: 100%;
+    height: auto;
+    flex-direction: column;
 }
 
-.reply{
+.profilecommenting {
+    width: 50px; 
+    height: 50px; 
+    border-radius: 50%; 
+    margin-right: 15px; 
+}
+
+.ptext.username {
+    font-size: 16px;
+    left: 70px;
+    font-weight: bold; 
+    margin-bottom: 5px; 
+}
+
+
+.ptext.date {
+    left: 70px;
+    top: 40px;
+    font-size: 12px;
+    color: #888; 
+    margin-bottom: 5px; 
+    font-weight: 400;
+}
+
+.ptext.comment-text{
+    margin-top: 6px;
     position: relative;
+    height: auto;
+    overflow-wrap: break-word;
+    font-size: 16px;
+    width: 95%;
+    left:2%;
+    height: auto;
+}
+
+.btn{
+    border: none;
     display: flex; 
     align-items: center;
     justify-content: center;
@@ -582,90 +599,142 @@ html {
     font-family: "Poppins", sans-serif;
     font-weight: 500;
     font-size: 13px;
-    border-radius: 5px; 
-    left: 1050px;
-    top: 0px;
-    width: 70px;
+    border-radius: 5px;
+    padding: 5px;
+}
+
+
+.btn.reply{
+    margin-top: 5px;
+    left: 90%;
+    width: 80px;
     height: 18px;
-    background-color: #FFFFFF;
-    border: 1px solid #BCBCBC;
+    background-color: #BCBCBC;
     color: #01000C; 
 }
 
-.reply-input {
-    background-color: rebeccapurple;
+.button-container {
     position: relative;
-    left: -100px;
+    margin-top: 8px;
+    left: 82%;
+    display: flex;
+    gap: 10px; 
+    margin-top: 8px; 
+    height: 18px;
+}
+
+.btn.save-edit{
+    position: relative;
+    margin-top: 8px;
+    width: 80px;
+    height: 18px;
+    left: 91%;
+    background-color:  #BCBCBC;
+    color: #01000C;
+    padding: 0; 
+}
+
+.btn.send-reply{
+    width: 80px;
+    height: 18px;
+    background-color: #BCBCBC;
+    color: #01000C; 
+}
+
+.btn.cancel{
+    width: 80px;
+    height: 18px;
+    background-color: #BCBCBC;
+    color: #01000C; 
+}
+
+.replies{
+    margin-top: 10px;
+    position: relative;
+    width: 90%;
+    left: 5%;
+    height: auto;
+}
+
+.reply{
+    display: flex; 
+    margin-bottom: 15px; 
+    padding: 10px;
+    border: 1px solid #e0e0e0; 
+    border-radius: 5px; 
+    background-color: #fff; 
+    text-align: justify; 
+    position: relative;
+    width: 100%;
+    height: auto;
+    flex-direction: column;
+}
+
+.btn.edit{
+    position: absolute;
+    margin-top: 5px;
+    left: 93%;
+    width: 24px;
+    height: 24px;
+    background-color: white;
+    color: white; 
+}
+
+.btn.delete{
+    position: absolute;
+    margin-top: 5px;
+    left: 96%;
+    width: 24px;
+    height: 24px;
+    color: #000000;
+    font-size: 24px;
+    background-color: white;
+}
+
+.edit-icon{
+    width: 24px;
+    height: 24px;
+    cursor: pointer;
+}
+
+.edit-textarea {
+    position: relative;
+    left: 1%;
+    width: 97%;
+    margin-top: 8px;
+    font-family: "Poppins", sans-serif;
+    font-size: 16px;
+    resize: none;
+    text-align: left;
+    padding-left: 8px;
+}
+
+.reply-input {
+    background-color: rgb(255, 255, 255);
+    position: relative;
     display: block;
-    width: 90%; 
+    width: 92%;
+    left: 5%; 
     margin-top: 10px;
     padding: 8px;
     border: 1px solid #ccc;
     border-radius: 5px;
-    font-size: 1em;
-    box-sizing: border-box;
-}
-
-
-.profilecommentimg {
-    width: 50px; 
-    height: 50px; 
-    border-radius: 50%; 
-    margin-right: 15px; 
-}
-
-/* Estilo del contenedor de texto */
-.comment div {
-    text-align: justify; 
-    width: 1110px;
-    display: flex;
-    flex-direction: column;
-}
-
-.username {
     font-size: 16px;
-    position: relative;
-    left: 70px;
-    top: -65px;
-    font-weight: bold; 
-    margin-bottom: 5px; 
-}
-
-/* Estilo de la fecha */
-.date {
-    position: relative;
-    left: 70px;
-    top: -20px;
-    font-size: 12px; /* Tamaño de fuente más pequeño */
-    color: #888; /* Color gris para la fecha */
-    margin-bottom: 5px; /* Espacio debajo de la fecha */
-    font-weight: 400;
-}
-
-/* Estilo del contenido del comentario */
-.comment p {
-    position: relative;
-    left: 15px;
-    top: -40px;
-    margin: 0; /* Sin margen */
-    font-size: 1em;
-    margin-bottom: -25px; /* Tamaño de fuente normal */
+    box-sizing: border-box;
+    resize: none;
+    height: auto;
+    overflow: hidden; 
+    font-family: "Poppins", sans-serif;
 }
 
 .footer {
+    position: relative;
     background-color: #F2F2F2;
-    text-align: center;
     font-family: "Poppins", sans-serif;
     font-weight: 400;
-    font-style: normal;
-    padding: 0;
-    position: relative;
-    bottom: 0;
-    left: 0px;
     width: 1440px; 
     height: 135px;
 }
-
 
 .footer-content {
     max-width: 1200px;
@@ -679,10 +748,6 @@ html {
     margin-top: 57px;
 }
 
-.footer-nav2 {
-    margin-top: 20px;
-}
-
 .footer-nav a {
     color: #01000C;
     margin: 0 15px;
@@ -694,7 +759,7 @@ html {
     text-decoration: underline; 
 }
 
-.encora2 {
+.encora {
     position: absolute;
     left: 37px;
     top: 10px; 
@@ -702,52 +767,34 @@ html {
     width: 113px;
 }
 
-.gmail3 {
+.social-icon{
     position: absolute;
+    top: 78px;
+    height: 24px; 
+    width: 24px;
+    cursor: pointer;
+}
+
+.social-icon.gmail {
     left: 1252px;
-    top: 78px; 
-    height: 24px; 
-    width: 24px;
-    cursor: pointer;
 }
 
-.lin3 {
-    position: absolute;
+.social-icon.lin {
     left: 1280px;
-    top: 78px; 
-    height: 24px; 
-    width: 24px;
-    cursor: pointer;
 }
 
-.ig3 {
-    position: absolute;
+.social-icon.ig{
     left: 1308px;
-    top: 78px; 
-    height: 24px; 
-    width: 24px;
-    cursor: pointer;
 }
 
-.fb3 {
-    position: absolute;
+.social-icon.fb {
     left: 1336px;
-    top: 78px; 
-    height: 24px; 
-    width: 24px;
-    cursor: pointer;
 }
 
 .footertext {
     text-align:center;
-    vertical-align:text-top;
     font-size:12px;
-    font-family: "Inter", sans-serif;
-    font-optical-sizing: auto;
     font-weight: 400;
-    line-height:auto;
-    border-style:hidden;
-    outline:none;
     top:105px;
     left:1205px;
     position:absolute;

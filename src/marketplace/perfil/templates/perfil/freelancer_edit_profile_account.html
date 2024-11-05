@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Edit Profile - Account</title>
     <link rel="icon" type="image/png" href="{% static 'img/Logo.png' %}">
-    <link rel="stylesheet" href="{% static 'css/edit_account.css' %}">
+    <link rel="stylesheet" href="{% static 'css/edit_account1.css' %}">
 </head>
 <body>
     <div class="editsection">
@@ -22,7 +22,7 @@
             <img class="chat_icon" src="{% static 'img/Chat_Icon.svg' %}"/>
             <img class="notification_icon" src="{% static 'img/Notification_Icon.svg' %}"/>
             <a href="{% url 'perfilFreelancer' p.id %}">
-                <img class="profile_picture2" src="{{ p.profile_picture.url }}" alt="Profile Picture"/>
+                <img class="profile_picture2" src="{{ p.image.url }}" alt="Profile Picture"/>
             </a>
             <img class="logo" src="{% static 'img/Logo.svg' %}"/>
             <div class="logoseparator"></div>
@@ -123,27 +123,27 @@
             <form action="/change_password" method="post">
         
                 <div class="input-container2 current-pass">
-                    <div class="ptext name">Current Password</div>
+                    <div class="ptext pass">Current Password</div>
                     <input id="currentpassword" class="input-box e" type="password" placeholder="Enter your current password" />
-                    <img class="eye-icon" src="{% static 'eye_icon.png' %}" alt="Show Password" 
+                    <img class="eye-icon" src="{% static 'img/eye_icon.svg' %}" alt="Show Password" 
                             onmousedown="showPassword('currentpassword')" 
                             onmouseup="hidePassword('currentpassword')" 
                             onmouseleave="hidePassword('currentpassword')" />
                 </div>
                 
                 <div class="input-container2 new-pass">
-                    <div class="ptext name">Enter New Password</div>
+                    <div class="ptext pass">Enter New Password</div>
                     <input id="newpassword" class="input-box e" type="password" placeholder="Enter your new password"></textarea>
-                    <img class="eye-icon" src="{% static 'eye_icon.png' %}" alt="Show Password" 
+                    <img class="eye-icon" src="{% static 'img/eye_icon.svg' %}" alt="Show Password" 
                             onmousedown="showPassword('newpassword')" 
                             onmouseup="hidePassword('newpassword')" 
                             onmouseleave="hidePassword('newpassword')" />
                 </div>  
 
                 <div class="input-container2 confirm-pass">
-                    <div class="ptext name">Confirm New Password</div>
+                    <div class="ptext pass">Confirm New Password</div>
                     <input id="confirmnewpassword" class="input-box e" type="password" placeholder="Confirm your new password"></textarea>
-                    <img class="eye-icon" src="{% static 'eye_icon.png' %}" alt="Show Password" 
+                    <img class="eye-icon" src="{% static 'img/eye_icon.svg' %}" alt="Show Password" 
                             onmousedown="showPassword('confirmnewpassword')" 
                             onmouseup="hidePassword('confirmnewpassword')" 
                             onmouseleave="hidePassword('confirmnewpassword')" />

@@ -17,6 +17,7 @@ countries = [' Afganistán',' Albania',' Alemania',' Andorra',' Angola',' Antigu
 
 def login(request):
     if request.method == 'POST':
+        print('hello')
         username = request.POST.get('username')
         password = request.POST.get('password')
 

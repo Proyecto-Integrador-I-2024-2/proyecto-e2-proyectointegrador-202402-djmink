@@ -172,16 +172,16 @@ class Certificate(models.Model):
         return self.name
     
 class CommentProfile(models.Model):
-    content_type = models.ForeignKey(ContentType, on_delete=models.PROTECT)
-    object_id = models.PositiveIntegerField()
-    user = GenericForeignKey('content_type', 'object_id')
-    author = models.CharField(max_length=100)
+    user_profile = models.ForeignKey(User, related_name="comments_received", on_delete=models.CASCADE, null=True)
+    author = models.ForeignKey(User, related_name="comments_made", on_delete=models.CASCADE)
     content = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
-    comment = models.ForeignKey('self', on_delete=models.PROTECT, related_name='replies', null=True, blank=True)  # can have a reply
+    reply_to = models.ForeignKey(
+        'self', on_delete=models.CASCADE, related_name="replies", null=True, blank=True
+    )
 
     def __str__(self):
-        return f"{self.author}: {self.content}"  
+        return f"{self.author} on {self.user_profile}: {self.content[:20]}" 
     
 
 class Project(models.Model):

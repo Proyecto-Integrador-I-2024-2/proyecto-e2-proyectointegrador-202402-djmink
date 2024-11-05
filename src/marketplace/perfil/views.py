@@ -1,13 +1,13 @@
 from django.core.paginator import Paginator
-from django.shortcuts import render, get_object_or_404
-from my_aplication.models import Freelancer, CompanyManager, ProjectCategory, SocialNetwork, Project
+from django.shortcuts import render, get_object_or_404, redirect
+from my_aplication.models import Freelancer, CompanyManager, ProjectCategory, SocialNetwork, Project, Skill, Certificate
+
 
 def calendar(request):
     return render(request, 'perfil/calendar.html')
 
 # Create your views here.
 def perfilesFreelancer(request, id):
-    
     p = get_object_or_404(Freelancer, id=id)
     return render(request, 'perfil/freelancer_profile.html', {'p': p})
 
@@ -19,6 +19,7 @@ def mainFreelancer(request, id):
 
     # Filtrar proyectos por el término de búsqueda
     projects_list = Project.objects.all()
+    print(projects_list)
     if search_query:
         projects_list = projects_list.filter(name__icontains=search_query)
 
@@ -30,7 +31,7 @@ def mainFreelancer(request, id):
     # Filtrar por compañía
     company_id = request.GET.get('company')
     if company_id:
-        projects_list = projects_list.filter(clientprofile_id=company_id)  # Filtra directamente por el perfil del cliente
+        projects_list = projects_list.filter(clientprofile__id=company_id)  # Asegúrate de usar 'clientprofile' correctamente
 
     # Filtrar por presupuesto
     budget = request.GET.get('budget')
@@ -49,7 +50,7 @@ def mainFreelancer(request, id):
     # Configuración de paginación
     paginator = Paginator(projects_list, 12)  # 12 proyectos por página
     page_number = request.GET.get('page')  
-    publications = paginator.get_page(page_number)
+    projects = paginator.get_page(page_number)  # Cambié 'publications' a 'projects'
 
     # Obtener categorías y compañías para los filtros
     categories = ProjectCategory.objects.all()
@@ -57,7 +58,7 @@ def mainFreelancer(request, id):
 
     return render(request, 'perfil/freelancer_home.html', {
         'profile': profile,
-        'projects': publications,
+        'projects': projects,  # Asegúrate de pasar 'projects'
         'categories': categories,
         'companies': companies,
         'search_query': search_query,  # Pasar el término de búsqueda para mostrarlo en el campo
@@ -180,38 +181,81 @@ def manageProject(request, id, id_project):
     })
 
 
-def editAccount(request, id):
-    p = get_object_or_404(Freelancer, id=id)
-
-    # Se debe cambiar
-    if '-' in p.phone:
-        code = p.phone.split('-')[0]
-        phone = p.phone.split('-')[1]
-    else:
-        code = p.phone
-        phone = p.phone
-
-    return render(request, 'perfil/freelancer_edit_profile_account.html', {'p': p, 'code': code, 'phone': phone})
-
-def editAccountClient(request, id):
-    p = get_object_or_404(CompanyManager, id=id)
-
-    # Se debe cambiar
-    if '-' in p.phone:
-        code = p.phone.split('-')[0]
-        phone = p.phone.split('-')[1]
-    else:
-        code = p.phone
-        phone = p.phone
-
-    return render(request, 'perfil/client_edit_profile_account.html', {'p': p, 'code': code, 'phone': phone})
-
 def editProfile(request, id=id):
     p = get_object_or_404(Freelancer, id=id)
+
+    print("IDs de las habilidades del freelancer:")
+    for skill in p.skills.all():
+        print(skill.id)  # Imprime el ID de cada habilidad
+
     existing_types = p.social_networks.values_list('type', flat=True)
     available_media = [choice for choice in SocialNetwork.TYPE_CHOICES if choice[0] not in existing_types]
 
+    if request.method == 'POST':
+
+        p.image = request.FILES.get('image', p.image)
+        p.profession = request.POST.get('profession', p.profession)
+        p.description = request.POST.get('description', p.description)
+        p.contact_email = request.POST.get('contact_email', p.contact_email)
+        p.experience = request.POST.get('experience', p.experience)
+        p.price = request.POST.get('price', p.price)
+        
+        removed_social_ids = request.POST.get('removed_social_ids', '')
+        if removed_social_ids:
+            for social_id in removed_social_ids.split(','):
+                try:
+                    social_network = SocialNetwork.objects.get(id=int(social_id), profile=p)
+                    social_network.delete()
+                except SocialNetwork.DoesNotExist:
+                    continue
+
+        social_ids = request.POST.getlist('social_id')
+        for social_id in social_ids:
+            social_url = request.POST.get(f'social_url_{social_id}')
+            social_type = request.POST.get(f'social_type_{social_id}')
+
+            if social_url and social_id not in removed_social_ids.split(','):
+                social_network, created = SocialNetwork.objects.get_or_create(
+                    profile=p,
+                    type=social_type,
+                    defaults={'url': social_url}
+                )
+                if not created:
+                    social_network.url = social_url
+                    social_network.save()
+
+        removed_skill_ids = request.POST.get('removed_skill_ids', '')
+        print("Skill IDs desde la solicitud POST q se borran:")
+        print(removed_skill_ids)
+        if removed_skill_ids:
+            for skill_id in removed_skill_ids.split(','):
+                try:
+                    skill = Skill.objects.get(id=int(skill_id), profile=p)
+                    skill.delete()
+                except Skill.DoesNotExist:
+                    continue  # Ignora si no existe
+
+        skill_ids = request.POST.getlist('skill_id')
+        print("Skill IDs desde la solicitud POST:")
+        print(skill_ids)
+        for skill_id in skill_ids:
+            skill_name = request.POST.get(f'skill_name_{skill_id}')
+
+            if skill_id not in removed_skill_ids.split(','):
+                if skill_name:
+                    try:
+                        skill = Skill.objects.get(id=int(skill_id), profile=p)
+                        skill.name = skill_name
+                        skill.save()
+                    except Skill.DoesNotExist:
+                        Skill.objects.create(profile=p, name=skill_name)
+
+        p.save()
+
+        return redirect('editProfile', id=id)
+
     return render(request, 'perfil/freelancer_edit_profile.html', {'p': p, 'available_media': available_media})
+
 
 def editProfileClient(request, id=id):
     p = get_object_or_404(CompanyManager, id=id)
@@ -243,6 +287,32 @@ def perfilesCliente(request, id):
 def mainCliente(request, id):        
     p = get_object_or_404(CompanyManager, id=id)
     return render(request, 'perfil/client_projects_list.html', {'p':p})
+
+def editAccount(request, id):
+    p = get_object_or_404(Freelancer, id=id)
+
+    # Se debe cambiar
+    if '-' in p.phone:
+        code = p.phone.split('-')[0]
+        phone = p.phone.split('-')[1]
+    else:
+        code = p.phone
+        phone = p.phone
+
+    return render(request, 'perfil/freelancer_edit_profile_account.html', {'p': p, 'code': code, 'phone': phone})
+
+def editAccountClient(request, id):
+    p = get_object_or_404(CompanyManager, id=id)
+
+    # Se debe cambiar
+    if '-' in p.phone:
+        code = p.phone.split('-')[0]
+        phone = p.phone.split('-')[1]
+    else:
+        code = p.phone
+        phone = p.phone
+
+    return render(request, 'perfil/client_edit_profile_account.html', {'p': p, 'code': code, 'phone': phone})
 
 
 #ver el perfil de un freelancer:
