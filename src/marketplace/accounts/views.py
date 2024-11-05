@@ -4,7 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 #from .forms import CompanyRegistrationForm, FreelancerRegistrationForm, LoginForm
 from django.contrib.auth.views import LoginView
-from django.contrib.auth.hashers import make_password
+from django.contrib.auth.hashers import make_password, check_password
 
 from my_aplication.models import Freelancer, CompanyManager, User
 
@@ -21,22 +21,28 @@ def login(request):
         username = request.POST.get('username')
         password = request.POST.get('password')
 
-        # Realizar la autenticación
-        user = authenticate(request, username=username, password=password)
+        try:
+            # Buscar el usuario por nombre de usuario
+            user = User.objects.get(username=username)
 
-        if user is not None:
-            auth_login(request, user)  # Iniciar sesión
+            # Verificar si la contraseña es correcta
+            if check_password(password, user.password):
+                auth_login(request, user)  # Usar auth_login para iniciar sesión correctamente
 
-            # Verificar si el usuario es un Freelancer o un CompanyManager
-            if Freelancer.objects.filter(id=user.id).exists():
-                return redirect('mainFreelancer', id=user.id)  # Redirigir a la vista de Freelancer
-            elif CompanyManager.objects.filter(id=user.id).exists():
-                return redirect('mainCompany', id=user.id)  # Redirigir a la vista de CompanyManager
+                # Verificar si el usuario es un Freelancer o un CompanyManager
+                if Freelancer.objects.filter(id=user.id).exists():
+                    return redirect('mainFreelancer', id=user.id)  # Redirigir a la vista de Freelancer
+                elif CompanyManager.objects.filter(id=user.id).exists():
+                    return redirect('mainCliente', id=user.id)  # Redirigir a la vista de CompanyManager
+                else:
+                    return redirect('home')  # Redirigir a una vista predeterminada si no es Freelancer ni CompanyManager
+
             else:
-                return redirect('home')  # Redirigir a una vista predeterminada si no es Freelancer ni CompanyManager
-
-        else:
-            # En caso de error en la autenticación, volver a mostrar el formulario con un mensaje de error
+                # Contraseña incorrecta
+                return render(request, 'login.html', {'incorrect_credentials': True})
+        
+        except User.DoesNotExist:
+            # Usuario no encontrado
             return render(request, 'login.html', {'incorrect_credentials': True})
 
     # Si el método de la solicitud no es POST, simplemente muestra el formulario de inicio de sesión
@@ -64,27 +70,17 @@ def registerf1(request):
 
     if request.method == 'POST':
         # Obtener datos del formulario
-        username = request.POST.get('username')
+        email = request.POST.get('username')
         name = request.POST.get('fullname')
         phone = request.POST.get('phone_number')
         password = request.POST.get('password')
 
-        # Comprobar si el valor es un correo electrónico
-        if '@' in username:
-            email = username
-            username = email
-        else:
-            email = None
-            username = username
-
         # Comprobar si el nombre de usuario ya existe
-        if username and User.objects.filter(username=username).exists():
-            print('hehehhehe')
+        if email and User.objects.filter(username=email).exists():
             return render(request, 'signUp1.html', {'username_exists': True})
 
         freelancer = Freelancer.objects.create(
-            username=username,
-            email=email,
+            username=email,
             password=make_password(password),
             name=name,
             phone=phone
@@ -112,12 +108,13 @@ def registerf2(request, id):
 
 def registerf3(request, id):
     if request.method == 'POST':
-        freelancer_profile = Freelancer.objects.get(id=id)
+        freelancer = Freelancer.objects.get(id=id)
         country = request.POST.get('country')
         identification = request.POST.get('identification')
-        freelancer_profile.country = country
-        freelancer_profile.identification = identification
-        freelancer_profile.save()
+
+        freelancer.country = country
+        freelancer.identification = identification
+        freelancer.save()
         return redirect('login')
     else:
         return render(request, 'SignUp3.html', {'countries': countries})
@@ -125,7 +122,7 @@ def registerf3(request, id):
 #Registro de Company
 def registerc1(request):
     username = request.POST.get('username')
-    object = CompanyManager.objects.filter(username=username)
+    object = User.objects.filter(username=username)
     if request.method == 'POST':
         #verificacion del usuario (que no exista)
         if object.exists():
@@ -137,21 +134,31 @@ def registerc1(request):
             legal_agent = request.POST.get('legal_agent')
             password = request.POST.get('password')
 
-            company_profile = CompanyManager.objects.create(name=company_name, email=username, phone=None, image=None, address=None, legal_agent=legal_agent, business_vertical=None, company_type=None)
-            user = CompanyManager.objects.create(username=username, password=password, profile=company_profile)
-            return redirect('registerc2', id = user.profile.id)
+            company = CompanyManager.objects.create(
+                username = username,
+                name = company_name,
+                phone=None,
+                password = make_password(password),
+                image=None,
+                country=None,
+
+                address=None,
+                legal_agent=legal_agent,
+                business_vertical=None,
+                company_type=None)
+            return redirect('registerc2', id = company.id)
     else:
         return render(request, 'signUp1Company.html', {'username_exists': False})
     
 def registerc2(request, id):
     if request.method == 'POST':
-        company_profile = CompanyManager.objects.get(id=id)
+        user = CompanyManager.objects.get(id=id)
         country = request.POST.get('country')
         phone = request.POST.get('phone')
         address = request.POST.get('address')
         business_vertical = request.POST.get('business_vertical')
         company_type = request.POST.get('company_type')
-        user = CompanyManager.objects.get(profile=company_profile)
+
         user.country = country
         user.phone = phone
         user.address = address

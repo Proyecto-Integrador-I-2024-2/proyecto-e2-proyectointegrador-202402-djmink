@@ -107,11 +107,13 @@ from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, BaseU
 
 class User(models.Model):
     username = models.CharField(max_length=100, unique=True)
-    email = models.EmailField(max_length=100, null=True)
-    password = models.CharField(max_length=100)
     name = models.CharField(max_length=100, blank=True, null=True)
     phone = models.CharField(max_length=100, blank=True, null=True)
+    password = models.CharField(max_length=100)
     image = models.ImageField(upload_to='profile_pictures/', blank=True, null=True)
+    country = models.CharField(max_length=100, blank=True, null=True)
+
+
     description = models.TextField()
     rating = models.FloatField(default=0.0)
     contact_email = models.CharField(max_length=100, default='example@example.com')
@@ -119,6 +121,8 @@ class User(models.Model):
 
     REQUIRED_FIELDS = ['email']  # Campos requeridos al crear un usuario
     USERNAME_FIELD = 'username'
+
+    last_login = models.DateTimeField(null=True, blank=True)
 
     def __str__(self):
         return self.username
@@ -134,7 +138,6 @@ class Freelancer(User):
 
     profession = models.CharField(max_length=100)
     identification = models.CharField(max_length=100, blank=True, null=True)
-    country = models.CharField(max_length=100, blank=True, null=True)
     jobs_completed = models.IntegerField(default=0)
     price = models.CharField(max_length=100)
     experience = models.CharField(max_length=20, choices=EXPERIENCE_CHOICES, default='junior')
