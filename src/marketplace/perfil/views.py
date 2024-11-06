@@ -1,6 +1,6 @@
 from django.core.paginator import Paginator
 from django.shortcuts import render, get_object_or_404, redirect
-from my_aplication.models import Freelancer, CompanyManager, ProjectCategory, SocialNetwork, Project, Skill, Certificate
+from my_aplication.models import Freelancer, CompanyManager, ProjectCategory, SocialNetwork, Project, Skill, Certificate, Content
 
 
 def calendar(request):
@@ -289,6 +289,45 @@ def deleteDisableClient(request, id=id):
 
 def editPortfolio(request, id=id):
     p = get_object_or_404(Freelancer, id=id)
+
+    if request.method == 'POST':
+        
+        removed_project_ids = request.POST.get('removed_project_ids', '')
+        if removed_project_ids:
+            for project_id in removed_project_ids.split(','):
+                try:
+                    project = Content.objects.get(id=int(project_id), profile=p)
+                    project.delete()
+                except Content.DoesNotExist:
+                    continue
+
+        project_ids = request.POST.getlist('project_id')
+        for project_id in project_ids:
+
+            project_name = request.POST.get(f'project_name_{project_id}')
+            project_company = request.POST.get(f'project_company_{project_id}')
+            project_duration = request.POST.get(f'project_duration_{project_id}')
+            project_url = request.POST.get(f'project_url_{project_id}')
+
+            if project_id not in removed_project_ids.split(','):
+                project, created = Content.objects.get_or_create(
+                    profile=p,
+                    name=project_name,
+                    type=project_company,
+                    duration=project_duration,
+                    defaults={'url': project_url} 
+                )
+                if not created:
+                    project.name = project_name
+                    project.type = project_company
+                    project.duration = project_duration
+                    project.url = project_url
+                    project.save()
+
+        p.save()
+
+        return redirect('editPortfolio', id=id)
+
     return render(request, 'perfil/freelancer_edit_profile_portfolio.html', {'p': p})
 
 def editProjectsClient(request, id=id):
