@@ -184,10 +184,6 @@ def manageProject(request, id, id_project):
 def editProfile(request, id=id):
     p = get_object_or_404(Freelancer, id=id)
 
-    print("IDs de las habilidades del freelancer:")
-    for skill in p.skills.all():
-        print(skill.id)  # Imprime el ID de cada habilidad
-
     existing_types = p.social_networks.values_list('type', flat=True)
     available_media = [choice for choice in SocialNetwork.TYPE_CHOICES if choice[0] not in existing_types]
 
@@ -218,29 +214,24 @@ def editProfile(request, id=id):
                 social_network, created = SocialNetwork.objects.get_or_create(
                     profile=p,
                     type=social_type,
-                    defaults={'url': social_url}
+                    defaults={'url': social_url} 
                 )
                 if not created:
                     social_network.url = social_url
                     social_network.save()
 
         removed_skill_ids = request.POST.get('removed_skill_ids', '')
-        print("Skill IDs desde la solicitud POST q se borran:")
-        print(removed_skill_ids)
         if removed_skill_ids:
             for skill_id in removed_skill_ids.split(','):
                 try:
                     skill = Skill.objects.get(id=int(skill_id), profile=p)
                     skill.delete()
                 except Skill.DoesNotExist:
-                    continue  # Ignora si no existe
+                    continue
 
         skill_ids = request.POST.getlist('skill_id')
-        print("Skill IDs desde la solicitud POST:")
-        print(skill_ids)
         for skill_id in skill_ids:
             skill_name = request.POST.get(f'skill_name_{skill_id}')
-
             if skill_id not in removed_skill_ids.split(','):
                 if skill_name:
                     try:
@@ -249,6 +240,30 @@ def editProfile(request, id=id):
                         skill.save()
                     except Skill.DoesNotExist:
                         Skill.objects.create(profile=p, name=skill_name)
+
+        removed_certificate_ids = request.POST.get('removed_certificate_ids', '')
+        if removed_certificate_ids:
+            for certificate_id in removed_certificate_ids.split(','):
+                try:
+                    certificate = Certificate.objects.get(id=int(certificate_id), profile=p)
+                    certificate.delete()
+                except Certificate.DoesNotExist:
+                    continue
+        
+        certificate_ids = request.POST.getlist('certificate_id')
+        for certificate_id in certificate_ids:
+            certificate_name = request.POST.get(f'certificate_name_{certificate_id}')
+            certificate_type = request.POST.get(f'certificate_type_{certificate_id}')
+            certificate_url = request.POST.get(f'certificate_url_{certificate_id}')
+
+            if certificate_id not in removed_certificate_ids.split(','):
+                if certificate_name and certificate_type and certificate_url:
+                    certificate = Certificate.objects.get_or_create(
+                        profile=p,
+                        name=certificate_name,
+                        type=certificate_type,
+                        defaults={'url': certificate_url}
+                    )
 
         p.save()
 

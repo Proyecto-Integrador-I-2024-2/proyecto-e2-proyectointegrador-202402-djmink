@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Profile</title>
     <link rel="icon" type="image/png" href="{% static 'img/Logo.png' %}">
-    <link rel="stylesheet" href="{% static 'css/fpp3.css' %}">
+    <link rel="stylesheet" href="{% static 'css/fpp4.css' %}">
 </head>
 <body>
     
@@ -43,8 +43,8 @@
         <div class="ptext email">{{ p.contact_email }}</div>
         <div class="social-networks">
             {% for network in p.social_networks.all %}
-                <a href="{{ network.url }}" target="_blank">
-                    <img class="social-icon" src="{{ network.image.url }}" alt="{{ network.type }}">
+                <a href="https://{{ network.url }}" target="_blank">
+                    <img class="social-icon-1" src="{{ network.image.url }}" alt="{{ network.type }}">
                 </a>
             {% endfor %}
         </div>

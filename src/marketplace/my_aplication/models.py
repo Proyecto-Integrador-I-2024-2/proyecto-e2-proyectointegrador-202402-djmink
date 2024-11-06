@@ -112,7 +112,7 @@ class User(models.Model):
     password = models.CharField(max_length=100)
     image = models.ImageField(upload_to='profile_pictures/', blank=True, null=True)
     country = models.CharField(max_length=100, blank=True, null=True)
-
+    email = models.EmailField(max_length=100, null=True)
 
     description = models.TextField()
     rating = models.FloatField(default=0.0)
@@ -243,7 +243,7 @@ class SocialNetwork(models.Model):
     profile = models.ForeignKey(Freelancer, related_name='social_networks', on_delete=models.CASCADE, null=True, blank=True)
     client_profile = models.ForeignKey(CompanyManager, related_name='client_social_networks', on_delete=models.CASCADE, null=True, blank=True)
     type = models.CharField(max_length=20, choices=TYPE_CHOICES, unique=True)
-    url = models.URLField(max_length=200)
+    url = models.CharField(max_length=255)
     image = models.ImageField(upload_to='social_networks/', default='social_networks/default_icon.png')
 
     def save(self, *args, **kwargs):

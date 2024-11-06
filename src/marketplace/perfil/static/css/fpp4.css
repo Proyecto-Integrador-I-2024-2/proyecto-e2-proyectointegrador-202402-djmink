@@ -170,21 +170,24 @@ html {
 }
 
 .social-networks {
-    position: absolute;
+    width: 300px;
+    height: 32px;
+    position: relative;
     left: 438px;
     top: 639px; 
     display: flex;
     gap: 10px; 
 }
 
-.social-icon {
+.social-icon-1 {
+    position: relative;
     width: 32px;
     height: 32px; 
     cursor: pointer; 
     transition: transform 0.2s; 
 }
 
-.social-icon:hover {
+.social-icon-1:hover {
     transform: scale(1.1); 
 }
 

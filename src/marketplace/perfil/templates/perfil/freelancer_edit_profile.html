@@ -169,14 +169,16 @@
                             <div class="rectangle20">
                                 <img id="card" class="card" src="{% static 'img/card.svg' %}" alt="Card"/>
                                 <div class="type">{{ certificate.type }}</div>
-                                <button class="delete-btn cer" onclick="markForRemoval('certificate', '{{ certificate.id }}')">X</button>
+                                <button type="button" class="delete-btn cer" onclick="markForRemoval('certificate', '{{ certificate.id }}')">X</button>
                             </div>
                             <a href="{{ certificate.url }}" target="_blank">
                                 <img id="view" class="view" src="{% static 'img/view.svg' %}" alt="View"/>
                             </a>
+                            <input type="hidden" name="certificate_id" value="{{ certificate.id }}"/>
+                            <input type="hidden" name="certificate_name_{{ certificate.id }}" value="{{ certificate.name }}"/>
+                            <input type="hidden" name="certificate_type_{{ certificate.id }}" value="{{ certificate.type }}"/>
+                            <input type="hidden" name="certificate_url_{{ certificate.id }}" value="{{ certificate.url }}"/>
                         </div>
-                    {% empty %}
-                        <p>You don't have certificates registered yet.</p>
                     {% endfor %}
                 </div>
 
@@ -196,7 +198,7 @@
                     <input id="input-box url-cer" class="input-box cer" type="text" style="display: none" placeholder="Enter URL" oninput="showElement('input-box url-cer', 'add-cer-btn')"/>
                 </div>
         
-                <button id= "add-cer-btn" class="add cer-btn" style="display: none" onclick="addCertificate()">+</button>
+                <button type="button" id= "add-cer-btn" class="add cer-btn" style="display: none" onclick="addCertificate()">+</button>
 
                 <input type="hidden" name="removed_social_ids" id="removed-social-ids" value="">
                 <input type="hidden" name="removed_skill_ids" id="removed-skill-ids" value="">
@@ -314,12 +316,16 @@
                     <div class="rectangle20">
                         <img id="card" class="card" src="{% static 'img/card.svg' %}" alt="Card"/>
                         <div class="type">${type.value}</div>
-                        <button class="delete-btn cer" onclick="markForRemoval('certificate', '${newCertificateId}')">X</button>
+                        <button type="button" class="delete-btn cer" onclick="markForRemoval('certificate', '${newCertificateId}')">X</button>
                     </div>
                     <a href="${url.value}" target="_blank">
                         <img id="view" class="view" src="{% static 'img/view.svg' %}" alt="View"/>
                     </a>
                 </div>
+                <input type="hidden" name="certificate_id" value="${newCertificateId}"/>
+                <input type="hidden" name="certificate_name_${newCertificateId}" value="${name.value}"/>
+                <input type="hidden" name="certificate_type_${newCertificateId}" value="${type.value}"/>
+                <input type="hidden" name="certificate_url_${newCertificateId}" value="${url.value}"/>
             `;
 
             certificatesList.appendChild(newCertificateDiv);
