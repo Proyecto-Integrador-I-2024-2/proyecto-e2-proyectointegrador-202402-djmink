@@ -169,6 +169,17 @@ html {
     text-decoration: none; 
 }
 
+.ptext.logout {
+    color:#000000;
+    font-size:16px;
+    font-weight: 400; 
+    top:371px;
+    left:114px;
+    width:94px;
+    height:24px;
+    text-decoration: none; 
+}
+
 .container {
     
     top:115px;

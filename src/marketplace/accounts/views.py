@@ -17,17 +17,25 @@ countries = [' Afganistán',' Albania',' Alemania',' Andorra',' Angola',' Antigu
 
 def login(request):
     if request.method == 'POST':
-        print('hello')
+        print('hello')  # Para verificar que la solicitud es POST
         username = request.POST.get('username')
         password = request.POST.get('password')
+
+        print(f'Username received: {username}')  # Imprimir el nombre de usuario
+        print(f'Password received: {password}')  # Imprimir la contraseña ingresada
 
         try:
             # Buscar el usuario por nombre de usuario
             user = User.objects.get(username=username)
+            print(f'User found: {user.username}')  # Imprimir el nombre de usuario encontrado
 
             # Verificar si la contraseña es correcta
+            print(f'Password in DB: {user.password}')  # Imprimir la contraseña cifrada de la base de datos
             if check_password(password, user.password):
-                auth_login(request, user)  # Usar auth_login para iniciar sesión correctamente
+                print('Password match!')  # Confirmar si la contraseña es correcta
+
+                # Usar auth_login para iniciar sesión correctamente
+                auth_login(request, user)
 
                 # Verificar si el usuario es un Freelancer o un CompanyManager
                 if Freelancer.objects.filter(id=user.id).exists():
@@ -38,15 +46,16 @@ def login(request):
                     return redirect('home')  # Redirigir a una vista predeterminada si no es Freelancer ni CompanyManager
 
             else:
-                # Contraseña incorrecta
+                print('Incorrect password!')  # Contraseña incorrecta
                 return render(request, 'login.html', {'incorrect_credentials': True})
         
         except User.DoesNotExist:
-            # Usuario no encontrado
+            print('User does not exist!')  # Usuario no encontrado
             return render(request, 'login.html', {'incorrect_credentials': True})
 
     # Si el método de la solicitud no es POST, simplemente muestra el formulario de inicio de sesión
     return render(request, 'login.html')
+
 
 def recover(request):
     if request.method == 'POST':

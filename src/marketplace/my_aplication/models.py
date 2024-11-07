@@ -104,13 +104,15 @@ from django.utils import timezone
 from django.contrib.auth.models import BaseUserManager
 from django.contrib.auth.hashers import make_password
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, BaseUserManager
+from django.contrib.auth.hashers import check_password, make_password
+
 
 class User(models.Model):
     username = models.CharField(max_length=100, unique=True)
     name = models.CharField(max_length=100, blank=True, null=True)
     phone = models.CharField(max_length=100, blank=True, null=True)
-    password = models.CharField(max_length=100)
-    image = models.ImageField(upload_to='profile_pictures/', blank=True, null=True)
+    password = models.CharField(max_length=255)
+    image = models.ImageField(upload_to='profile_pictures/', blank=True, null=True, default='profile_pictures/default_profile.jpg')
     country = models.CharField(max_length=100, blank=True, null=True)
     email = models.EmailField(max_length=100, null=True)
 
@@ -119,10 +121,16 @@ class User(models.Model):
     contact_email = models.CharField(max_length=100, default='example@example.com')
     date_joined = models.DateField(default=timezone.now)
 
-    REQUIRED_FIELDS = ['email']  # Campos requeridos al crear un usuario
+    REQUIRED_FIELDS = ['email'] 
     USERNAME_FIELD = 'username'
 
     last_login = models.DateTimeField(null=True, blank=True)
+
+    def check_password(self, raw_password):
+        return check_password(raw_password, self.password)
+
+    def set_password(self, raw_password):
+        self.password = make_password(raw_password)
 
     def __str__(self):
         return self.username

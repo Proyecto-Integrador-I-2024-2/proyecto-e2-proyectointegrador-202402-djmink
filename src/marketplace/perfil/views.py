@@ -1,6 +1,8 @@
 from django.core.paginator import Paginator
 from django.shortcuts import render, get_object_or_404, redirect
-from my_aplication.models import Freelancer, CompanyManager, ProjectCategory, SocialNetwork, Project, Skill, Certificate, Content
+from my_aplication.models import Freelancer, CompanyManager, ProjectCategory, SocialNetwork, Project, Skill, Certificate, Content, User
+from django.contrib import messages
+from django.contrib.auth import update_session_auth_hash
 
 
 def calendar(request):
@@ -14,54 +16,47 @@ def perfilesFreelancer(request, id):
 def mainFreelancer(request, id):
     profile = get_object_or_404(Freelancer, id=id)
 
-    # Obtener el término de búsqueda (si se proporciona)
     search_query = request.GET.get('search', '')
 
-    # Filtrar proyectos por el término de búsqueda
     projects_list = Project.objects.all()
     print(projects_list)
     if search_query:
         projects_list = projects_list.filter(name__icontains=search_query)
 
-    # Filtrar por categoría
     category_id = request.GET.get('category')
     if category_id:
         projects_list = projects_list.filter(projectcategories__id=category_id)
 
-    # Filtrar por compañía
     company_id = request.GET.get('company')
     if company_id:
-        projects_list = projects_list.filter(clientprofile__id=company_id)  # Asegúrate de usar 'clientprofile' correctamente
+        projects_list = projects_list.filter(clientprofile__id=company_id)
 
-    # Filtrar por presupuesto
     budget = request.GET.get('budget')
     if budget:
         try:
             budget_value = float(budget)
-            projects_list = projects_list.filter(budget__lte=budget_value)  # Filtra por presupuesto del proyecto
+            projects_list = projects_list.filter(budget__lte=budget_value)
         except ValueError:
-            pass  # Maneja el caso en que el presupuesto no es un número válido
+            pass 
 
-    # Filtrar por tipo de proyecto
-    project_type = request.GET.get('type')  # Obtiene el tipo de proyecto desde la URL
+    project_type = request.GET.get('type') 
     if project_type:
         projects_list = projects_list.filter(type=project_type)
 
     # Configuración de paginación
-    paginator = Paginator(projects_list, 12)  # 12 proyectos por página
+    paginator = Paginator(projects_list, 12)
     page_number = request.GET.get('page')  
-    projects = paginator.get_page(page_number)  # Cambié 'publications' a 'projects'
+    projects = paginator.get_page(page_number) 
 
-    # Obtener categorías y compañías para los filtros
     categories = ProjectCategory.objects.all()
     companies = CompanyManager.objects.filter(projects__isnull=False).distinct()
 
     return render(request, 'perfil/freelancer_home.html', {
         'profile': profile,
-        'projects': projects,  # Asegúrate de pasar 'projects'
+        'projects': projects, 
         'categories': categories,
         'companies': companies,
-        'search_query': search_query,  # Pasar el término de búsqueda para mostrarlo en el campo
+        'search_query': search_query,
         'budget': budget  
     })
 
@@ -165,7 +160,7 @@ def manageProject(request, id, id_project):
                 'task': assignment.task.name,
                 'milestone_id': assignment.task.milestone.id,
                 'freelancer': assignment.task.freelancer.name,
-                'date': assignment.date.strftime('%Y-%m-%d'),  # Formato de fecha
+                'date': assignment.date.strftime('%Y-%m-%d'), 
                 'status': assignment.status,
                 'file': assignment.file.url if assignment.file else None,
                 'url': assignment.url
@@ -179,6 +174,70 @@ def manageProject(request, id, id_project):
         'project_progress': project_progress,
         'project': project_data,
     })
+
+def editAccount(request, id):
+    p = get_object_or_404(Freelancer, id=id)
+
+    profile_changed = False
+    password_changed = False
+    password_error = False
+
+    if request.method == "POST":
+       
+        new_username = request.POST.get('username', p.username)
+        new_name = request.POST.get('name', p.name)
+        new_email = request.POST.get('email', p.email)
+        new_phone = request.POST.get('phone', p.phone)
+
+        if User.objects.filter(username=new_username).exclude(id=p.id).exists():
+            messages.error(request, "El nombre de usuario ya está en uso. Por favor elige otro.")
+            return render(request, 'perfil/freelancer_edit_profile_account.html', {'p': p})
+
+        if p.username != new_username:
+            p.username = new_username
+            profile_changed = True
+        if p.name != new_name:
+            p.name = new_name
+            profile_changed = True
+        if p.email != new_email:
+            p.email = new_email
+            profile_changed = True
+        if p.phone != new_phone:
+            p.phone = new_phone
+            profile_changed = True
+
+        if profile_changed:
+            p.save()
+            messages.success(request, "El perfil se actualizó correctamente.")
+
+        current_password = request.POST.get('current-password')
+        new_password = request.POST.get('new-password')
+        confirm_password = request.POST.get('confirm-password')
+
+        if current_password or new_password or confirm_password:
+            if new_password != confirm_password:
+                messages.error(request, "Las nuevas contraseñas no coinciden.")
+                password_error = True
+            else:
+                if not p.check_password(current_password):
+                    messages.error(request, "La contraseña actual es incorrecta.")
+                    password_error = True
+                else:
+                    p.set_password(new_password)
+                    p.save()
+                    update_session_auth_hash(request, p)
+                    messages.success(request, "La contraseña se actualizó correctamente.")
+                    password_changed = True
+        else:
+            password_changed = False
+
+        if not profile_changed and not password_changed and not password_error:
+            messages.info(request, "No se han detectado cambios.")
+
+        if profile_changed or password_changed or password_error:
+            return redirect('editAccount', id=id)
+
+    return render(request, 'perfil/freelancer_edit_profile_account.html', {'p': p})
 
 
 def editProfile(request, id=id):
@@ -342,19 +401,6 @@ def mainCliente(request, id):
     p = get_object_or_404(CompanyManager, id=id)
     return render(request, 'perfil/client_projects_list.html', {'p':p})
 
-def editAccount(request, id):
-    p = get_object_or_404(Freelancer, id=id)
-
-    # Se debe cambiar
-    if '-' in p.phone:
-        code = p.phone.split('-')[0]
-        phone = p.phone.split('-')[1]
-    else:
-        code = p.phone
-        phone = p.phone
-
-    return render(request, 'perfil/freelancer_edit_profile_account.html', {'p': p, 'code': code, 'phone': phone})
-
 def editAccountClient(request, id):
     p = get_object_or_404(CompanyManager, id=id)
 
@@ -369,9 +415,7 @@ def editAccountClient(request, id):
     return render(request, 'perfil/client_edit_profile_account.html', {'p': p, 'code': code, 'phone': phone})
 
 
-#ver el perfil de un freelancer:
 def freelancerProfile(request, id, idclient):
-    # Obtiene el perfil del freelancer usando el id proporcionado
     p = get_object_or_404(Freelancer, id=id)
     client = get_object_or_404(CompanyManager, id=idclient)
     return render(request, 'perfil/freelancer_profile_view.html', {'p': p, 'client': client})

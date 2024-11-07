@@ -10,9 +10,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Edit Profile - Account</title>
     <link rel="icon" type="image/png" href="{% static 'img/Logo.png' %}">
-    <link rel="stylesheet" href="{% static 'css/edit_account1.css' %}">
+    <link rel="stylesheet" href="{% static 'css/edit_account2.css' %}">
 </head>
 <body>
+
+    <div id="message-modal" class="modal-messages">
+        <div class="modal-messages-content">
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="{% if message.tags %}alert-{{ message.tags }}{% endif %}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+            <button type="button" class="close-btn-messages" onclick="closeModal()">Cerrar</button>
+        </div>
+    </div>
+
     <div class="editsection">
 
         <div class="heading">
@@ -39,11 +53,14 @@
         <a href="#myaccount" class="ptext my-account">My account</a>
         <a href="{% url 'editProfile' p.id %}" class="ptext profile">Profile</a>
         <a href="{% url 'editPortfolio' p.id %}" class="ptext portfolio">Portfolio</a>
-        <a href="{% url 'deleteDisable' p.id %}" class="ptext delete-account">Delete account</a>    
+        <a href="{% url 'deleteDisable' p.id %}" class="ptext delete-account">Delete account</a>
+        <a href="{% url 'home' %}" class="ptext logout">Log out</a>       
 
         <div class="fields">
 
-            <form action="/save_changes" method="post">
+            <form method="POST">
+
+                {% csrf_token %}
 
                 <div class="ptext myaccount">
                     My Account
@@ -55,33 +72,34 @@
                 
                 <div class="input-container name">
                     <div class="ptext name">Name</div>
-                    <textarea class="input-box name">{{ p.name }}</textarea>
+                    <textarea name="name" class="input-box name">{{ p.name }}</textarea>
                 </div>
 
                 <div class="input-container username">
                     <div class="ptext name">Username</div>
-                    <textarea class="input-box name">{{ p.username }}</textarea>
+                    <textarea name="username" class="input-box name">{{ p.username }}</textarea>
                 </div>
 
                 <div class="input-container email">
                     <div class="ptext name">Email</div>
-                    <textarea class="input-box name">{{ p.email }}</textarea>
+                    <textarea name="email" class="input-box name">{{ p.email }}</textarea>
                 </div>
 
                 <div class="input-container phone">
                     <div class="ptext name">Phone</div>
-                    <img class="arrow" src="{% static 'img/arrow.svg' %}" alt="arrow" id="arrow" onclick="toggleCodeList()">
-                    <textarea id="code-box" class="input-box code">{{ code }}</textarea>
-                    <textarea class="input-box tel">{{ phone }}</textarea>
-
-                    <div class="code-list" id="code-list"></div>
+                    <!-- img class="arrow" src="{% static 'img/arrow.svg' %}" alt="arrow" id="arrow" onclick="toggleCodeList()"-->
+                    <!--textarea id="code-box" class="input-box code">{{ code }}</textarea-->
+                    <textarea name="phone" class="input-box name">{{ p.phone }}</textarea>
+                    <!--div class="code-list" id="code-list"></div-->
                 </div>
+
+                <button type="submit" id= "save-changes" class='med-btn save'>Save Changes</button>
 
             </form>
 
-            <button id= "change-password" class="med-btn pass" onclick="changePassword()">Change Password</button>
-            <!--Poner dentro del form después -->
-            <button type="submit" id= "save-changes" class='med-btn save'>Save Changes</button>
+            <button type="button" id= "change-password" class="med-btn pass" onclick="changePassword()">Change Password</button>
+            
+            
 
         </div>
         
@@ -120,11 +138,13 @@
         <div class="modal-content">
             <span class="close">&times;</span>
             <div id='change-password-title' class='ptext change-password-title'>Change Password</div>
-            <form action="/change_password" method="post">
+            <form method="POST">
+
+                {% csrf_token %}
         
                 <div class="input-container2 current-pass">
                     <div class="ptext pass">Current Password</div>
-                    <input id="currentpassword" class="input-box e" type="password" placeholder="Enter your current password" />
+                    <input name="current-password" id="currentpassword" class="input-box e" type="password" placeholder="Enter your current password" />
                     <img class="eye-icon" src="{% static 'img/eye_icon.svg' %}" alt="Show Password" 
                             onmousedown="showPassword('currentpassword')" 
                             onmouseup="hidePassword('currentpassword')" 
@@ -133,7 +153,7 @@
                 
                 <div class="input-container2 new-pass">
                     <div class="ptext pass">Enter New Password</div>
-                    <input id="newpassword" class="input-box e" type="password" placeholder="Enter your new password"></textarea>
+                    <input name="new-password" id="newpassword" class="input-box e" type="password" placeholder="Enter your new password"></textarea>
                     <img class="eye-icon" src="{% static 'img/eye_icon.svg' %}" alt="Show Password" 
                             onmousedown="showPassword('newpassword')" 
                             onmouseup="hidePassword('newpassword')" 
@@ -142,22 +162,36 @@
 
                 <div class="input-container2 confirm-pass">
                     <div class="ptext pass">Confirm New Password</div>
-                    <input id="confirmnewpassword" class="input-box e" type="password" placeholder="Confirm your new password"></textarea>
+                    <input name="confirm-password" id="confirmnewpassword" class="input-box e" type="password" placeholder="Confirm your new password"></textarea>
                     <img class="eye-icon" src="{% static 'img/eye_icon.svg' %}" alt="Show Password" 
                             onmousedown="showPassword('confirmnewpassword')" 
                             onmouseup="hidePassword('confirmnewpassword')" 
                             onmouseleave="hidePassword('confirmnewpassword')" />
                 </div>
 
-            </form>
+                <button type="submit" id= "change-password" class='med-btn change-pass' onclick="savePassword()">Change</button>
 
-            <!--Poner dentro del form después -->
-            <button id= "change-password" class='med-btn change-pass' onclick="savePassword()">Change</button>
+            </form>
+           
 
         </div>
     </div>
 
     <script>
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const modal = document.getElementById('message-modal');
+            if (modal.querySelector('.alert-success') || modal.querySelector('.alert-error') || modal.querySelector('.alert-info')) {
+                modal.style.display = 'block';
+            }
+        });
+
+        
+        function closeModal() {
+            document.getElementById('message-modal').style.display = 'none';
+        }
+
+        /*
 
         document.addEventListener('DOMContentLoaded', () => {
                 
@@ -211,6 +245,19 @@
             }
         }
 
+        
+        window.onclick = function(event) {
+            const codeList = document.getElementById('code-list');
+            const arrow = document.getElementById('arrow');
+
+            if (event.target !== codeList && event.target !== arrow) {
+                codeList.style.display = 'none';
+                arrow.classList.remove('rotated');
+            }
+        }
+        
+        */
+
         function showPassword(id) {
             const passwordField = document.getElementById(id);
             passwordField.setAttribute('type', 'text');
@@ -241,19 +288,6 @@
         function savePassword() {
             modal.style.display = "none";
         }
-
-        
-
-        window.onclick = function(event) {
-            const codeList = document.getElementById('code-list');
-            const arrow = document.getElementById('arrow');
-
-            if (event.target !== codeList && event.target !== arrow) {
-                codeList.style.display = 'none';
-                arrow.classList.remove('rotated');
-            }
-        }
-
 
     </script>
 
