@@ -1,0 +1,25 @@
+<div id="message-modal" class="modal-messages">
+    <div class="modal-messages-content">
+        {% if messages %}
+            {% for message in messages %}
+                <div class="{% if message.tags %}alert-{{ message.tags }}{% endif %}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+        <button type="button" class="close-btn-messages" onclick="closeInfoModal()">Cerrar</button>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+            const modal = document.getElementById('message-modal');
+            if (modal.querySelector('.alert-success') || modal.querySelector('.alert-error') || modal.querySelector('.alert-info')) {
+                modal.style.display = 'block';
+            }
+        });
+        
+        function closeInfoModal() {
+            document.getElementById('message-modal').style.display = 'none';
+        }
+</script>

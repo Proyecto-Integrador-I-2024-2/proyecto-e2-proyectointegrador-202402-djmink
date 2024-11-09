@@ -11,21 +11,11 @@
     <title>Edit Profile - Account</title>
     <link rel="icon" type="image/png" href="{% static 'img/Logo.png' %}">
     <link rel="stylesheet" href="{% static 'css/edit_account2.css' %}">
+    <link rel="stylesheet" href="{% static 'css/info-modal.css' %}">
 </head>
 <body>
 
-    <div id="message-modal" class="modal-messages">
-        <div class="modal-messages-content">
-            {% if messages %}
-                {% for message in messages %}
-                    <div class="{% if message.tags %}alert-{{ message.tags }}{% endif %}">
-                        {{ message }}
-                    </div>
-                {% endfor %}
-            {% endif %}
-            <button type="button" class="close-btn-messages" onclick="closeModal()">Cerrar</button>
-        </div>
-    </div>
+    {% include 'perfil/info-modal.html' %}
 
     <div class="editsection">
 
@@ -178,18 +168,6 @@
     </div>
 
     <script>
-
-        document.addEventListener('DOMContentLoaded', function() {
-            const modal = document.getElementById('message-modal');
-            if (modal.querySelector('.alert-success') || modal.querySelector('.alert-error') || modal.querySelector('.alert-info')) {
-                modal.style.display = 'block';
-            }
-        });
-
-        
-        function closeModal() {
-            document.getElementById('message-modal').style.display = 'none';
-        }
 
         /*
 

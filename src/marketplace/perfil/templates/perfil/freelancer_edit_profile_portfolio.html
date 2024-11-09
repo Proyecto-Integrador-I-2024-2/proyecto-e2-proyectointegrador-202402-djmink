@@ -12,8 +12,12 @@
     <title>Edit Profile - Portfolio</title>
     <link rel="icon" type="image/png" href="{% static 'img/Logo.png' %}">
     <link rel="stylesheet" href="{% static 'css/freelancer_edit_profile_portfolio.css' %}">
+    <link rel="stylesheet" href="{% static 'css/info-modal.css' %}">
 </head>
 <body>
+
+    {% include 'perfil/info-modal.html' %}
+
     <div class="editsection">
 
         <div class="heading">
@@ -191,21 +195,6 @@
             }    
         }
 
-        function openEditModal(id, name, company, duration, url) {
-            document.getElementById('edit-name').value = name;
-            document.getElementById('edit-company').value = company;
-            document.getElementById('edit-duration').value = duration;
-            document.getElementById('edit-resources').value = url;
-            const modal = document.getElementById('editProjectModal');
-            modal.setAttribute('data-project-id', id);
-            modal.style.display = 'block';
-            window.onclick = function(event) {
-                if (event.target == modal) {
-                    closeModal('editProjectModal');
-                }
-            }
-        }
-
         function openEditModal(projectId) {
 
             const projectName = document.getElementById('project-name-' + projectId).textContent;
@@ -281,6 +270,11 @@
             const projectUrlElement = document.getElementById('project-url-' + projectId);
             projectUrlElement.href = resources;
             projectUrlElement.textContent = name;
+
+            document.querySelector(`input[name="project_name_${projectId}"]`).value = name;
+            document.querySelector(`input[name="project_company_${projectId}"]`).value = company;
+            document.querySelector(`input[name="project_duration_${projectId}"]`).value = duration;
+            document.querySelector(`input[name="project_url_${projectId}"]`).value = resources;
 
             closeModal('editProjectModal');
         }

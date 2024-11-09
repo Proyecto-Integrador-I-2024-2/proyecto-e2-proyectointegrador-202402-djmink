@@ -683,13 +683,21 @@ html {
     color: white; 
 }
 
-.btn.delete{
+.delete-form {
     position: absolute;
+    display: inline-flex;        
+    justify-content: center;     
+    align-items: center;                           
+    width: auto;                
+    height: auto; 
     margin-top: 5px;
-    left: 96%;
+    left: 96%;              
+}
+
+.btn.delete{
     width: 24px;
     height: 24px;
-    color: #000000;
+    color: #030303;
     font-size: 24px;
     background-color: white;
 }

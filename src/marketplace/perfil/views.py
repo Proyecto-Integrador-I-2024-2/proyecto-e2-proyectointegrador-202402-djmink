@@ -1,17 +1,15 @@
 from django.core.paginator import Paginator
 from django.shortcuts import render, get_object_or_404, redirect
-from my_aplication.models import Freelancer, CompanyManager, ProjectCategory, SocialNetwork, Project, Skill, Certificate, Content, User
+from my_aplication.models import Freelancer, CompanyManager, ProjectCategory, SocialNetwork, Project, Skill, Certificate, Content, User, CommentProfile
 from django.contrib import messages
 from django.contrib.auth import update_session_auth_hash
+from django.http import HttpResponseForbidden
 
 
 def calendar(request):
     return render(request, 'perfil/calendar.html')
 
 # Create your views here.
-def perfilesFreelancer(request, id):
-    p = get_object_or_404(Freelancer, id=id)
-    return render(request, 'perfil/freelancer_profile.html', {'p': p})
 
 def mainFreelancer(request, id):
     profile = get_object_or_404(Freelancer, id=id)
@@ -239,6 +237,61 @@ def editAccount(request, id):
 
     return render(request, 'perfil/freelancer_edit_profile_account.html', {'p': p})
 
+def perfilesFreelancer(request, id):
+
+    p = get_object_or_404(Freelancer, id=id)
+
+    if request.method == 'POST':
+    
+        action = request.POST.get('action')
+        
+        if action == 'create_comment':
+            content = request.POST.get('content')
+            reply_to_id = request.POST.get('reply_to')
+
+            if not content:
+                messages.error(request, "No puede enviar una respuesta vacía.")
+                return redirect('perfilFreelancer', id=id)
+            
+            if reply_to_id:
+                reply_to_comment = CommentProfile.objects.get(id=reply_to_id)
+                new_comment = CommentProfile.objects.create(
+                    user_profile=p,
+                    author=p,
+                    content=content,
+                    reply_to=reply_to_comment
+                )
+
+            new_comment.save()
+            messages.success(request, "Respuesta enviada exitosamente.")
+            return redirect('perfilFreelancer', id=id)
+
+        elif action == 'edit_comment':
+            comment_id = request.POST.get('comment_id')
+            content = request.POST.get('new_content')
+
+            if not content:
+                messages.error(request, "No puede dejar una respuesta vacía.")
+                return redirect('perfilFreelancer', id=id)
+            
+            comment = CommentProfile.objects.get(id=comment_id, author=p)
+            comment.content = content
+            comment.save()
+            messages.success(request, "Respuesta editada exitosamente.")
+            
+            return redirect('perfilFreelancer', id=id)
+
+        elif action == 'delete_comment':
+            comment_id = request.POST.get('comment_id')
+            
+            comment = CommentProfile.objects.get(id=comment_id, author=p)
+            comment.delete()
+            messages.success(request, "Respuesta eliminada exitosamente.")
+            
+            return redirect('perfilFreelancer', id=id) 
+
+    return render(request, 'perfil/freelancer_profile.html', {'p': p})
+
 
 def editProfile(request, id=id):
     p = get_object_or_404(Freelancer, id=id)
@@ -325,7 +378,7 @@ def editProfile(request, id=id):
                     )
 
         p.save()
-
+        messages.success(request, "Perfil actualizado exitosamente.")
         return redirect('editProfile', id=id)
 
     return render(request, 'perfil/freelancer_edit_profile.html', {'p': p, 'available_media': available_media})
@@ -369,22 +422,24 @@ def editPortfolio(request, id=id):
             project_url = request.POST.get(f'project_url_{project_id}')
 
             if project_id not in removed_project_ids.split(','):
-                project, created = Content.objects.get_or_create(
-                    profile=p,
-                    name=project_name,
-                    type=project_company,
-                    duration=project_duration,
-                    defaults={'url': project_url} 
-                )
-                if not created:
+                try:
+                    project = Content.objects.get(id=int(project_id), profile=p)
                     project.name = project_name
                     project.type = project_company
                     project.duration = project_duration
                     project.url = project_url
                     project.save()
+                except Content.DoesNotExist:
+                    Content.objects.create(
+                        profile=p,
+                        name=project_name,
+                        type=project_company,
+                        duration=project_duration,
+                        url=project_url
+                    )
 
         p.save()
-
+        messages.success(request, "Portafolio actualizado exitosamente.")
         return redirect('editPortfolio', id=id)
 
     return render(request, 'perfil/freelancer_edit_profile_portfolio.html', {'p': p})
