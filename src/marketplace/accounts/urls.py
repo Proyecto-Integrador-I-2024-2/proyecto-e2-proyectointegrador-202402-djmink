@@ -11,6 +11,7 @@ urlpatterns = [
     path('register/company1', views.registerc1, name='registerc1'),
     path('register/company2/<int:id>', views.registerc2, name='registerc2'),
     path('addproject/', views.addproject, name='addproject'),
+    path('editproject/', views.editproject, name='editproject'),
 
 ]
 

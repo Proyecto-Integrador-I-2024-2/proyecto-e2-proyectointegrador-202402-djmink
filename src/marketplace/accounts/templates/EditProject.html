@@ -62,11 +62,39 @@
                     </div>
                 </div>
             </form>
-            <div class="containerMilestones">
-                <div class="lineCenter"></div>
-                <span class="Milestones">Milestones</span>
-                <button type="submit" class="buttonSubmit">Save chances</button>
+            <div class="milestones-section">
+                <h2 class="ptext">Milestones</h2>
+                <button class="btn add-milestone">+ Add Milestone</button>
+                <div class="milestones-container">
+                    {% for milestone in milestones %}
+                    <div class="milestone">
+                        <div class="milestone-header" onclick="toggleTasks(this)">
+                            <div class="ptext milestone-name">{{ milestone.name }}</div>
+                            <img class="freelancer-picture" src="{{ milestone.freelancer_picture }}" alt="Freelancer Picture"/>
+                            <div class="ptext freelancer-name">{{ milestone.freelancer_name }}</div>
+                            <div class="ptext milestone-progress">{{ milestone.progress }}%</div>
+                            <div class="ptext milestone-deadline">{{ milestone.deadline }}</div>
+                            <button class="btn assignment">Assignments</button>
+                        </div>
+                        <div class="tasks-list" style="display: none;">
+                            {% for task in milestone.tasks %}
+                            <div class="task">
+                                <div class="circle">
+                                    {% if task.completed %}
+                                    <img class="check" src="path_to_check_icon" alt="Completed">
+                                    {% endif %}
+                                </div>
+                                <div class="ptext task-name">{{ task.name }}</div>
+                            </div>
+                            {% endfor %}
+                            <div class="task-add">Add task</div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                <button class="btn save-changes">Save Changes</button>
             </div>
+            
         </div>
     </div>
     <footer>
@@ -90,5 +118,12 @@
             </ul>
         </div>
     </footer>
+
+    <script>
+        function toggleTasks(element) {
+            const tasksList = element.nextElementSibling;
+            tasksList.style.display = tasksList.style.display === "none" ? "block" : "none";
+        }        
+    </script>
 </body>
 </html>

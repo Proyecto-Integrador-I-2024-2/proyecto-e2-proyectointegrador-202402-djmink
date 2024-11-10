@@ -62,11 +62,30 @@
                     </div>
                 </div>
             </form>
-            <div class="containerMilestones">
-                <div class="lineCenter"></div>
-                <span class="Milestones">Milestones</span>
-                <button type="submit" class="buttonSubmit">Save</button>
+            <div class="add-milestone-section">
+                <h2 class="ptext">Add Milestone</h2>
+                <form id="milestone-form">
+                    <label class="ptext" for="milestone-name">Milestone Name</label>
+                    <input type="text" id="milestone-name" name="milestone-name" placeholder="Milestone name" required />
+            
+                    <label class="ptext" for="freelancer-name">Freelancer Name</label>
+                    <input type="text" id="freelancer-name" name="freelancer-name" placeholder="Freelancer name" required />
+            
+                    <label class="ptext" for="milestone-progress">Progress (%)</label>
+                    <input type="number" id="milestone-progress" name="milestone-progress" placeholder="Progress" min="0" max="100" required />
+            
+                    <label class="ptext" for="milestone-deadline">Deadline</label>
+                    <input type="date" id="milestone-deadline" name="milestone-deadline" required />
+            
+                    <h3 class="ptext">Tasks</h3>
+                    <div id="task-list"></div>
+                    <input type="text" id="task-name" placeholder="Add task" />
+                    <button type="button" class="btn add-task" onclick="addTask()">Add Task</button>
+            
+                    <button type="submit" class="btn save-milestone">Save Milestone</button>
+                </form>
             </div>
+            
         </div>
     </div>
     <footer>
