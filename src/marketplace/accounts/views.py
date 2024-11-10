@@ -131,6 +131,9 @@ def registerc2(request, id):
         return render(request, 'signUp2Company.html', {'countries': countries})
     
 def addproject(request):
+    return render(request, 'AddProject.html')
+
+def editproject(request):
     return render(request, 'EditProject.html')
 
 def create_project_view(request, id):
