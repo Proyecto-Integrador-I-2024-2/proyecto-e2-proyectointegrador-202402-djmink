@@ -189,6 +189,10 @@ textarea:focus {
     width: 350px;
 }
 
+.profile-img {
+    height:250px;
+}
+
 footer {
     display: flex;
     align-items: center;
