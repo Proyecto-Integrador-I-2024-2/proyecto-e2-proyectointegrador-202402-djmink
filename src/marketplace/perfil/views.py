@@ -473,4 +473,38 @@ def editAccountClient(request, id):
 def freelancerProfile(request, id, idclient):
     p = get_object_or_404(Freelancer, id=id)
     client = get_object_or_404(CompanyManager, id=idclient)
+
+    if request.method == "POST":
+        action = request.POST.get("action")
+        comment_id = request.POST.get("comment_id")
+
+        if action == "new_comment":
+            comment_content = request.POST.get("comment")
+            if comment_content:
+                CommentProfile.objects.create(
+                    user_profile=p,
+                    author=client,
+                    content=comment_content,       
+                )
+                messages.success(request, "Comentario publicado correctamente.")
+            else:
+                messages.error(request, "El comentario no puede estar vacío.")
+
+        elif action == "edit_comment" and comment_id:
+            comment = get_object_or_404(CommentProfile, id=comment_id, author=client)
+            new_content = request.POST.get("new_content")
+            if new_content:
+                comment.content = new_content
+                comment.save()
+                messages.success(request, "Comentario editado correctamente.")
+            else:
+                messages.error(request, "El comentario editado no puede estar vacío.")
+
+        elif action == "delete_comment" and comment_id:
+            comment = get_object_or_404(CommentProfile, id=comment_id, author=client)
+            comment.delete()
+            messages.success(request, "Comentario eliminado correctamente.")
+
+        return redirect('freelancerProfile', id=id, idclient=idclient)
+
     return render(request, 'perfil/freelancer_profile_view.html', {'p': p, 'client': client})

@@ -90,32 +90,6 @@ html {
     left:163px;
 }
 
-.editprofilebutton {
-    width: 70px;
-    height: 18px;
-    position: absolute;
-    left: 1212px;
-    top: 224px;
-    display: flex; 
-    align-items: center;
-    justify-content: center;
-    background-color: #FFFFFF;
-    border: 1px solid #BCBCBC;
-    color: #01000C; 
-    padding: 10px 15px; 
-    border-radius: 5px; 
-    cursor: pointer; 
-    transition: background-color 0.3s; 
-    font-family: "Poppins", sans-serif;
-    font-weight: 500;
-    font-size: 13px;
-    text-decoration: none; 
-}
-
-.editprofilebutton:hover {
-    background-color: #6ce81444;
-}
-
 .line-separator {
     position: absolute;
     top:307px;
@@ -206,6 +180,7 @@ html {
     width: 30px;
     cursor: pointer;
 }
+
 
 .aboutsection {
     height:436px;
@@ -387,7 +362,6 @@ html {
     text-decoration: none; 
 }
 
-
 .projectssection {
     background-color: #F2F2F2;
     height:429px;
@@ -511,9 +485,8 @@ html {
 }
 
 .commentssection {
-    margin-top: -20px;
     background-color: #F2F2F2;
-    height:430px;
+    height:584px;
     width:1440px;
     position:relative;
 }
@@ -525,6 +498,48 @@ html {
     height: 32px;
     font-weight: 500;
     font-size: 36px; 
+}
+
+.input-comment{
+    padding: 20px;
+    position: relative;
+    left: 131px;
+    top:151px;
+    background-color: #F2F2F2;
+    border-radius: 5px;
+    width: 1138px;
+    height: 80px;
+    border: 1px solid #ccc;
+    font-size: 16px; 
+    resize: none;
+    margin-bottom: 20px;
+    font-family: "Poppins", sans-serif;
+    font-weight: 400;
+}
+
+.publish-btn {
+    top: 140px;
+    width: 119px;
+    height: 40px;
+    position: relative;
+    left: 1180px;
+    display: flex; 
+    align-items: center; 
+    justify-content: center; 
+    background-color: #007BFF;
+    color: white; 
+    border: none;
+    padding: 10px 15px; 
+    border-radius: 5px; 
+    cursor: pointer; 
+    transition: background-color 0.3s;
+    font-family: "Poppins", sans-serif;
+    font-weight: 600;
+    font-size: 14;
+}
+
+.joinbutton:hover {
+    background-color: #0056b3;
 }
 
 .comments {
@@ -604,24 +619,32 @@ html {
     padding: 5px;
 }
 
-
-.btn.reply{
+.btn.edit{
+    position: absolute;
     margin-top: 5px;
-    left: 90%;
-    width: 80px;
-    height: 18px;
-    background-color: #BCBCBC;
-    color: #01000C; 
+    left: 92%;
+    width: 24px;
+    height: 24px;
+    background-color: white;
+    color: white; 
 }
 
-.button-container {
+.edit-icon{
+    width: 24px;
+    height: 24px;
+    cursor: pointer;
+}
+
+.edit-textarea {
     position: relative;
+    left: 1%;
+    width: 96%;
     margin-top: 8px;
-    left: 82%;
-    display: flex;
-    gap: 10px; 
-    margin-top: 8px; 
-    height: 18px;
+    font-family: "Poppins", sans-serif;
+    font-size: 16px;
+    resize: none;
+    text-align: left;
+    padding-left: 8px;
 }
 
 .btn.save-edit{
@@ -635,18 +658,23 @@ html {
     padding: 0; 
 }
 
-.btn.send-reply{
-    width: 80px;
-    height: 18px;
-    background-color: #BCBCBC;
-    color: #01000C; 
+.delete-form {
+    position: absolute;
+    display: inline-flex;        
+    justify-content: center;     
+    align-items: center;                           
+    width: auto;                
+    height: auto; 
+    margin-top: 5px;
+    left: 95%;              
 }
 
-.btn.cancel{
-    width: 80px;
-    height: 18px;
-    background-color: #BCBCBC;
-    color: #01000C; 
+.btn.delete{
+    width: 24px;
+    height: 24px;
+    color: #030303;
+    font-size: 24px;
+    background-color: white;
 }
 
 .replies{
@@ -669,71 +697,6 @@ html {
     width: 100%;
     height: auto;
     flex-direction: column;
-}
-
-.btn.edit{
-    position: absolute;
-    margin-top: 5px;
-    left: 93%;
-    width: 24px;
-    height: 24px;
-    background-color: white;
-    color: white; 
-}
-
-.delete-form {
-    position: absolute;
-    display: inline-flex;        
-    justify-content: center;     
-    align-items: center;                           
-    width: auto;                
-    height: auto; 
-    margin-top: 5px;
-    left: 96%;              
-}
-
-.btn.delete{
-    width: 24px;
-    height: 24px;
-    color: #030303;
-    font-size: 24px;
-    background-color: white;
-}
-
-.edit-icon{
-    width: 24px;
-    height: 24px;
-    cursor: pointer;
-}
-
-.edit-textarea {
-    position: relative;
-    left: 1%;
-    width: 97%;
-    margin-top: 8px;
-    font-family: "Poppins", sans-serif;
-    font-size: 16px;
-    resize: none;
-    text-align: left;
-    padding-left: 8px;
-}
-
-.reply-input {
-    background-color: rgb(255, 255, 255);
-    position: relative;
-    display: block;
-    width: 92%;
-    left: 5%; 
-    margin-top: 10px;
-    padding: 8px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    font-size: 16px;
-    box-sizing: border-box;
-    resize: none;
-    height: auto;
-    overflow: hidden; 
-    font-family: "Poppins", sans-serif;
 }
 
 .footer {
