@@ -1,11 +1,13 @@
-from django.shortcuts import render, redirect
+from django.utils import timezone
+from django.shortcuts import get_object_or_404, render, redirect
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponse
+from django.http import JsonResponse, HttpResponse
 #from .forms import CompanyRegistrationForm, FreelancerRegistrationForm, LoginForm
 from django.contrib.auth.views import LoginView
+from .forms import createProjectForm, editProjectForm
 
-from my_aplication.models import Freelancer, CompanyManager
+from my_aplication.models import Freelancer, CompanyManager, Project
 
 #SMTP libraries
 from django.core.mail import send_mail
@@ -133,3 +135,46 @@ def addproject(request):
 
 def editproject(request):
     return render(request, 'EditProject.html')
+
+def create_project_view(request, id):
+    company_manager = CompanyManager.objects.get(id=id)
+    return render(request, 'AddProject.html', {'company_manager': company_manager})
+
+def edit_project_view(request, id):
+    project = Project.objects.get(id=id)
+    milestones = project.milestones.all()
+    
+    context = {
+        'project': project,
+        'milestones': milestones
+    }
+    return render(request, 'EditProject.html', context)
+
+
+def post_project(request):
+    if request.method == 'POST':
+        form = createProjectForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            return JsonResponse({'success': True, 'message': 'Project created successfully'})
+        else:
+            return JsonResponse({'success': False, 'message': 'Form validation failed', 'errors': form.errors})
+    
+    return JsonResponse({'success': False, 'message': 'Invalid request method'})
+
+def post_project_edition(request, id=None):
+    if request.method == 'POST':
+        
+        project = get_object_or_404(Project, id=id)
+        form = editProjectForm(request.POST, request.FILES, instance=project)
+        
+        if form.is_valid():
+            form.save()
+            return JsonResponse({'success': True, 'message': 'Project saved successfully'})
+        else:
+            return JsonResponse({'success': False, 'message': 'Form validation failed', 'errors': form.errors})
+
+    return JsonResponse({'success': False, 'message': 'Invalid request method'})
+
+
+

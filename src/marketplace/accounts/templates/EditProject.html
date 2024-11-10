@@ -28,7 +28,7 @@
             </ul>
         </div>
     </nav>
-    <div class="content">
+    <div id ="torso" class="content" data-project-id = "{{project.id}}">
         <h2>Edit Project</h2>
         <div class="basicInformation">
             <span>Basic information</span>
@@ -36,11 +36,11 @@
                 <div class="leftSide">
                     <div class="inputContainer">
                         <span>Name</span>
-                        <input type="text" name="name" id="name">
+                        <input type="text" name="name" id="name" value="{{project.name}}">
                     </div>
                     <div class="inputContainer">
                         <span>Description</span>
-                        <textarea rows="4" cols="50" placeholder="Escribe aquí..." name="description" id="description"></textarea>
+                        <textarea rows="4" cols="50" placeholder="Escribe aquí..." name="description" id="description">{{project.description}}</textarea>
                     </div>
                     <div class="inputContainer">
                         <span>Budget</span>
@@ -49,16 +49,20 @@
                             <option value="USD">USD</option>
                             <option value="EUR">EUR</option>
                         </select>
-                        <input type="number" name="budget" id="budget" placeholder="Amount">
+                        <input type="number" name="budget" id="budget" placeholder="Amount" value="{{project.budget}}">
                     </div>
                 </div>
                 <div class="rightSide">
                     <div class="profile-upload">
                         <input type="file" id="file-input" accept="image/*" />
                         <label for="file-input" class="profile-circle">
-                            <img id="profile-img" src="{% static 'images/Rectangle 2893.png' %}" alt="Profile" />
+                        {% if project.project_picture %}
+                            <img id="profile-img" class="profile-img" src="{{ project.project_picture.url }}" alt="Project Image" />
+                        {% else %}
+                            <img id="profile-img" class="profile-img" src="{% static 'images/Vector (2).png' %}" alt="Default Image" />
+                        {% endif %}
                         </label>
-                        <button type="submit" class="buttonSubmit">Update</button>
+                        <button id="update" type="submit" class="buttonSubmit">Update</button>
                     </div>
                 </div>
             </form>
@@ -92,9 +96,8 @@
                     </div>
                     {% endfor %}
                 </div>
-                <button class="btn save-changes">Save Changes</button>
+                <button id="submit" type="submit" class="buttonSubmit">Save chances</button>
             </div>
-            
         </div>
     </div>
     <footer>
@@ -118,12 +121,59 @@
             </ul>
         </div>
     </footer>
-
-    <script>
-        function toggleTasks(element) {
-            const tasksList = element.nextElementSibling;
-            tasksList.style.display = tasksList.style.display === "none" ? "block" : "none";
-        }        
-    </script>
 </body>
+<script>
+    function toggleTasks(element) {
+        const tasksList = element.nextElementSibling;
+        tasksList.style.display = tasksList.style.display === "none" ? "block" : "none";
+    }        
+</script>
+<script>
+    document.getElementById('submit').addEventListener('click', function() {
+      const projectId = document.getElementById('torso').dataset.projectId;
+      console.log(projectId);
+      const name = document.getElementById('name');
+      const nameContent = name.value;
+      const description = document.getElementById('description');
+      const descriptionContent = description.value;
+      const budget = document.getElementById('budget');
+      const budgetContent = budget.value;
+    //  'manager', 'name', 'type', 'duration', 'description', 'budget', 'deadline', 'project_picture', 'state'
+      const type = "General";
+      const duration = "Not Specified";
+      const defaultImage = "project_pictures/Project-Management-Fundamentals.jpg";
+      const state = "PENDING";
+
+      const url = `/accounts/post_project_edition/${projectId}/`;
+
+      fetch(url, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+          'X-CSRFToken': '{{ csrf_token }}'  // Include CSRF token for security
+        },
+        body: new URLSearchParams({
+          'name': nameContent,
+          'type': type,
+          'duration': duration,
+          'description': descriptionContent,
+          'budget': budgetContent,
+          'project_picture': defaultImage,
+          'state': state
+        })
+      })
+      .then(response => response.json())
+      .then(data => {
+        if (data.success) {
+          alert(data.message);
+          // Optionally, refresh comments here or append the new comment to the list
+        } else {
+          alert(data.message);
+        }
+      })
+      .catch(error => {
+        console.error('Error:', error);
+      });
+    });
+  </script>
 </html>

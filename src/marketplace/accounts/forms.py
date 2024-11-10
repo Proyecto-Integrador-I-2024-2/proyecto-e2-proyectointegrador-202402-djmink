@@ -1,8 +1,29 @@
 from django import forms
+from my_aplication.models import Project, Milestone,Task
 from django.contrib.auth.models import User
-from my_aplication.models import CompanyManager, Freelancer
 
-#class LoginForm(forms.Form):
+class createProjectForm(forms.ModelForm):
+    class Meta:
+        model = Project
+        fields = ['manager', 'name', 'type', 'duration', 'description', 'budget', 'deadline', 'project_picture', 'state']
+
+class editProjectForm(forms.ModelForm):
+    class Meta:
+        model = Project
+        fields = ['name', 'type', 'duration', 'description', 'budget', 'deadline', 'project_picture', 'state']
+
+# class createMilestoneForm(forms.ModelForm):
+#     class Meta:
+#         model = Milestone
+#         fields = ['name', 'description', 'deadline', 'project']  
+
+# class createTaskForm(forms.ModelForm):
+#     class Meta:
+#         model = Task
+#         fields = ['name', 'description', 'deadline', 'milestone']
+
+
+# class LoginForm(forms.Form):
 #    username = forms.CharField(label='Username', max_length=150, required=True)
 #    password = forms.CharField(widget=forms.PasswordInput, label='Password', required=True)
 
