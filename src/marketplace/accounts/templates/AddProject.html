@@ -112,6 +112,28 @@
 </div>
 
     </footer>
+
+    <script>
+        function addTask() {
+            const taskName = document.getElementById("task-name").value;
+            if (taskName === "") return;
+        
+            const taskList = document.getElementById("task-list");
+            const taskItem = document.createElement("div");
+            taskItem.classList.add("task-item");
+            taskItem.innerHTML = `
+                <span>${taskName}</span>
+                <button onclick="removeTask(this)">Remove</button>
+            `;
+            taskList.appendChild(taskItem);
+            document.getElementById("task-name").value = "";
+        }
+        
+        function removeTask(button) {
+            button.parentElement.remove();
+        }
+        
+    </script>
     
 </body>
 </html>
