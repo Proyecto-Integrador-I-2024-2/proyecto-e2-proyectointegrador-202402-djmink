@@ -10,86 +10,50 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Projects List</title>
     <link rel="icon" type="image/png" href="{% static 'img/Logo.png' %}">
-    <link rel="stylesheet" href="{% static 'css/client_projects_list.css' %}">
+    <link rel="stylesheet" href="{% static 'css/client_projects_list2.css' %}">
+    <link rel="stylesheet" href="{% static 'css/heading.css' %}">
+    <link rel="stylesheet" href="{% static 'css/footer.css' %}">
 </head>
 <body>
 
-    <div class="heading">
-        <div class="ptext hometext">Home</div>
-        <img class="icon chat_icon" src="{% static 'img/Chat_Icon.svg' %}"/>
-        <img class="icon notification_icon" src="{% static 'img/Notification_Icon.svg' %}"/>
-        <a href="{% url 'perfilesCliente' p.id %}">
-            <img class="profile_picture_heading" src="{{ p.profile_picture.url }}" alt="Profile Picture"/>
-        </a>
-        <img class="logo" src="{% static 'img/Logo.svg' %}"/>
-        <div class="logoseparator"></div>
-        <div class="ptext onlinemarketplace">
-            Online Marketplace
-        </div>
-    </div>
+    {% include 'perfil/sections/heading.html' %}
       
     <div class="mainback">
 
-        <div class="welcome">Welcome!</div>
-        <div class="name_profile">{{ p.name }}</div>
+        <div class="ptext welcome">Welcome!</div>
+        <div class="ptext name_profile">{{ p.name }}</div>
 
-        <div id="myprojects" class="myprojects">
+        <div class="ptext myprojects">
             My projects
         </div>
 
-        <div id="add" class="add">
+        <div class="ptext add">
             Add
         </div>
 
         <button id="addBtn" class="nav-button">+</button>
+ 
+        <div class="projects-container">
+            {% for project in p.projects.all %}
+                <div class="project-container">
+                    <img id="project_picture" class="project_picture" src="{{ project.project_picture.url }}" alt="Project Picture"/>
+                    <div class="ptext project-name">{{ project.name }}</div>
+                    <div class="ptext project-description">{{ project.description }}</div>
+                    <div class="ptext project-state">State: {{ project.state }}</div>
+                    <button class="btn preview">Preview</button>
+                    <button class="btn edit">Edit</button>
 
-        <div class="projects-wrapper">
-            
-            <div class="projects-container" id="projectsContainer">
-                {% for project in p.projects.all %}
-                    <div class="project-container">
-                        <img id="project_picture" class="project_picture" src="{{ project.project_picture.url }}" alt="Project Picture"/>
-                        <div class="ptext project-name">{{ project.name }}</div>
-                        <div class="ptext project-description">{{ project.description }}</div>
-                        <div class="ptext project-state">State: {{ project.state }}</div>
-                        <button class="btn preview">Preview</button>
-                        <button class="btn edit">Edit</button>
+                    <a href="{% url 'manageProject' id=p.id id_project=project.id %}">
                         <button class="btn open">Manage</button>
-                    </div>
-                {% empty %}
-                    <p>You don't have projects registered yet.</p>
-                {% endfor %}
-            </div>
-    
+                    </a>
+                </div>
+            {% empty %}
+                <p>You don't have projects registered yet.</p>
+            {% endfor %}
         </div>
-
+    
     </div> 
 
-    <footer class="footer">
-        <div class="footer-content">
-            <img class="encora" src="{% static 'img/Encora1.svg' %}" />
-            <a href="https://www.facebook.com/encorainc" target="_blank">
-                <img class="social-icon fb" src="{% static 'img/fb.png' %}"/>
-            </a>
-            <a href="https://www.instagram.com/encorainc/" target="_blank">
-                <img class="social-icon ig" src="{% static 'img/ig.png' %}" />
-            </a>
-            <a href="https://www.linkedin.com/company/encorainc/" target="_blank">
-                <img class="social-icon lin" src="{% static 'img/lin.png' %}" />
-            </a>
-            <img class="social-icon gmail" src="{% static 'img/gmail.png' %}" />
-            <nav class="footer-nav">
-                <a href="#features">Features</a>
-                <a href="#about">About</a>
-                <a href="#support">Support</a>
-                <a href="#resources">Resources</a>
-                <a href="#places">Places</a>
-                <a href="#jobs">Jobs</a>
-            </nav>
-            <div class='footertext'> 
-                © 2024 Online Marketplace
-            </div>
-        </div>
-    </footer>
+    {% include 'perfil/sections/footer.html' %}
     
 </body>

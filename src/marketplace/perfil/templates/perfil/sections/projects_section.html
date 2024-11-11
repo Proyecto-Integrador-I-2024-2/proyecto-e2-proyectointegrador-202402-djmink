@@ -1,0 +1,92 @@
+<div class="projectssection">
+    <div class="ptext projects-title">Projects</div>
+    <div class="projects-wrapper">
+     
+        {% if p.contents.count > 3 or p.projects.count > 3 %}
+            <button id="prevBtn" class="nav-button left">←</button>
+        {% endif %}
+        
+        <div class="projects-container" id="projectsContainer">
+            {% if p.contents.all %}
+                {% for project in p.contents.all %}
+                    <div class="project-container">
+                        <div class="ptext project-name">{{ project.name }}</div>
+                        <div class="ptext info-project">{{ project.type }}</div>
+                        <div class="ptext info-project">{{ project.duration }}</div>
+                        <a class="ptext info-project" href="{{ project.url }}" target="_blank">{{ project.name }}</a>
+                    </div>
+                {% endfor %}
+            {% elif p.projects.all %}
+                {% for project in p.projects.all %}
+                    <div class="project-container">
+                        <div class="ptext project-name">{{ project.name }}</div>
+                        <div class="ptext info-project">{{ project.type }}</div>
+                        <div class="ptext info-project">{{ project.duration }}</div>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <p>You don't have projects registered yet.</p>
+            {% endif %}
+        </div>
+
+        {% if p.contents.count > 3 or p.projects.count > 3 %}
+            <button id="nextBtn" class="nav-button right">→</button>
+        {% endif %}
+        
+    </div>
+    <hr class="projects-separator">
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const container = document.getElementById('projectsContainer');
+        const projectContainers = document.querySelectorAll('.project-container');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+
+        if (!prevBtn || !nextBtn) {
+            return;
+        }
+
+        let currentIndex = 0;
+        const visibleProjects = 3; 
+        const projectWidth = 300;
+        const marginRight = 81; 
+        const totalProjects = projectContainers.length;
+
+        const scrollAmount = (projectWidth + marginRight);
+
+        function updateButtons() {
+            if (currentIndex === 0) {
+                prevBtn.disabled = true;
+            } else {
+                prevBtn.disabled = false;
+            }
+
+            if (currentIndex + visibleProjects >= totalProjects) {
+                nextBtn.disabled = true;
+            } else {
+                nextBtn.disabled = false;
+            }
+        }
+
+        
+        prevBtn.addEventListener('click', function() {
+            if (currentIndex > 0) {
+                currentIndex--;
+                container.scrollLeft -= scrollAmount;
+            }
+            updateButtons();
+        });
+
+        nextBtn.addEventListener('click', function() {
+            if (currentIndex + visibleProjects < totalProjects) {
+                currentIndex++;
+                container.scrollLeft += scrollAmount;
+            }
+            updateButtons();
+        });
+
+        updateButtons();
+    });
+</script>

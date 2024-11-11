@@ -1,0 +1,14 @@
+{% load static %}
+<div class="heading">
+    <div class="ptext hometext">Home</div>
+    <img class="icon chat_icon" src="{% static 'img/Chat_Icon.svg' %}"/>
+    <img class="icon notification_icon" src="{% static 'img/Notification_Icon.svg' %}"/>
+    <a href="{{ profile_url }}">
+        <img class="profile_picture_heading" src="{{ profile_image }}" alt="Profile Picture"/>
+    </a>
+    <img class="logo" src="{% static 'img/Logo.svg' %}"/>
+    <div class="logoseparator"></div>
+    <div class="ptext onlinemarketplace">
+        Online Marketplace
+    </div>
+</div>

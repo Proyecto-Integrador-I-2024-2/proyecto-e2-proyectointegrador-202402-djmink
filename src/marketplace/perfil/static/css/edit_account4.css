@@ -4,115 +4,20 @@ html {
     scroll-behavior: smooth;
 }
 
+body{
+    background-color: #F2F2F2; 
+}
+
 .editsection{
-    background-color:#F2F2F2;
+    position: relative;
     width: 1440px;
-    height: 1050px;
-}
-
-/* Heading section */
-
-.heading {
-    background-color:#F2F2F2;
-    height:102px;
-    width: 1440px; 
-    position:relative;
-}
-
-.hometext
-{
-    color:#000000;
-    text-align:left;
-    vertical-align:text-top;
-    font-size:24px;
-    font-family: "Poppins", sans-serif;
-    font-weight: 600;
-    font-style: normal;
-    line-height:auto;
-    border-style:hidden;
-    outline:none;
-    top:32px;
-    left:690px;
-    position:absolute;
-    width:60px;
-    height:30px;
-}
-
-.chat_icon{
-    top:35px;
-    left:1268px;
-    position:absolute;
-    width:35px;
-    height: 35px;
-    cursor: pointer;
-}
-
-.notification_icon{
-    top:35px;
-    left:1315px;
-    position:absolute;
-    width:35px;
-    height: 35px;
-    cursor: pointer;
-}
-
-.logo{
-    top:7px;
-    left:40px;
-    position:absolute;
-    width:80px;
-    height: 80px;
-}
-
-.logoseparator
-{
-    top:45px;
-    left:95px;
-    width: 60px;
-    transform:rotate(-90deg);
-    border:1px solid #01000c;
-    position:absolute;
-}
-
-.onlinemarketplace2
-{
-    color:#01000c;
-    text-align:left;
-    vertical-align:text-top;
-    font-size:18px;
-    font-family: "Poppins", sans-serif;
-    font-weight: 500;
-    font-style: normal;
-    line-height:auto;
-    border-style:hidden;
-    outline:none;
-    top:20px;
-    left:150px;
-    position:absolute;
-    width:100px;
-    height: 66px;
-    cursor: pointer;
-}
-
-.profile_picture2 {
-    top:25px;
-    left:1365px;
-    position:absolute;
-    width:50px;
-    height: 50px;
-    border-radius: 50%; 
-    object-fit: cover;
-}
-
-.ptext {
-    font-family: "Poppins", sans-serif;
-    position:absolute;
+    height: 950px;
 }
 
 .ptext.ep {
     color:#7D7D7D;
     font-size:14px;
-    font-weight: 700; /* Bold */
+    font-weight: 700;
     top:181px;
     left:114px;
     width:100px;
@@ -122,7 +27,7 @@ html {
 .ptext.my-account {
     color:#000000;
     font-size:16px;
-    font-weight: 700; /* Bold */
+    font-weight: 700;
     top:215px;
     left:114px;
     width:100px;
@@ -133,7 +38,7 @@ html {
 .ptext.profile {
     color:#000000;
     font-size:16px;
-    font-weight: 400;  /* Regular */
+    font-weight: 400;
     top:254px;
     left:114px;
     width:53px;
@@ -144,7 +49,7 @@ html {
 .ptext.portfolio {
     color:#000000;
     font-size:16px;
-    font-weight: 400; /* Regular */
+    font-weight: 400;
     top:293px;
     left:114px;
     width:94px;
@@ -155,7 +60,7 @@ html {
 .ptext.delete-account {
     color:#DA5F5F;
     font-size:16px;
-    font-weight: 400; /* Regular */
+    font-weight: 400;
     top:332px;
     left:114px;
     width:122px;
@@ -183,7 +88,7 @@ html {
 }
 
 .ptext.myaccount{
-    top: 18px;
+    top: 23px;
     left: 0px;
     width: 143px;
     height: 36px;
@@ -438,114 +343,4 @@ html {
     background-color: #0040FF;
     top: 400px;
     left: 235px;
-}
-
-.footer {
-    background-color: #F2F2F2;
-    text-align: center;
-    font-family: "Poppins", sans-serif;
-    font-weight: 400;
-    font-style: normal;
-    padding: 0;
-    position: absolute;
-    top: 924px;
-    left: 0px;
-    width: 1440px; 
-    height: 135px;
-}
-
-.ptext.pass{
-    color:#000000;
-    font-size:14px;
-    font-weight: 400;
-    left: 5px;
-}
-
-
-.footer-content {
-    max-width: 1200px;
-    margin: 0 auto;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-.footer-nav {
-    margin-top: 57px;
-}
-
-.footer-nav2 {
-    margin-top: 20px;
-}
-
-.footer-nav a {
-    color: #01000C;
-    margin: 0 15px;
-    text-decoration: none;
-    font-size: 20px;
-}
-
-.footer-nav a:hover {
-    text-decoration: underline; 
-}
-
-.encora2 {
-    position: absolute;
-    left: 37px;
-    top: 10px; 
-    height: 111px; 
-    width: 113px;
-}
-
-.gmail3 {
-    position: absolute;
-    left: 1252px;
-    top: 78px; 
-    height: 24px; 
-    width: 24px;
-    cursor: pointer;
-}
-
-.lin3 {
-    position: absolute;
-    left: 1280px;
-    top: 78px; 
-    height: 24px; 
-    width: 24px;
-    cursor: pointer;
-}
-
-.ig3 {
-    position: absolute;
-    left: 1308px;
-    top: 78px; 
-    height: 24px; 
-    width: 24px;
-    cursor: pointer;
-}
-
-.fb3 {
-    position: absolute;
-    left: 1336px;
-    top: 78px; 
-    height: 24px; 
-    width: 24px;
-    cursor: pointer;
-}
-
-.footertext {
-    text-align:center;
-    vertical-align:text-top;
-    font-size:12px;
-    font-family: "Inter", sans-serif;
-    font-optical-sizing: auto;
-    font-weight: 400;
-    line-height:auto;
-    border-style:hidden;
-    outline:none;
-    top:105px;
-    left:1205px;
-    position:absolute;
-    width:200px;
-    height:18px;
 }

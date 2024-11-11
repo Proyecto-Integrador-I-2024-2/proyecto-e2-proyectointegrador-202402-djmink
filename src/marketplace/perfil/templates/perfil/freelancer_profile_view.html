@@ -12,282 +12,31 @@
     <link rel="icon" type="image/png" href="{% static 'img/Logo.png' %}">
     <link rel="stylesheet" href="{% static 'css/freelancer_profile_view2.css' %}">
     <link rel="stylesheet" href="{% static 'css/info-modal.css' %}">
+    <link rel="stylesheet" href="{% static 'css/rating_modal.css' %}">
+    <link rel="stylesheet" href="{% static 'css/heading.css' %}">
+    <link rel="stylesheet" href="{% static 'css/profile_information1.css' %}">
+    <link rel="stylesheet" href="{% static 'css/about_section.css' %}">
+    <link rel="stylesheet" href="{% static 'css/projects_section2.css' %}">
+    <link rel="stylesheet" href="{% static 'css/comments_section2.css' %}">
+    <link rel="stylesheet" href="{% static 'css/footer.css' %}">
 </head>
 <body> 
 
-    {% include 'perfil/info-modal.html' %}
+    {% include 'perfil/sections/info-modal.html' %}
 
-    <div class="upper-section">
+    {% include 'perfil/sections/rating_modal.html' %}
 
-        <div class="ptext hometext">Home</div>
-        <img class="icon chat_icon" src="{% static 'img/Chat_Icon.svg' %}"/>
-        <img class="icon notification_icon" src="{% static 'img/Notification_Icon.svg' %}"/>
-        <a href="{% url 'perfilesCliente' client.id %}">
-            <img class="profile_picture_heading" src="{{ client.image.url }}" alt="Profile Picture"/>
-        </a>
-        <img class="logo" src="{% static 'img/Logo.svg' %}"/>
-        <div class="logoseparator"></div>
-        <div class="ptext onlinemarketplace">
-            Online Marketplace
-        </div>
+    {% include 'perfil/sections/heading.html' %}
 
-        <div class="ptext profiletitle">Profile</div>
+    {% include 'perfil/sections/profile_information.html' %}
 
-        <hr class="line-separator">
+    {% include 'perfil/sections/about_section.html' %}   
 
-        <div class="ptext name-profile">{{ p.name }}</div>
-        <div class="ptext profession">{{ p.profession }}</div>
-        <img class="profile_picture" src="{{ p.image.url }}" alt="Profile Picture"/>
-        <div class="ptext description">{{ p.description }}</div>
-        <div class="ptext email">{{ p.contact_email }}</div>
-        <div class="social-networks">
-            {% for network in p.social_networks.all %}
-                <a href="https://{{ network.url }}" target="_blank">
-                    <img class="social-icon-1" src="{{ network.image.url }}" alt="{{ network.type }}">
-                </a>
-            {% endfor %}
-        </div>
-        <div class="ptext calification">{{ p.rating }}</div>
-        <img class="star" src="{% static 'img/Star.svg' %}" />
+    {% include 'perfil/sections/projects_section.html' %}
 
-    </div>
-
-    <div class="aboutsection">
-
-        <div class="ptext about-title">About Me</div>
-
-        <div class="experience">
-            <div class="experience-header">{{ p.experience }}</div>
-            <div class="experience-body">
-                <div class="jobs-done">
-                    <span class="percentage">{{ p.jobs_completed }}%</span> Jobs Completed
-                </div>
-                <div class="price">{{ p.price }}</div>
-                <div class="join-date">
-                    Joined {{ p.join_date }}
-                </div>
-            </div>
-        </div>
-
-        <div class="habilities-container">
-            {% for hability in p.skills.all %}
-                <div class="hability-container">
-                    <div class="hability">{{ hability.name }}</div>
-                </div>
-            {% empty %}
-                <p>You don't have skills registered yet.</p>
-            {% endfor %}
-        </div>        
-
-        <div class="certificates-container">
-            {% for certificate in p.certificates.all %}
-                <div class="certificate-container">
-                    <div class="ptext name-certificate">{{ certificate.name }}</div>
-                    <div class="rectangle20">
-                        <img id="card" class="card" src="{% static 'img/card.svg' %}" alt="Card"/>
-                        <div class="ptext type-certificate">{{ certificate.type }}</div>
-                    </div>
-                    <a href="{{ certificate.url }}" target="_blank">
-                        <img id="view" class="view" src="{% static 'img/view.svg' %}" alt="View"/>
-                    </a>
-                </div>
-            {% empty %}
-                <p>You don't have certificates registered yet.</p>
-            {% endfor %}
-        </div>     
-    
-    </div>   
-
-    <div class="projectssection">
-        <div class="ptext projects-title">Projects</div>
-        <div class="projects-wrapper">
-         
-            <button id="prevBtn" class="nav-button left">←</button>
-            
-            <div class="projects-container" id="projectsContainer">
-                {% for project in p.contents.all %}
-                    <div class="project-container">
-                        <div class="ptext project-name">{{ project.name }}</div>
-                        <div class="ptext info-project a">{{ project.type }}</div>
-                        <div class="ptext info-project b">{{ project.duration }}</div>
-                        <a class="ptext info-project c" href="{{ project.url }}" target="_blank">{{ project.name }}</a>
-                    </div>
-                {% empty %}
-                    <p>You don't have projects registered yet.</p>
-                {% endfor %}
-            </div>
-    
-            <button id="nextBtn" class="nav-button right">→</button>
-        </div>
-        <hr class="separator-3">
-    </div>
-
-    <div class="commentssection">
-
-        <div class="ptext commentstitle">Comentarios</div>
-
-        <form method="POST">
-            {% csrf_token %}
-            <input type="hidden" name="action" value="new_comment">
-            <textarea class="input-comment" name="comment" placeholder="Write your comment"></textarea>
-            <button type="submit" class="publish-btn">Publish</button>
-        </form>
-
-        <div class="comments">
-            {% for comment in p.comments_received.all %}
-                {% if comment.reply_to is None %}
-                    <div class="comment" data-id="{{ comment.id }}">
-                        <img class="profilecommenting" src="{{ comment.author.image.url }}"/>
-                        <div class="ptext date">{{ comment.created_at }}</div>
-                        <div class="ptext username">{{ comment.author.name }}</div>
-                        <div class="ptext comment-text" id="comment-text-{{ comment.id }}">{{ comment.content }}</div>
-
-                        {% if comment.author.id == client.id and not comment.replies.exists %}
-                            
-                            <button type="button" class="btn edit" onclick="toggleEditTextarea('{{ comment.id }}')">
-                                <img src="{% static 'img/Edit.svg' %}" alt="Edit Icon" class="edit-icon">
-                            </button>
-
-                            <form method="POST">
-                                {% csrf_token %}
-                                <textarea id="edit-textarea-{{ comment.id }}" class="edit-textarea" name="new_content" style="display: none;">{{ comment.content }}</textarea>
-                                <input type="hidden" name="action" value="edit_comment">
-                                <input type="hidden" name="comment_id" value="{{ comment.id }}">
-                                <button type="submit" class="btn save-edit" id="save-button-{{ comment.id }}" onclick="saveEdit('{{ comment.id }}')" style="display: none;">Guardar</button>
-                            </form>
-
-                            <form method="POST" class="delete-form">
-                                {% csrf_token %}
-                                <input type="hidden" name="action" value="delete_comment">
-                                <input type="hidden" name="comment_id" value="{{ comment.id }}">
-                                <button type="submit" class="btn delete">X</button>
-                            </form>
-                        {% endif %}
-
-                        {% if comment.replies.all %}
-                            <div class="replies">
-                                {% for reply in comment.replies.all %}
-                                    <div class="reply">
-                                        <img class="profilecommenting" src="{{ reply.author.image.url }}"/>
-                                        <div class="ptext date">{{ reply.created_at }}</div>
-                                        <div class="ptext username">{{ reply.author.name }}</div>
-                                        <div class="ptext comment-text" id="comment-text-{{ reply.id }}">{{ reply.content }}</div>
-                                    </div>
-                                {% endfor %}
-                            </div>
-                        {% endif %}
-                    </div>
-                {% endif %}
-            {% empty %}
-                <p>Aún no hay comentarios.</p>
-            {% endfor %}
-        </div>
-        
-    </div>
+    {% include 'perfil/sections/comments_section_2.html' %}
    
-    <footer class="footer">
-        <div class="footer-content">
-            <img class="encora" src="{% static 'img/Encora1.svg' %}" />
-            <a href="https://www.facebook.com/encorainc" target="_blank">
-                <img class="social-icon fb" src="{% static 'img/fb.png' %}"/>
-            </a>
-            <a href="https://www.instagram.com/encorainc/" target="_blank">
-                <img class="social-icon ig" src="{% static 'img/ig.png' %}" />
-            </a>
-            <a href="https://www.linkedin.com/company/encorainc/" target="_blank">
-                <img class="social-icon lin" src="{% static 'img/lin.png' %}" />
-            </a>
-            <img class="social-icon gmail" src="{% static 'img/gmail.png' %}" />
-            <nav class="footer-nav">
-                <a href="#features">Features</a>
-                <a href="#about">About</a>
-                <a href="#support">Support</a>
-                <a href="#resources">Resources</a>
-                <a href="#places">Places</a>
-                <a href="#jobs">Jobs</a>
-            </nav>
-            <div class='footertext'> 
-                © 2024 Online Marketplace
-            </div>
-        </div>
-    </footer>
-
-    <script>
-
-        function toggleEditTextarea(commentId) {
-            const textarea = document.getElementById(`edit-textarea-${commentId}`);
-            const saveButton = document.getElementById(`save-button-${commentId}`);
-            const commentText = document.getElementById(`comment-text-${commentId}`);
-
-            if (textarea.style.display === "none") {
-                textarea.style.display = "block";
-                saveButton.style.display = "inline-block";
-                commentText.style.display = "none"; 
-            } else {
-                textarea.style.display = "none";
-                saveButton.style.display = "none";
-                commentText.style.display = "block"; 
-            }
-        }
-
-        function saveEdit(commentId) {
-            const textarea = document.getElementById(`edit-textarea-${commentId}`);
-            const commentText = document.getElementById(`comment-text-${commentId}`);
-
-            commentText.textContent = textarea.value;
-
-            textarea.style.display = "none";
-            document.getElementById(`save-button-${commentId}`).style.display = "none";
-            commentText.style.display = "block";
-        }
-
-        document.addEventListener('DOMContentLoaded', function() {
-            const container = document.getElementById('projectsContainer');
-            const projectContainers = document.querySelectorAll('.project-container');
-            const prevBtn = document.getElementById('prevBtn');
-            const nextBtn = document.getElementById('nextBtn');
-
-            let currentIndex = 0;
-            const visibleProjects = 3;
-            const projectWidth = 300;
-            const marginRight = 81;
-            const totalProjects = projectContainers.length;
-
-            const scrollAmount = (projectWidth + marginRight);
-
-            function updateButtons() {
-                if (currentIndex === 0) {
-                    prevBtn.disabled = true;
-                } else {
-                    prevBtn.disabled = false;
-                }
-
-                if (currentIndex + visibleProjects >= totalProjects) {
-                    nextBtn.disabled = true;
-                } else {
-                    nextBtn.disabled = false;
-                }
-            }
-
-            prevBtn.addEventListener('click', function() {
-                if (currentIndex > 0) {
-                    currentIndex--;
-                    container.scrollLeft -= scrollAmount;
-                }
-                updateButtons();
-            });
-
-            nextBtn.addEventListener('click', function() {
-                if (currentIndex + visibleProjects < totalProjects) {
-                    currentIndex++;
-                    container.scrollLeft += scrollAmount;
-                }
-                updateButtons();
-            });
-
-            updateButtons();
-        });
-    </script>
+    {% include 'perfil/sections/footer.html' %}
 
 </body>
 </html>

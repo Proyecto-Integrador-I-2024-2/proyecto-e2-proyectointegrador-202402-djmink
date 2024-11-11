@@ -13,32 +13,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Edit Profile</title>
     <link rel="icon" type="image/png" href="{% static 'img/Logo.png' %}">
-    <link rel="stylesheet" href="{% static 'css/freelancer_edit_profile.css' %}">
+    <link rel="stylesheet" href="{% static 'css/freelancer_edit_profile2.css' %}">
     <link rel="stylesheet" href="{% static 'css/info-modal.css' %}">
+    <link rel="stylesheet" href="{% static 'css/heading.css' %}">
+    <link rel="stylesheet" href="{% static 'css/footer.css' %}">
 </head>
 
 <body>
 
-    {% include 'perfil/info-modal.html' %}
+    {% include 'perfil/sections/info-modal.html' %}
 
     <div class="editsection">
 
-        <div class="heading">
-
-            <div class="rectangleheading"></div>
-            <div class="hometext">Home</div>
-            <img class="chat_icon" src="{% static 'img/Chat_Icon.svg' %}"/>
-            <img class="notification_icon" src="{% static 'img/Notification_Icon.svg' %}"/>
-            <a href="{% url 'perfilFreelancer' p.id %}">
-                <img class="profile_picture2" src="{{ p.image.url }}" alt="Profile Picture"/>
-            </a>
-            <img class="logo" src="{% static 'img/Logo.svg' %}"/>
-            <div class="logoseparator"></div>
-        
-            <div class="onlinemarketplace2">
-                Online Marketplace
-            </div>
-        </div>
+        {% include 'perfil/sections/heading.html' %}
 
         <div class="ptext ep">
             Edit profile
@@ -215,36 +202,9 @@
 
         </div>
 
-        <footer class="footer">
-        
-            <div class="footer-content">
-                <img id="encora2" class="encora2" src="{% static 'img/Encora1.svg' %}" />
-                <a href="https://www.facebook.com/encorainc" target="_blank">
-                    <img class="fb3" src="{% static 'img/fb.png' %}"/>
-                </a>
-                <a href="https://www.instagram.com/encorainc/" target="_blank">
-                    <img class="ig3" src="{% static 'img/ig.png' %}" />
-                </a>
-                <a href="https://www.linkedin.com/company/encorainc/" target="_blank">
-                    <img class="lin3" src="{% static 'img/lin.png' %}" />
-                </a>
-                <img class="gmail3" src="{% static 'img/gmail.png' %}" />
-                <nav class="footer-nav">
-                    <a href="#features">Features</a>
-                    <a href="#about">About</a>
-                    <a href="#support">Support</a>
-                    <a href="#resources">Resources</a>
-                    <a href="#places">Places</a>
-                    <a href="#jobs">Jobs</a>
-                </nav>
-                <div id='footertext' class='footertext'> 
-                    © 2024 Online Marketplace
-                </div>
-            </div>
-    
-        </footer>
-
     </div>
+
+    {% include 'perfil/sections/footer.html' %}
 
     <div id="profilePictureModal" class="modal">
         <div class="modal-content">

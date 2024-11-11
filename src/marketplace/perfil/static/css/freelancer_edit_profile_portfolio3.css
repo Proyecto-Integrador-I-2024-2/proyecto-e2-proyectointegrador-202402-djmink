@@ -1,90 +1,14 @@
-/* edit client projects */
+/* edit freelancer portfolio */
 
 html {
     scroll-behavior: smooth;
 }
 
-body{
-    background-color: #F2F2F2;
-}
-
-/* Heading section */
-
-.heading {
+.editsection{
     background-color:#F2F2F2;
-    height:102px;
-    width: 1440px; 
-    position:relative;
-}
-
-.ptext{
-    font-family: "Poppins", sans-serif;
-    position: absolute;
-}
-
-.ptext.hometext{
-    color:#000000;
-    font-size:24px;
-    font-weight: 600;
-    line-height:auto;
-    top:32px;
-    left:690px;
-    width:60px;
-    height:30px;
-}
-
-.icon{
-    top:35px;
-    position:absolute;
-    width:35px;
-    height: 35px;
-    cursor: pointer;
-}
-
-.icon.chat_icon{
-    left:1268px;
-}
-
-.icon.notification_icon{
-    left:1315px;
-}
-
-.logo{
-    top:7px;
-    left:40px;
-    position:absolute;
-    width:80px;
-    height: 80px;
-}
-
-.logoseparator{
-    top:45px;
-    left:95px;
-    width: 60px;
-    transform:rotate(-90deg);
-    border:1px solid #01000c;
-    position:absolute;
-}
-
-.ptext.onlinemarketplace{
-    color:#01000c;
-    font-size:18px;
-    font-weight: 500;
-    top:20px;
-    left:150px;
-    width:100px;
-    height: 66px;
-    cursor: pointer;
-}
-
-.profile_picture_heading {
-    top:25px;
-    left:1365px;
-    position:absolute;
-    width:50px;
-    height: 50px;
-    border-radius: 50%; 
-    object-fit: cover;
+    width: 1440px;
+    height: 950px;
+    position: relative;
 }
 
 .ptext.ep {
@@ -130,6 +54,17 @@ body{
     text-decoration: none; 
 }
 
+.ptext.logout {
+    color:#000000;
+    font-size:16px;
+    font-weight: 400; 
+    top:371px;
+    left:114px;
+    width:94px;
+    height:24px;
+    text-decoration: none; 
+}
+
 .ptext.delete-account {
     color:#DA5F5F;
     font-size:16px;
@@ -142,16 +77,15 @@ body{
 }
 
 .body {
-    top:100px;
-    left:353px;
+    left:300px;
     width: 1087px;
     height: 824px;
     position: relative;
 }
 
 .ptext.portfolio-title{
-    top: 71px;
-    left: 180px;
+    top: 68px;
+    left: 145px;
     width: 200px;
     height: 36px;
     color:#000000;
@@ -207,7 +141,7 @@ button.add.content-btn{
     height: 440px;
     max-height: 440px;
     width: 817px;
-    position: relative;
+    position: absolute;
     overflow-y: auto;
     display: flex; 
     flex-wrap: wrap;
@@ -243,11 +177,10 @@ button.add.content-btn{
 .edit-btn{
     width: 24px;
     height: 24px;
-    left: 250px;
+    left: 280px;
     top: 14px;
     cursor: pointer;
     position: relative;
-    object-fit: cover;
 }
 
 .edit-btn:hover {
@@ -257,7 +190,7 @@ button.add.content-btn{
 .delete-btn.project {
     border: none;
     position: relative;
-    left: 310px;
+    left: 285px;
     top: 10px;
     width: 24px;
     height: 24px;
@@ -274,23 +207,35 @@ button.add.content-btn{
 
 
 .ptext.info-project{
+    top: 4px;
     position: relative;
-    top: 10px;
+    margin-bottom: -5px;
     left: 42px;
     height: 30px;
     width: 249px;
     font-weight: 400;
     font-size: 16px;
+    white-space: nowrap; 
+    overflow: hidden; 
+    text-overflow: ellipsis;
+    display: block;
 }
 
 .ptext.project-name{
     position: relative;
     left: 40px;
-    top: 0px;
-    height: 36px;
+    top: 5px;
+    height: 65px;
     width: 270px;
     font-weight: 500;
     font-size: 26px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;            
+    -webkit-line-clamp: 2;           
+    -webkit-box-orient: vertical;    
+    line-height: 1.2;  
+    line-clamp: 2; 
 }
 
 .med-btn{
@@ -315,82 +260,6 @@ button.add.content-btn{
     background-color: #0040FF;
     border: none;
     border-radius: 8px;
-}
-
-.footer {
-    margin-top: 50px;
-    position: relative;
-    background-color: #F2F2F2;
-    font-family: "Poppins", sans-serif;
-    font-weight: 400;
-    width: 1440px; 
-    height: 135px;
-}
-
-.footer-content {
-    max-width: 1200px;
-    margin: 0 auto;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-.footer-nav {
-    margin-top: 57px;
-}
-
-.footer-nav a {
-    color: #01000C;
-    margin: 0 15px;
-    text-decoration: none;
-    font-size: 20px;
-}
-
-.footer-nav a:hover {
-    text-decoration: underline; 
-}
-
-.encora {
-    position: absolute;
-    left: 37px;
-    top: 10px; 
-    height: 111px; 
-    width: 113px;
-}
-
-.social-icon{
-    position: absolute;
-    top: 78px;
-    height: 24px; 
-    width: 24px;
-    cursor: pointer;
-}
-
-.social-icon.gmail {
-    left: 1252px;
-}
-
-.social-icon.lin {
-    left: 1280px;
-}
-
-.social-icon.ig{
-    left: 1308px;
-}
-
-.social-icon.fb {
-    left: 1336px;
-}
-
-.footertext {
-    text-align:center;
-    font-size:12px;
-    font-weight: 400;
-    top:105px;
-    left:1205px;
-    position:absolute;
-    width:200px;
-    height:18px;
 }
 
 .modal {
@@ -499,11 +368,4 @@ button.add.content-btn{
     left: 50px;
     border-radius: 8px;
     border: none;
-}
-
-.ref-project {
-    background-color: red;
-    left: 20px;
-    text-decoration: none; /* Elimina el subrayado en los enlaces */
-    color: inherit; /* Mantén el color heredado o personalizado */
 }

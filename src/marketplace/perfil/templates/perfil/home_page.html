@@ -10,7 +10,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home Page</title>
     <link rel="icon" type="image/png" href="{% static 'img/Logo.png' %}">
-    <link rel="stylesheet" href="{% static 'css/home_page.css' %}">
+    <link rel="stylesheet" href="{% static 'css/home_page1.css' %}">
+    <link rel="stylesheet" href="{% static 'css/footer.css' %}">
 </head>
 <body>
 
@@ -57,33 +58,31 @@
         <div class="publications-section">
 
             <div class="publications-container">
-                {% for project in publications %}
+                {% for publication in publications %}
                     <div class="publication-container" onclick="displayJoinModal()">
                         <div class="card">
                             <div class="project-picture-container">
                                 <img class="fav" src="{% static 'img/Fav.svg' %}" />
-                                <img class="project-picture" src="{{ publication.project.project_picture.url }}" alt="Project Picture"/>
+                                <img class="project-picture" src="{{ publication.project_picture.url }}" alt="Project Picture"/>
                             </div>
                             <div class="project-data-1">
-                                <img class="publication-profile-picture" src="{{ publication.profile.profile_picture.url }}" alt="Profile Picture"/>
-                                <div class="ptext publication-profile-name">{{ publication.profile.name }}</div>
+                                <img class="publication-profile-picture" src="{{ publication.manager.image.url }}" alt="Profile Picture"/>
+                                <div class="ptext publication-profile-name">{{ publication.manager.name }}</div>
                                 <img class="star" src="{% static 'img/Star.svg' %}" />
-                                <div class="ptext publication-rate">{{ publication.profile.rating }}</div>
-                                <div class="ptext comments-amount">({{ publication.commentsPublication.count }}+)</div>
+                                <div class="ptext publication-rate">{{ publication.manager.rating }}</div>
+                                <div class="ptext comments-amount">({{ publication.manager.ratings_received.count }}+)</div>
                             </div>
                         </div>
                         <div class="project-data-2">
-                            <div class="ptext project-name">{{ publication.project.name }}</div>
-                            <div class="ptext project-description">{{ publication.project.description }}</div>
-                            <div class="ptext project-budget">From ${{ publication.project.budget }}</div>
+                            <div class="ptext project-name">{{ publication.name }}</div>
+                            <div class="ptext project-description">{{ publication.description }}</div>
+                            <div class="ptext project-budget">From ${{ publication.budget }}</div>
                         </div>
                         <div class="categories-container">
-                            {% for category in publication.project.projectcategories.all %}
+                            {% for category in publication.projectcategories.all %}
                                 <div class="category-container">
                                     <div class="category">{{ category.name }}</div>
                                 </div>
-                            {% empty %}
-                                <p>No categories for this project registered yet.</p>
                             {% endfor %}
                         </div> 
                     </div>
@@ -94,32 +93,7 @@
 
         </div>
 
-        <footer class="footer">
-            <div class="footer-content">
-                <img class="encora" src="{% static 'img/Encora1.svg' %}" />
-                <a href="https://www.facebook.com/encorainc" target="_blank">
-                    <img class="social-icon fb" src="{% static 'img/fb.png' %}"/>
-                </a>
-                <a href="https://www.instagram.com/encorainc/" target="_blank">
-                    <img class="social-icon ig" src="{% static 'img/ig.png' %}" />
-                </a>
-                <a href="https://www.linkedin.com/company/encorainc/" target="_blank">
-                    <img class="social-icon lin" src="{% static 'img/lin.png' %}" />
-                </a>
-                <img class="social-icon gmail" src="{% static 'img/gmail.png' %}" />
-                <nav class="footer-nav">
-                    <a href="#features">Features</a>
-                    <a href="#about">About</a>
-                    <a href="#support">Support</a>
-                    <a href="#resources">Resources</a>
-                    <a href="#places">Places</a>
-                    <a href="#jobs">Jobs</a>
-                </nav>
-                <div class='footertext'> 
-                    © 2024 Online Marketplace
-                </div>
-            </div>
-        </footer>
+        {% include 'perfil/sections/footer.html' %}
 
     </div>
 

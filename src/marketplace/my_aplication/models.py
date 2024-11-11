@@ -100,6 +100,7 @@ class Chat(models.Model):
 # Clases agrupadas, corregir a clases ya existentes en MER y MR
 
 from django.db import models
+from django.db.models import Q, UniqueConstraint
 from django.utils import timezone
 from django.contrib.auth.models import BaseUserManager
 from django.contrib.auth.hashers import make_password
@@ -150,21 +151,26 @@ class Freelancer(User):
     price = models.CharField(max_length=100)
     experience = models.CharField(max_length=20, choices=EXPERIENCE_CHOICES, default='junior')
 
+    def __str__(self):
+        return f"{self.username} - {self.name} ({self.id})"
+
 class CompanyManager(User):
     legal_agent = models.CharField(max_length=255, blank=True, null=True)
     address = models.CharField(max_length=100, blank=True, null=True)
     business_vertical = models.CharField(max_length=100, blank=True, null=True)
     company_type = models.CharField(max_length=100, blank=True, null=True)
 
+    def __str__(self):
+        return f"{self.username} - {self.name} ({self.id})"
+
 class Rating(models.Model):
-    content_type = models.ForeignKey(ContentType, on_delete=models.PROTECT)
-    object_id = models.PositiveIntegerField()
-    user = GenericForeignKey('content_type', 'object_id')
+    user_profile = models.ForeignKey(User, related_name="ratings_received", on_delete=models.CASCADE, null=True)
+    author = models.ForeignKey(User, related_name="ratings_made", on_delete=models.CASCADE, null=True)
     score = models.FloatField()
     date_rated = models.DateField(default=timezone.now)
 
     def __str__(self):
-        return f'{self.rated_by} rated {self.user} - {self.score}'
+        return f'{self.author} rated {self.user_profile} - {self.score}'
 
 class Skill(models.Model):
     profile = models.ForeignKey(Freelancer, related_name='skills', on_delete=models.CASCADE)
@@ -250,9 +256,23 @@ class SocialNetwork(models.Model):
 
     profile = models.ForeignKey(Freelancer, related_name='social_networks', on_delete=models.CASCADE, null=True, blank=True)
     client_profile = models.ForeignKey(CompanyManager, related_name='client_social_networks', on_delete=models.CASCADE, null=True, blank=True)
-    type = models.CharField(max_length=20, choices=TYPE_CHOICES, unique=True)
+    type = models.CharField(max_length=20, choices=TYPE_CHOICES)
     url = models.CharField(max_length=255)
     image = models.ImageField(upload_to='social_networks/', default='social_networks/default_icon.png')
+
+    class Meta:
+        constraints = [
+            UniqueConstraint(
+                fields=['type', 'profile'],
+                name='unique_social_network_for_freelancer',
+                condition=Q(profile__isnull=False)
+            ),
+            UniqueConstraint(
+                fields=['type', 'client_profile'],
+                name='unique_social_network_for_client',
+                condition=Q(client_profile__isnull=False)
+            ),
+        ]
 
     def save(self, *args, **kwargs):
         if self.image.name == 'social_networks/default_icon.png':
@@ -299,7 +319,7 @@ class Milestone(models.Model):
     end_date = models.DateField() 
     project = models.ForeignKey(Project, on_delete=models.PROTECT, related_name='milestones')
     progress = models.DecimalField(max_digits=10, decimal_places=2, default=0, blank=True, null=True)
-    freelancer = models.ForeignKey(Freelancer, on_delete=models.PROTECT, related_name='milestones')
+    freelancer = models.ForeignKey(Freelancer, on_delete=models.PROTECT, related_name='milestones', blank=True, null=True)
     state = models.CharField(max_length=100, choices=STATE_CHOICES, default='Available')
 
 class Profession(models.Model):
