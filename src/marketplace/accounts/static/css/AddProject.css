@@ -145,6 +145,29 @@ textarea:focus {
     outline: none;
 }
 
+.remove-button {
+    width: 80px;
+}
+
+.spaced-out{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    margin: 20px 0 40px 0;
+}
+
+.gray-div {
+    margin-top:20px;
+    display:flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #f9f9f9;
+    padding: 15px;
+    border-radius: 5px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+}
+
 .buttonSubmit {
     margin-top: 20px;
     padding: 10px 20px;
@@ -244,6 +267,12 @@ footer a:hover {
     background-color: black;
 }
 
+#milestone-list{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
 .add-milestone-section {
     margin-top: 20px;
     background-color: #f9f9f9;
@@ -258,23 +287,32 @@ footer a:hover {
     color: #333;
 }
 
-#milestone-form label,
-#milestone-form input,
-#milestone-form button {
+/* #milestone-form button {
+    display: block;
+    margin-bottom: 10px;
+     width: 100%;
+} */
+
+#milestone-form input {
+    display: block;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 14px;
+    width: 100%; 
+    margin-bottom: 10px;
+}
+
+#milestone-form label {
     display: block;
     width: 100%;
     margin-bottom: 10px;
 }
 
-#milestone-form input {
-    padding: 8px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    font-size: 14px;
-}
-
 .btn.add-task {
-    width: auto;
+    display: block;
+    margin-bottom: 10px;
+    width: 100%;
     padding: 5px 10px;
     background-color: #007bff;
     color: white;
@@ -285,7 +323,23 @@ footer a:hover {
 }
 
 .btn.save-milestone {
+    display: block;
+    margin-bottom: 10px;
+    width: 100%;
     background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.btn.remove-milestone{
+    display: block;
+    margin-bottom: 10px;
+    width: 100%;
+    background-color: red;
     color: white;
     border: none;
     padding: 8px 15px;
@@ -296,6 +350,9 @@ footer a:hover {
 
 #task-list {
     margin-top: 10px;
+    display: flex;
+    flex-direction: column;
+    gap:10px;
 }
 
 .task-item {
@@ -321,3 +378,4 @@ footer a:hover {
     cursor: pointer;
     font-size: 12px;
 }
+

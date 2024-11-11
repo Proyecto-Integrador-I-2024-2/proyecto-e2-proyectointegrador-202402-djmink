@@ -1,13 +1,15 @@
+import json
 from django.utils import timezone
 from django.shortcuts import get_object_or_404, render, redirect
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
+from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse, HttpResponse
 #from .forms import CompanyRegistrationForm, FreelancerRegistrationForm, LoginForm
 from django.contrib.auth.views import LoginView
 from .forms import createProjectForm, editProjectForm
 
-from my_aplication.models import Freelancer, CompanyManager, Project
+from my_aplication.models import Freelancer, CompanyManager, Project, Milestone, Task
 
 #SMTP libraries
 from django.core.mail import send_mail
@@ -150,15 +152,46 @@ def edit_project_view(request, id):
     }
     return render(request, 'EditProject.html', context)
 
-
+@csrf_exempt
 def post_project(request):
     if request.method == 'POST':
-        form = createProjectForm(request.POST, request.FILES)
-        if form.is_valid():
-            form.save()
+        manager_id = request.POST.get('manager')
+        name = request.POST.get('name')
+        description = request.POST.get('description')
+        budget = request.POST.get('budget')
+        project_picture = request.FILES.get('project_picture')
+
+        project = Project.objects.create(
+            manager_id=manager_id,
+            name=name,
+            description=description,
+            budget=budget,
+            project_picture=project_picture
+        )
+        # form = createProjectForm(request.POST, request.FILES)
+
+        milestones_json =  request.POST.get('milestones')
+        if milestones_json:
+            milestones = json.loads(milestones_json)
+
+            for milestone_data in milestones:
+                milestone = Milestone.objects.create(
+                    name=milestone_data['name'],
+                    description=milestone_data['description'],
+                    end_date=milestone_data['deadline'],
+                    project=project
+                )
+                
+                tasks = milestone_data.get('tasks', [])
+                for task_data in tasks:
+                    Task.objects.create(
+                        name=task_data['name'],
+                        milestone=milestone,
+                    )
+
             return JsonResponse({'success': True, 'message': 'Project created successfully'})
         else:
-            return JsonResponse({'success': False, 'message': 'Form validation failed', 'errors': form.errors})
+            return JsonResponse({'success': False, 'message': 'Form validation failed', 'errors': 'Something happened with the milestones'})
     
     return JsonResponse({'success': False, 'message': 'Invalid request method'})
 
