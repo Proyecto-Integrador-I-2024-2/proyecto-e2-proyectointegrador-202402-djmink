@@ -1,0 +1,123 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="{% static '/../static/css/notifications.css' %}"/>
+    <link rel="stylesheet" href="{% static 'globals.css' %}" />
+    <link rel="stylesheet" href="{% static 'styleguide.css' %}" />
+    <link rel="stylesheet" href="{% static 'style.css' %}" />
+  </head>
+  <body>
+    <div class="frame">
+      <div class="heading">
+        <a href="http://127.0.0.1:8000/">
+          <button class="logo-name">
+            <img class="logo" src="{% static 'Marketplace_1.png' %}" />
+            <div class="line-wrapper">
+              <img class="line-2" src="{% static 'line-1.svg' %}" />
+            </div>
+            <div class="online-marketplace">Online<br />Marketplace</div>
+          </button>
+        </a>
+        <div class="text-wrapper-26">Freelancer Project View</div>
+        <div class="user-elements">
+          <img
+            class="notification-icon"
+            src="{% static 'notification-icon-1.svg' %}"
+          />
+          <img class="chat-icon" src="{% static 'chat-icon-1.svg' %}" />
+          <img
+            class="profile-picture"
+            src="{% static 'profile-picture.png' %}"
+          />
+        </div>
+      </div>
+    </div>
+    <div class="content">
+      <div class="main_notificate">
+        <div class="header_notificate">
+          <h1>Your Notifications</h1>
+        </div>
+
+        <!-- Botones para alternar entre pestañas -->
+        <div class="tab-buttons">
+          <button
+            class="tab-button"
+            id="unread-tab"
+            onclick="showUnreadNotifications()">
+            Unread Notifications
+          </button>
+          <button
+            class="tab-button"
+            id="all-tab"
+            onclick="showAllNotifications()">
+            All Notifications
+          </button>
+        </div>
+
+        <!-- Contenedor de Notificaciones -->
+        <div id="unread-notifications" class="notifications">
+          <h3>Unread Notifications</h3>
+          {% for notification in notification %} {% if not notification.read %}
+          <div class="notification_item">
+            <div class="notification_img">
+              <img src="" />
+            </div>
+            <div class="notification_text">
+              <p>{{ notification.actor }} {{ notification.verb }}</p>
+            </div>
+            <div class="notification_time">
+              <p>Hace {{ notification.timestamp|timesince }}.</p>
+            </div>
+          </div>
+          {% endif %} {% empty %}
+          <p>No new notifications.</p>
+          {% endfor %}
+        </div>
+
+        <div id="all-notifications" class="notifications" style="display: none">
+          <h3>All Notifications</h3>
+          {% for notification in notification %}
+          <div class="notification_item">
+            <div class="notification_img">
+              <img src="" />
+            </div>
+            <div class="notification_text">
+              <p>{{ notification.actor }} {{ notification.verb }}</p>
+            </div>
+            <div class="notification_time">
+              <p>Hace {{ notification.timestamp|timesince }}.</p>
+            </div>
+          </div>
+          {% empty %}
+          <p>No notifications available.</p>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // Función para mostrar las notificaciones no leídas
+      function showUnreadNotifications() {
+        document.getElementById("unread-notifications").style.display = "block";
+        document.getElementById("all-notifications").style.display = "none";
+        document.getElementById("unread-tab").style.backgroundColor = "#ddd";
+        document.getElementById("all-tab").style.backgroundColor = "#f0f0f0";
+      }
+
+      // Función para mostrar todas las notificaciones
+      function showAllNotifications() {
+        document.getElementById("unread-notifications").style.display = "none";
+        document.getElementById("all-notifications").style.display = "block";
+        document.getElementById("unread-tab").style.backgroundColor = "#f0f0f0";
+        document.getElementById("all-tab").style.backgroundColor = "#ddd";
+      }
+
+      // Mostrar por defecto las notificaciones no leídas al cargar la página
+      document.addEventListener("DOMContentLoaded", function () {
+        showUnreadNotifications();
+      });
+    </script>
+  </body>
+</html>
