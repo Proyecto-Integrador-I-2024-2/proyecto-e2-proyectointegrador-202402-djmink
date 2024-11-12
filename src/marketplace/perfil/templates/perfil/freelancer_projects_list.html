@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Projects</title>
     <link rel="icon" type="image/png" href="{% static 'img/Logo.png' %}">
-    <link rel="stylesheet" href="{% static 'css/freelancer_projects_list.css' %}">
+    <link rel="stylesheet" href="{% static 'css/freelancer_projects_list1.css' %}">
     <link rel="stylesheet" href="{% static 'css/heading.css' %}">
     <link rel="stylesheet" href="{% static 'css/footer.css' %}">
 </head>
@@ -24,21 +24,21 @@
 
     <div class="projects-section">
         <div class="projects-container">
-            {% for project in profile.projects.all %}
-                    <div class="project-container">
-                        <div class="left">
-                            <div class="ptext project-name">{{project.name}}</div>
-                            <div class="ptext project-desc">{{project.description}}</div>
-                            <div class="ptext project-state">State: {{project.state}}</div>
-                            <a href="{% url 'projectWorkspace' profile.id project.id %}">
-                                <button class="open-btn">Open</button>
-                            </a>                            
-                        </div>
-                        <img class="project-picture" src="{{ project.project_picture.url }}" alt="Project Picture"/>
+            {% for project in projects %}
+                <div class="project-container">
+                    <div class="left">
+                        <div class="ptext project-name">{{project.name}}</div>
+                        <div class="ptext project-desc">{{project.description}}</div>
+                        <div class="ptext project-state">State: {{project.state}}</div>
+                        <a href="{% url 'projectWorkspace' profile.id project.id %}">
+                            <button class="open-btn">Open</button>
+                        </a>                            
                     </div>
-                {% empty %}
-                    <p>You don't have projects registered yet.</p>
-                {% endfor %}
+                    <img class="project-picture" src="{{ project.project_picture.url }}" alt="Project Picture"/>
+                </div>
+            {% empty %}
+                <p>You are not associated with any project yet.</p>
+            {% endfor %}
         </div>
     </div> 
 

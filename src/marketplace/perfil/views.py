@@ -712,19 +712,29 @@ def firstMain(request):
     publications = Project.objects.all()[:3]
     return render(request, 'perfil/home_page.html', {'publications': publications})
 
+def projectsList(request, id):
+    p = get_object_or_404(Freelancer, id=id)
+
+    projects = Project.objects.filter(milestones__freelancer=p).distinct()
+
+    profile_image = p.image.url
+    profile_url = reverse('perfilFreelancer', args=[p.id])
+    return render(request, 'perfil/freelancer_projects_list.html', {
+        'profile': p,
+        'profile_image': profile_image,
+        'profile_url': profile_url,
+        'projects': projects
+    })
+
 
 #Faltantes
 
 def calendar(request):
     return render(request, 'perfil/calendar.html')
 
-def projectsList(request, id):
-    p = get_object_or_404(Freelancer, id=id)
-    return render(request, 'perfil/freelancer_projects_list.html', {'profile': p})
-
 def projectWorkspace(request, id, id_project):
     p = get_object_or_404(Freelancer, id=id)
-    pr = get_object_or_404(Freelancer, id=id_project)
+    pr = get_object_or_404(Project, id=id_project)
 
     project_data = {
         'id': pr.id,
