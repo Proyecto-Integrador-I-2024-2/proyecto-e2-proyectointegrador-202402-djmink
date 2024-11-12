@@ -10,11 +10,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Manage Project</title>
     <link rel="icon" type="image/png" href="{% static 'img/Logo.png' %}">
-    <link rel="stylesheet" href="{% static 'css/client_project_view.css' %}">
+    <link rel="stylesheet" href="{% static 'css/client_project_view1.css' %}">
+    <link rel="stylesheet" href="{% static 'css/info-modal.css' %}">
     <link rel="stylesheet" href="{% static 'css/heading.css' %}">
     <link rel="stylesheet" href="{% static 'css/footer.css' %}">
 </head>
 <body>
+
+    {% include 'perfil/sections/info-modal.html' %}
 
     {% include 'perfil/sections/heading.html' %}
 
@@ -31,7 +34,9 @@
             <div class="ptext progress">Progress</div>
             <div class="progress-bar">
                 <div class="progress-fill" data-progress="{{ project_progress }}">
-                    <span class="ptext progress-text">{{ project_progress|floatformat:0 }}%</span>
+                    {% if project_progress > 0 %}
+                        <span class="ptext progress-text">{{ project_progress|floatformat:0 }}%</span>
+                    {% endif %}
                 </div>
             </div>
         </div>
@@ -48,10 +53,10 @@
                                     <img class="freelancer-picture-1" src="{{ milestone.freelancer.profile_picture }}"/>
                                     <div class="ptext freelancer-name-1">{{ milestone.freelancer.name }}</div>
                                 {% else %}
-                                    <div class="ptext info">No assigned yet.</div>
+                                    <div class="ptext info no-freelancer">No assigned yet.</div>
                                 {% endif %}
                                 <div class="ptext milestone-progress">{{ milestone.progress1 }}%</div>
-                                <div class="ptext milestone-deadline">{{ milestone.deadline }}</div>
+                                <div class="ptext milestone-deadline">{{ milestone.end_date }}</div>
                                 <button class="btn assignment" onclick="openAssignmentModal('{{ milestone.id }}', '{{ milestone.name }}')">Assigments</button>
                                 <img class="arrow" src="{% static 'img/arrow.svg' %}" alt="arrow">
                             </div>
@@ -59,7 +64,11 @@
                                 {% for task in milestone.tasks %}
                                     <div class="task-container">
                                         <div class="circle">
-                                            <img class="check" src="{% static 'img/Check.svg' %}">
+                                            {% if task.state == 'CP' %}
+                                                <img class="check" src="{% static 'img/Check.svg' %}">
+                                            {% else %}
+                                                <img class="check" src="{% static 'img/Uncheck.svg' %}">
+                                            {% endif %}
                                         </div>
                                         <div class="ptext task-name">{{ task.name }}</div>
                                     </div>
@@ -82,17 +91,25 @@
                             <div class="ptext milestone-application-name">{{ milestone.name }}</div>
                             <div class="applications-container">
                                 {% for application in milestone.applications %}
-                                    <div class="application-container">
-                                        <img class="freelancer-picture-2" src="{{ application.freelancer_picture }}"/>
-                                        <div class="ptext application-freelancer-name">{{ application.freelancer_name }}</div>
-                                        <button class="btn accept">Accept</button>
-                                        <button class="btn reject">Reject</button>
-                                        <button class="btn view-profile">
-                                            <a href="{% url 'freelancerProfile' application.freelancer_id profile.id %}">View Profile</a>
-                                        </button>
-                                    </div>
-                                {% empty %}
-                                    <div class="ptext info">No applications for this milestone yet.</div>
+                                    {% if application.state == 'Sent' %}
+                                        <div class="application-container">
+                                            <img class="freelancer-picture-2" src="{{ application.freelancer_picture }}"/>
+                                            <div class="ptext application-freelancer-name">{{ application.freelancer_name }}</div>
+                                            <form method="POST">
+                                                {% csrf_token %}
+                                                <input type="hidden" name="action" value="accept_application">
+                                                <input type="hidden" name="application_id" value="{{ application.id }}">
+                                                <button type="submit" class="btn accept">Accept</button>
+                                            </form>
+                                            <form method="POST">
+                                                {% csrf_token %}
+                                                <input type="hidden" name="action" value="reject_application">
+                                                <input type="hidden" name="application_id" value="{{ application.id }}">
+                                                <button type="submit" class="btn reject">Reject</button>
+                                            </form>
+                                            <a href="{% url 'freelancerProfile' profile.id application.freelancer_id%}" class="btn view-profile">View Profile</a>
+                                        </div>
+                                    {% endif %}
                                 {% endfor %}
                             </div>
                         </div>
@@ -147,11 +164,13 @@
         document.addEventListener("DOMContentLoaded", function() {
 
             projectData = JSON.parse(document.getElementById('projectData').textContent);
-
             const progressFill = document.querySelector('.progress-fill');
             const projectProgress = progressFill.getAttribute('data-progress');
             progressFill.style.width = projectProgress + '%';
-            progressFill.querySelector('.progress-text').textContent = projectProgress + '%';
+
+            if (projectProgress > 0){
+                progressFill.querySelector('.progress-text').textContent = projectProgress + '%';
+            }
 
             generateCalendarAround(currentDate);
 
@@ -178,16 +197,23 @@
                 
                 // Rellenar el contenido del assignment
                 assignmentElement.innerHTML = `
-                    <div class="ptext assignment-info">${assignment.name}</div>
-                    <div class="ptext assignment-info assignment-modal-task">Task: ${assignment.task}</div>
-                    <div class="ptext assignment-info assignment-modal-date">Date: ${assignment.date}</div>
-                    <div class="ptext assignment-info assignment-modal-status">Status: ${assignment.status}</div>
-                    ${assignment.file ? `<a class="ptext assignment-info download-btn" href="${assignment.file}" target="_blank">Download File</a>` : '<div class="ptext assignment-info download-btn">No file available</div>'}
-                    ${assignment.url ? `<a class="ptext assignment-info link" href="${assignment.url}" target="_blank">Link</a>` : '<div class="ptext assignment-info link">No link available</div>'}
+                    <div class="assignment-info-container">
+                        <div class="ptext assignment-info"><strong>Name:</strong> ${assignment.name}</div>
+                        <div class="ptext assignment-info"><strong>Task:</strong> ${assignment.task}</div>
+                        <div class="ptext assignment-info"><strong>Date:</strong> ${assignment.date}</div>
+                        <div class="ptext assignment-info"><strong>Status:</strong> ${assignment.checked ? 'Reviewed' : 'Sent'}</div>
+                        ${assignment.file ? `<a class="ptext assignment-info" href="${assignment.file}" target="_blank">Download File</a>` : '<div class="ptext assignment-info download-btn">No file available</div>'}
+                        ${assignment.url ? `<a class="ptext assignment-info" href="${assignment.url}" target="_blank">Link</a>` : '<div class="ptext assignment-info link">No link available</div>'}
+                    </div>   
                     <div class="comments-section">
                         <div class="ptext comments-title">Comments</div>
-                        <textarea placeholder="Add a comment" class="comment-input"></textarea>
-                        <button class="btn add-comment">Send</button>
+                        <form method="POST">
+                            {% csrf_token %}
+                            <textarea placeholder="Add a comment" class="comment-input" name="assigment_comment"></textarea>
+                            <input type="hidden" name="action" value="send_assignment_comment">
+                            <input type="hidden" name="assignment_id" value="${assignment.id}">
+                            <button type="submit" class="btn add-comment">Send</button>
+                        </form>
                     </div>
                 `;
                 

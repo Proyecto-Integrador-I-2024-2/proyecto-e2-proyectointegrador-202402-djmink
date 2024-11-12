@@ -334,11 +334,11 @@ class Task(models.Model):
         ('CP', 'Completed'),
     ]
 
-    name = models.CharField(max_length=50)
+    name = models.CharField(max_length=200)
     description = models.CharField(max_length=500)
     deadline = models.DateField()
     milestone = models.ForeignKey(Milestone, on_delete=models.PROTECT, related_name='tasks')
-    freelancer = models.ForeignKey(Freelancer, on_delete=models.PROTECT, related_name='tasks')
+    freelancer = models.ForeignKey(Freelancer, on_delete=models.PROTECT, related_name='tasks', blank=True, null=True)
     state = models.CharField(max_length=100, choices=STATE_CHOICES, default='NS')
 
 class Assignment(models.Model):
@@ -346,7 +346,8 @@ class Assignment(models.Model):
     name = models.CharField(max_length=255)
     task = models.ForeignKey(Task, on_delete=models.CASCADE, related_name='assignments')
     date = models.DateField()
-    status = models.CharField(max_length=50)
+    checked = models.BooleanField(default=False)
+    manager_comment = models.CharField(max_length=300, default='No feedback received yet.')
     file = models.FileField(upload_to='uploads/', blank=True, null=True)
     url = models.URLField(blank=True, null=True)
 

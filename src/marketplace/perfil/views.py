@@ -1,6 +1,6 @@
 from django.core.paginator import Paginator
 from django.shortcuts import render, get_object_or_404, redirect
-from my_aplication.models import Freelancer, CompanyManager, ProjectCategory, SocialNetwork, Project, Skill, Certificate, Content, User, CommentProfile, Rating
+from my_aplication.models import Freelancer, CompanyManager, ProjectCategory, SocialNetwork, Project, Skill, Certificate, Content, User, CommentProfile, Rating, Application, Assignment, Task
 from django.contrib import messages
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.auth import update_session_auth_hash
@@ -736,6 +736,7 @@ def projectWorkspace(request, id, id_project):
                 'tasks': [
                     {
                         'name': task.name,
+                        'state': task.state,
                         'description': task.description
                     }
                     for task in milestone.tasks.all() 
@@ -765,6 +766,44 @@ def manageProject(request, id, id_project):
     p = get_object_or_404(CompanyManager, id=id)
     pr = get_object_or_404(Project, id=id_project)
 
+    if request.method == "POST":
+
+        action = request.POST.get("action")
+
+        if action == "accept_application":
+            application_id = request.POST.get("application_id")
+            application = get_object_or_404(Application, id=application_id)
+            milestone = application.milestone
+            if milestone.freelancer is None:
+                application.state = 'Approved'
+                milestone.freelancer = get_object_or_404(Freelancer, id=application.freelancer.id)
+                application.save()
+                milestone.save()
+                #Notificar al freelancer
+                messages.success(request, "Solicitud aprovada y notificada al freelancer.")
+            else:
+                messages.error(request, "El milestone al que aplicó el freelancer ya fue asignado. No puede aceptar la solicitud.")
+
+        elif action == "reject_application":
+            application_id = request.POST.get("application_id")
+            application = get_object_or_404(Application, id=application_id)
+            application.state = 'Rejected'
+            application.save()
+            #Notificar al freelancer
+            messages.success(request, "Solicitud rechazada y notificada al freelancer.")
+        
+        elif action == "send_assignment_comment":
+            assignment_id = request.POST.get("assignment_id")
+            comment = request.POST.get("assigment_comment")
+            assignment = get_object_or_404(Assignment, id=assignment_id)
+            assignment.manager_comment = comment
+            assignment.checked = True
+            assignment.save()
+            #Notificar al freelancer
+            messages.success(request, "Comentario enviado al freelancer exitosamente.")
+        
+        return redirect('manageProject', id, id_project)
+
     #progress bar
 
     total_tasks = 0
@@ -789,7 +828,8 @@ def manageProject(request, id, id_project):
                 'end_date': milestone.end_date.strftime('%Y-%m-%d'),
                 'tasks': [
                     {
-                        'name': task.name
+                        'name': task.name,
+                        'state': task.state
                     }
                     for task in milestone.tasks.all()
                 ],
@@ -799,6 +839,8 @@ def manageProject(request, id, id_project):
                 } if milestone.freelancer else None,
                 'applications': [
                     {
+                        'id': application.id,
+                        'state': application.state,
                         'freelancer_id': application.freelancer.id,
                         'freelancer_name': application.freelancer.name,
                         'freelancer_picture': application.freelancer.image.url if application.freelancer.image else None,
@@ -810,12 +852,13 @@ def manageProject(request, id, id_project):
         ],
         'assignments': [
             {
+                'id': assignment.id,
                 'name': assignment.name,
                 'task': assignment.task.name,
                 'milestone_id': assignment.task.milestone.id,
                 'freelancer': assignment.task.freelancer.name,
                 'date': assignment.date.strftime('%Y-%m-%d'), 
-                'status': assignment.status,
+                'checked': assignment.checked,
                 'file': assignment.file.url if assignment.file else None,
                 'url': assignment.url
             }
