@@ -1,6 +1,6 @@
 from django.core.paginator import Paginator
 from django.shortcuts import render, get_object_or_404, redirect
-from my_aplication.models import Freelancer, CompanyManager, ProjectCategory, SocialNetwork, Project, Skill, Certificate, Content, User, CommentProfile, Rating, Application, Assignment, Task
+from my_aplication.models import Freelancer, CompanyManager, ProjectCategory, SocialNetwork, Project, Skill, Certificate, Content, User, CommentProfile, Rating, Application, Assignment, Task, Milestone
 from django.contrib import messages
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.auth import update_session_auth_hash
@@ -726,52 +726,6 @@ def projectsList(request, id):
         'projects': projects
     })
 
-
-#Faltantes
-
-def calendar(request):
-    return render(request, 'perfil/calendar.html')
-
-def projectWorkspace(request, id, id_project):
-    p = get_object_or_404(Freelancer, id=id)
-    pr = get_object_or_404(Project, id=id_project)
-
-    project_data = {
-        'id': pr.id,
-        'name': pr.name,
-        'milestones': [
-            {
-                'id': milestone.id,
-                'name': milestone.name,
-                'tasks': [
-                    {
-                        'name': task.name,
-                        'state': task.state,
-                        'description': task.description
-                    }
-                    for task in milestone.tasks.all() 
-                ]
-            }
-            for milestone in pr.milestones.all() 
-        ],
-        'assignments': [
-            {
-                'name': assignment.name,
-                'task': assignment.task.name,
-                'date': assignment.date,
-                'status': assignment.status,
-                'file': assignment.file.url if assignment.file else None,
-                'url': assignment.url
-            }
-            for assignment in pr.assignments.all()
-        ]
-    }
-
-    return render(request, 'perfil/freelancer_project_workspace.html', {
-        'profile': p,
-        'project': project_data,  
-    })
-
 def manageProject(request, id, id_project):
     p = get_object_or_404(CompanyManager, id=id)
     pr = get_object_or_404(Project, id=id_project)
@@ -886,6 +840,72 @@ def manageProject(request, id, id_project):
         'profile_url': profile_url,
     })
 
+#Faltantes
+
+def projectWorkspace(request, id, id_project):
+    p = get_object_or_404(Freelancer, id=id)
+    pr = get_object_or_404(Project, id=id_project)
+
+    if request.method == "POST":
+        action = request.POST.get("action")
+
+        if action == "save_tasks":
+            milestone_id = request.POST.get("milestones-select")
+            if milestone_id:
+                milestone = get_object_or_404(Milestone, id=milestone_id)
+                for task in milestone.tasks.all():
+                    task_state = request.POST.get(f'task_{task.id}')
+                    if task_state:
+                        task.state = task_state
+                        task.save()
+
+                messages.success(request, f"Estado de las tareas del milestone '{milestone.name}' actualizado exitosamente.")
+        
+        return redirect('projectWorkspace', id=id, id_project=id_project)
+
+    project_data = {
+        'id': pr.id,
+        'name': pr.name,
+        'milestones': [
+            {
+                'id': milestone.id,
+                'name': milestone.name,
+                'tasks': [
+                    {
+                        'id': task.id,
+                        'name': task.name,
+                        'deadline': task.deadline.strftime('%Y-%m-%d'),
+                        'state': task.state,
+                        'description': task.description
+                    }
+                    for task in milestone.tasks.all() 
+                ]
+            }
+            for milestone in pr.milestones.filter(freelancer=p)
+        ],
+        'assignments': [
+            {
+                'name': assignment.name,
+                'task': assignment.task.name,
+                'date': assignment.date,
+                'checked': assignment.checked,
+                'file': assignment.file.url if assignment.file else None,
+                'url': assignment.url
+            }
+            for assignment in pr.assignments.all()
+        ]
+    }
+
+    profile_url = reverse('perfilFreelancer', args=[p.id])
+    profile_image = p.image.url
+    return render(request, 'perfil/freelancer_project_workspace.html', {
+        'profile': p,
+        'profile_url': profile_url,
+        'profile_image': profile_image,
+        'project': project_data,  
+    })
+
+
 def deleteDisable(request, id=id):
     p = get_object_or_404(Freelancer, id=id)
     profile_url = reverse('perfilFreelancer', args=[p.id])
@@ -903,3 +923,6 @@ def deleteDisableClient(request, id=id):
         'p': p,
         'profile_image': profile_image,
         'profile_url': profile_url})
+
+def calendar(request):
+    return render(request, 'perfil/calendar.html')

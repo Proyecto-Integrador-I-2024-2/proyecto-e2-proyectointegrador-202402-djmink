@@ -8,83 +8,6 @@ body{
     background-color: #F2F2F2;
 }
 
-.heading {
-    background-color:#F2F2F2;
-    height:102px;
-    width: 1440px; 
-    position:relative;
-}
-
-.ptext{
-    font-family: "Poppins", sans-serif;
-    position: absolute;
-}
-
-.ptext.hometext{
-    color:#000000;
-    font-size:24px;
-    font-weight: 600;
-    line-height:auto;
-    top:32px;
-    left:690px;
-    width:60px;
-    height:30px;
-}
-
-.icon{
-    top:35px;
-    position:absolute;
-    width:35px;
-    height: 35px;
-    cursor: pointer;
-}
-
-.icon.chat_icon{
-    left:1268px;
-}
-
-.icon.notification_icon{
-    left:1315px;
-}
-
-.logo{
-    top:7px;
-    left:40px;
-    position:absolute;
-    width:80px;
-    height: 80px;
-}
-
-.logoseparator{
-    top:45px;
-    left:95px;
-    width: 60px;
-    transform:rotate(-90deg);
-    border:1px solid #01000c;
-    position:absolute;
-}
-
-.ptext.onlinemarketplace{
-    color:#01000c;
-    font-size:18px;
-    font-weight: 500;
-    top:20px;
-    left:150px;
-    width:100px;
-    height: 66px;
-    cursor: pointer;
-}
-
-.profile_picture_heading {
-    top:25px;
-    left:1365px;
-    position:absolute;
-    width:50px;
-    height: 50px;
-    border-radius: 50%; 
-    object-fit: cover;
-}
-
 .main{
     position:relative;
     width: 1440px;
@@ -149,10 +72,13 @@ body{
 
 .up{
     left: 20px;
-    height: 35px;
+    min-height: 35px;
     width: 881px;
     background-color: #ECECEC;
     position: relative;
+    height: auto;
+    display: flex;   
+    align-items: center; 
 }
 
 .status-select{
@@ -161,39 +87,60 @@ body{
     border-radius: 10px;
     position: absolute;
     left: 746px;
-    top: 5px;
     height: 25px;
     width: 130px;
-    background-color: #0040FF;
 }
 
 .check{
     position: absolute;
     left: 5px;
-    top: 9.5px;
     width: 16px;
     height: 16px;
 }
 
 .ptext.task-name{
-    left: 36px;
-    top: 6.5px;
+    position: relative;
+    height: auto;
+    width:580px;
+    left: 20px;
+    top: 5px;
     font-size: 14px;
+    font-weight: 400;
+    padding: 10px;
+    padding-top: 0px;
+}
+
+option {
+    background-color: #f0f0f0;
+    color: black; 
+}
+
+.ptext.task-deadline{
+    position: relative;
+    left: 20px;
+    font-size: 12px;
     font-weight: 400;
 }
 
 .down{
+    min-height: 35px;
     left: 20px;
-    height: 31px;
+    height: auto;
     width: 881px;
-    background-color: #FFFFFF;
     position: relative;
+    background-color: #FFFFFF;
 }
 
 .ptext.task-desc{
+    position: relative;
+    width: 840px;
+    height: auto;
+    left: 10px;
     top: 6.5px;
     font-size: 14px;
     font-weight: 400;
+    padding: 10px;
+    padding-top: 0px;
 }
 
 .arrow{
@@ -213,31 +160,56 @@ body{
 }
 
 .boards-section{
-    width: 921px;
-    left: 150px;
+    width: 880px;
+    left: 170px;
     top: 389px;
     height: 144px;
     position: absolute;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;  
 }
 
 .board{
     height: 144px;
     width: 260px;
     border-radius: 10px;
-    background-color: white;
-    position: absolute;
+    position: relative;
+    background-color: #FFFFFF;
 }
 
-.board.to-do{
+.tasks-list-board{
+    width: 260px;
+    height: 85px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    position: relative;
+    top: 50px;
+}
+
+.task-name-container{
+    border-radius: 5px;
+    position: relative;
     left: 20px;
+    width: 220px;
+    height: 20px;
+    margin-bottom: 10px;
 }
 
-.board.in-progress{
-    left: 330px;
+.task-name-container:last-child{
+    margin-bottom: 0px;
 }
 
-.board.done{
-    left: 640px;
+.ptext.task-board-name{
+    color: #FFFFFF;
+    font-size: 12px;
+    width: 210px;
+    height: 20px;
+    white-space: nowrap; 
+    overflow: hidden; 
+    text-overflow: ellipsis;
+    padding-left: 5px;
+    padding-right: 5px;
 }
 
 .ptext.to-do{
@@ -396,27 +368,6 @@ body{
     transform: translateY(-50%) rotate(180deg); 
 }
 
-.upload-file-con{
-    height: 30px;
-    width: 180px;
-    top: 264px;
-    position: absolute;
-    left: 10px;
-}
-
-.upload-file-btn{
-    padding-left: 10px;
-    background-color: #FFFFFF;
-    border-radius: 10px;
-    color: #01000c;
-    font-size: 12px;
-    font-weight: 400;
-    cursor: pointer;
-    height: 30px;
-    width: 180px;
-    position: absolute;
-}
-
 .ptext.or{
     left: 10px;
     top: 304px;
@@ -437,96 +388,79 @@ body{
     height: 30px;
     width: 165px;
     border-radius: 10px;
+    border: none;
 }
 
-.add-assignment-btn{
+.btn{
+    text-align: center;
+    justify-content: center;
+    background-color: #0040FF;
+    height: 30px;
+    color: white;
+    font-family: "Poppins", sans-serif;
+    font-size: 12px;
+    font-weight: 400;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+.btn:hover {
+    background-color: #0033cc; 
+    transform: scale(1.05); 
+}
+
+.btn.save{
+    position: relative;
+    left: 950px;
+    top: 320px;
+    width: 100px;
+    height: 30px;
+    border-radius: 5px;
+    border: none;
+}
+
+.upload-file {
+    position: relative;
+    display: inline-block;
+}
+
+.upload-file::before{
+    font-family: "Poppins", sans-serif;
+    display: flex;
+    text-align: center;
+    justify-content: center;
+    background-color: #FFFFFF;
+    border-radius: 10px;
+    color: #01000c;
+    font-size: 12px;
+    font-weight: 400;
+    height: 25px;
+    width: 180px;
+    position: absolute;
+    left: 10px;
+    top: 120px;
+    padding-top: 5px;
+}
+
+.upload-file input[type="file"] {
+    opacity: 0;
+    position: absolute;
+    height: 25px;
+    width: 180px;
+    display: inline-block;
+    left: 10px;
+    top: 120px;
+}
+
+#src-file1::before {
+    content: 'Select file';
+}
+
+.btn.add-assignment{
     left: 10px;
     position: absolute;
     width: 180px;
     top: 375px;
     height: 30px;
-    background-color: #BCBCBC;
-    text-align: center;
-    justify-content: center;
-    color: #01000c;
-    font-size: 12px;
-    font-weight: 400;
-    cursor: pointer;
-}
-
-
-.footer {
-    margin-top: 30px;
-    position: relative;
-    background-color: #F2F2F2;
-    font-family: "Poppins", sans-serif;
-    font-weight: 400;
-    width: 1440px; 
-    height: 135px;
-}
-
-.footer-content {
-    max-width: 1200px;
-    margin: 0 auto;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-.footer-nav {
-    margin-top: 57px;
-}
-
-.footer-nav a {
-    color: #01000C;
-    margin: 0 15px;
-    text-decoration: none;
-    font-size: 20px;
-}
-
-.footer-nav a:hover {
-    text-decoration: underline; 
-}
-
-.encora {
-    position: absolute;
-    left: 37px;
-    top: 10px; 
-    height: 111px; 
-    width: 113px;
-}
-
-.social-icon{
-    position: absolute;
-    top: 78px;
-    height: 24px; 
-    width: 24px;
-    cursor: pointer;
-}
-
-.social-icon.gmail {
-    left: 1252px;
-}
-
-.social-icon.lin {
-    left: 1280px;
-}
-
-.social-icon.ig{
-    left: 1308px;
-}
-
-.social-icon.fb {
-    left: 1336px;
-}
-
-.footertext {
-    text-align:center;
-    font-size:12px;
-    font-weight: 400;
-    top:105px;
-    left:1205px;
-    position:absolute;
-    width:200px;
-    height:18px;
 }

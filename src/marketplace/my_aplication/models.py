@@ -335,7 +335,7 @@ class Task(models.Model):
     ]
 
     name = models.CharField(max_length=200)
-    description = models.CharField(max_length=500)
+    description = models.CharField(max_length=1000)
     deadline = models.DateField()
     milestone = models.ForeignKey(Milestone, on_delete=models.PROTECT, related_name='tasks')
     freelancer = models.ForeignKey(Freelancer, on_delete=models.PROTECT, related_name='tasks', blank=True, null=True)
