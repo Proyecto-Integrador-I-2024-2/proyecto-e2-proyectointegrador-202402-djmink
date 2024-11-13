@@ -860,7 +860,24 @@ def projectWorkspace(request, id, id_project):
                         task.save()
 
                 messages.success(request, f"Estado de las tareas del milestone '{milestone.name}' actualizado exitosamente.")
-        
+
+        elif action == "send_assignment":
+            task_id = request.POST.get("task-select")
+            task = get_object_or_404(Task, id=task_id)
+            milestone_id = task.milestone.id
+            milestone = get_object_or_404(Task, id=milestone_id)
+            name = request.POST.get("name")
+            link = request.POST.get("link")
+            file = request.FILES.get("assignment-file")
+            Assignment.objects.create(
+                project=pr,
+                name=name,
+                task=task,
+                file=file,
+                url=link
+            )
+            messages.success(request, "Entregable enviado exitosamente.")
+
         return redirect('projectWorkspace', id=id, id_project=id_project)
 
     project_data = {
@@ -878,7 +895,7 @@ def projectWorkspace(request, id, id_project):
                         'state': task.state,
                         'description': task.description
                     }
-                    for task in milestone.tasks.all() 
+                    for task in milestone.tasks.filter(freelancer=p) 
                 ]
             }
             for milestone in pr.milestones.filter(freelancer=p)
@@ -890,9 +907,10 @@ def projectWorkspace(request, id, id_project):
                 'date': assignment.date,
                 'checked': assignment.checked,
                 'file': assignment.file.url if assignment.file else None,
-                'url': assignment.url
+                'url': assignment.url,
+                'comment': assignment.manager_comment
             }
-            for assignment in pr.assignments.all()
+            for assignment in pr.assignments.filter(task__freelancer=p)
         ]
     }
 

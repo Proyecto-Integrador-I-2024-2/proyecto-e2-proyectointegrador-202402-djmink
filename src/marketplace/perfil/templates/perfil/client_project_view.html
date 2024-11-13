@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Manage Project</title>
     <link rel="icon" type="image/png" href="{% static 'img/Logo.png' %}">
-    <link rel="stylesheet" href="{% static 'css/client_project_view1.css' %}">
+    <link rel="stylesheet" href="{% static 'css/client_project_view2.css' %}">
     <link rel="stylesheet" href="{% static 'css/info-modal.css' %}">
     <link rel="stylesheet" href="{% static 'css/heading.css' %}">
     <link rel="stylesheet" href="{% static 'css/footer.css' %}">
@@ -203,10 +203,10 @@
                         <div class="ptext assignment-info"><strong>Date:</strong> ${assignment.date}</div>
                         <div class="ptext assignment-info"><strong>Status:</strong> ${assignment.checked ? 'Reviewed' : 'Sent'}</div>
                         ${assignment.file ? `<a class="ptext assignment-info" href="${assignment.file}" target="_blank">Download File</a>` : '<div class="ptext assignment-info download-btn">No file available</div>'}
-                        ${assignment.url ? `<a class="ptext assignment-info" href="${assignment.url}" target="_blank">Link</a>` : '<div class="ptext assignment-info link">No link available</div>'}
+                        ${assignment.url ? `<a class="ptext assignment-info" href="https://${assignment.url}" target="_blank">Link</a>` : '<div class="ptext assignment-info link">No link available</div>'}
                     </div>   
                     <div class="comments-section">
-                        <div class="ptext comments-title">Comments</div>
+                        <div class="ptext comments-title">Send feedback:</div>
                         <form method="POST">
                             {% csrf_token %}
                             <textarea placeholder="Add a comment" class="comment-input" name="assigment_comment"></textarea>

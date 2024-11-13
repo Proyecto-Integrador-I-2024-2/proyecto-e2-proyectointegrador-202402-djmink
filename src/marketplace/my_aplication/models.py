@@ -345,7 +345,7 @@ class Assignment(models.Model):
     project = models.ForeignKey(Project, related_name='assignments', on_delete=models.CASCADE, null=True, blank=True) 
     name = models.CharField(max_length=255)
     task = models.ForeignKey(Task, on_delete=models.CASCADE, related_name='assignments')
-    date = models.DateField()
+    date = models.DateField(auto_now_add=True)
     checked = models.BooleanField(default=False)
     manager_comment = models.CharField(max_length=300, default='No feedback received yet.')
     file = models.FileField(upload_to='uploads/', blank=True, null=True)

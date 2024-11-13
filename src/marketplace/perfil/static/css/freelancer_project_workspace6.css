@@ -10,6 +10,7 @@ body{
 
 .main{
     position:relative;
+    margin-top: 20px;
     width: 1440px;
     height: 602px;  
 }
@@ -25,6 +26,12 @@ body{
     font-weight: 500;
     font-size: 40px;
     color: #01000C;
+    white-space: nowrap; 
+    overflow: hidden; 
+    text-overflow: ellipsis;
+    width: 900px;
+    height: 60px;
+
 }
 
 .ptext.milestones-title{
@@ -68,6 +75,7 @@ body{
     position: relative;
     max-height: 198px;
     overflow-y: auto;
+    overflow-x: hidden;
 }
 
 .up{
@@ -191,7 +199,7 @@ option {
     border-radius: 5px;
     position: relative;
     left: 20px;
-    width: 220px;
+    width: 219px;
     height: 20px;
     margin-bottom: 10px;
 }
@@ -225,10 +233,10 @@ option {
 }
 
 .separator2{
-    left: 835px;
+    left: 810px;
     position: absolute;
-    width: 536px;
-    top: 259px;
+    width: 570px;
+    top: 285px;
     transform: rotate(-90deg);
 }
 
@@ -252,81 +260,38 @@ option {
     width: 180px;
     left: 10px;
     top: 66px;
-    max-height: 133px;
+    height: 133px;
     overflow-y: auto;
     overflow-x: hidden;
     position: relative;
 }
 
 .assignment-container{
-    width: 180px;
-    height: 133px;
+    width: 159px;
+    height: auto;
     position: relative;
     margin-bottom: 10px;
+    background-color: #ffffff;
+    border-radius: 10px;
 }
 
 .ptext.assignment-name{
-    top: 10px;
+    height: 30px;
+    position: relative;
     left: 10px;
     font-size: 16px;
     font-weight: 400;
-    color: #01000C;
+    color: #1500ff;
 }
 
 .ptext.assignment-task{
-    top: 23px;
-    left: 20px;
+    width: 130px;
+    height: auto;
+    position: relative;
+    left: 15px;
     font-size: 14px;
     font-weight: 400;
-    color: #01000C;
-}
-
-.ptext.assignment-date{
-    top: 43px;
-    left: 20px;
-    font-size: 14px;
-    font-weight: 400;
-    color: #01000C;
-}
-
-.ptext.assignment-status{
-    top: 63px;
-    left: 20px;
-    font-size: 14px;
-    font-weight: 400;
-    color: #01000C;
-}
-
-.ptext.download-btn{
-    top: 83px;
-    left: 20px;
-    font-size: 14px;
-    font-weight: 400;
-    color: #01000C;
-}
-
-.ptext.info{
-    top: 83px;
-    left: 20px;
-    font-size: 14px;
-    font-weight: 400;
-    color: #01000C;
-}
-
-.ptext.link{
-    top: 103px;
-    left: 20px;
-    font-size: 14px;
-    font-weight: 400;
-    color: #01000C;
-}
-
-.ptext.info2{
-    top: 103px;
-    left: 20px;
-    font-size: 14px;
-    font-weight: 400;
-    color: #01000C;
+    color: #010107;
 }
 
 .separator3{
@@ -339,15 +304,16 @@ option {
 .select-task-header{
     left: 10px;
     top: 224px;
-    width: 180px;
+    width: 182px;
     height: 30px;
     position: absolute;
 }
 
 .task-select{
-    width: 180px;
+    width: 182px;
     height: 30px;
     padding-left: 10px;
+    padding-right: 30px;
     appearance: none;
     background-color: white;
 }
@@ -370,8 +336,8 @@ option {
 
 .ptext.or{
     left: 10px;
-    top: 304px;
-    width: 180px;
+    top: 310px;
+    width: 182px;
     font-size: 12px;
     font-weight: 400;
     color: #01000C;
@@ -380,15 +346,21 @@ option {
 }
 
 .input-box{
-    top: 330px;
-    position: absolute;
+    top: 200px;
+    position: relative;
     padding-left: 10px;;
     background-color: #FFFFFF;
-    left: 10px;
     height: 30px;
     width: 165px;
     border-radius: 10px;
     border: none;
+    margin-bottom: 10px;
+    left: 7.5px;
+    border: 1px solid #ccc;
+}
+
+.input-box.name{
+    left: 11.5px;
 }
 
 .btn{
@@ -398,7 +370,7 @@ option {
     height: 30px;
     color: white;
     font-family: "Poppins", sans-serif;
-    font-size: 12px;
+    font-size: 14px;
     font-weight: 400;
     border: none;
     border-radius: 10px;
@@ -410,13 +382,21 @@ option {
     transform: scale(1.05); 
 }
 
+.btn.add-assignment:disabled {
+    background-color: #d3d3d3;
+    color: #a1a1a1;
+    cursor: not-allowed;
+    opacity: 0.6;
+    transform: none;
+}
+
 .btn.save{
     position: relative;
     left: 950px;
     top: 320px;
     width: 100px;
     height: 30px;
-    border-radius: 5px;
+    border-radius: 10px;
     border: none;
 }
 
@@ -430,37 +410,60 @@ option {
     display: flex;
     text-align: center;
     justify-content: center;
-    background-color: #FFFFFF;
+    background-color: #0040FF;
     border-radius: 10px;
-    color: #01000c;
-    font-size: 12px;
+    color: #ffffff;
+    font-size: 14px;
     font-weight: 400;
     height: 25px;
-    width: 180px;
+    width: 182px;
     position: absolute;
     left: 10px;
     top: 120px;
-    padding-top: 5px;
+    padding-top: 4px;
 }
 
 .upload-file input[type="file"] {
     opacity: 0;
     position: absolute;
     height: 25px;
-    width: 180px;
+    width: 182px;
     display: inline-block;
     left: 10px;
     top: 120px;
+
 }
 
 #src-file1::before {
     content: 'Select file';
 }
 
+.preview-assignment{
+    padding-top: 10px;
+    padding-bottom: 10px;
+    position: relative;
+    background-color: #ffffff;
+    height: 95px;
+    top: 200px;
+    width: 180px;
+    left: 10px;
+    border-radius: 10px;
+    border: 1px solid #ccc;
+    overflow: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.preview-assignment a {
+    display: block;
+    color: #1500ff !important;
+}
+
 .btn.add-assignment{
     left: 10px;
-    position: absolute;
-    width: 180px;
-    top: 375px;
+    position: relative;
+    width: 182px;
+    top: 215px;
     height: 30px;
 }

@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Project Workspace</title>
     <link rel="icon" type="image/png" href="{% static 'img/Logo.png' %}">
-    <link rel="stylesheet" href="{% static 'css/freelancer_project_workspace2.css' %}">
+    <link rel="stylesheet" href="{% static 'css/freelancer_project_workspace6.css' %}">
     <link rel="stylesheet" href="{% static 'css/info-modal.css' %}">
     <link rel="stylesheet" href="{% static 'css/heading.css' %}">
     <link rel="stylesheet" href="{% static 'css/footer.css' %}">
@@ -23,7 +23,7 @@
 
     <div class="main">
         <div class="milestone-section">
-            <div class="ptext workspace-title">Workspace</div>
+            <div class="ptext workspace-title">Workspace - {{project.name}}</div>
             <div class="ptext milestones-title">Milestones</div>
             <form method="POST">
                 {% csrf_token %}
@@ -69,9 +69,9 @@
                 {% for assignment in project.assignments %}
                     <div class="assignment-container">
                         <div class="ptext assignment-name">{{ assignment.name }}</div>
-                        <div class="ptext assignment-task">{{ assignment.task.name }}</div>
-                        <div class="ptext assignment-date">{{ assignment.date }}</div>
-                        <div class="ptext assignment-status">
+                        <div class="ptext assignment-task"><strong>Task:</strong> {{ assignment.task }}</div>
+                        <div class="ptext assignment-task"><strong>Date:</strong> {{ assignment.date }}</div>
+                        <div class="ptext assignment-task"><strong>Status:</strong>
                             {% if assignment.checked %}
                                 Reviewed
                             {% else %}
@@ -79,15 +79,19 @@
                             {% endif %}
                         </div>
                         {% if assignment.file %}
-                            <a class="ptext download-btn" href="{{ assignment.file }}" target="_blank">Download File</a>
+                            <a class="ptext assignment-task" href="{{ assignment.file }}" target="_blank">Download File</a>
                         {% else %}
-                            <div class="ptext info">No file available</div>
+                            <div class="ptext assignment-task"><i>No file available</i></div>
                         {% endif %}
             
                         {% if assignment.url %}
-                            <a class="ptext link" href="{{ assignment.url }}" target="_blank">Link</a>
+                            <a class="ptext assignment-task" href="https://{{ assignment.url }}" target="_blank">Link</a>
                         {% else %}
-                            <div class="ptext info2">No link available</div>
+                            <div class="ptext assignment-task"><i>No link available</i></div>
+                        {% endif %}
+
+                        {% if assignment.checked %}
+                            <div class="ptext assignment-task"><strong>Feedback:</strong> {{assignment.comment }}</div>
                         {% endif %}
                     </div>
                 {% empty %}
@@ -95,25 +99,38 @@
                 {% endfor %}
             </div>            
             <hr class="separator3">
-            <div class="select-task-header">
-                <select class="task-select" name="task-select" id="task-select" onclick="rotate('.select-task-header')">
-                    <option value="">Select Task</option>
-                    {% for milestone in project.milestones %}
-                        {% for task in milestone.tasks %}
-                            <option value="{{ task.id }}">{{ task.name }}</option>
+            <form method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="select-task-header">
+                    <select class="task-select" name="task-select" id="task-select" onclick="rotate('.select-task-header'); enableFileAndLinkInputs(this)">
+                        <option value="">Select Task</option>
+                        {% for milestone in project.milestones %}
+                            {% for task in milestone.tasks %}
+                                {% if task.state == 'CP' %} 
+                                    <option value="{{ task.id }}">{{ task.name }}</option>
+                                {% endif %}     
+                            {% endfor %}
+                        {% empty %}
+                            <option>No tasks available for this project</option>
                         {% endfor %}
-                    {% empty %}
-                        <option>No tasks available for this project</option>
-                    {% endfor %}
-                </select>                
-                <img class="arrow2" src="{% static 'img/arrow.svg' %}" alt="arrow">
-            </div>
-            <div class="upload-file" id="src-file1">
-                <input type="file" id="input-file" onchange="loadFile(event)" />
-            </div>
-            <div class="ptext or">Or</div>
-            <input id="input-link" class="input-box" placeholder="Enter URL" />
-            <button class="btn add-assignment" onclick="addAssignment()">Add assignment</button>
+                    </select>                
+                    <img class="arrow2" src="{% static 'img/arrow.svg' %}" alt="arrow">
+                </div>
+                <div class="upload-file" id="src-file1">
+                    <input name="assignment-file" type="file" id="input-file" onchange="loadFile(event)" disabled/>
+                </div>
+                <div class="ptext or">Or</div>
+                <input id="input-link" name="link" class="input-box" placeholder="Enter URL" oninput="loadLink(event)" disabled/>
+                <input id="input-name" name="name" class="input-box name" placeholder="Enter name" oninput="updateAssignmentName()" disabled/>
+                <div id="preview-assignment" class="preview-assignment" style="display: none;">
+                    <div id="assignment-name" class="ptext assignment-task"></div>
+                    <div id="assignment-task" class="ptext assignment-task"></div>
+                    <a id="assignment-file"class="ptext assignment-task" href="#" target="_blank"></a>
+                    <a id="assignment-link" class="ptext assignment-task" target="_blank"></a>
+                </div>
+                <input type="hidden" name="action" value="send_assignment">
+                <button type="submit" class="btn add-assignment" id="add-assignment-btn">Send assignment</button>
+            </form>
         </div>
 
     </div>
@@ -124,28 +141,91 @@
 
     <script>
 
+        function checkInputs() {
+            const taskSelect = document.getElementById("task-select");
+            const inputFile = document.getElementById("input-file");
+            const inputLink = document.getElementById("input-link");
+            const inputName = document.getElementById("input-name");
 
+            const allInputsFilled = taskSelect.value && (inputFile.value || inputLink.value) && inputName.value;
 
-        function loadFile(event) {
-            var reader = new FileReader();
-            var fileResult = "";
-            reader.onload = function() {
-                fileResult = reader.result;
-                var output = document.getElementById('');
-                output.ref = Result; 
-            };
-            reader.readAsDataURL(event.target.files[0]);
+            const addButton = document.querySelector(".add-assignment");
+            if (allInputsFilled) {
+                addButton.disabled = false;
+            } else {
+                addButton.disabled = true;
+            }
         }
 
+        document.addEventListener("DOMContentLoaded", function() {
+            document.getElementById("task-select").addEventListener("change", checkInputs);
+            document.getElementById("input-file").addEventListener("change", checkInputs);
+            document.getElementById("input-link").addEventListener("input", checkInputs);
+            document.getElementById("input-name").addEventListener("input", checkInputs);
+        });
+
+        checkInputs();
+
+
+        function enableFileAndLinkInputs() {
+            const taskSelect = document.getElementById("task-select");
+            const taskName = "<strong>Task:</strong> " + taskSelect.options[taskSelect.selectedIndex].text;
+            
+            if (taskSelect.value) {
+                
+                document.getElementById("preview-assignment").style.display = "block";
+                document.getElementById("assignment-task").innerHTML = taskName;
+                document.getElementById("input-file").disabled = false;
+                document.getElementById("input-link").disabled = false;
+                
+            } else {
+                document.getElementById("preview-assignment").style.display = "none";
+                document.getElementById("input-file").disabled = true;
+                document.getElementById("input-link").disabled = true;
+            }
+        }
+
+        function loadFile(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const fileURL = URL.createObjectURL(file);
+                const previewLink = document.getElementById('assignment-file');
+                previewLink.href = fileURL;
+                previewLink.textContent = 'Preview file';
+                document.getElementById("input-name").disabled = false;
+                document.getElementById("input-file").disabled = false;
+            }
+        }
+
+        function loadLink(event) {
+            var linkValue = event.target.value;
+            var linkElement = document.getElementById('assignment-link');
+
+            if (linkValue) {
+                linkElement.href ="https://" + linkValue;
+                linkElement.textContent = "Link";
+                document.getElementById("input-name").disabled = false;
+            } 
+        }
+
+        function updateAssignmentName() {
+            const assignmentName = document.getElementById("input-name").value;
+            document.getElementById("assignment-name").innerHTML = "<strong>Name:</strong> " + assignmentName;
+        }
 
         function toggleSaveButton() {
             const milestoneSelect = document.getElementById('milestones-select');
             const saveButton = document.getElementById('save-button');
+            const noTasksAvailableInfo = document.getElementById('no-tasks-available-info'); 
 
-            if (milestoneSelect.value !== "") {
-                saveButton.style.display = "inline-block";
-            } else {
+            if (noTasksAvailableInfo != null) {
                 saveButton.style.display = "none";
+            } else {
+                if (milestoneSelect.value !== "") {
+                    saveButton.style.display = "inline-block";
+                } else {
+                    saveButton.style.display = "none";
+                }
             }
         }
 
@@ -227,7 +307,7 @@
 
                     });
                 } else {
-                    tasksListContainer.innerHTML = '<p>No tasks available for this milestone</p>';
+                    tasksListContainer.innerHTML = '<p class="ptext instruction" id="no-tasks-available-info">No tasks available for this milestone</p>';
                 }
             } else {
                 tasksListContainer.innerHTML = '<p class="ptext instruction">Select a milestone to see the tasks.</p>';

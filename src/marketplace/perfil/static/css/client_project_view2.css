@@ -607,7 +607,9 @@ body{
 .ptext.assignment-info{
     position: relative;
     left: 10px;
-    font-size: 16px;
+    height: auto;
+    font-size: 15px;
+    width: 280px;
 }
 
 .comments-section{
