@@ -1,11 +1,16 @@
-from django.shortcuts import render, redirect
+import json
+from django.utils import timezone
+from django.shortcuts import get_object_or_404, render, redirect
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponse
+from django.views.decorators.csrf import csrf_exempt
+from django.http import JsonResponse, HttpResponse
 #from .forms import CompanyRegistrationForm, FreelancerRegistrationForm, LoginForm
 from django.contrib.auth.views import LoginView
+from .forms import createProjectForm, editProjectForm
+import os
 
-from my_aplication.models import Freelancer, CompanyManager
+from my_aplication.models import Freelancer, CompanyManager, Project, Milestone, Task
 
 #SMTP libraries
 from django.core.mail import send_mail
@@ -129,4 +134,147 @@ def registerc2(request, id):
         return render(request, 'signUp2Company.html', {'countries': countries})
     
 def addproject(request):
+    return render(request, 'AddProject.html')
+
+def editproject(request):
     return render(request, 'EditProject.html')
+
+def create_project_view(request, id):
+    company_manager = CompanyManager.objects.get(id=id)
+    return render(request, 'AddProject.html', {'company_manager': company_manager})
+
+def edit_project_view(request, id):
+    project = Project.objects.get(id=id)
+    milestones = project.milestones.all()
+    
+    context = {
+        'project': project,
+        'milestones': milestones
+    }
+    return render(request, 'EditProject.html', context)
+
+@csrf_exempt
+def post_project(request):
+    if request.method == 'POST':
+        manager_id = request.POST.get('manager')
+        name = request.POST.get('name')
+        description = request.POST.get('description')
+        budget = request.POST.get('budget')
+        project_picture = request.FILES.get('project_picture')
+
+        project = Project.objects.create(
+            manager_id=manager_id,
+            name=name,
+            description=description,
+            budget=budget,
+            project_picture=project_picture
+        )
+        # form = createProjectForm(request.POST, request.FILES)
+
+        milestones_json =  request.POST.get('milestones')
+        if milestones_json:
+            milestones = json.loads(milestones_json)
+
+            for milestone_data in milestones:
+                milestone = Milestone.objects.create(
+                    name=milestone_data['name'],
+                    description=milestone_data['description'],
+                    end_date=milestone_data['deadline'],
+                    project=project
+                )
+                
+                tasks = milestone_data.get('tasks', [])
+                for task_data in tasks:
+                    Task.objects.create(
+                        name=task_data['name'],
+                        milestone=milestone,
+                    )
+
+            return JsonResponse({'success': True, 'message': 'Project created successfully'})
+        else:
+            return JsonResponse({'success': False, 'message': 'Form validation failed', 'errors': 'Something happened with the milestones'})
+    
+    return JsonResponse({'success': False, 'message': 'Invalid request method'})
+
+@csrf_exempt
+def post_project_edition(request, id=None):
+    if request.method == 'POST':
+        project = get_object_or_404(Project, id=id)
+        
+        # Update the project fields
+        project.name = request.POST.get('name', project.name)
+        project.description = request.POST.get('description', project.description)
+        project.budget = request.POST.get('budget', project.budget)
+        
+        # Handle project picture update if provided
+        project_picture = request.FILES.get('project_picture')
+        if project_picture:
+            # Delete the old picture if a new one is uploaded
+            if project.project_picture:
+                old_picture_path = project.project_picture.path
+                if os.path.exists(old_picture_path):
+                    os.remove(old_picture_path)
+
+            # Assign the new picture
+            project.project_picture = project_picture
+        
+        project.save()  # Save the project updates
+
+        deleted_milestones = json.loads(request.POST.get('deletedMilestones', '[]'))
+        deleted_tasks = json.loads(request.POST.get('deletedTasks', '[]'))
+
+        # Delete specified milestones
+        if deleted_milestones:
+            Milestone.objects.filter(id__in=deleted_milestones, project=project).delete()
+
+        # Delete specified tasks
+        if deleted_tasks:
+            Task.objects.filter(id__in=deleted_tasks, milestone__project=project).delete()
+        
+        milestones_json = request.POST.get('milestones')
+        if milestones_json:
+            milestones = json.loads(milestones_json)
+
+            for milestone_data in milestones:
+                # Check if the milestone already exists and update it, or create a new one
+                milestone_id = milestone_data.get('id')
+                if milestone_id:
+                    milestone = Milestone.objects.filter(id=milestone_id, project=project).first()
+                    if milestone:
+                        milestone.name = milestone_data['name']
+                        milestone.description = milestone_data['description']
+                        milestone.end_date = milestone_data['deadline']
+                        milestone.save()
+                else:
+                    # Create a new milestone if no ID is provided
+                    milestone = Milestone.objects.create(
+                        name=milestone_data['name'],
+                        description=milestone_data['description'],
+                        end_date=milestone_data['deadline'],
+                        project=project
+                    )
+                
+                # Handle tasks within the milestone
+                tasks = milestone_data.get('tasks', [])
+                for task_data in tasks:
+                    task_id = task_data.get('id')
+                    if task_id:
+                        task = Task.objects.filter(id=task_id, milestone=milestone).first()
+                        if task:
+                            task.name = task_data['name']
+                            task.save()
+                    else:
+                        # Create a new task if no ID is provided
+                        Task.objects.create(
+                            name=task_data['name'],
+                            milestone=milestone,
+                        )
+
+            return JsonResponse({'success': True, 'message': 'Project edited successfully'})
+        else:
+            return JsonResponse({'success': False, 'message': 'No milestones data provided'})
+
+    return JsonResponse({'success': False, 'message': 'Invalid request method'})
+
+
+
