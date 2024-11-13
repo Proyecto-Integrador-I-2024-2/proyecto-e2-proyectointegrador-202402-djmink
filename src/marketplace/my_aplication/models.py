@@ -218,7 +218,7 @@ class Project(models.Model):
     budget = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)  # Default budget
     deadline = models.DateField(null=True, blank=True)  # No default, but can be left empty
     date_created = models.DateField(auto_now_add=True)  # Automatically set to the current date when created
-    project_picture = models.ImageField(upload_to='project_pictures/', blank=True, null=True)
+    project_picture = models.ImageField(upload_to='project_pictures/', blank=True, null=True , default = 'project_pictures/Project-Management-Fundamentals.jpg')  # Default project picture
     state = models.CharField(max_length=100, choices=STATE_CHOICES, default='PENDING')
     
 
@@ -315,11 +315,11 @@ class Milestone(models.Model):
 
     name = models.CharField(max_length=50)
     description = models.CharField(max_length=500)
-    start_date = models.DateField()
+    start_date = models.DateField(auto_now_add=True)
     end_date = models.DateField() 
-    project = models.ForeignKey(Project, on_delete=models.PROTECT, related_name='milestones')
+    project = models.ForeignKey(Project, on_delete=models.CASCADE, related_name='milestones')
     progress = models.DecimalField(max_digits=10, decimal_places=2, default=0, blank=True, null=True)
-    freelancer = models.ForeignKey(Freelancer, on_delete=models.PROTECT, related_name='milestones', blank=True, null=True)
+    freelancer = models.ForeignKey(Freelancer, on_delete=models.PROTECT, related_name='milestones', null=True, blank=True)
     state = models.CharField(max_length=100, choices=STATE_CHOICES, default='Available')
 
 class Profession(models.Model):
@@ -334,11 +334,11 @@ class Task(models.Model):
         ('CP', 'Completed'),
     ]
 
-    name = models.CharField(max_length=200)
-    description = models.CharField(max_length=1000)
-    deadline = models.DateField()
-    milestone = models.ForeignKey(Milestone, on_delete=models.PROTECT, related_name='tasks')
-    freelancer = models.ForeignKey(Freelancer, on_delete=models.PROTECT, related_name='tasks', blank=True, null=True)
+    name = models.CharField(max_length=50)
+    description = models.CharField(max_length=500, blank=True, null=True)
+    deadline = models.DateField(null=True, blank=True)
+    milestone = models.ForeignKey(Milestone, on_delete=models.CASCADE, related_name='tasks')
+    freelancer = models.ForeignKey(Freelancer, on_delete=models.PROTECT, related_name='tasks', null=True, blank=True)
     state = models.CharField(max_length=100, choices=STATE_CHOICES, default='NS')
 
 class Assignment(models.Model):
