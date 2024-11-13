@@ -131,23 +131,6 @@
 </body>
     <script>
         document.getElementById('submit').addEventListener('click', function() {
-        // const milestones2 = [];
-        // document.querySelectorAll('.milestone-form').forEach(milestone => {
-        // const milestoneDeadline = milestone.querySelector('.milestone-deadline');
-
-        //     if (!milestoneDeadline) {
-        // console.error('Milestone deadline element not found');
-        // } else {
-        // console.log('Milestone deadline value:', milestoneDeadline.value);
-        // }
-
-        // const milestoneData = {
-        // deadline: milestoneDeadline ? milestoneDeadline.value : '',  // Handle potential nulls safely
-        // };
-
-        //  milestones2.push(milestoneData);
-        // });
-
         const formData = new FormData();
         formData.append('manager', document.getElementById('torso').dataset.clientId);
         formData.append('name', document.getElementById('name').value);

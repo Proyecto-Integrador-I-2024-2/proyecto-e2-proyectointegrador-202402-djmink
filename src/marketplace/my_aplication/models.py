@@ -282,7 +282,7 @@ class Milestone(models.Model):
     description = models.CharField(max_length=500)
     start_date = models.DateField(auto_now_add=True)
     end_date = models.DateField() 
-    project = models.ForeignKey(Project, on_delete=models.PROTECT, related_name='milestones')
+    project = models.ForeignKey(Project, on_delete=models.CASCADE, related_name='milestones')
     progress = models.DecimalField(max_digits=10, decimal_places=2, default=0, blank=True, null=True)
     freelancer = models.ForeignKey(Freelancer, on_delete=models.PROTECT, related_name='milestones', null=True, blank=True)
     state = models.CharField(max_length=100, choices=STATE_CHOICES, default='Available')
@@ -302,7 +302,7 @@ class Task(models.Model):
     name = models.CharField(max_length=50)
     description = models.CharField(max_length=500, blank=True, null=True)
     deadline = models.DateField(null=True, blank=True)
-    milestone = models.ForeignKey(Milestone, on_delete=models.PROTECT, related_name='tasks')
+    milestone = models.ForeignKey(Milestone, on_delete=models.CASCADE, related_name='tasks')
     freelancer = models.ForeignKey(Freelancer, on_delete=models.PROTECT, related_name='tasks', null=True, blank=True)
     state = models.CharField(max_length=100, choices=STATE_CHOICES, default='NS')
 

@@ -28,7 +28,7 @@
             </ul>
         </div>
     </nav>
-    <div id ="torso" class="content" data-project-id = "{{project.id}}">
+    <div id ="torso" class="content" data-project-id = "{{project.id}}" data-manager-id = "{{project.manager.id}}">
         <h2>Edit Project</h2>
         <div class="basicInformation">
             <span>Basic information</span>
@@ -54,19 +54,18 @@
                 </div>
                 <div class="rightSide">
                     <div class="profile-upload">
-                        <input type="file" id="file-input" accept="image/*" />
-                        <label for="file-input" class="profile-circle">
+                        <label for="file-input" class="profile-circle">Project Picture:</label>
+                        <input type="file" id="file-input" name="file-input" accept="image/*" style="display: none;">
                         {% if project.project_picture %}
-                            <img id="profile-img" class="profile-img" src="{{ project.project_picture.url }}" alt="Project Image" />
+                            <img id="profile-img" class="profile-img" src="{{ project.project_picture.url }}" alt="Project Image"  onclick="document.getElementById('file-input').click();" >
                         {% else %}
-                            <img id="profile-img" class="profile-img" src="{% static 'images/Vector (2).png' %}" alt="Default Image" />
+                            <img id="profile-img" class="profile-img" src="{% static 'images/Vector (2).png' %}" alt="Default Image"  onclick="document.getElementById('file-input').click();">
                         {% endif %}
-                        </label>
-                        <button id="update" type="submit" class="buttonSubmit">Update</button>
+                        <button type="button" class="buttonSubmit" id="update">Update</button>
                     </div>
                 </div>
             </form>
-            <div class="milestones-section">
+            <!-- <div class="milestones-section">
                 <h2 class="ptext">Milestones</h2>
                 <button class="btn add-milestone">+ Add Milestone</button>
                 <div class="milestones-container">
@@ -74,14 +73,12 @@
                     <div class="milestone">
                         <div class="milestone-header" onclick="toggleTasks(this)">
                             <div class="ptext milestone-name">{{ milestone.name }}</div>
-                            <img class="freelancer-picture" src="{{ milestone.freelancer_picture }}" alt="Freelancer Picture"/>
-                            <div class="ptext freelancer-name">{{ milestone.freelancer_name }}</div>
                             <div class="ptext milestone-progress">{{ milestone.progress }}%</div>
                             <div class="ptext milestone-deadline">{{ milestone.deadline }}</div>
                             <button class="btn assignment">Assignments</button>
                         </div>
                         <div class="tasks-list" style="display: none;">
-                            {% for task in milestone.tasks %}
+                            {% for task in milestone.tasks.all %}
                             <div class="task">
                                 <div class="circle">
                                     {% if task.completed %}
@@ -97,6 +94,42 @@
                     {% endfor %}
                 </div>
                 <button id="submit" type="submit" class="buttonSubmit">Save chances</button>
+            </div> -->
+            
+            <div id ="milestone-list" class="milestone-list">
+                {% for milestone in milestones %}
+                <div class="add-milestone-section" data-milestone-id="{{milestone.id}}">
+                    <h2 class="ptext">Edit Milestone</h2>
+                    <form id="milestone-form" class="milestone-form">
+                        <label class="ptext" for="milestone-name">Milestone Name</label>
+                        <input class="milestone-name" type="text" id="milestone-name" name="milestone-name" placeholder="Milestone name" value="{{ milestone.name }}" required />
+                
+                        <label class="ptext" for="freelancer-name">Description</label>
+                        <input class="milestone-description" type="text" id="description" name="freelancer-name" placeholder="Description" value="{{ milestone.description }}" required />
+                
+                        <label class="ptext" for="milestone-deadline">Deadline</label>
+                        <input class="milestone-deadline" type="date" id="milestone-deadline" name="milestone-deadline" value="{{ milestone.end_date|date:'Y-m-d' }}"  required />
+                
+                        <h3 class="ptext">Tasks</h3>
+                        <div id="task-list" class="task-list">
+                            {% for task in milestone.tasks.all %}
+                            <div class="task-item" data-task-id="{{task.id}}">
+                                <span>{{ task.name }}</span>
+                                <button type="button" class="btn remove-task" onclick="removeTask(this)">Remove Task</button>
+                            </div>
+                            {% endfor %}
+                        </div>
+                        <input type="text" id="task-name" placeholder="Add task" />
+                        <button type="button" class="btn add-task" onclick="addTask(this)">Add Task</button>
+
+                        <button type="button" class="btn remove-milestone" onclick="removeMilestone(this)">Remove Milestone</button>
+                    </form>
+                </div>
+                {% endfor %}
+            </div>
+            <div class="gray-div">
+                <button type="button" class="btn save-milestone" onclick="addMilestone()">Add Milestone</button>
+                <button id="submit" class="btn save-milestone">Save Project</button>
             </div>
         </div>
     </div>
@@ -122,45 +155,124 @@
         </div>
     </footer>
 </body>
-<script>
+<!-- <script>
     function toggleTasks(element) {
         const tasksList = element.nextElementSibling;
         tasksList.style.display = tasksList.style.display === "none" ? "block" : "none";
     }        
-</script>
+</script> -->
 <script>
+    const deletedMilestones = [];
+    const deletedTasks = [];
+
+        function addTask(button) {
+            const thisMilestone = button.parentElement;
+            const taskName = thisMilestone.querySelector("#task-name").value;
+            if (taskName === "") return;
+        
+            const taskList = thisMilestone.querySelector("#task-list");
+            const taskItem = document.createElement("div");
+            taskItem.classList.add("task-item");
+            taskItem.innerHTML = `
+                <span>${taskName}</span>
+                <button class="remove-button" onclick="removeTask(this)">Remove</button>
+            `;
+            taskList.appendChild(taskItem);
+            thisMilestone.querySelector("#task-name").value = "";
+        }
+        
+        function removeTask(button) {
+            const taskElement = button.closest('.task-item');
+            const taskId = taskElement.dataset.taskId;
+
+            if (taskId) {
+                deletedTasks.push(taskId);  // Track the task ID for deletion
+            }
+            button.parentElement.remove();
+        }
+
+        function removeMilestone(button) {
+            const milestoneElement = button.closest('.add-milestone-section');
+            const milestoneId = milestoneElement.dataset.milestoneId;
+    
+            if (milestoneId) {
+                deletedMilestones.push(milestoneId);  // Track the milestone ID for deletion
+            }
+            button.parentElement.parentElement.remove();
+        }
+
+        function addMilestone() {
+            const milestoneList = document.getElementById("milestone-list");;
+            const addMilestoneSection = document.createElement("div");
+            addMilestoneSection.classList.add("add-milestone-section");
+            addMilestoneSection.innerHTML = `
+                <h2 class="ptext">Add Milestone</h2>
+                <form id="milestone-form" class="milestone-form">
+                    <label class="ptext" for="milestone-name">Milestone Name</label>
+                    <input class="milestone-name" type="text" id="milestone-name" name="milestone-name" placeholder="Milestone name" required />
+            
+                    <label class="ptext" for="freelancer-name">Description</label>
+                    <input class="milestone-description" type="text" id="description" name="freelancer-name" placeholder="Description" required />
+
+                    <label class="ptext" for="milestone-deadline">Deadline</label>
+                    <input class="milestone-deadline" type="date" id="milestone-deadline" name="milestone-deadline" required />
+            
+                    <h3 class="ptext">Tasks</h3>
+                    <div id="task-list" class="task-list"></div>
+                    <input type="text" id="task-name" placeholder="Add task" />
+                    <button type="button" class="btn add-task" onclick="addTask(this)">Add Task</button>
+            
+                    <button type="button" class="btn remove-milestone" onclick="removeMilestone(this)">Remove Milestone</button>
+                </form>
+            `;
+            milestoneList.appendChild(addMilestoneSection);
+        }
+
+
     document.getElementById('submit').addEventListener('click', function() {
       const projectId = document.getElementById('torso').dataset.projectId;
-      console.log(projectId);
-      const name = document.getElementById('name');
-      const nameContent = name.value;
-      const description = document.getElementById('description');
-      const descriptionContent = description.value;
-      const budget = document.getElementById('budget');
-      const budgetContent = budget.value;
-    //  'manager', 'name', 'type', 'duration', 'description', 'budget', 'deadline', 'project_picture', 'state'
-      const type = "General";
-      const duration = "Not Specified";
-      const defaultImage = "project_pictures/Project-Management-Fundamentals.jpg";
-      const state = "PENDING";
+
+      const formData = new FormData();
+        formData.append('manager', document.getElementById('torso').dataset.managerId);
+        formData.append('name', document.getElementById('name').value);
+        formData.append('description', document.getElementById('description').value);
+        formData.append('budget', document.getElementById('budget').value);
+        formData.append('project_picture', document.getElementById('file-input').files[0]);
+        formData.append('type', 'General');
+        formData.append('duration', 'Not Specified');
+        formData.append('state', 'PENDING');
+        
+        const milestones = [];
+        document.querySelectorAll('.milestone-form').forEach(milestone => {
+            const milestoneData = {
+                id: milestone.closest('.add-milestone-section').dataset.milestoneId || null,
+                name: milestone.querySelector('.milestone-name').value,
+                description: milestone.querySelector('.milestone-description').value,
+                deadline: milestone.querySelector('.milestone-deadline').value,
+                tasks: []
+            };
+
+            milestone.querySelectorAll('.task-item').forEach(task => {
+                milestoneData.tasks.push({
+                    id: task.dataset.taskId || null,
+                    name: task.querySelector('span').textContent,
+                    });
+                });
+                milestones.push(milestoneData);
+            });
+
+        formData.append('milestones', JSON.stringify(milestones));
+        formData.append('deletedMilestones', JSON.stringify(deletedMilestones));
+        formData.append('deletedTasks', JSON.stringify(deletedTasks));
 
       const url = `/accounts/post_project_edition/${projectId}/`;
 
       fetch(url, {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/x-www-form-urlencoded',
           'X-CSRFToken': '{{ csrf_token }}'  // Include CSRF token for security
         },
-        body: new URLSearchParams({
-          'name': nameContent,
-          'type': type,
-          'duration': duration,
-          'description': descriptionContent,
-          'budget': budgetContent,
-          'project_picture': defaultImage,
-          'state': state
-        })
+        body: formData
       })
       .then(response => response.json())
       .then(data => {
@@ -175,5 +287,23 @@
         console.error('Error:', error);
       });
     });
-  </script>
+
+
+    document.getElementById('file-input').addEventListener('change', function(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById('profile-img').src = e.target.result;
+                }
+                reader.readAsDataURL(file);
+            }
+        });
+
+    document.getElementById('update').addEventListener('click', function() {
+        document.getElementById('file-input').click();
+    });
+
+
+    </script>
 </html>
