@@ -1,0 +1,37 @@
+<div id="ratingModal" class="modal-rate">
+    <div class="modal-rate-content">
+        <span class="close-rate" onclick="closeRateModal()">&times;</span>
+        <h2>Califica al usuario</h2>
+        
+        <form id="ratingForm" method="POST">
+            <input type="hidden" name="action" value="rate_profile">
+            {% csrf_token %}
+            <div class="rating-container">
+                <label for="score">Score:</label>
+                <div class="star-rating">
+                    <input type="radio" name="score" value="5" id="star1"><label for="star1">★</label>
+                    <input type="radio" name="score" value="4" id="star2"><label for="star2">★</label>
+                    <input type="radio" name="score" value="3" id="star3"><label for="star3">★</label>
+                    <input type="radio" name="score" value="2" id="star4"><label for="star4">★</label>
+                    <input type="radio" name="score" value="1" id="star5"><label for="star5">★</label>
+                </div>
+            </div>
+            <button type="submit" class="ok-button">Send rate</button>
+        </form>
+    </div>
+</div>
+
+<script>
+    
+    function openRateModal() {
+        var modal = document.getElementById("ratingModal");
+        modal.style.display = "block";
+    }
+
+
+    function closeRateModal() {
+        var modal = document.getElementById("ratingModal");
+        modal.style.display = "none";
+    }
+
+</script>

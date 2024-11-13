@@ -11,27 +11,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Edit Profile - Portfolio</title>
     <link rel="icon" type="image/png" href="{% static 'img/Logo.png' %}">
-    <link rel="stylesheet" href="{% static 'css/freelancer_edit_profile_portfolio.css' %}">
+    <link rel="stylesheet" href="{% static 'css/freelancer_edit_profile_portfolio3.css' %}">
+    <link rel="stylesheet" href="{% static 'css/info-modal.css' %}">
+    <link rel="stylesheet" href="{% static 'css/heading.css' %}">
+    <link rel="stylesheet" href="{% static 'css/footer.css' %}">
 </head>
 <body>
+
+    {% include 'perfil/sections/info-modal.html' %}
+
     <div class="editsection">
 
-        <div class="heading">
-
-            <div class="rectangleheading"></div>
-            <div class="hometext">Home</div>
-            <img class="chat_icon" src="{% static 'img/Chat_Icon.svg' %}"/>
-            <img class="notification_icon" src="{% static 'img/Notification_Icon.svg' %}"/>
-            <a href="{% url 'perfilFreelancer' p.id %}">
-                <img class="profile_picture2" src="{{ p.profile_picture.url }}" alt="Profile Picture"/>
-            </a>
-            <img class="logo" src="{% static 'img/Logo.svg' %}"/>
-            <div class="logoseparator"></div>
-        
-            <div class="onlinemarketplace2">
-                Online Marketplace
-            </div>
-        </div>     
+        {% include 'perfil/sections/heading.html' %}   
 
         <div class="ptext ep">
             Edit profile
@@ -40,7 +31,8 @@
         <a href="{% url 'editAccount' p.id %}" class="ptext my-account">My account</a>
         <a href="{% url 'editProfile' p.id %}" class="ptext profile">Profile</a>
         <a href="#editPortfolio" class="ptext portfolio">Portfolio</a>
-        <a href="{% url 'deleteDisable' p.id %}" class="ptext delete-account">Delete account</a>    
+        <a href="{% url 'deleteDisable' p.id %}" class="ptext delete-account">Delete account</a>
+        <a href="{% url 'home' %}" class="ptext logout">Log out</a>        
 
         <div class="body">
 
@@ -50,58 +42,43 @@
 
             <div class="add-button">
                 <div class="ptext add">Add</div>
-                <button id= "add-content-btn" class="add content-btn" onclick="openAddModal()">+</button>
-            </div>    
-                
-            <div class="projects-container" id="projects-container">
-                {% for project in p.contents.all %}
-                    <div class="project-container" id="project-{{ project.id }}">
-                        <img id="edit-btn" class="edit-btn" src="{% static 'img/Edit.svg' %}" alt="Edit" onclick="openEditModal('{{ project.id }}')"/>
-                        <button class="delete-btn project" onclick="markForRemoval('project', '{{ project.id }}')">X</button>
-                        <div id="project-name-{{ project.id }}" class="ptext project-name">{{ project.name }}</div>
-                        <div id="project-company-{{ project.id }}" class="ptext info-project">{{ project.type }}</div>
-                        <div id="project-duration-{{ project.id }}" class="ptext info-project">{{ project.duration }}</div>
-                        <a id="project-url-{{ project.id }}" class="ptext info-project" href="{{ project.url }}" target="_blank">{{ project.name }}</a>
-                    </div>
-                {% empty %}
-                    <p>You don't have projects registered yet.</p>
-                {% endfor %}
+                <button type="button" id="add-content-btn" class="add content-btn" onclick="openAddModal()">+</button>
             </div>
+            
+            <form method="POST">
+                {% csrf_token %}
 
-            <button id= "save" class="med-btn save">Save Changes</button>
+                <div class="projects-container" id="projects-container">
+                    {% for project in p.contents.all %}
+                        <div class="project-container" id="project-{{ project.id }}">
+                            <img id="edit-btn" class="edit-btn" src="{% static 'img/Edit.svg' %}" alt="Edit" onclick="openEditModal('{{ project.id }}')"/>
+                            <button type="button" class="delete-btn project" onclick="markForRemoval('project', '{{ project.id }}')">X</button>
+                            <div id="project-name-{{ project.id }}" class="ptext project-name">{{ project.name }}</div>
+                            <div id="project-company-{{ project.id }}" class="ptext info-project">{{ project.type }}</div>
+                            <div id="project-duration-{{ project.id }}" class="ptext info-project">{{ project.duration }}</div>
+                            <a id="project-url-{{ project.id }}" class="ptext info-project" href="{{ project.url }}" target="_blank">{{ project.name }}</a>
 
-        </div>
-
-        <footer class="footer">
-        
-            <div class="footer-content">
-                <img id="encora2" class="encora2" src="{% static 'img/Encora1.svg' %}" />
-                <a href="https://www.facebook.com/encorainc" target="_blank">
-                    <img class="fb3" src="{% static 'img/fb.png' %}"/>
-                </a>
-                <a href="https://www.instagram.com/encorainc/" target="_blank">
-                    <img class="ig3" src="{% static 'img/ig.png' %}" />
-                </a>
-                <a href="https://www.linkedin.com/company/encorainc/" target="_blank">
-                    <img class="lin3" src="{% static 'img/lin.png' %}" />
-                </a>
-                <img class="gmail3" src="{% static 'img/gmail.png' %}" />
-                <nav class="footer-nav">
-                    <a href="#features">Features</a>
-                    <a href="#about">About</a>
-                    <a href="#support">Support</a>
-                    <a href="#resources">Resources</a>
-                    <a href="#places">Places</a>
-                    <a href="#jobs">Jobs</a>
-                </nav>
-                <div id='footertext' class='footertext'> 
-                    © 2024 Online Marketplace
+                            <input type="hidden" name="project_id" value="{{ project.id }}"/>
+                            <input type="hidden" name="project_name_{{ project.id }}" value="{{ project.name }}"/>
+                            <input type="hidden" name="project_company_{{ project.id }}" value="{{ project.type }}"/>
+                            <input type="hidden" name="project_duration_{{ project.id }}" value="{{ project.duration }}"/>
+                            <input type="hidden" name="project_url_{{ project.id }}" value="{{ project.url }}"/>
+                        </div>
+                    {% empty %}
+                        <!--p>You don't have projects registered yet.</p-->
+                    {% endfor %}
                 </div>
-            </div>
+
+                <input type="hidden" name="removed_project_ids" id="removed-project-ids" value="">
     
-        </footer>
+                <button type="submit" id= "save" class="med-btn save">Save Changes</button>
+
+            </form>
+        </div>
         
     </div>
+
+    {% include 'perfil/sections/footer.html' %}   
 
     <div id="addProjectModal" class="modal">
         <div class="modal-content">
@@ -128,7 +105,7 @@
                 <input id="input-resources" class="input-box e" placeholder="Enter URL" />
             </div>
 
-            <button id= "add-project" class='med-btn add-project' onclick="addProject()">Add</button>
+            <button type="button" id= "add-project" class='med-btn add-project' onclick="addProject()">Add</button>
 
         </div>
     </div>
@@ -158,7 +135,7 @@
                 <textarea id="edit-resources" class="input-box e"></textarea>
             </div>
                 
-            <button class='med-btn add-project' onclick="editProject()">Accept</button>
+            <button type="button" class='med-btn add-project' onclick="editProject()">Accept</button>
         </div>
     </div>
     
@@ -176,21 +153,6 @@
                     closeModal('addProjectModal');
                 }
             }    
-        }
-
-        function openEditModal(id, name, company, duration, url) {
-            document.getElementById('edit-name').value = name;
-            document.getElementById('edit-company').value = company;
-            document.getElementById('edit-duration').value = duration;
-            document.getElementById('edit-resources').value = url;
-            const modal = document.getElementById('editProjectModal');
-            modal.setAttribute('data-project-id', id);
-            modal.style.display = 'block';
-            window.onclick = function(event) {
-                if (event.target == modal) {
-                    closeModal('editProjectModal');
-                }
-            }
         }
 
         function openEditModal(projectId) {
@@ -233,11 +195,16 @@
 
             newContentDiv.innerHTML = `
                 <img id="edit-btn" class="edit-btn" src="{% static 'img/Edit.svg' %}" alt="Edit" onclick="openEditModal('${newProjectId}')"/>
-                <button class="delete-btn project" onclick="markForRemoval('project', '${newProjectId}')">X</button>
+                <button type="button" class="delete-btn project" onclick="markForRemoval('project', '${newProjectId}')">X</button>
                 <div id="project-name-${newProjectId}" class="ptext project-name">${name.value}</div>
                 <div id="project-company-${newProjectId}" class="ptext info-project">${company.value}</div>
                 <div id="project-duration-${newProjectId}" class="ptext info-project">${duration.value}</div>
                 <a id="project-url-${newProjectId}" class="ptext info-project" href="${resources.value}" target="_blank">${name.value}</a>
+                <input type="hidden" name="project_id" value="${newProjectId}"/>
+                <input type="hidden" name="project_name_${newProjectId}" value="${name.value}"/>
+                <input type="hidden" name="project_company_${newProjectId}" value="${company.value}"/>
+                <input type="hidden" name="project_duration_${newProjectId}" value="${duration.value}"/>
+                <input type="hidden" name="project_url_${newProjectId}" value="${resources.value}"/>
             `;
 
             projectsList.appendChild(newContentDiv);
@@ -264,16 +231,22 @@
             projectUrlElement.href = resources;
             projectUrlElement.textContent = name;
 
+            document.querySelector(`input[name="project_name_${projectId}"]`).value = name;
+            document.querySelector(`input[name="project_company_${projectId}"]`).value = company;
+            document.querySelector(`input[name="project_duration_${projectId}"]`).value = duration;
+            document.querySelector(`input[name="project_url_${projectId}"]`).value = resources;
+
             closeModal('editProjectModal');
         }
 
-        let removedItems = [];
+        const removedItems = [];
 
         function markForRemoval(type, itemId) {
             const element = document.getElementById(type + '-' + itemId);
             if (element) {
                 element.style.display = 'none';
-                removedItems.push({ type, itemId });
+                removedItems.push(itemId);
+                document.getElementById('removed-project-ids').value = removedItems.join(',');
             }
         }
 

@@ -1,3 +1,5 @@
+from django.shortcuts import render, redirect
+from django.contrib.auth import authenticate, login as auth_login
 import json
 from django.utils import timezone
 from django.shortcuts import get_object_or_404, render, redirect
@@ -7,6 +9,9 @@ from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse, HttpResponse
 #from .forms import CompanyRegistrationForm, FreelancerRegistrationForm, LoginForm
 from django.contrib.auth.views import LoginView
+from django.contrib.auth.hashers import make_password, check_password
+
+from my_aplication.models import Freelancer, CompanyManager, User
 from .forms import createProjectForm, editProjectForm
 import os
 
@@ -21,13 +26,32 @@ countries = [' Afganistán',' Albania',' Alemania',' Andorra',' Angola',' Antigu
 
 def login(request):
     if request.method == 'POST':
+
         username = request.POST.get('username')
         password = request.POST.get('password')
-        #realizar la autenticacion, que se quede logeado toda la app
-        user = authenticate(request, username=username, password=password)
-        return redirect('home')#cambiar a dashboard
-    else:
-        return render(request, 'login.html')
+
+        try:
+            user = User.objects.get(username=username)
+
+            if check_password(password, user.password):
+
+                auth_login(request, user)
+
+                if Freelancer.objects.filter(id=user.id).exists():
+                    return redirect('mainFreelancer', id=user.id) 
+                elif CompanyManager.objects.filter(id=user.id).exists():
+                    return redirect('mainCliente', id=user.id) 
+                else:
+                    return redirect('home') 
+
+            else:
+                return render(request, 'login.html', {'incorrect_credentials': True})
+        
+        except User.DoesNotExist:
+            return render(request, 'login.html', {'incorrect_credentials': True})
+
+    return render(request, 'login.html')
+
 
 def recover(request):
     if request.method == 'POST':
@@ -48,25 +72,31 @@ def send_recovery_email(email, password):
 
 #Registro de Freelancers
 def registerf1(request):
-    if request.method == 'POST':
-        #verificacion del usuario (que no exista)
-        username = request.POST.get('username')
-        object = Freelancer.objects.filter(username=username)
-        if object.exists():
-            #devolver alerta tipo js
-            return render(request, 'signUp1.html', {'username_exists': True})
-        else:
-            username = request.POST.get('username')
-            fullname = request.POST.get('fullname')
-            print('name:', fullname)
-            phone_number = request.POST.get('phone_number')
-            password = request.POST.get('password')
 
-            freelancer_profile = Freelancer.objects.create(name=fullname, email=username, phone=phone_number, image=None)
-            user = Freelancer.objects.create(username=username, password=password, profile=freelancer_profile)
-            return redirect('registerf2', id = user.profile.id)
+    if request.method == 'POST':
+        # Obtener datos del formulario
+        email = request.POST.get('username')
+        name = request.POST.get('fullname')
+        phone = request.POST.get('phone_number')
+        password = request.POST.get('password')
+
+        # Comprobar si el nombre de usuario ya existe
+        if email and User.objects.filter(username=email).exists():
+            return render(request, 'signUp1.html', {'username_exists': True})
+
+        freelancer = Freelancer.objects.create(
+            username=email,
+            password=make_password(password),
+            name=name,
+            phone=phone
+        )
+
+        return redirect('registerf2', id=freelancer.id)  # Redirigir al siguiente paso con el ID del freelancer
+
     else:
-        return render(request, 'signUp1.html', {'username_exists': False})
+        return render(request, 'signUp1.html', {'username_exists': False, 'email_exists': False})
+
+
     
 def registerf2(request, id):
     if request.method == 'POST':
@@ -83,12 +113,13 @@ def registerf2(request, id):
 
 def registerf3(request, id):
     if request.method == 'POST':
-        freelancer_profile = Freelancer.objects.get(id=id)
+        freelancer = Freelancer.objects.get(id=id)
         country = request.POST.get('country')
-        user = Freelancer.objects.get(profile=freelancer_profile)
-        user.country = country
-        user.identification = id
-        user.save()
+        identification = request.POST.get('identification')
+
+        freelancer.country = country
+        freelancer.identification = identification
+        freelancer.save()
         return redirect('login')
     else:
         return render(request, 'SignUp3.html', {'countries': countries})
@@ -96,7 +127,7 @@ def registerf3(request, id):
 #Registro de Company
 def registerc1(request):
     username = request.POST.get('username')
-    object = CompanyManager.objects.filter(username=username)
+    object = User.objects.filter(username=username)
     if request.method == 'POST':
         #verificacion del usuario (que no exista)
         if object.exists():
@@ -108,21 +139,31 @@ def registerc1(request):
             legal_agent = request.POST.get('legal_agent')
             password = request.POST.get('password')
 
-            company_profile = CompanyManager.objects.create(name=company_name, email=username, phone=None, image=None, address=None, legal_agent=legal_agent, business_vertical=None, company_type=None)
-            user = CompanyManager.objects.create(username=username, password=password, profile=company_profile)
-            return redirect('registerc2', id = user.profile.id)
+            company = CompanyManager.objects.create(
+                username = username,
+                name = company_name,
+                phone=None,
+                password = make_password(password),
+                image=None,
+                country=None,
+
+                address=None,
+                legal_agent=legal_agent,
+                business_vertical=None,
+                company_type=None)
+            return redirect('registerc2', id = company.id)
     else:
         return render(request, 'signUp1Company.html', {'username_exists': False})
     
 def registerc2(request, id):
     if request.method == 'POST':
-        company_profile = CompanyManager.objects.get(id=id)
+        user = CompanyManager.objects.get(id=id)
         country = request.POST.get('country')
         phone = request.POST.get('phone')
         address = request.POST.get('address')
         business_vertical = request.POST.get('business_vertical')
         company_type = request.POST.get('company_type')
-        user = CompanyManager.objects.get(profile=company_profile)
+
         user.country = country
         user.phone = phone
         user.address = address

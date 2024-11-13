@@ -7,112 +7,8 @@ html {
 .editsection{
     background-color:#F2F2F2;
     width: 1440px;
-    height: 1024px;
-}
-
-/* Heading section */
-
-.heading {
-    background-color:#F2F2F2;
-    height:102px;
-    width: 1440px; 
-    position:relative;
-}
-
-.hometext
-{
-    color:#000000;
-    text-align:left;
-    vertical-align:text-top;
-    font-size:24px;
-    font-family: "Poppins", sans-serif;
-    font-weight: 600;
-    font-style: normal;
-    line-height:auto;
-    border-style:hidden;
-    outline:none;
-    top:32px;
-    left:690px;
-    position:absolute;
-    width:60px;
-    height:30px;
-}
-
-.chat_icon{
-    top:35px;
-    left:1268px;
-    position:absolute;
-    width:35px;
-    height: 35px;
-    cursor: pointer;
-}
-
-.notification_icon{
-    top:35px;
-    left:1315px;
-    position:absolute;
-    width:35px;
-    height: 35px;
-    cursor: pointer;
-}
-
-.logo{
-    top:7px;
-    left:40px;
-    position:absolute;
-    width:80px;
-    height: 80px;
-}
-
-.logoseparator
-{
-    top:45px;
-    left:95px;
-    width: 60px;
-    transform:rotate(-90deg);
-    border:1px solid #01000c;
-    position:absolute;
-}
-
-.onlinemarketplace2
-{
-    color:#01000c;
-    text-align:left;
-    vertical-align:text-top;
-    font-size:18px;
-    font-family: "Poppins", sans-serif;
-    font-weight: 500;
-    font-style: normal;
-    line-height:auto;
-    border-style:hidden;
-    outline:none;
-    top:20px;
-    left:150px;
-    position:absolute;
-    width:100px;
-    height: 66px;
-    cursor: pointer;
-}
-
-.profile_picture2 {
-    top:25px;
-    left:1365px;
-    position:absolute;
-    width:50px;
-    height: 50px;
-    border-radius: 50%; 
-    object-fit: cover;
-}
-
-.ptext {
-    text-align:left;
-    vertical-align:text-top;
-    font-family: "Poppins", sans-serif;
-    font-style: normal;
-    line-height:auto;
-    border-style:hidden;
-    outline:none;
-    position:absolute;
+    height: 950px;
+    position: relative;
 }
 
 .ptext.ep {
@@ -158,6 +54,17 @@ html {
     text-decoration: none; 
 }
 
+.ptext.logout {
+    color:#000000;
+    font-size:16px;
+    font-weight: 400; 
+    top:371px;
+    left:114px;
+    width:94px;
+    height:24px;
+    text-decoration: none; 
+}
+
 .ptext.delete-account {
     color:#DA5F5F;
     font-size:16px;
@@ -170,16 +77,15 @@ html {
 }
 
 .body {
-    top:100px;
-    left:353px;
+    left:300px;
     width: 1087px;
     height: 824px;
-    position: absolute;
+    position: relative;
 }
 
 .ptext.portfolio-title{
-    top: 71px;
-    left: 180px;
+    top: 68px;
+    left: 145px;
     width: 200px;
     height: 36px;
     color:#000000;
@@ -301,23 +207,35 @@ button.add.content-btn{
 
 
 .ptext.info-project{
+    top: 4px;
     position: relative;
-    top: 10px;
+    margin-bottom: -5px;
     left: 42px;
     height: 30px;
     width: 249px;
     font-weight: 400;
     font-size: 16px;
+    white-space: nowrap; 
+    overflow: hidden; 
+    text-overflow: ellipsis;
+    display: block;
 }
 
 .ptext.project-name{
     position: relative;
     left: 40px;
-    top: 0px;
-    height: 36px;
+    top: 5px;
+    height: 65px;
     width: 270px;
     font-weight: 500;
     font-size: 26px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;            
+    -webkit-line-clamp: 2;           
+    -webkit-box-orient: vertical;    
+    line-height: 1.2;  
+    line-clamp: 2; 
 }
 
 .med-btn{
@@ -342,109 +260,6 @@ button.add.content-btn{
     background-color: #0040FF;
     border: none;
     border-radius: 8px;
-}
-
-.footer {
-    background-color: #F2F2F2;
-    text-align: center;
-    font-family: "Poppins", sans-serif;
-    font-weight: 400;
-    font-style: normal;
-    padding: 0;
-    position: absolute;
-    top: 924px;
-    left: 0px;
-    width: 1440px; 
-    height: 135px;
-}
-
-
-.footer-content {
-    max-width: 1200px;
-    margin: 0 auto;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-.footer-nav {
-    margin-top: 57px;
-}
-
-.footer-nav2 {
-    margin-top: 20px;
-}
-
-.footer-nav a {
-    color: #01000C;
-    margin: 0 15px;
-    text-decoration: none;
-    font-size: 20px;
-}
-
-.footer-nav a:hover {
-    text-decoration: underline; 
-}
-
-.encora2 {
-    position: absolute;
-    left: 37px;
-    top: 10px; 
-    height: 111px; 
-    width: 113px;
-}
-
-.gmail3 {
-    position: absolute;
-    left: 1252px;
-    top: 78px; 
-    height: 24px; 
-    width: 24px;
-    cursor: pointer;
-}
-
-.lin3 {
-    position: absolute;
-    left: 1280px;
-    top: 78px; 
-    height: 24px; 
-    width: 24px;
-    cursor: pointer;
-}
-
-.ig3 {
-    position: absolute;
-    left: 1308px;
-    top: 78px; 
-    height: 24px; 
-    width: 24px;
-    cursor: pointer;
-}
-
-.fb3 {
-    position: absolute;
-    left: 1336px;
-    top: 78px; 
-    height: 24px; 
-    width: 24px;
-    cursor: pointer;
-}
-
-.footertext {
-    text-align:center;
-    vertical-align:text-top;
-    font-size:12px;
-    font-family: "Inter", sans-serif;
-    font-optical-sizing: auto;
-    font-weight: 400;
-    line-height:auto;
-    border-style:hidden;
-    outline:none;
-    top:105px;
-    left:1205px;
-    position:absolute;
-    width:200px;
-    height:18px;
 }
 
 .modal {

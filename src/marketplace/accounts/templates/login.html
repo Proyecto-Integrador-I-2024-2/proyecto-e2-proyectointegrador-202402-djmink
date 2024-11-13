@@ -50,4 +50,10 @@
         </div>
     </div>
 </body>
+{% if incorrect_credentials %}
+    <script>
+        alert('Credenciales incorrectas. Intente nuevamente');
+        window.location.href = window.location.href;  
+    </script>
+{% endif %}
 </html>

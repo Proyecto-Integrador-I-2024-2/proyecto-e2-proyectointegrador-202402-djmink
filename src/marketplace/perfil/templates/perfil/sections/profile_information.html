@@ -1,0 +1,45 @@
+{% load static %}
+<div class="profile">
+
+    <div class="ptext profiletitle">Profile</div>
+
+    {% if show_edit_link %}
+        <a href="{{ edit_profile_url }}" class="editprofilebutton">
+            <div>Edit profile</div>
+        </a>
+    {% endif %}
+
+    <hr class="line-separator">
+
+    <div class="ptext name-profile">{{ p.name }}</div>
+    <div class="ptext type">
+        {% if p.company_type %}
+            {{ p.company_type }}
+        {% else %}
+            {{ p.profession }}
+        {% endif %}
+    </div> 
+    <img class="profile_picture" src="{{ p.image.url }}" alt="Profile Picture"/>
+    <div class="ptext description">{{ p.description }}</div>
+    <div class="ptext email">{{ p.contact_email }}</div>
+    <div class="social-networks">
+        {% if p.social_networks.all %}
+            {% for network in p.social_networks.all %}
+                <a href="https://{{ network.url }}" target="_blank">
+                    <img class="social-icon-1" src="{{ network.image.url }}" alt="{{ network.type }}">
+                </a>
+            {% endfor %}
+        {% elif p.client_social_networks.all %}
+            {% for network in p.client_social_networks.all %}
+                <a href="https://{{ network.url }}" target="_blank">
+                    <img class="social-icon-1" src="{{ network.image.url }}" alt="{{ network.type }}">
+                </a>
+            {% endfor %}
+        {% endif %}
+    </div>    
+    <div class="ptext calification">{{ p.rating }}</div>
+    <img class="star" src="{% static 'img/Star.svg' %}" />
+    {% if can_rate %}
+        <button class="rate-btn" type="button" onclick="openRateModal()">Rate</button>
+    {% endif %}
+</div>

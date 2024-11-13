@@ -8,186 +8,32 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token }}">
     <title>My Profile</title>
     <link rel="icon" type="image/png" href="{% static 'img/Logo.png' %}">
-    <link rel="stylesheet" href="{% static 'css/client_profile.css' %}">
+    <link rel="stylesheet" href="{% static 'css/client_profiles.css' %}">
+    <link rel="stylesheet" href="{% static 'css/info-modal.css' %}">
+    <link rel="stylesheet" href="{% static 'css/heading.css' %}">
+    <link rel="stylesheet" href="{% static 'css/profile_information1.css' %}">
+    <link rel="stylesheet" href="{% static 'css/projects_section2.css' %}">
+    <link rel="stylesheet" href="{% static 'css/comments_section.css' %}">
+    <link rel="stylesheet" href="{% static 'css/footer.css' %}">
 </head>
 <body> 
 
-    <div class="heading">
-        <div class="ptext hometext">Home</div>
-        <img class="icon chat_icon" src="{% static 'img/Chat_Icon.svg' %}"/>
-        <img class="icon notification_icon" src="{% static 'img/Notification_Icon.svg' %}"/>
-        <a href="{% url 'perfilesCliente' p.id %}">
-            <img class="profile_picture_heading" src="{{ p.profile_picture.url }}" alt="Profile Picture"/>
-        </a>
-        <img class="logo" src="{% static 'img/Logo.svg' %}"/>
-        <div class="logoseparator"></div>
-        <div class="ptext onlinemarketplace">
-            Online Marketplace
-        </div>
-    </div>
+    {% include 'perfil/sections/info-modal.html' %}
 
-    <div id="profile" class="profile">
+    {% include 'perfil/sections/heading.html' %}
 
-        <div id="profiletitle" class="profiletitle">
-            Profile
-        </div>
+    {% include 'perfil/sections/profile_information.html' %}
 
-        <a href="{% url 'editAccountClient' p.id %}" class="editprofilebutton">
-            <div id='editprofilebuttontext' class='editprofilebuttontext'>Edit profile</div>
-        </a>
+    <div class="separator-1"></div>
 
-        <hr class="l2">
+    {% include 'perfil/sections/projects_section.html' %}
 
-        <div id="name_profile">{{ p.name }}</div>
-        <div id="type">{{ p.type }}</div>
-        <img id="profile_picture" class="profile_picture" src="{{ p.profile_picture.url }}" alt="Profile Picture"/>
-        <div id="description">{{ p.description }}</div>
-        <img id="ig2" class="ig2" src="{% static 'img/ig.png' %}" />
-        <img id="lin2" class="lin2" src="{% static 'img/lin.png' %}" />
-        <img id="gmail2" class="gmail2" src="{% static 'img/gmail.png' %}" />
-        <img id="git2" class="git2" src="{% static 'img/git.png' %}"/>
-        <img id="star" class="star" src="{% static 'img/Star.svg' %}" />
-        <div id="calification">{{ p.rating }}</div>
-
-        <hr class="l3">
-
-    </div>
-
-    <div id="projectssection" class="projectssection">
-        <div id="rectangleproject" class="rectangleproject"></div>
-        <div id="projects" class="projects">
-            Projects
-        </div>
-        <div class="projects-wrapper">
-            
-            <button id="prevBtn" class="nav-button left">←</button>
-            
-            <div class="projects-container" id="projectsContainer">
-                {% for project in p.projects.all %}
-                    <div class="project-container">
-                        <div class="project-name">{{ project.name }}</div>
-                        <div class="info-project">{{ project.type }}</div>
-                        <div class="info-project">{{ project.duration }}</div>
-                        <a class="info-project" href="{{ project.url }}" target="_blank">{{ project.name }}</a>
-                    </div>
-                {% empty %}
-                    <p>You don't have projects registered yet.</p>
-                {% endfor %}
-            </div>
-    
-            <button id="nextBtn" class="nav-button right">→</button>
-        </div>
-        <hr class="l4">
-    </div>
-
-    <div id="commentssection" class="commentssection">
-
-        <div id="rectanglecomment" class="rectanglecomment"></div>
-
-        <div id="commentstitle" class="commentstitle">
-            Comments
-        </div>
-
-        <div class="comments">
-        
-            <ul class="comments-list">
-                {% for comment in p.commentsClients.all %}
-                    <li class="comment">
-                        <div>
-                            <img id="profilecommentimg" class="profilecommentimg" src="{% static 'img/user.jpg' %}"/>
-                            <div class="date">{{ comment.created_at }}</div>
-                            <div class="username">{{ comment.author }}</div>
-                            <p>{{ comment.content }}</p>
-                            <button class="btn reply">Reply</button>
-                        </div>
-                    </li>
-                {% empty %}
-                    <li>No comments yet.</li>
-                {% endfor %}
-            </ul>
-        </div>
-        
-    </div>
+    {% include 'perfil/sections/comments_section_1.html' %}
    
-    <footer class="footer">
-        
-        <div class="footer-content">
-            <img class="encora" src="{% static 'img/Encora1.svg' %}" />
-            <a href="https://www.facebook.com/encorainc" target="_blank">
-                <img class="social-icon fb" src="{% static 'img/fb.png' %}"/>
-            </a>
-            <a href="https://www.instagram.com/encorainc/" target="_blank">
-                <img class="social-icon ig" src="{% static 'img/ig.png' %}" />
-            </a>
-            <a href="https://www.linkedin.com/company/encorainc/" target="_blank">
-                <img class="social-icon lin" src="{% static 'img/lin.png' %}" />
-            </a>
-            <img class="social-icon gmail" src="{% static 'img/gmail.png' %}" />
-            <nav class="footer-nav">
-                <a href="#features">Features</a>
-                <a href="#about">About</a>
-                <a href="#support">Support</a>
-                <a href="#resources">Resources</a>
-                <a href="#places">Places</a>
-                <a href="#jobs">Jobs</a>
-            </nav>
-            <div class='footertext'> 
-                © 2024 Online Marketplace
-            </div>
-        </div>
-
-    </footer>
-
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const container = document.getElementById('projectsContainer');
-            const projectContainers = document.querySelectorAll('.project-container');
-            const prevBtn = document.getElementById('prevBtn');
-            const nextBtn = document.getElementById('nextBtn');
-
-            let currentIndex = 0;
-            const visibleProjects = 3;
-            const projectWidth = 300;
-            const marginRight = 81;
-            const totalProjects = projectContainers.length;
-
-            const scrollAmount = (projectWidth + marginRight);
-
-            function updateButtons() {
-                if (currentIndex === 0) {
-                    prevBtn.disabled = true;
-                } else {
-                    prevBtn.disabled = false;
-                }
-
-                if (currentIndex + visibleProjects >= totalProjects) {
-                    nextBtn.disabled = true;
-                } else {
-                    nextBtn.disabled = false;
-                }
-            }
-
-            prevBtn.addEventListener('click', function() {
-                if (currentIndex > 0) {
-                    currentIndex--;
-                    container.scrollLeft -= scrollAmount;
-                }
-                updateButtons();
-            });
-
-            nextBtn.addEventListener('click', function() {
-                if (currentIndex + visibleProjects < totalProjects) {
-                    currentIndex++;
-                    container.scrollLeft += scrollAmount;
-                }
-                updateButtons();
-            });
-
-            updateButtons();
-        });
-    </script>
+    {% include 'perfil/sections/footer.html' %}
 
 </body>
 </html>

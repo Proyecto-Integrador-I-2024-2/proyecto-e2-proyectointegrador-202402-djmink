@@ -10,41 +10,35 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Edit Profile - Account</title>
     <link rel="icon" type="image/png" href="{% static 'img/Logo.png' %}">
-    <link rel="stylesheet" href="{% static 'css/edit_account.css' %}">
+    <link rel="stylesheet" href="{% static 'css/edit_account4.css' %}">
+    <link rel="stylesheet" href="{% static 'css/info-modal.css' %}">
+    <link rel="stylesheet" href="{% static 'css/heading.css' %}">
+    <link rel="stylesheet" href="{% static 'css/footer.css' %}">
 </head>
 <body>
+
+    {% include 'perfil/sections/info-modal.html' %}
+
     <div class="editsection">
 
-        <div class="heading">
-
-            <div class="rectangleheading"></div>
-            <div class="hometext">Home</div>
-            <img class="chat_icon" src="{% static 'img/Chat_Icon.svg' %}"/>
-            <img class="notification_icon" src="{% static 'img/Notification_Icon.svg' %}"/>
-            <a href="{% url 'perfilFreelancer' p.id %}">
-                <img class="profile_picture2" src="{{ p.profile_picture.url }}" alt="Profile Picture"/>
-            </a>
-            <img class="logo" src="{% static 'img/Logo.svg' %}"/>
-            <div class="logoseparator"></div>
-        
-            <div class="onlinemarketplace2">
-                Online Marketplace
-            </div>
-        </div>     
+        {% include 'perfil/sections/heading.html' %}
 
         <div class="ptext ep">
             Edit profile
         </div>     
-
+    
         <a href="#myaccount" class="ptext my-account">My account</a>
         <a href="{% url 'editProfile' p.id %}" class="ptext profile">Profile</a>
         <a href="{% url 'editPortfolio' p.id %}" class="ptext portfolio">Portfolio</a>
-        <a href="{% url 'deleteDisable' p.id %}" class="ptext delete-account">Delete account</a>    
-
+        <a href="{% url 'deleteDisable' p.id %}" class="ptext delete-account">Delete account</a>
+        <a href="{% url 'home' %}" class="ptext logout">Log out</a>       
+    
         <div class="fields">
-
-            <form action="/save_changes" method="post">
-
+    
+            <form method="POST">
+    
+                {% csrf_token %}
+    
                 <div class="ptext myaccount">
                     My Account
                 </div>
@@ -55,109 +49,45 @@
                 
                 <div class="input-container name">
                     <div class="ptext name">Name</div>
-                    <textarea class="input-box name">{{ p.name }}</textarea>
+                    <textarea name="name" class="input-box name">{{ p.name }}</textarea>
                 </div>
-
+    
                 <div class="input-container username">
                     <div class="ptext name">Username</div>
-                    <textarea class="input-box name">{{ p.username }}</textarea>
+                    <textarea name="username" class="input-box name">{{ p.username }}</textarea>
                 </div>
-
+    
                 <div class="input-container email">
                     <div class="ptext name">Email</div>
-                    <textarea class="input-box name">{{ p.email }}</textarea>
+                    <textarea name="email" class="input-box name">{{ p.email }}</textarea>
                 </div>
-
+    
                 <div class="input-container phone">
                     <div class="ptext name">Phone</div>
-                    <img class="arrow" src="{% static 'img/arrow.svg' %}" alt="arrow" id="arrow" onclick="toggleCodeList()">
-                    <textarea id="code-box" class="input-box code">{{ code }}</textarea>
-                    <textarea class="input-box tel">{{ phone }}</textarea>
-
-                    <div class="code-list" id="code-list"></div>
+                    <!-- img class="arrow" src="{% static 'img/arrow.svg' %}" alt="arrow" id="arrow" onclick="toggleCodeList()"-->
+                    <!--textarea id="code-box" class="input-box code">{{ code }}</textarea-->
+                    <textarea name="phone" class="input-box name">{{ p.phone }}</textarea>
+                    <!--div class="code-list" id="code-list"></div-->
                 </div>
-
-            </form>
-
-            <button id= "change-password" class="med-btn pass" onclick="changePassword()">Change Password</button>
-            <!--Poner dentro del form después -->
-            <button type="submit" id= "save-changes" class='med-btn save'>Save Changes</button>
-
-        </div>
-        
-
-        <footer class="footer">
-        
-            <div class="footer-content">
-                <img class="encora2" src="{% static 'img/Encora1.svg' %}" />
-                <a href="https://www.facebook.com/encorainc" target="_blank">
-                    <img class="fb3" src="{% static 'img/fb.png' %}"/>
-                </a>
-                <a href="https://www.instagram.com/encorainc/" target="_blank">
-                    <img class="ig3" src="{% static 'img/ig.png' %}" />
-                </a>
-                <a href="https://www.linkedin.com/company/encorainc/" target="_blank">
-                    <img class="lin3" src="{% static 'img/lin.png' %}" />
-                </a>
-                <img class="gmail3" src="{% static 'img/gmail.png' %}" />
-                <nav class="footer-nav">
-                    <a href="#features">Features</a>
-                    <a href="#about">About</a>
-                    <a href="#support">Support</a>
-                    <a href="#resources">Resources</a>
-                    <a href="#places">Places</a>
-                    <a href="#jobs">Jobs</a>
-                </nav>
-                <div id='footertext' class='footertext'> 
-                    © 2024 Online Marketplace
-                </div>
-            </div>
     
-        </footer>
-    </div>
-
-    <div id="passwordModal" class="modal">
-        <div class="modal-content">
-            <span class="close">&times;</span>
-            <div id='change-password-title' class='ptext change-password-title'>Change Password</div>
-            <form action="/change_password" method="post">
-        
-                <div class="input-container2 current-pass">
-                    <div class="ptext name">Current Password</div>
-                    <input id="currentpassword" class="input-box e" type="password" placeholder="Enter your current password" />
-                    <img class="eye-icon" src="{% static 'eye_icon.png' %}" alt="Show Password" 
-                            onmousedown="showPassword('currentpassword')" 
-                            onmouseup="hidePassword('currentpassword')" 
-                            onmouseleave="hidePassword('currentpassword')" />
-                </div>
-                
-                <div class="input-container2 new-pass">
-                    <div class="ptext name">Enter New Password</div>
-                    <input id="newpassword" class="input-box e" type="password" placeholder="Enter your new password"></textarea>
-                    <img class="eye-icon" src="{% static 'eye_icon.png' %}" alt="Show Password" 
-                            onmousedown="showPassword('newpassword')" 
-                            onmouseup="hidePassword('newpassword')" 
-                            onmouseleave="hidePassword('newpassword')" />
-                </div>  
-
-                <div class="input-container2 confirm-pass">
-                    <div class="ptext name">Confirm New Password</div>
-                    <input id="confirmnewpassword" class="input-box e" type="password" placeholder="Confirm your new password"></textarea>
-                    <img class="eye-icon" src="{% static 'eye_icon.png' %}" alt="Show Password" 
-                            onmousedown="showPassword('confirmnewpassword')" 
-                            onmouseup="hidePassword('confirmnewpassword')" 
-                            onmouseleave="hidePassword('confirmnewpassword')" />
-                </div>
-
+                <button type="submit" id= "save-changes" class='med-btn save'>Save Changes</button>
+    
             </form>
-
-            <!--Poner dentro del form después -->
-            <button id= "change-password" class='med-btn change-pass' onclick="savePassword()">Change</button>
-
+    
+            <button type="button" id= "change-password" class="med-btn pass" onclick="changePassword()">Change Password</button>
+            
         </div>
+
     </div>
+    
+
+    {% include 'perfil/sections/footer.html' %}
+
+    {% include 'perfil/sections/change_password_modal.html' %}
 
     <script>
+
+        /*
 
         document.addEventListener('DOMContentLoaded', () => {
                 
@@ -211,15 +141,18 @@
             }
         }
 
-        function showPassword(id) {
-            const passwordField = document.getElementById(id);
-            passwordField.setAttribute('type', 'text');
-        }
+        
+        window.onclick = function(event) {
+            const codeList = document.getElementById('code-list');
+            const arrow = document.getElementById('arrow');
 
-        function hidePassword(id) {
-            const passwordField = document.getElementById(id);
-            passwordField.setAttribute('type', 'password');
+            if (event.target !== codeList && event.target !== arrow) {
+                codeList.style.display = 'none';
+                arrow.classList.remove('rotated');
+            }
         }
+        
+        */
 
         var modal = document.getElementById("passwordModal");
 
@@ -241,19 +174,6 @@
         function savePassword() {
             modal.style.display = "none";
         }
-
-        
-
-        window.onclick = function(event) {
-            const codeList = document.getElementById('code-list');
-            const arrow = document.getElementById('arrow');
-
-            if (event.target !== codeList && event.target !== arrow) {
-                codeList.style.display = 'none';
-                arrow.classList.remove('rotated');
-            }
-        }
-
 
     </script>
 

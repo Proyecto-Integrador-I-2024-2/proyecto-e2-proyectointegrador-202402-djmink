@@ -6,87 +6,6 @@ body{
     background-color: #F2F2F2;
 }
 
-/* Heading section */
-
-.heading {
-    background-color:#F2F2F2;
-    height:102px;
-    width: 1440px; 
-    position:relative;
-}
-
-.ptext{
-    font-family: "Poppins", sans-serif;
-    position: absolute;
-}
-
-.ptext.hometext{
-    color:#000000;
-    font-size:24px;
-    font-weight: 600;
-    line-height:auto;
-    top:32px;
-    left:690px;
-    width:60px;
-    height:30px;
-}
-
-.icon{
-    top:35px;
-    position:absolute;
-    width:35px;
-    height: 35px;
-    cursor: pointer;
-}
-
-.icon.chat_icon{
-    left:1268px;
-}
-
-.icon.notification_icon{
-    left:1315px;
-}
-
-.logo{
-    top:7px;
-    left:40px;
-    position:absolute;
-    width:80px;
-    height: 80px;
-}
-
-.logoseparator{
-    top:45px;
-    left:95px;
-    width: 60px;
-    transform:rotate(-90deg);
-    border:1px solid #01000c;
-    position:absolute;
-}
-
-.ptext.onlinemarketplace{
-    color:#01000c;
-    font-size:18px;
-    font-weight: 500;
-    top:20px;
-    left:150px;
-    width:100px;
-    height: 66px;
-    cursor: pointer;
-}
-
-.profile_picture_heading {
-    top:25px;
-    left:1365px;
-    position:absolute;
-    width:50px;
-    height: 50px;
-    border-radius: 50%; 
-    object-fit: cover;
-}
-
-/*  */
-
 .main-title{
     width: 1440px;
     height: 121px;
@@ -217,11 +136,12 @@ body{
     left: 10px;
     font-size: 16px;
     font-weight: 400;
-    top: 10px;
+    top: 8px;
+    width: 170px;
 }
 
 .freelancer-picture-1{
-    left: 213px;
+    left: 200px;
     position: absolute;
     top: 10px;
     height: 20px;
@@ -230,21 +150,25 @@ body{
 }
 
 .ptext.freelancer-name-1{
-    left: 240px;
+    left: 230px;
     top: 10px;
     font-weight: 400;
     font-size: 12px;
+    width: 80px;
+    white-space: nowrap; 
+    overflow: hidden; 
+    text-overflow: ellipsis;
 }
 
 .ptext.milestone-progress{
-    left: 324px;
+    left: 314px;
     top: 10px;
     font-weight: 400;
     font-size: 12px;
 }
 
 .ptext.milestone-deadline{
-    left: 359px;
+    left: 365px;
     top: 10px;
     font-weight: 400;
     font-size: 12px;
@@ -297,13 +221,11 @@ body{
 .task-container{
     width: 580px;
     height: 26px;
-    background-color: white;
     position: relative;
 }
 
 .circle {
     position: absolute;
-    top: 2px;
     left: 15px;
     width: 20px;
     height: 20px;
@@ -319,7 +241,12 @@ body{
 }
 
 .ptext.task-name{
+    font-size: 14px;
     left: 40px;
+    width: 530px;
+    white-space: nowrap; 
+    overflow: hidden; 
+    text-overflow: ellipsis;
 }
   
 .ptext.info{
@@ -327,6 +254,13 @@ body{
     height: 40px;
     position: relative;
     left: 15px;
+}
+
+.ptext.info.no-freelancer{
+    top: 10px;
+    width: 500px;
+    left: 200px;
+    font-size: 12px;
 }
 
 .applications-section{
@@ -362,7 +296,7 @@ body{
 .ptext.milestone-application-name{
     position: relative;
     font-size: 18px;
-    font-weight: 400;
+    font-weight: 500;
     margin-bottom: 10px;
 }
 
@@ -413,6 +347,11 @@ body{
     left: 448px;
     width: 95px;
     top: 15px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    text-align: center;
 }
 
 .calendar-container {
@@ -583,82 +522,6 @@ body{
     padding: 0 5px; /* Espaciado lateral */
 }
 
-/* footer */
-.footer {
-    position: relative;
-    background-color: #F2F2F2;
-    font-family: "Poppins", sans-serif;
-    font-weight: 400;
-    width: 1440px; 
-    height: 135px;
-}
-
-.footer-content {
-    max-width: 1200px;
-    margin: 0 auto;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-.footer-nav {
-    margin-top: 57px;
-}
-
-.footer-nav a {
-    color: #01000C;
-    margin: 0 15px;
-    text-decoration: none;
-    font-size: 20px;
-}
-
-.footer-nav a:hover {
-    text-decoration: underline; 
-}
-
-.encora {
-    position: absolute;
-    left: 37px;
-    top: 10px; 
-    height: 111px; 
-    width: 113px;
-}
-
-.social-icon{
-    position: absolute;
-    top: 78px;
-    height: 24px; 
-    width: 24px;
-    cursor: pointer;
-}
-
-.social-icon.gmail {
-    left: 1252px;
-}
-
-.social-icon.lin {
-    left: 1280px;
-}
-
-.social-icon.ig{
-    left: 1308px;
-}
-
-.social-icon.fb {
-    left: 1336px;
-}
-
-.footertext {
-    text-align:center;
-    font-size:12px;
-    font-weight: 400;
-    top:105px;
-    left:1205px;
-    position:absolute;
-    width:200px;
-    height:18px;
-}
-
 .modal1 {
     display: none; 
     position: fixed;
@@ -716,7 +579,7 @@ body{
 .assignments-modal-list{
     max-height: 250px;
     position: relative;
-    top: 45px;
+    top: 40px;
     width: 400px;
     overflow-y: auto;
 }
@@ -724,7 +587,7 @@ body{
 .assignment-item{
     border-radius: 5px;
     position: relative;
-    height: 245px;
+    height: 246px;
     background-color: rgb(208, 208, 206);
     width: 320px;
     left: 10%;
@@ -735,36 +598,24 @@ body{
     margin-bottom: 0;
 }
 
+.assignment-info-container {
+    overflow-y: auto;
+    overflow-x: hidden;
+    height: 140px;
+}
+
 .ptext.assignment-info{
+    position: relative;
     left: 10px;
-    font-size: 16px;
-}
-
-.ptext.assignment-info.assignment-modal-task{
-    top: 20px;
-}
-
-.ptext.assignment-info.assignment-modal-date{
-    top: 40px;
-}
-
-.ptext.assignment-info.assignment-modal-status{
-    top: 60px;
-}
-
-.ptext.assignment-info.download-btn{
-    top: 80px;
-}
-
-.ptext.assignment-info.link{
-    top: 100px;
+    height: auto;
+    font-size: 15px;
+    width: 280px;
 }
 
 .comments-section{
     position: relative;
     height: 105px;
     width: 300px;
-    top: 130px;
     left: 10px;
     border-top: 1px solid #BCBCBC;
 }

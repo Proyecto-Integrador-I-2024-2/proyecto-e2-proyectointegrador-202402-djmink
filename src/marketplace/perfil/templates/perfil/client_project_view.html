@@ -10,23 +10,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Manage Project</title>
     <link rel="icon" type="image/png" href="{% static 'img/Logo.png' %}">
-    <link rel="stylesheet" href="{% static 'css/client_project_view.css' %}">
+    <link rel="stylesheet" href="{% static 'css/client_project_view2.css' %}">
+    <link rel="stylesheet" href="{% static 'css/info-modal.css' %}">
+    <link rel="stylesheet" href="{% static 'css/heading.css' %}">
+    <link rel="stylesheet" href="{% static 'css/footer.css' %}">
 </head>
 <body>
 
-    <div class="heading">
-        <div class="ptext hometext">Home</div>
-        <img class="icon chat_icon" src="{% static 'img/Chat_Icon.svg' %}"/>
-        <img class="icon notification_icon" src="{% static 'img/Notification_Icon.svg' %}"/>
-        <a href="{% url 'perfilFreelancer' profile.id %}">
-            <img class="profile_picture_heading" src="{{ profile.profile_picture.url }}" alt="Profile Picture"/>
-        </a>
-        <img class="logo" src="{% static 'img/Logo.svg' %}"/>
-        <div class="logoseparator"></div>
-        <div class="ptext onlinemarketplace">
-            Online Marketplace
-        </div>
-    </div>
+    {% include 'perfil/sections/info-modal.html' %}
+
+    {% include 'perfil/sections/heading.html' %}
 
     <div class="main-title">
         <div class="ptext project-name">{{ project.name}} </div>
@@ -41,7 +34,9 @@
             <div class="ptext progress">Progress</div>
             <div class="progress-bar">
                 <div class="progress-fill" data-progress="{{ project_progress }}">
-                    <span class="ptext progress-text">{{ project_progress|floatformat:0 }}%</span>
+                    {% if project_progress > 0 %}
+                        <span class="ptext progress-text">{{ project_progress|floatformat:0 }}%</span>
+                    {% endif %}
                 </div>
             </div>
         </div>
@@ -58,10 +53,10 @@
                                     <img class="freelancer-picture-1" src="{{ milestone.freelancer.profile_picture }}"/>
                                     <div class="ptext freelancer-name-1">{{ milestone.freelancer.name }}</div>
                                 {% else %}
-                                    <div class="ptext info">No assigned yet.</div>
+                                    <div class="ptext info no-freelancer">No assigned yet.</div>
                                 {% endif %}
                                 <div class="ptext milestone-progress">{{ milestone.progress1 }}%</div>
-                                <div class="ptext milestone-deadline">{{ milestone.deadline }}</div>
+                                <div class="ptext milestone-deadline">{{ milestone.end_date }}</div>
                                 <button class="btn assignment" onclick="openAssignmentModal('{{ milestone.id }}', '{{ milestone.name }}')">Assigments</button>
                                 <img class="arrow" src="{% static 'img/arrow.svg' %}" alt="arrow">
                             </div>
@@ -69,7 +64,11 @@
                                 {% for task in milestone.tasks %}
                                     <div class="task-container">
                                         <div class="circle">
-                                            <img class="check" src="{% static 'img/Check.svg' %}">
+                                            {% if task.state == 'CP' %}
+                                                <img class="check" src="{% static 'img/Check.svg' %}">
+                                            {% else %}
+                                                <img class="check" src="{% static 'img/Uncheck.svg' %}">
+                                            {% endif %}
                                         </div>
                                         <div class="ptext task-name">{{ task.name }}</div>
                                     </div>
@@ -92,17 +91,25 @@
                             <div class="ptext milestone-application-name">{{ milestone.name }}</div>
                             <div class="applications-container">
                                 {% for application in milestone.applications %}
-                                    <div class="application-container">
-                                        <img class="freelancer-picture-2" src="{{ application.freelancer_picture }}"/>
-                                        <div class="ptext application-freelancer-name">{{ application.freelancer_name }}</div>
-                                        <button class="btn accept">Accept</button>
-                                        <button class="btn reject">Reject</button>
-                                        <button class="btn view-profile">
-                                            <a href="{% url 'freelancerProfile' application.freelancer_id profile.id %}">View Profile</a>
-                                        </button>
-                                    </div>
-                                {% empty %}
-                                    <div class="ptext info">No applications for this milestone yet.</div>
+                                    {% if application.state == 'Sent' %}
+                                        <div class="application-container">
+                                            <img class="freelancer-picture-2" src="{{ application.freelancer_picture }}"/>
+                                            <div class="ptext application-freelancer-name">{{ application.freelancer_name }}</div>
+                                            <form method="POST">
+                                                {% csrf_token %}
+                                                <input type="hidden" name="action" value="accept_application">
+                                                <input type="hidden" name="application_id" value="{{ application.id }}">
+                                                <button type="submit" class="btn accept">Accept</button>
+                                            </form>
+                                            <form method="POST">
+                                                {% csrf_token %}
+                                                <input type="hidden" name="action" value="reject_application">
+                                                <input type="hidden" name="application_id" value="{{ application.id }}">
+                                                <button type="submit" class="btn reject">Reject</button>
+                                            </form>
+                                            <a href="{% url 'freelancerProfile' profile.id application.freelancer_id%}" class="btn view-profile">View Profile</a>
+                                        </div>
+                                    {% endif %}
                                 {% endfor %}
                             </div>
                         </div>
@@ -134,32 +141,7 @@
 
     </div>
 
-    <footer class="footer">
-        <div class="footer-content">
-            <img class="encora" src="{% static 'img/Encora1.svg' %}" />
-            <a href="https://www.facebook.com/encorainc" target="_blank">
-                <img class="social-icon fb" src="{% static 'img/fb.png' %}"/>
-            </a>
-            <a href="https://www.instagram.com/encorainc/" target="_blank">
-                <img class="social-icon ig" src="{% static 'img/ig.png' %}" />
-            </a>
-            <a href="https://www.linkedin.com/company/encorainc/" target="_blank">
-                <img class="social-icon lin" src="{% static 'img/lin.png' %}" />
-            </a>
-            <img class="social-icon gmail" src="{% static 'img/gmail.png' %}" />
-            <nav class="footer-nav">
-                <a href="#features">Features</a>
-                <a href="#about">About</a>
-                <a href="#support">Support</a>
-                <a href="#resources">Resources</a>
-                <a href="#places">Places</a>
-                <a href="#jobs">Jobs</a>
-            </nav>
-            <div class='footertext'> 
-                © 2024 Online Marketplace
-            </div>
-        </div>
-    </footer>
+    {% include 'perfil/sections/footer.html' %}
 
     <div id="assignmentsModal" class="modal1">
         <div class="modal-content">
@@ -177,10 +159,24 @@
 
     <script>
 
+        let projectData;
+
+        document.addEventListener("DOMContentLoaded", function() {
+
+            projectData = JSON.parse(document.getElementById('projectData').textContent);
+            const progressFill = document.querySelector('.progress-fill');
+            const projectProgress = progressFill.getAttribute('data-progress');
+            progressFill.style.width = projectProgress + '%';
+
+            if (projectProgress > 0){
+                progressFill.querySelector('.progress-text').textContent = projectProgress + '%';
+            }
+
+            generateCalendarAround(currentDate);
+
+        });
+
         function openAssignmentModal(milestoneId, milestoneName) {
-            // Obtiene los datos de los milestones desde el JSON inyectado en la plantilla
-            // Obtiene los datos del proyecto desde el JSON inyectado en la plantilla
-            const projectData = JSON.parse(document.getElementById('projectData').textContent);
             
             // Filtra los assignments correspondientes a este milestone
             const assignments = projectData.assignments.filter(assignment => assignment.milestone_id == milestoneId);
@@ -201,16 +197,23 @@
                 
                 // Rellenar el contenido del assignment
                 assignmentElement.innerHTML = `
-                    <div class="ptext assignment-info">${assignment.name}</div>
-                    <div class="ptext assignment-info assignment-modal-task">Task: ${assignment.task}</div>
-                    <div class="ptext assignment-info assignment-modal-date">Date: ${assignment.date}</div>
-                    <div class="ptext assignment-info assignment-modal-status">Status: ${assignment.status}</div>
-                    ${assignment.file ? `<a class="ptext assignment-info download-btn" href="${assignment.file}" target="_blank">Download File</a>` : '<div class="ptext assignment-info download-btn">No file available</div>'}
-                    ${assignment.url ? `<a class="ptext assignment-info link" href="${assignment.url}" target="_blank">Link</a>` : '<div class="ptext assignment-info link">No link available</div>'}
+                    <div class="assignment-info-container">
+                        <div class="ptext assignment-info"><strong>Name:</strong> ${assignment.name}</div>
+                        <div class="ptext assignment-info"><strong>Task:</strong> ${assignment.task}</div>
+                        <div class="ptext assignment-info"><strong>Date:</strong> ${assignment.date}</div>
+                        <div class="ptext assignment-info"><strong>Status:</strong> ${assignment.checked ? 'Reviewed' : 'Sent'}</div>
+                        ${assignment.file ? `<a class="ptext assignment-info" href="${assignment.file}" target="_blank">Download File</a>` : '<div class="ptext assignment-info download-btn">No file available</div>'}
+                        ${assignment.url ? `<a class="ptext assignment-info" href="https://${assignment.url}" target="_blank">Link</a>` : '<div class="ptext assignment-info link">No link available</div>'}
+                    </div>   
                     <div class="comments-section">
-                        <div class="ptext comments-title">Comments</div>
-                        <textarea placeholder="Add a comment" class="comment-input"></textarea>
-                        <button class="btn add-comment">Send</button>
+                        <div class="ptext comments-title">Send feedback:</div>
+                        <form method="POST">
+                            {% csrf_token %}
+                            <textarea placeholder="Add a comment" class="comment-input" name="assigment_comment"></textarea>
+                            <input type="hidden" name="action" value="send_assignment_comment">
+                            <input type="hidden" name="assignment_id" value="${assignment.id}">
+                            <button type="submit" class="btn add-comment">Send</button>
+                        </form>
                     </div>
                 `;
                 
@@ -240,24 +243,8 @@
             expandedSection.classList.toggle('open');
         }
 
-        document.addEventListener("DOMContentLoaded", function() {
-            const progressFill = document.querySelector('.progress-fill');
-            const projectProgress = progressFill.getAttribute('data-progress');
-            progressFill.style.width = projectProgress + '%';
-            progressFill.querySelector('.progress-text').textContent = projectProgress + '%';
-        });
-
-        //para el calendario
-        const milestones = [
-            { startDate: '2024-10-20', endDate: '2024-10-26', task: 'Submission of Report' },
-            { startDate: '2024-10-15', endDate: '2024-10-24', task: 'monda' },
-            { startDate: '2024-10-25', endDate: '2024-10-31', task: 'monda' },
-            { startDate: '2024-10-15', endDate: '2024-10-24', task: 'monda' },
-            { startDate: '2024-10-15', endDate: '2024-10-24', task: 'monda' },
-            { startDate: '2024-10-15', endDate: '2024-10-24', task: 'monda' },
-            { startDate: '2024-10-15', endDate: '2024-10-24', task: 'monda' }
-        ];
-
+        //CALENDARIO
+       
         const calendarGrid = document.getElementById('calendar-grid');
         const monthYear = document.getElementById('month-year');
         const today = new Date();
@@ -267,10 +254,6 @@
             currentDate = new Date(); // Resetea currentDate a la fecha de hoy
             generateCalendarAround(currentDate); // Genera el calendario con el día actual en el centro
         }
-        
-
-        // Generar el calendario alrededor del día actual
-        //generateCalendarAroundToday();
 
         // Función para generar el calendario con 29 días alrededor de la fecha de referencia
         function generateCalendarAround(date) {
@@ -364,6 +347,13 @@
         let milestoneOffset = 0; // Variable global para manejar el offset
 
         function generateMilestones(daysToShow) {
+
+            const milestones = projectData.milestones.map(milestone => ({
+                startDate: milestone.start_date,
+                endDate: milestone.end_date,
+                name: milestone.name,
+            }));
+            
             const milestoneContainer = document.getElementById('milestone-container');
             milestoneContainer.innerHTML = ''; // Limpiar los hitos anteriores
 
@@ -400,8 +390,6 @@
                 } else {
                     // Verificar si el hito se sale del contenedor a la derecha
                     const containerWidth = milestoneContainer.clientWidth;
-                    console.log(containerWidth);
-                    console.log(leftOffset);
                     const rightEdge = leftOffset + width;
                     if (rightEdge > containerWidth) {
                         width = Math.max(0, containerWidth - leftOffset); // Ajustar el ancho si se sale a la derecha
@@ -415,14 +403,13 @@
 
                     milestoneDiv.innerHTML = `
                         <div class="milestone" style="width: ${width}px; left: ${leftOffset}px; position: absolute;">
-                            <div class="milestone-name">${milestone.task}</div>
+                            <div class="milestone-name">${milestone.name}</div>
                         </div>
                     `;
 
                 }
 
                 milestoneContainer.appendChild(milestoneDiv);
-
                 
             });
         }
@@ -447,10 +434,6 @@
         document.getElementById('next-month').addEventListener('click', () => {
             nextPeriod();
         });
-
-        // Generar el calendario inicial para los 29 días alrededor del día actual
-        generateCalendarAround(currentDate);
-
         
     </script>
 
