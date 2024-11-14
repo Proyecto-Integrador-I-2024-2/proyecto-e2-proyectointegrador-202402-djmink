@@ -4,6 +4,10 @@ html {
     scroll-behavior: smooth;
 }
 
+body{
+    background-color: #F2F2F2;
+}
+
 .mainback {
     height: 1400px;
     width: 1440px; 

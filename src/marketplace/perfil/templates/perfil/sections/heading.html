@@ -1,14 +1,30 @@
 {% load static %}
 <div class="heading">
-    <div class="ptext hometext">Home</div>
-    <img class="icon chat_icon" src="{% static 'img/Chat_Icon.svg' %}"/>
-    <img class="icon notification_icon" src="{% static 'img/Notification_Icon.svg' %}"/>
-    <a href="{{ profile_url }}">
-        <img class="profile_picture_heading" src="{{ profile_image }}" alt="Profile Picture"/>
-    </a>
-    <img class="logo" src="{% static 'img/Logo.svg' %}"/>
-    <div class="logoseparator"></div>
-    <div class="ptext onlinemarketplace">
-        Online Marketplace
+    <div class="logo">
+        <img class="logo-pic" src="{% static 'img/Logo.svg' %}" class="logo" alt="">
+        <div class="lineNav"></div>
+        <div class="navText">
+            <span>Online</span>
+            <span>Marketplace</span>
+        </div>
+    </div>
+    <div class="homeBar">
+        <ul>
+            {% if not at_home %}
+                <li><a href="{{ home_url }}">Home</a></li>
+            {% endif %}   
+            {% if not at_client_page %}
+                {% if not at_projects_page %}
+                    <li><a href="{{ projects_url }}">My Projects</a></li>
+                {% endif %}
+            {% endif %}
+        </ul>
+    </div>
+    <div class="navBar">
+        <ul>
+            <li><img class="icon" src="{% static 'img/Chat_Icon.svg' %}" alt=""></li>
+            <li><img class="icon" src="{% static 'img/Notification_Icon.svg' %}" alt=""></li>
+            <li><a href="{{ profile_url }}"><img class="profile_picture_heading" src="{{ profile_image }}" alt="Profile Picture"/></a></li>
+        </ul>
     </div>
 </div>
