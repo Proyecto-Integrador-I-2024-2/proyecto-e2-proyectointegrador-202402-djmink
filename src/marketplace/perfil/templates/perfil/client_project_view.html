@@ -23,7 +23,7 @@
 
     <div class="main-title">
         <div class="ptext project-name">{{ project.name}} </div>
-        <a href="{% url 'calendar' %}" class="editprojectbutton">
+        <a href="{% url 'edit_project' profile.id project.id %}" class="editprojectbutton">
             Edit Project
         </a>
     </div>

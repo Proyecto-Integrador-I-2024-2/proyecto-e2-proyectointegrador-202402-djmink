@@ -5,6 +5,7 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="{% static 'css/AddProject.css' %}">
+        <link rel="stylesheet" href="{% static 'css/heading.css' %}">
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
@@ -12,23 +13,7 @@
         <link rel="icon" type="image/png" href="{% static 'img/Logo.png' %}">
     </head>
     <body>
-    <nav>
-        <div class="logo">
-            <img src="{% static 'images/Logo.png' %}" alt="Logo"/>
-            <div class="lineNav"></div>
-            <div class="navText">
-                <span>Online</span>
-                <span>Marketplace</span>
-            </div>
-        </div>
-        <div class="navBar">
-            <ul>
-                <li><img src="{% static 'images/Chat_Icon.png' %}" alt=""></li>
-                <li><img src="{% static 'images/Notification_Icon.png' %}" alt=""></li>
-                <li><img src="{% static 'images/Ellipse 252.png' %}" alt=""></li>
-            </ul>
-        </div>
-    </nav>
+        {% include 'perfil/sections/heading.html' %}
         <div id="torso" class="content" data-client-id="{{ company_manager.id }}">
             <h2>Add New Project</h2>
             <div class="basicInformation">

@@ -41,7 +41,7 @@
             
             <div class="add-button">
                 <div class="ptext add">Add</div>
-                <a href="{% url 'perfilesCliente' p.id %}">
+                <a href="{% url 'create_project' p.id %}">
                     <button type="button" id= "add-content-btn" class="add content-btn">+</button>
                 </a>   
             </div>
@@ -53,7 +53,7 @@
                     {% for project in p.projects.all %}
                         <div class="project-container" id="project-{{ project.id }}">          
                             <button type="button" class="delete-btn project" onclick="markForRemoval('project', '{{ project.id }}')">X</button>
-                            <a href="{% url 'perfilesCliente' p.id %}">
+                            <a href="{% url 'edit_project' p.id %}">
                                 <img class="edit-btn" src="{% static 'img/Edit.svg' %}"/>
                             </a>  
                             <div id="project-name-{{ project.id }}" class="ptext project-name">{{ project.name }}</div>

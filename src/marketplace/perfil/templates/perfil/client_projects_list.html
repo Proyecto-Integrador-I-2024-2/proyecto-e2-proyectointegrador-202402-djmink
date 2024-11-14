@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Projects List</title>
     <link rel="icon" type="image/png" href="{% static 'img/Logo.png' %}">
-    <link rel="stylesheet" href="{% static 'css/client_projects_list2.css' %}">
+    <link rel="stylesheet" href="{% static 'css/client_projects_list3.css' %}">
     <link rel="stylesheet" href="{% static 'css/heading.css' %}">
     <link rel="stylesheet" href="{% static 'css/footer.css' %}">
 </head>
@@ -31,7 +31,9 @@
             Add
         </div>
 
-        <button id="addBtn" class="nav-button">+</button>
+        <a href="{% url 'create_project' p.id %}">
+            <button id="addBtn" class="nav-button">+</button>
+        </a>
  
         <div class="projects-container">
             {% for project in p.projects.all %}
@@ -41,8 +43,9 @@
                     <div class="ptext project-description">{{ project.description }}</div>
                     <div class="ptext project-state">State: {{ project.state }}</div>
                     <button class="btn preview">Preview</button>
+                    <a href="{% url 'edit_project' p.id project.id %}">
                     <button class="btn edit">Edit</button>
-
+                    </a>
                     <a href="{% url 'manageProject' id=p.id id_project=project.id %}">
                         <button class="btn open">Manage</button>
                     </a>

@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login as auth_login
 import json
+from django.urls import reverse
 from django.utils import timezone
 from django.shortcuts import get_object_or_404, render, redirect
 from django.contrib.auth import authenticate, login
@@ -179,16 +180,28 @@ def editproject(request):
     return render(request, 'EditProject.html')
 
 def create_project_view(request, id):
-    company_manager = CompanyManager.objects.get(id=id)
-    return render(request, 'AddProject.html', {'company_manager': company_manager})
+    client = CompanyManager.objects.get(id=id)
 
-def edit_project_view(request, id):
-    project = Project.objects.get(id=id)
+    context = {
+        'profile_image': client.image.url,
+        'home_url': reverse('mainCliente', args=[client.id]),
+        'profile_url': reverse('perfilesCliente', args=[client.id]),
+        'at_client_page': True
+    }
+    return render(request, 'AddProject.html', context)
+
+def edit_project_view(request, id_client, id_project):
+    project = Project.objects.get(id=id_project)
     milestones = project.milestones.all()
+    client = CompanyManager.objects.get(id=id_client)
     
     context = {
         'project': project,
-        'milestones': milestones
+        'milestones': milestones,
+        'profile_image': client.image.url,
+        'home_url': reverse('mainCliente', args=[client.id]),
+        'profile_url': reverse('perfilesCliente', args=[client.id]),
+        'at_client_page': True
     }
     return render(request, 'EditProject.html', context)
 
