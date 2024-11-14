@@ -104,9 +104,10 @@ def registerf2(request, id):
             return redirect('registerf3', id = id)
         else:
             image = request.FILES.get('image_input')
-            freelancer_profile = Freelancer.objects.get(id=id)
-            freelancer_profile.image = image
-            freelancer_profile.save()
+            if image:
+                freelancer_profile = Freelancer.objects.get(id=id)
+                freelancer_profile.image = image
+                freelancer_profile.save()
             return redirect('registerf3', id = id)
     else:
         return render(request, 'singup2.html', {'id': id})
@@ -144,9 +145,7 @@ def registerc1(request):
                 name = company_name,
                 phone=None,
                 password = make_password(password),
-                image=None,
                 country=None,
-
                 address=None,
                 legal_agent=legal_agent,
                 business_vertical=None,
@@ -163,7 +162,6 @@ def registerc2(request, id):
         address = request.POST.get('address')
         business_vertical = request.POST.get('business_vertical')
         company_type = request.POST.get('company_type')
-
         user.country = country
         user.phone = phone
         user.address = address
@@ -202,14 +200,23 @@ def post_project(request):
         description = request.POST.get('description')
         budget = request.POST.get('budget')
         project_picture = request.FILES.get('project_picture')
+        if project_picture:
 
-        project = Project.objects.create(
-            manager_id=manager_id,
-            name=name,
-            description=description,
-            budget=budget,
-            project_picture=project_picture
-        )
+            project = Project.objects.create(
+                manager_id=manager_id,
+                name=name,
+                description=description,
+                budget=budget,
+                project_picture=project_picture
+            )
+        else:
+            project = Project.objects.create(
+                manager_id=manager_id,
+                name=name,
+                description=description,
+                budget=budget,
+            )
+
         # form = createProjectForm(request.POST, request.FILES)
 
         milestones_json =  request.POST.get('milestones')

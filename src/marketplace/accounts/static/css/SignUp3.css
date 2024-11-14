@@ -9,6 +9,11 @@ body {
     background-color: rgba(242, 242, 242, 1);
 }
 
+.logo-pic{
+    width: 100px;
+    height: 100px;
+}
+
 nav {
     margin: 0 10px 20px;
     height: 100px;
@@ -55,6 +60,7 @@ nav a {
     background-color: white;
     margin: 0 auto;
     margin-top: 50px;
+    margin-bottom: 80px;
     display: flex;
     flex-direction: column;
     border-radius: 15px;
@@ -84,13 +90,17 @@ nav a {
     display: flex;
     flex-direction: column;
     width: 100%; 
-    align-items: center; 
+    align-items: left; 
 }
 
 .inputContainer span{
     font-size: 15px;
     margin-bottom: 5px;
 
+}
+
+input{
+    text-indent: 5px;
 }
 
 .inputContainer select,
@@ -102,6 +112,7 @@ nav a {
     border-radius: 4px;
     font-size: 16px;
     margin-bottom: 10px;
+    
 }
 
 

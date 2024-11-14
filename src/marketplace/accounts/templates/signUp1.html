@@ -8,12 +8,13 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/png" href="{% static 'img/Logo.png' %}">
     <title>Sing Up</title>
 </head>
 <body>
     <nav>
         <div class="logo">
-            <img src="{% static 'images/Logo.png' %}"/>
+            <img class="logo-pic" src="{% static 'img/Logo.svg' %}" class="logo" alt="">
             <div class="lineNav"></div>
             <div class="navText">
                 <span>Online</span>
@@ -26,7 +27,7 @@
     <div class="content">
         <h1 class="title">Join our Community</h1>
         <span>Singing up as <a class="freelancer" href="{% url 'registerc1'%}">Company</a></span>
-        <a class="googleButton"><img src="{% static 'images/google.png' %}"> sing in with Google</a>
+        <a class="googleButton"><img class="google-icon" src="{% static 'img/Google.png' %}"> sing in with Google</a>
         <span>Or</span>
         <form method = "POST">
             {% csrf_token %}
@@ -38,10 +39,10 @@
                 <span>Full Name</span>
                 <input type="text" class="inputText" name="fullname" id="fullname" required>
             </div>
-            <div class="inputContainerNumber">
+            <div class="inputContainer">
                 <span>Phone Number</span>
                 <div>
-                    <input type="number" class="numberPhone" name="phone_number" id="phone_number" required>
+                    <input type="number" class="inputText" name="phone_number" id="phone_number" required>
                 </div>
             </div>
             <div class="inputContainer">
