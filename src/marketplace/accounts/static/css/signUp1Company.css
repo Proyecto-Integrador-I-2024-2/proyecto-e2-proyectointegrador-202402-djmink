@@ -8,6 +8,11 @@ body {
     background-color: rgba(242, 242, 242, 1);
 }
 
+.logo-pic{
+    width: 100px;
+    height: 100px;
+}
+
 nav {
     margin: 0 10px 20px;
     height: 100px;
@@ -119,18 +124,22 @@ form {
     margin-top: 10px;
 }
 
-.numberPhone {
-    border: 1px solid silver;
-    border-radius: 10px;
-    height: 40px;
-}
-
 .buttonSubmit {
     margin-top: 20px;
     background-color: rgba(0, 64, 255, 1);
     color: white;
     cursor: pointer;
     transition: background-color 0.3s;
+}
+
+.google-icon{
+    width: 24px;
+    height: 24px;
+    padding-right: 5px;
+}
+
+input{
+    text-indent: 10px;
 }
 
 .buttonSubmit:hover {
