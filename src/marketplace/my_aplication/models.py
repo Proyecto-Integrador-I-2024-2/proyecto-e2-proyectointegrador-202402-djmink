@@ -113,6 +113,7 @@ class User(models.Model):
     name = models.CharField(max_length=100, blank=True, null=True)
     phone = models.CharField(max_length=100, blank=True, null=True)
     password = models.CharField(max_length=255)
+    is_active = models.BooleanField(default=True)
     image = models.ImageField(upload_to='profile_pictures/', blank=True, null=True, default='profile_pictures/default_profile.jpg')
     country = models.CharField(max_length=100, blank=True, null=True)
     email = models.EmailField(max_length=100, null=True)

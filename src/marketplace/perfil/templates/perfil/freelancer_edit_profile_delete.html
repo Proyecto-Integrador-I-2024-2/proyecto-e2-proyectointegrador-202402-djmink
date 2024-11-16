@@ -52,13 +52,11 @@
         <div class="modal-content">
             <span id="close1" class="close">&times;</span>
             <div class='ptext are-you-sure'>Are you sure?</div>
-            <form action="/delete_account" method="post">
-
+            <form method="POST">
+                {% csrf_token %}
+                <input type="hidden" name="action" value="delete">
+                <button type="submit" id= "delete-btn-yes" class='med-btn delete-disable' onclick="confirmDeleteAccount()">Delete</button>
             </form>
-
-            <!--Poner dentro del form después -->
-            <button id= "delete-btn-yes" class='med-btn delete-disable' onclick="confirmDeleteAccount()">Delete</button>
-
             <button id= "cancel-delete" class='med-btn cancel' onclick="cancel()">Cancel</button>
         </div>
     </div>
@@ -67,12 +65,11 @@
         <div class="modal-content">
             <span id="close2" class="close">&times;</span>
             <div class='ptext are-you-sure'>Are you sure?</div>
-            <form action="/disable_account" method="post">
-
+            <form method="post">
+                {% csrf_token %}
+                <input type="hidden" name="action" value="disable">
+                <button type="submit" id= "disable-btn-yes" class='med-btn delete-disable' onclick="confirmDisableAccount()">Disable</button>
             </form>
-
-            <!--Poner dentro del form después -->
-            <button id= "disable-btn-yes" class='med-btn delete-disable' onclick="confirmDisableAccount()">Disable</button>
 
             <button id= "cancel-disable" class='med-btn cancel' onclick="cancel()">Cancel</button>
         </div>

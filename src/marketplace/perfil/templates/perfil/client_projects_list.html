@@ -11,10 +11,13 @@
     <title>My Projects List</title>
     <link rel="icon" type="image/png" href="{% static 'img/Logo.png' %}">
     <link rel="stylesheet" href="{% static 'css/client_projects_list3.css' %}">
+    <link rel="stylesheet" href="{% static 'css/info-modal.css' %}">
     <link rel="stylesheet" href="{% static 'css/heading.css' %}">
     <link rel="stylesheet" href="{% static 'css/footer.css' %}">
 </head>
 <body>
+
+    {% include 'perfil/sections/info-modal.html' %}
 
     {% include 'perfil/sections/heading.html' %}
       
