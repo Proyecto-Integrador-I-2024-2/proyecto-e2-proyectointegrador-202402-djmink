@@ -7,28 +7,29 @@ urlpatterns = [
     #en todas falta linkear los del footer
     path('home/publications/', views.firstMain, name='firstMain'), #solo falta linkear con login y signup
     #freelancer
-    path('perfilesFreelancer/<int:id>/', views.perfilesFreelancer, name='perfilFreelancer'),
-    path('perfilesFreelancer/<int:id>/main/', views.mainFreelancer, name='mainFreelancer'), #linkear lo del footer
-    path('perfilesFreelancer/<int:id>/account/', views.editAccount, name='editAccount'),
-    path('perfilesFreelancer/<int:id>/editProfile/', views.editProfile, name='editProfile'),
-    path('perfilesFreelancer/<int:id>/delete&disable/', views.deleteDisable, name='deleteDisable'),
-    path('perfilesFreelancer/<int:id>/portfolio/', views.editPortfolio, name='editPortfolio'),
-    path('perfilesFreelancer/<int:id>/projects/', views.projectsList, name='projectsList'),
-    path('perfilesFreelancer/<int:id>/projects/<int:id_project>/', views.projectWorkspace, name='projectWorkspace'),
+    path('freelancer/<int:id>/', views.perfilesFreelancer, name='perfilFreelancer'),
+    path('freelancer/<int:id>/home/', views.mainFreelancer, name='mainFreelancer'),
+    path('freelancer/<int:id>/account/', views.editAccount, name='editAccount'),
+    path('freelancer/<int:id>/editProfile/', views.editProfile, name='editProfile'),
+    path('freelancer/<int:id>/delete&disable/', views.deleteDisable, name='deleteDisable'),
+    path('freelancer/<int:id>/portfolio/', views.editPortfolio, name='editPortfolio'),
+    path('freelancer/<int:id>/projects/', views.projectsList, name='projectsList'),
+    path('freelancer/<int:id>/projects/<int:id_project>/', views.projectWorkspace, name='projectWorkspace'),
+    path('freelancer/<int:id>/view-profile/<int:idclient>/', views.clientProfile, name='clientProfile'),
+    
     #cliente
-    path('perfilesCliente/<int:id>/', views.perfilesCliente, name='perfilesCliente'),
-    path('perfilesCliente/<int:id>/main/', views.mainCliente, name='mainCliente'),
-    path('perfilesCliente/<int:id>/delete&disable/', views.deleteDisableClient, name='deleteDisableClient'),
-    path('perfilesCliente/<int:id>/edit-projects/', views.editProjectsClient, name='editProjectsClient'),
-    path('perfilesCliente/<int:id>/editProfile/', views.editProfileClient, name='editProfileClient'),
-    path('perfilesCliente/<int:id>/account/', views.editAccountClient, name='editAccountClient'),
-
-    path('perfilesCliente/<int:id>/main/<int:id_project>/', views.manageProject, name='manageProject'),
+    path('client/<int:id>/', views.perfilesCliente, name='perfilesCliente'),
+    path('client/<int:id>/home/', views.mainCliente, name='mainCliente'),
+    path('client/<int:id>/delete&disable/', views.deleteDisableClient, name='deleteDisableClient'),
+    path('client/<int:id>/edit-projects/', views.editProjectsClient, name='editProjectsClient'),
+    path('client/<int:id>/editProfile/', views.editProfileClient, name='editProfileClient'),
+    path('client/<int:id>/account/', views.editAccountClient, name='editAccountClient'),
+    path('client/<int:idclient>/view-profile/<int:id>/', views.freelancerProfile, name='freelancerProfile'),
+    path('client/<int:id>/manage-project/<int:id_project>/', views.manageProject, name='manageProject'),
 
     #para ver el perfil del freelancer
     # urls.py
-    path('freelancer/profile/<int:idclient>/<int:id>/', views.freelancerProfile, name='freelancerProfile'),
-
+    
 
     
 

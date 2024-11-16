@@ -1,0 +1,174 @@
+{% load static %}
+<div class="commentssection">
+    <div class="ptext commentstitle">Comments</div>
+
+        <div class="comments">
+            {% for comment in p.comments_received.all %}
+                {% if comment.reply_to is None %}
+                    <div class="comment" data-id="{{ comment.id }}">
+                        <img class="profilecommenting" src="{{ comment.author.image.url }}"/>
+                        <div class="ptext date">{{ comment.created_at }}</div>
+                        <div class="ptext username">{{ comment.author.name }}</div>
+                        <div class="ptext comment-text">{{ comment.content }}</div>
+
+                        <button type="button" class="btn reply" onclick="showReplyInput(this)">Responder</button>
+
+                        {% if comment.replies.all %}
+                            <div class="replies">
+                                {% for reply in comment.replies.all %}
+                                    <div class="reply">
+                                        <img class="profilecommenting" src="{{ reply.author.image.url }}"/>
+                                        <div class="ptext date">{{ reply.created_at }}</div>
+                                        <div class="ptext username">{{ reply.author.name }}</div>
+                                        <div class="ptext comment-text" id="comment-text-{{ reply.id }}">{{ reply.content }}</div>
+                        
+                                        <button type="button" class="btn edit" onclick="toggleEditTextarea('{{ reply.id }}')">
+                                            <img src="{% static 'img/Edit.svg' %}" alt="Edit Icon" class="edit-icon">
+                                        </button>
+
+                                        <form method="POST">
+                                            {% csrf_token %}
+                                            <textarea id="edit-textarea-{{ reply.id }}" class="edit-textarea" name="new_content" style="display: none;">{{ reply.content }}</textarea>
+                                            <input type="hidden" name="action" value="edit_comment">
+                                            <input type="hidden" name="comment_id" value="{{ reply.id }}">
+                                            <button type="submit" class="btn save-edit" id="save-button-{{ reply.id }}" onclick="saveEdit('{{ reply.id }}')" style="display: none;">Guardar</button>
+                                        </form>
+                
+                                        <form method="POST" class="delete-form">
+                                            {% csrf_token %}
+                                            <input type="hidden" name="action" value="delete_comment">
+                                            <input type="hidden" name="comment_id" value="{{ reply.id }}">
+                                            <button type="submit" class="btn delete">X</button>
+                                        </form>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                    </div>
+                {% endif %}
+            {% empty %}
+                <p>Aún no hay comentarios.</p>
+            {% endfor %}
+        </div>
+
+    </div> 
+   
+</div>
+
+<script>
+    function showReplyInput(button) {
+        const commentElement = button.closest('.comment');
+        let inputBox = commentElement.querySelector('.reply-input');
+        let sendButton = commentElement.querySelector('.send-reply');
+
+        if (!inputBox) {
+            
+            inputBox = document.createElement('textarea');
+            inputBox.name = 'content'; 
+            inputBox.type = 'text';
+            inputBox.placeholder = 'Escribe tu respuesta aquí...';
+            inputBox.className = 'reply-input';
+            inputBox.rows = 2;
+
+            buttonContainer = document.createElement('div');
+            buttonContainer.className = 'button-container';
+
+            const cancelButton = document.createElement('button');
+            cancelButton.innerText = 'Cancelar';
+            cancelButton.className = 'btn cancel';
+
+            const sendButton = document.createElement('button');
+            sendButton.innerText = 'Enviar';
+            sendButton.type ='submit';
+            sendButton.className = 'btn send-reply';
+
+            const replyForm = document.createElement('form');
+            replyForm.method = 'POST';
+            replyForm.action = '';
+
+            // CSRF token para seguridad
+            const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+            const csrfInput = document.createElement('input');
+            csrfInput.type = 'hidden';
+            csrfInput.name = 'csrfmiddlewaretoken';
+            csrfInput.value = csrfToken;
+            replyForm.appendChild(csrfInput);
+
+            // Campo oculto para especificar la acción de respuesta
+            const actionField = document.createElement('input');
+            actionField.type = 'hidden';
+            actionField.name = 'action';
+            actionField.value = 'create_comment';
+            replyForm.appendChild(actionField);
+
+            // Campo oculto para el ID del comentario original
+            const replyToField = document.createElement('input');
+            replyToField.type = 'hidden';
+            replyToField.name = 'reply_to';
+            replyToField.value = commentElement.dataset.id;
+            replyForm.appendChild(replyToField);
+
+            // Añadir el input y botones al formulario
+            replyForm.appendChild(inputBox);
+            buttonContainer.appendChild(cancelButton);
+            buttonContainer.appendChild(sendButton);
+            replyForm.appendChild(buttonContainer);
+            commentElement.appendChild(replyForm);
+
+            const adjustHeight = () => {
+                inputBox.style.height = 'auto'; 
+                inputBox.style.height = `${inputBox.scrollHeight}px`; 
+            };
+
+            cancelButton.onclick = function() {
+                inputBox.remove(); 
+                buttonContainer.remove(); 
+            };
+
+            const commentsContainer = document.querySelector('.comments');
+            const inputBoxOffset = inputBox.getBoundingClientRect().top;
+            const commentsContainerOffset = commentsContainer.getBoundingClientRect().top;
+            const scrollTop = inputBoxOffset - commentsContainerOffset + commentsContainer.scrollTop;
+
+            commentsContainer.scrollTo({
+                top: scrollTop,
+                behavior: 'smooth'
+            });
+
+            adjustHeight();
+
+            inputBox.addEventListener('input', adjustHeight);
+
+        } else {
+            inputBox.focus();
+        }
+        
+    }
+
+    function toggleEditTextarea(replyId) {
+        const textarea = document.getElementById(`edit-textarea-${replyId}`);
+        const saveButton = document.getElementById(`save-button-${replyId}`);
+        const commentText = document.getElementById(`comment-text-${replyId}`);
+
+        if (textarea.style.display === "none") {
+            textarea.style.display = "block";
+            saveButton.style.display = "inline-block";
+            commentText.style.display = "none"; 
+        } else {
+            textarea.style.display = "none";
+            saveButton.style.display = "none";
+            commentText.style.display = "block"; 
+        }
+    }
+
+    function saveEdit(replyId) {
+        const textarea = document.getElementById(`edit-textarea-${replyId}`);
+        const commentText = document.getElementById(`comment-text-${replyId}`);
+
+        commentText.textContent = textarea.value;
+
+        textarea.style.display = "none";
+        document.getElementById(`save-button-${replyId}`).style.display = "none";
+        commentText.style.display = "block";
+    }
+</script>

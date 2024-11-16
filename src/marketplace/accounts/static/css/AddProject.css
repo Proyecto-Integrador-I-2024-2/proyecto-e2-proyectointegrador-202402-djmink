@@ -9,6 +9,8 @@ body {
     background-color: white;
 }
 
+/*
+
 nav {
     margin: 0 10px 20px;
     height: 100px;
@@ -67,6 +69,8 @@ nav {
 .navBar a:hover {
     color: rgba(0, 128, 255, 1);
 }
+
+*/
 
 .content {
     display: flex;

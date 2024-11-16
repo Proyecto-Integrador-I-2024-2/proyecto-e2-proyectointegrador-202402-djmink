@@ -1,0 +1,92 @@
+{% load static %}
+<div class="commentssection">
+
+    <div class="ptext commentstitle">Comments</div>
+
+    <form method="POST">
+        {% csrf_token %}
+        <input type="hidden" name="action" value="new_comment">
+        <textarea class="input-comment" name="comment" placeholder="Write your comment"></textarea>
+        <button type="submit" class="publish-btn">Publish</button>
+    </form>
+
+    <div class="comments">
+        {% for comment in p.comments_received.all %}
+            {% if comment.reply_to is None %}
+                <div class="comment" data-id="{{ comment.id }}">
+                    <img class="profilecommenting" src="{{ comment.author.image.url }}"/>
+                    <div class="ptext date">{{ comment.created_at }}</div>
+                    <div class="ptext username">{{ comment.author.name }}</div>
+                    <div class="ptext comment-text" id="comment-text-{{ comment.id }}">{{ comment.content }}</div>
+
+                    {% if comment.author.id == client.id and not comment.replies.exists %}
+                        
+                        <button type="button" class="btn edit" onclick="toggleEditTextarea('{{ comment.id }}')">
+                            <img src="{% static 'img/Edit.svg' %}" alt="Edit Icon" class="edit-icon">
+                        </button>
+
+                        <form method="POST">
+                            {% csrf_token %}
+                            <textarea id="edit-textarea-{{ comment.id }}" class="edit-textarea" name="new_content" style="display: none;">{{ comment.content }}</textarea>
+                            <input type="hidden" name="action" value="edit_comment">
+                            <input type="hidden" name="comment_id" value="{{ comment.id }}">
+                            <button type="submit" class="btn save-edit" id="save-button-{{ comment.id }}" onclick="saveEdit('{{ comment.id }}')" style="display: none;">Guardar</button>
+                        </form>
+
+                        <form method="POST" class="delete-form">
+                            {% csrf_token %}
+                            <input type="hidden" name="action" value="delete_comment">
+                            <input type="hidden" name="comment_id" value="{{ comment.id }}">
+                            <button type="submit" class="btn delete">X</button>
+                        </form>
+                    {% endif %}
+
+                    {% if comment.replies.all %}
+                        <div class="replies">
+                            {% for reply in comment.replies.all %}
+                                <div class="reply">
+                                    <img class="profilecommenting" src="{{ reply.author.image.url }}"/>
+                                    <div class="ptext date">{{ reply.created_at }}</div>
+                                    <div class="ptext username">{{ reply.author.name }}</div>
+                                    <div class="ptext comment-text" id="comment-text-{{ reply.id }}">{{ reply.content }}</div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                </div>
+            {% endif %}
+        {% empty %}
+            <p>No comments yet.</p>
+        {% endfor %}
+    </div>
+    
+</div>
+
+<script>
+    function toggleEditTextarea(commentId) {
+        const textarea = document.getElementById(`edit-textarea-${commentId}`);
+        const saveButton = document.getElementById(`save-button-${commentId}`);
+        const commentText = document.getElementById(`comment-text-${commentId}`);
+
+        if (textarea.style.display === "none") {
+            textarea.style.display = "block";
+            saveButton.style.display = "inline-block";
+            commentText.style.display = "none"; 
+        } else {
+            textarea.style.display = "none";
+            saveButton.style.display = "none";
+            commentText.style.display = "block"; 
+        }
+    }
+
+    function saveEdit(commentId) {
+        const textarea = document.getElementById(`edit-textarea-${commentId}`);
+        const commentText = document.getElementById(`comment-text-${commentId}`);
+
+        commentText.textContent = textarea.value;
+
+        textarea.style.display = "none";
+        document.getElementById(`save-button-${commentId}`).style.display = "none";
+        commentText.style.display = "block";
+    }
+</script>

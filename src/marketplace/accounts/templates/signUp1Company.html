@@ -8,12 +8,13 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/png" href="{% static 'img/Logo.png' %}">
     <title>Sign Up</title>
 </head>
 <body>
     <nav>
         <div class="logo">
-            <img src="{% static 'images/Logo.png' %}" alt="Logo"/>
+            <img class="logo-pic" src="{% static 'img/Logo.svg' %}" class="logo" alt="">
             <div class="lineNav"></div>
             <div class="navText">
                 <span>Online</span>
@@ -27,28 +28,28 @@
         <h1 class="title">Join our Community</h1>
         <span>Signing up as <a class="freelancer" href="{% url 'registerf1'%}">Freelancer</a></span>
         <a class="googleButton">
-            <img src="{% static 'images/google.png' %}" alt="Google Login"> Sign in with Google
+            <img class="google-icon" src="{% static 'img/Google.png' %}" alt="Google Login"> Sign in with Google
         </a>
         <span>Or</span>
         <form method = "POST">
             {% csrf_token %}
             <div class="inputContainer">
                 <span>Id or NIT</span>
-                <input type="text" class="inputText" name="username" id="username" required>
+                <input type="number" class="inputText" name="username" id="username" required>
             </div>
             <div class="inputContainer">
                 <span>Name</span>
                 <input type="text" class="inputText" name="name" id="name" required>
             </div>
-            <div class="inputContainerNumber">
+            <div class="inputContainer">
                 <span>Legal Agent</span>
-                <input type="number" class="numberPhone" name="legal_agent" id="legal_agent" required>
+                <input type="text" class="inputText" name="legal_agent" id="legal_agent" required>
             </div>
             <div class="inputContainer">
                 <span>Password</span>
                 <input type="password" class="inputText" name="password" id="password" required>
             </div>
-            <button class="buttonSubmit" type="submit">Sign Up</button>
+            <button class="buttonSubmit" type="submit">Next</button>
         </form>
     </div>
 </body>

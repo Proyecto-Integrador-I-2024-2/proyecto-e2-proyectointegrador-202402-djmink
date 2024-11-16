@@ -9,146 +9,163 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Freelancer Marketplace</title>
-    <link rel="stylesheet" href="{% static 'css/first_page.css' %}">
+    <link rel="stylesheet" href="{% static 'css/first_page2.css' %}">
+    <link rel="stylesheet" href="{% static 'css/info-modal.css' %}">
 </head>
 <body>
-    <div id="firstsection" class="firstsection">
-        
-        <a href="#freelancersection">
-            <button id="joinbutton" class="joinbutton">
-                <div id="rectangle2853" class="rectangle2853"></div>
-                <div id="savechanges" class="savechanges">Join Us</div>
-            </button>
-        </a>
-        
-        <div id="searchbar" class="searchbar">
-            <div id="rectangle20" class="rectangle20"></div>
-            <img id="frame" class="frame" src="{% static 'search.png' %}"/>
-            <input id="search2" class="search2" type="text" placeholder="Search" />
-        </div>
-        
-        <div id="onlinemarketplaceforfreelancers" class="onlinemarketplaceforfreelancers">
-            Online Marketplace for <span class="freelancers">Freelancers</span>
-        </div>
-        
-        <div id="developyourproject" class="developyourproject">
-            DEVELOP YOUR PROJECT
-        </div>
-        
-        <a id="login" class="login" href="{% url 'login' %}">
-            Log In
-        </a>
-        
-        <img id="logo" class="logo" src="{% static 'img/logo.png' %}"/>
-        <div id="logoseparator" class="logoseparator"></div>
-        
-        <div id="onlinemarketplace2" class="onlinemarketplace2">
-            Online Marketplace
-        </div>
 
+    {% include 'perfil/sections/info-modal.html' %}
+
+    <div class="heading">
+        <div class="logo">
+            <img class="logo-pic" src="{% static 'img/Logo.svg' %}" class="logo" alt="">
+            <div class="lineNav"></div>
+            <div class="navText">
+                <span>Online</span>
+                <span>Marketplace</span>
+            </div>
+        </div>
+        <div class="navBar">
+            <ul>
+                <li><a href="{% url 'login'%}" class="login">Log In</a></li>
+                <li><a href="{% url 'registerc1'%}" class="join-us">Join Us</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="firstsection">
+        
+        <div class="container">
+
+            <div class="developyourproject">
+                DEVELOP YOUR
+            </div>
+            <div class="developyourproject">
+                PROJECT
+            </div>
+
+            <div class="onlinemarketplaceforfreelancers">
+                Online Marketplace for <span class="freelancers">Freelancers</span>
+            </div>
+
+            <div class="searchbar">
+                <input class="search" type="text" placeholder="Search" />
+                <a href="{% url 'firstMain' %}">
+                    <img class="frame" src="{% static 'img/Search.svg' %}"/>
+                </a>
+            </div>
+
+        </div>
         
     </div>
 
-    <div id='freelancersection' class='freelancersection'>
+    <div class='freelancersection'>
 
-        <img id='backgroundfreelancer' class='backgroundfreelancer' src="{% static 'img/freelancer_home_section.png' %}" />
+        <img class="backgroundfreelancer" src="{% static 'img/freelancer_home_section.png' %}" />
 
-        <div id='forfreelancers' class='forfreelancers'> 
-            For Freelancers
+        <div class="container2">
+            <div class='forfreelancers'> 
+                For Freelancers
+            </div>
+    
+            <div class='freelancerdescription'>
+                Work in projects with companies all around the world.
+            </div>
+    
+            <a class="joinfreelancerbutton" href="{% url 'registerc1'%}">Join as a Freelancer</a>
         </div>
 
-        <div id='freelancerdescription' class='freelancerdescription'>
-            Work in projects with companies all around the world.
-        </div>
-
-        <button id='joinfreelancerbutton' class='joinfreelancerbutton'>
-            <div id='joinfreelancerbuttonrec' class='joinfreelancerbuttonrec'></div>
-            <div id='joinfreelancerbuttontext' class='joinfreelancerbuttontext'><a href="{% url 'registerc1'%}" style="text-decoration: none; color: whitesmoke;">Join as a Freelancer</a></div>
-        </button>
-
-        <img id='b2' class='b2' src="{% static 'img/b2.png' %}" />
+        <img class="b2" src="{% static 'img/b2.png' %}" />
 
     </div>
 
     <!-- company section -->
-    <div id='companysection' class='companysection'>
+    <div class="freelancersection" >
 
-        <img id='pexels-cottonbro-40692911' class='pexels-cottonbro-40692911' src="{% static 'img/company_home_section.png' %}" />
+        <img class="backgroundfreelancer" src="{% static 'img/company_home_section.png' %}" />
 
-        <div id='forcompanies' class='forcompanies'> 
-            For Companies
+        <div class="container2">
+            <div class='forfreelancers'> 
+                For Companies
+            </div>
+    
+            <div class='freelancerdescription'>
+                Develop your projects with our community to achieve your goals. 
+            </div>
+    
+            <a class="joinfreelancerbutton" href="{% url 'registerc1'%}">Join as a Company</a>
         </div>
-
-        <div id='developyourprojectswithourcommunitytoachieveyourgoals' class='developyourprojectswithourcommunitytoachieveyourgoals'>
-            Develop your projects with our community to achieve your goals. 
-        </div>
-
-        <button id='emptybutton' class='emptybutton'>
-            <div id='rectangle2854' class='rectangle2854'></div>
-            <div id='uploadnewpicture' class='uploadnewpicture'><a href="{% url 'registerc1'%}" style="text-decoration: none; color: whitesmoke;">Join as a Company</a></div>
-        </button>
 
     </div>
 
     <!-- last section -->
-    <div id='lastsection' class='lastsection'>
+    <div class='lastsection'>
 
-        <div id='eoctitle' class='eoctitle'> 
-            EXPLORE OUR COMUNITY
-        </div>
+        <div class="containerlast">
 
-        <div class="container1">
-            <img id='eoc1' class='eoc1' src="{% static 'img/eoc1.png' %}" />
-            <div class="overlay1"></div>
-            <div class="text1">Find Projects</div>
-        </div>
+            <div class='eoctitle'> 
+                EXPLORE OUR COMUNITY
+            </div>
 
-        <div class="container2">
-            <img id='eoc2' class='eoc2' src="{% static 'img/eoc2.png' %}" />
-            <div class="overlay2"></div>
-            <div class="text2">Find Developers</div>
-        </div>
-
-        <div class="container3">
-            <img id='eoc3' class='eoc3' src="{% static 'img/eoc3.png' %}" />
-            <div class="overlay3"></div>
-            <div class="text3">Work Together</div>
-        </div>
+            <div class="containers">
+                <div class="container4">
+                    <a href="{% url 'firstMain' %}">
+                        <img class='eoc' src="{% static 'img/eoc1.png' %}" />
+                        <div class="overlay"></div>
+                        <div class="text">Find Projects</div>
+                    </a>
+                </div>
         
-        <footer class="footer">
-          
-            <div class="footer-content">
-                <img class="encora2" src="{% static 'img/Encora1.svg' %}" />
-                <a href="https://www.facebook.com/encorainc" target="_blank">
-                    <img class="fb3" src="{% static 'img/fb.png' %}"/>
-                </a>
-                <a href="https://www.instagram.com/encorainc/" target="_blank">
-                    <img class="ig3" src="{% static 'img/ig.png' %}" />
-                </a>
-                <a href="https://www.linkedin.com/company/encorainc/" target="_blank">
-                    <img class="lin3" src="{% static 'img/lin.png' %}" />
-                </a>
-                <img class="gmail3" src="{% static 'img/gmail.png' %}" />
-                <nav class="footer-nav">
-                    <a href="#features">Features</a>
-                    <a href="#about">About</a>
-                    <a href="#support">Support</a>
-                    <a href="#resources">Resources</a>
-                    <a href="#places">Places</a>
-                    <a href="#jobs">Jobs</a>
-                </nav>
-                <nav class="footer-nav2">
-                    <a href="#terms">Terms</a>
-                    <a href="#privacy">Privacy</a>
-                    <a href="#cookies">Cookies</a>
-                </nav>
-                <div id='footertext' class='footertext'> 
-                    © 2024 Online Marketplace
+                <div class="container4">
+                    <a href="{% url 'firstMain' %}">
+                        <img class='eoc' src="{% static 'img/eoc2.png' %}" />
+                        <div class="overlay"></div>
+                        <div class="text">Find Developers</div>
+                    </a>
+                </div>
+        
+                <div class="container4">
+                    <a href="{% url 'firstMain' %}">
+                        <img class='eoc' src="{% static 'img/eoc3.png' %}" />
+                        <div class="overlay"></div>
+                        <div class="text">Work Together</div>
+                    </a>
                 </div>
             </div>
-        </footer>
+    
+            
+        </div>
 
     </div>
+
+    <footer class="footer">
+        <img class="footer-logo" src="{% static 'img/Encora1.svg' %}" />
+        <nav class="footer-nav">
+            <a href="#features">Features</a>
+            <a href="#about">About</a>
+            <a href="#support">Support</a>
+            <a href="#resources">Resources</a>
+            <a href="#places">Places</a>
+            <a href="#jobs">Jobs</a>
+        </nav>
+        <div class="footer-right">
+            <div class="media">
+                <img class="social-icon gmail" src="{% static 'img/gmail.png' %}" />
+                <a href="https://www.facebook.com/encorainc" target="_blank">
+                    <img class="social-icon fb" src="{% static 'img/fb.png' %}"/>
+                </a>
+                <a href="https://www.instagram.com/encorainc/" target="_blank">
+                    <img class="social-icon ig" src="{% static 'img/ig.png' %}" />
+                </a>
+                <a href="https://www.linkedin.com/company/encorainc/" target="_blank">
+                    <img class="social-icon lin" src="{% static 'img/lin.png' %}" />
+                </a>
+            </div>
+            <div class='footertext'> 
+                © 2024 Online Marketplace
+            </div>
+        </div>
+    </footer>
 
 </body>
 </html>

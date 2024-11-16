@@ -10,106 +10,85 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Edit Profile - Projects</title>
     <link rel="icon" type="image/png" href="{% static 'img/Logo.png' %}">
-    <link rel="stylesheet" href="{% static 'css/client_edit_profile_projects.css' %}">
+    <link rel="stylesheet" href="{% static 'css/client_edit_profile_projects4.css' %}">
+    <link rel="stylesheet" href="{% static 'css/info-modal.css' %}">
+    <link rel="stylesheet" href="{% static 'css/heading.css' %}">
+    <link rel="stylesheet" href="{% static 'css/footer.css' %}">
 </head>
 <body>
 
-    <div class="heading">
-        <div class="ptext hometext">Home</div>
-        <img class="icon chat_icon" src="{% static 'img/Chat_Icon.svg' %}"/>
-        <img class="icon notification_icon" src="{% static 'img/Notification_Icon.svg' %}"/>
-        <a href="{% url 'perfilesCliente' p.id %}">
-            <img class="profile_picture_heading" src="{{ p.profile_picture.url }}" alt="Profile Picture"/>
-        </a>
-        <img class="logo" src="{% static 'img/Logo.svg' %}"/>
-        <div class="logoseparator"></div>
-        <div class="ptext onlinemarketplace">
-            Online Marketplace
-        </div>
-    </div>    
+    {% include 'perfil/sections/info-modal.html' %}
 
-    <div class="ptext ep">
-        Edit profile
-    </div>     
+    <div class="editsection">
 
-    <a href="{% url 'editAccountClient' p.id %}" class="ptext my-account">My account</a>
-    <a href="{% url 'editProfileClient' p.id %}" class="ptext profile">Profile</a>
-    <a href="#editProjects" class="ptext portfolio">Projects</a>
-    <a href="{% url 'deleteDisableClient' p.id %}" class="ptext delete-account">Delete account</a>    
+        {% include 'perfil/sections/heading.html' %}     
 
-    <div class="body">
+        <div class="ptext ep">
+            Edit profile
+        </div>     
 
-        <div class="ptext portfolio-title">
-            Projects
-        </div>
-        
-        <div class="add-button">
-            <div class="ptext add">Add</div>
-            <a href="{% url 'perfilesCliente' p.id %}">
-                <button id= "add-content-btn" class="add content-btn">+</button>
-            </a>   
-        </div>
+        <a href="{% url 'editAccountClient' p.id %}" class="ptext my-account">My account</a>
+        <a href="{% url 'editProfileClient' p.id %}" class="ptext profile">Profile</a>
+        <a href="#editProjects" class="ptext portfolio">Projects</a>
+        <a href="{% url 'deleteDisableClient' p.id %}" class="ptext delete-account">Delete account</a>
+        <a href="{% url 'home' %}" class="ptext logout">Log out</a>     
+
+        <div class="body">
+
+            <div class="ptext portfolio-title">
+                Projects
+            </div>
             
-        <div class="projects-container" id="projects-container">
-            {% for project in p.projects.all %}
-                <div class="project-container" id="project-{{ project.id }}">          
-                    <button class="delete-btn project" onclick="markForRemoval('project', '{{ project.id }}')">X</button>
-                    <a href="{% url 'perfilesCliente' p.id %}">
-                        <img class="edit-btn" src="{% static 'img/Edit.svg' %}"/>
-                    </a>  
-                    <div id="project-name-{{ project.id }}" class="ptext project-name">{{ project.name }}</div>
-                    <div id="project-company-{{ project.id }}" class="ptext info-project">{{ project.type }}</div>
-                    <div id="project-duration-{{ project.id }}" class="ptext info-project">{{ project.duration }}</div>
-                </div>
-            {% empty %}
-                <p>You don't have projects registered yet.</p>
-            {% endfor %}
-        </div>
+            <div class="add-button">
+                <div class="ptext add">Add</div>
+                <a href="{% url 'create_project' p.id %}">
+                    <button type="button" id= "add-content-btn" class="add content-btn">+</button>
+                </a>   
+            </div>
 
-        <button id= "save" class="med-btn save">Save Changes</button>
+            <form method="POST">
+                {% csrf_token %}
+
+                <div class="projects-container" id="projects-container">
+                    {% for project in p.projects.all %}
+                        <div class="project-container" id="project-{{ project.id }}">          
+                            <button type="button" class="delete-btn project" onclick="markForRemoval('project', '{{ project.id }}')">X</button>
+                            <a href="{% url 'edit_project' p.id %}">
+                                <img class="edit-btn" src="{% static 'img/Edit.svg' %}"/>
+                            </a>  
+                            <div id="project-name-{{ project.id }}" class="ptext project-name">{{ project.name }}</div>
+                            <div id="project-company-{{ project.id }}" class="ptext info-project">{{ project.type }}</div>
+                            <div id="project-duration-{{ project.id }}" class="ptext info-project">{{ project.duration }}</div>
+                        </div>
+                    {% empty %}
+                        <p>You don't have projects registered yet.</p>
+                    {% endfor %}
+                </div>
+                
+                <input type="hidden" name="removed_project_ids" id="removed-project-ids" value="">
+
+                <button type="submit" id= "save" class="med-btn save">Save Changes</button>
+
+            </form>
+
+        </div>
 
     </div>
 
-    <footer class="footer">
-        <div class="footer-content">
-            <img class="encora" src="{% static 'img/Encora1.svg' %}" />
-            <a href="https://www.facebook.com/encorainc" target="_blank">
-                <img class="social-icon fb" src="{% static 'img/fb.png' %}"/>
-            </a>
-            <a href="https://www.instagram.com/encorainc/" target="_blank">
-                <img class="social-icon ig" src="{% static 'img/ig.png' %}" />
-            </a>
-            <a href="https://www.linkedin.com/company/encorainc/" target="_blank">
-                <img class="social-icon lin" src="{% static 'img/lin.png' %}" />
-            </a>
-            <img class="social-icon gmail" src="{% static 'img/gmail.png' %}" />
-            <nav class="footer-nav">
-                <a href="#features">Features</a>
-                <a href="#about">About</a>
-                <a href="#support">Support</a>
-                <a href="#resources">Resources</a>
-                <a href="#places">Places</a>
-                <a href="#jobs">Jobs</a>
-            </nav>
-            <div class='footertext'> 
-                © 2024 Online Marketplace
-            </div>
-        </div>
-    </footer>
+    {% include 'perfil/sections/footer.html' %}  
     
     <script>
 
-        let removedItems = [];
+        const removedItems = [];
 
         function markForRemoval(type, itemId) {
             const element = document.getElementById(type + '-' + itemId);
             if (element) {
                 element.style.display = 'none';
-                removedItems.push({ type, itemId });
+                removedItems.push(itemId);
+                document.getElementById('removed-project-ids').value = removedItems.join(',');
             }
         }
-
-
 
     </script>
 

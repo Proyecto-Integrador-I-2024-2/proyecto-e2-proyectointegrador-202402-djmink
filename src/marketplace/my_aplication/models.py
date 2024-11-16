@@ -100,25 +100,44 @@ class Chat(models.Model):
 # Clases agrupadas, corregir a clases ya existentes en MER y MR
 
 from django.db import models
+from django.db.models import Q, UniqueConstraint
 from django.utils import timezone
+from django.contrib.auth.models import BaseUserManager
+from django.contrib.auth.hashers import make_password
+from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, BaseUserManager
+from django.contrib.auth.hashers import check_password, make_password
+
 
 class User(models.Model):
-    # Datos básicos del usuario
     username = models.CharField(max_length=100, unique=True)
-    email = models.EmailField(max_length=100, unique=True)
-    password = models.CharField(max_length=100)
-    
-    # Datos del perfil común para Freelancers y Companies
     name = models.CharField(max_length=100, blank=True, null=True)
     phone = models.CharField(max_length=100, blank=True, null=True)
-    image = models.ImageField(upload_to='profile_pictures/', blank=True, null=True)
+    password = models.CharField(max_length=255)
+    is_active = models.BooleanField(default=True)
+    image = models.ImageField(upload_to='profile_pictures/', blank=True, null=True, default='profile_pictures/default_profile.jpg')
+    country = models.CharField(max_length=100, blank=True, null=True)
+    email = models.EmailField(max_length=100, null=True)
+
     description = models.TextField()
     rating = models.FloatField(default=0.0)
     contact_email = models.CharField(max_length=100, default='example@example.com')
     date_joined = models.DateField(default=timezone.now)
 
-class Freelancer(User):
+    REQUIRED_FIELDS = ['email'] 
+    USERNAME_FIELD = 'username'
 
+    last_login = models.DateTimeField(null=True, blank=True)
+
+    def check_password(self, raw_password):
+        return check_password(raw_password, self.password)
+
+    def set_password(self, raw_password):
+        self.password = make_password(raw_password)
+
+    def __str__(self):
+        return self.username
+
+class Freelancer(User):
     EXPERIENCE_CHOICES = [
         ('junior', 'Junior'),
         ('semi_senior', 'Semi-senior'),
@@ -129,11 +148,12 @@ class Freelancer(User):
 
     profession = models.CharField(max_length=100)
     identification = models.CharField(max_length=100, blank=True, null=True)
-    country = models.CharField(max_length=100, blank=True, null=True)
     jobs_completed = models.IntegerField(default=0)
     price = models.CharField(max_length=100)
     experience = models.CharField(max_length=20, choices=EXPERIENCE_CHOICES, default='junior')
 
+    def __str__(self):
+        return f"{self.username} - {self.name} ({self.id})"
 
 class CompanyManager(User):
     legal_agent = models.CharField(max_length=255, blank=True, null=True)
@@ -141,15 +161,17 @@ class CompanyManager(User):
     business_vertical = models.CharField(max_length=100, blank=True, null=True)
     company_type = models.CharField(max_length=100, blank=True, null=True)
 
+    def __str__(self):
+        return f"{self.username} - {self.name} ({self.id})"
+
 class Rating(models.Model):
-    content_type = models.ForeignKey(ContentType, on_delete=models.PROTECT)
-    object_id = models.PositiveIntegerField()
-    user = GenericForeignKey('content_type', 'object_id')
+    user_profile = models.ForeignKey(User, related_name="ratings_received", on_delete=models.CASCADE, null=True)
+    author = models.ForeignKey(User, related_name="ratings_made", on_delete=models.CASCADE, null=True)
     score = models.FloatField()
     date_rated = models.DateField(default=timezone.now)
 
     def __str__(self):
-        return f'{self.rated_by} rated {self.user} - {self.score}'
+        return f'{self.author} rated {self.user_profile} - {self.score}'
 
 class Skill(models.Model):
     profile = models.ForeignKey(Freelancer, related_name='skills', on_delete=models.CASCADE)
@@ -168,16 +190,16 @@ class Certificate(models.Model):
         return self.name
     
 class CommentProfile(models.Model):
-    content_type = models.ForeignKey(ContentType, on_delete=models.PROTECT)
-    object_id = models.PositiveIntegerField()
-    user = GenericForeignKey('content_type', 'object_id')
-    author = models.CharField(max_length=100)
+    user_profile = models.ForeignKey(User, related_name="comments_received", on_delete=models.CASCADE, null=True)
+    author = models.ForeignKey(User, related_name="comments_made", on_delete=models.CASCADE)
     content = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
-    comment = models.ForeignKey('self', on_delete=models.PROTECT, related_name='replies', null=True, blank=True)  # can have a reply
+    reply_to = models.ForeignKey(
+        'self', on_delete=models.CASCADE, related_name="replies", null=True, blank=True
+    )
 
     def __str__(self):
-        return f"{self.author}: {self.content}"  
+        return f"{self.author} on {self.user_profile}: {self.content[:20]}" 
     
 
 class Project(models.Model):
@@ -235,9 +257,23 @@ class SocialNetwork(models.Model):
 
     profile = models.ForeignKey(Freelancer, related_name='social_networks', on_delete=models.CASCADE, null=True, blank=True)
     client_profile = models.ForeignKey(CompanyManager, related_name='client_social_networks', on_delete=models.CASCADE, null=True, blank=True)
-    type = models.CharField(max_length=20, choices=TYPE_CHOICES, unique=True)
-    url = models.URLField(max_length=200)
+    type = models.CharField(max_length=20, choices=TYPE_CHOICES)
+    url = models.CharField(max_length=255)
     image = models.ImageField(upload_to='social_networks/', default='social_networks/default_icon.png')
+
+    class Meta:
+        constraints = [
+            UniqueConstraint(
+                fields=['type', 'profile'],
+                name='unique_social_network_for_freelancer',
+                condition=Q(profile__isnull=False)
+            ),
+            UniqueConstraint(
+                fields=['type', 'client_profile'],
+                name='unique_social_network_for_client',
+                condition=Q(client_profile__isnull=False)
+            ),
+        ]
 
     def save(self, *args, **kwargs):
         if self.image.name == 'social_networks/default_icon.png':
@@ -256,7 +292,6 @@ class SocialNetwork(models.Model):
 class ProjectCategory(models.Model):
     project = models.ForeignKey(Project, related_name='projectcategories', on_delete=models.CASCADE) 
     name = models.CharField(max_length=100)
-
 
 class ProjectRating(models.Model):
     value = models.DecimalField(max_digits=3, decimal_places=1, default=0.0)
@@ -281,11 +316,21 @@ class Milestone(models.Model):
     name = models.CharField(max_length=50)
     description = models.CharField(max_length=500)
     start_date = models.DateField(auto_now_add=True)
-    end_date = models.DateField() 
+    end_date = models.DateField()
+    paid = models.BooleanField(default=False) 
     project = models.ForeignKey(Project, on_delete=models.CASCADE, related_name='milestones')
     progress = models.DecimalField(max_digits=10, decimal_places=2, default=0, blank=True, null=True)
     freelancer = models.ForeignKey(Freelancer, on_delete=models.PROTECT, related_name='milestones', null=True, blank=True)
     state = models.CharField(max_length=100, choices=STATE_CHOICES, default='Available')
+
+    def calculate_progress(self):
+        total_tasks = self.tasks.count()
+        if total_tasks == 0:
+            self.progress = 0.00
+        else:
+            completed_tasks = self.tasks.filter(state="CP").count()
+            self.progress = (completed_tasks / total_tasks) * 100
+        self.save()
 
 class Profession(models.Model):
     requeriment = models.ForeignKey(Milestone, related_name='professions', on_delete=models.CASCADE)
@@ -310,8 +355,9 @@ class Assignment(models.Model):
     project = models.ForeignKey(Project, related_name='assignments', on_delete=models.CASCADE, null=True, blank=True) 
     name = models.CharField(max_length=255)
     task = models.ForeignKey(Task, on_delete=models.CASCADE, related_name='assignments')
-    date = models.DateField()
-    status = models.CharField(max_length=50)
+    date = models.DateField(auto_now_add=True)
+    checked = models.BooleanField(default=False)
+    manager_comment = models.CharField(max_length=300, default='No feedback received yet.')
     file = models.FileField(upload_to='uploads/', blank=True, null=True)
     url = models.URLField(blank=True, null=True)
 
