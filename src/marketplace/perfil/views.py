@@ -661,13 +661,18 @@ def freelancerProfile(request, id, idclient):
         'profile_image': profile_image,
         'client': client,
         'profile_url': profile_url,
-        'home_url': reverse('mainClient', args=[p.id]),
+        'home_url': reverse('mainCliente', args=[p.id]),
         'at_client_page': True,
         'can_rate': True,
         'show_edit_link': False})
 
 def mainFreelancer(request, id):
     profile = get_object_or_404(Freelancer, id=id)
+
+    if profile.is_active == False:
+        profile.is_active = True
+        profile.save()
+        messages.info(request, 'Your account was disabled, now it is enable again.')
 
     search_query = request.GET.get('search', '')
 
@@ -722,6 +727,12 @@ def mainFreelancer(request, id):
 def mainCliente(request, id):        
     p = get_object_or_404(CompanyManager, id=id)
 
+    if p.is_active == False:
+        p.is_active = True
+        p.save()
+        messages.info(request, 'Your account was disabled, now it is enable again.')
+
+
     profile_image = p.image.url
     profile_url = reverse('perfilesCliente', args=[p.id])
     return render(request, 'perfil/client_projects_list.html', {
@@ -766,7 +777,13 @@ def manageProject(request, id, id_project):
             milestone = application.milestone
             if milestone.freelancer is None:
                 application.state = 'Approved'
-                milestone.freelancer = get_object_or_404(Freelancer, id=application.freelancer.id)
+                freelancer = get_object_or_404(Freelancer, id=application.freelancer.id)
+                milestone.freelancer = freelancer
+
+                for task in milestone.tasks.all():
+                    task.freelancer = freelancer
+                    task.save()
+
                 application.save()
                 milestone.save()
                 #Notificar al freelancer
@@ -792,6 +809,20 @@ def manageProject(request, id, id_project):
             #Notificar al freelancer
             messages.success(request, "Comentario enviado al freelancer exitosamente.")
         
+        elif action == "make_payment":
+            milestone_id = request.POST.get("milestone")
+            milestone = get_object_or_404(Milestone, id=milestone_id)
+            milestone.paid = True
+            milestone.save()
+
+            currency = request.POST.get("currency")
+            amount = request.POST.get("amount")
+            freelancer_id = request.POST.get("freelancer")
+            freelancer = get_object_or_404(Freelancer, id=freelancer_id)
+            freelancer_name = freelancer.name
+            #Notificar al freelancer
+            messages.success(request, f"{amount} {currency} enviados a {freelancer_name} exitosamente.")
+
         return redirect('manageProject', id, id_project)
 
     #progress bar
@@ -812,6 +843,7 @@ def manageProject(request, id, id_project):
         'milestones': [
             {
                 'id': milestone.id,
+                'paid': milestone.paid,
                 'name': milestone.name,
                 'progress1': milestone.progress,
                 'start_date': milestone.start_date.strftime('%Y-%m-%d'),
@@ -824,6 +856,7 @@ def manageProject(request, id, id_project):
                     for task in milestone.tasks.all()
                 ],
                 'freelancer': {
+                    'id': milestone.freelancer.id,
                     'name': milestone.freelancer.name if milestone.freelancer else None,
                     'profile_picture': milestone.freelancer.image.url if milestone.freelancer and milestone.freelancer.image else None,
                 } if milestone.freelancer else None,
@@ -884,7 +917,8 @@ def projectWorkspace(request, id, id_project):
                     if task_state:
                         task.state = task_state
                         task.save()
-
+                
+                milestone.calculate_progress()
                 messages.success(request, f"Estado de las tareas del milestone '{milestone.name}' actualizado exitosamente.")
 
         elif action == "send_assignment":
@@ -954,6 +988,19 @@ def projectWorkspace(request, id, id_project):
 
 def deleteDisable(request, id=id):
     p = get_object_or_404(Freelancer, id=id)
+
+    if request.method == "POST":
+        user = get_object_or_404(User, id=p.id)
+        action = request.POST.get("action")
+        if action == "delete":
+            user.delete()
+            return redirect('home', id="accountDeleted")
+        
+        elif action == "disable":
+            user.is_active = False
+            user.save()
+            return redirect('home', id="accountDisabled")
+        
     profile_url = reverse('perfilFreelancer', args=[p.id])
     profile_image = p.image.url
     return render(request, 'perfil/freelancer_edit_profile_delete.html', {
@@ -965,6 +1012,19 @@ def deleteDisable(request, id=id):
 
 def deleteDisableClient(request, id=id):
     p = get_object_or_404(CompanyManager, id=id)
+
+    if request.method == "POST":
+        user = get_object_or_404(User, id=p.id)
+        action = request.POST.get("action")
+        if action == "delete":
+            user.delete()
+            return redirect('home', id="accountDeleted")
+        
+        elif action == "disable":
+            user.is_active = False
+            user.save()
+            return redirect('home', id="accountDisabled")
+
     profile_url = reverse('perfilesCliente', args=[p.id])
     profile_image = p.image.url
     return render(request, 'perfil/client_edit_profile_delete.html', {
@@ -976,3 +1036,6 @@ def deleteDisableClient(request, id=id):
 
 def calendar(request):
     return render(request, 'perfil/calendar.html')
+
+
+

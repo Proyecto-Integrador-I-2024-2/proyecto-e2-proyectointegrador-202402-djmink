@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Manage Project</title>
     <link rel="icon" type="image/png" href="{% static 'img/Logo.png' %}">
-    <link rel="stylesheet" href="{% static 'css/client_project_view2.css' %}">
+    <link rel="stylesheet" href="{% static 'css/client_project_view3.css' %}">
     <link rel="stylesheet" href="{% static 'css/info-modal.css' %}">
     <link rel="stylesheet" href="{% static 'css/heading.css' %}">
     <link rel="stylesheet" href="{% static 'css/footer.css' %}">
@@ -55,7 +55,15 @@
                                 {% else %}
                                     <div class="ptext info no-freelancer">No assigned yet.</div>
                                 {% endif %}
-                                <div class="ptext milestone-progress">{{ milestone.progress1 }}%</div>
+                                {% if milestone.paid %}
+                                    <div class="ptext milestone-progress"><i>Paid</i></div>
+                                {% else %}
+                                    {% if milestone.progress1 == 100.00 %}
+                                        <button class="btn pay-freelancer" onclick="openPaymentModal('{{milestone.freelancer.name}}', '{{milestone.freelancer.id}}', '{{milestone.name}}', '{{milestone.id}}')">Pay</button>
+                                    {% else %}
+                                        <div class="ptext milestone-progress">{{ milestone.progress1 }}%</div>
+                                    {% endif %}
+                                {% endif %}
                                 <div class="ptext milestone-deadline">{{ milestone.end_date }}</div>
                                 <button class="btn assignment" onclick="openAssignmentModal('{{ milestone.id }}', '{{ milestone.name }}')">Assigments</button>
                                 <img class="arrow" src="{% static 'img/arrow.svg' %}" alt="arrow">
@@ -155,6 +163,29 @@
         </div>
     </div>
 
+    <div id="pay-modal" class="modal1">
+        <div class="modal-content">
+            <span id="close1" class="close">&times;</span>
+            <div class="ptext modal-title">Make Payment</div>
+            <div id="milestone-to-pay" class="ptext selected-milestone-title"></div>
+            <div id="freelancer-to-pay" class="ptext selected-freelancer-title"></div>
+            <div class="ptext amount-to-pay">Enter amount to pay:</div>
+            <form method="POST">
+                {% csrf_token %}
+                <select class="currency-select" name="currency" id="currency">
+                    <option value="COP">COP</option>
+                    <option value="USD">USD</option>
+                    <option value="EUR">EUR</option>
+                </select>
+                <input class="input-amount" type="number" name="amount" id="budget" placeholder="Amount">
+                <input type="hidden" name="action" value="make_payment">
+                <input id="freelancer-to-pay-id" type="hidden" name="freelancer">
+                <input id="milestone-to-pay-id" type="hidden" name="milestone">
+                <button type="submit" class="btn make-pay">Make payment</button>
+            </form>
+        </div>
+    </div>
+
     {{ project|json_script:"projectData" }}
 
     <script>
@@ -175,6 +206,26 @@
             generateCalendarAround(currentDate);
 
         });
+
+        function openPaymentModal(freelancerName, freelancerId, milestoneName, milestoneId){
+            document.getElementById('milestone-to-pay').textContent = "Milestone: " + milestoneName;
+            document.getElementById('freelancer-to-pay').textContent = "Freelancer: " + freelancerName;
+            document.getElementById('milestone-to-pay-id').value = milestoneId;
+            document.getElementById('freelancer-to-pay-id').value = freelancerId;
+
+            const modal = document.getElementById('pay-modal');
+            modal.style.display = "flex";
+
+            document.getElementById('close1').onclick = function() {
+                modal.style.display = 'none';
+            };
+
+            window.onclick = function(event) {
+                if (event.target === modal) {
+                    modal.style.display = 'none';
+                }
+            };
+        }
 
         function openAssignmentModal(milestoneId, milestoneName) {
             

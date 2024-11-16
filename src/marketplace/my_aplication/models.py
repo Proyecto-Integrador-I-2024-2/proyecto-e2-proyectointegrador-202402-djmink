@@ -113,6 +113,7 @@ class User(models.Model):
     name = models.CharField(max_length=100, blank=True, null=True)
     phone = models.CharField(max_length=100, blank=True, null=True)
     password = models.CharField(max_length=255)
+    is_active = models.BooleanField(default=True)
     image = models.ImageField(upload_to='profile_pictures/', blank=True, null=True, default='profile_pictures/default_profile.jpg')
     country = models.CharField(max_length=100, blank=True, null=True)
     email = models.EmailField(max_length=100, null=True)
@@ -292,7 +293,6 @@ class ProjectCategory(models.Model):
     project = models.ForeignKey(Project, related_name='projectcategories', on_delete=models.CASCADE) 
     name = models.CharField(max_length=100)
 
-
 class ProjectRating(models.Model):
     value = models.DecimalField(max_digits=3, decimal_places=1, default=0.0)
     project = models.ForeignKey(Project, on_delete=models.PROTECT, related_name='ratings')
@@ -316,11 +316,21 @@ class Milestone(models.Model):
     name = models.CharField(max_length=50)
     description = models.CharField(max_length=500)
     start_date = models.DateField(auto_now_add=True)
-    end_date = models.DateField() 
+    end_date = models.DateField()
+    paid = models.BooleanField(default=False) 
     project = models.ForeignKey(Project, on_delete=models.CASCADE, related_name='milestones')
     progress = models.DecimalField(max_digits=10, decimal_places=2, default=0, blank=True, null=True)
     freelancer = models.ForeignKey(Freelancer, on_delete=models.PROTECT, related_name='milestones', null=True, blank=True)
     state = models.CharField(max_length=100, choices=STATE_CHOICES, default='Available')
+
+    def calculate_progress(self):
+        total_tasks = self.tasks.count()
+        if total_tasks == 0:
+            self.progress = 0.00
+        else:
+            completed_tasks = self.tasks.filter(state="CP").count()
+            self.progress = (completed_tasks / total_tasks) * 100
+        self.save()
 
 class Profession(models.Model):
     requeriment = models.ForeignKey(Milestone, related_name='professions', on_delete=models.CASCADE)

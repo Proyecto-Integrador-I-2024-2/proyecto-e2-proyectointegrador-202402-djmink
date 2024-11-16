@@ -117,6 +117,8 @@
 </body>
     <script>
         document.getElementById('submit').addEventListener('click', function() {
+        const managerId = document.getElementById('torso').dataset.clientId; // Obtén el ID del manager
+        console.log("Manager ID:", managerId);
         const formData = new FormData();
         formData.append('manager', document.getElementById('torso').dataset.clientId);
         formData.append('name', document.getElementById('name').value);

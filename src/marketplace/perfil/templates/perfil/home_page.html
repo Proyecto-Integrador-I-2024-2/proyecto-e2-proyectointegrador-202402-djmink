@@ -10,40 +10,51 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home Page</title>
     <link rel="icon" type="image/png" href="{% static 'img/Logo.png' %}">
-    <link rel="stylesheet" href="{% static 'css/home_page1.css' %}">
-    <link rel="stylesheet" href="{% static 'css/footer.css' %}">
+    <link rel="stylesheet" href="{% static 'css/home_page3.css' %}">
+    <link rel="stylesheet" href="{% static 'css/footer2-1.css' %}">
 </head>
 <body>
 
-    <div class="back">
-
-        <div class="heading">
-            <img class="logo" src="{% static 'img/Logo.svg' %}"/>
-            <div class="logoseparator"></div>
-            <div class="ptext onlinemarketplace">
-                Online Marketplace
+    <div class="heading">
+        <div class="logo">
+            <img class="logo-pic" src="{% static 'img/Logo.svg' %}" class="logo" alt="">
+            <div class="lineNav"></div>
+            <div class="navText">
+                <span>Online</span>
+                <span>Marketplace</span>
             </div>
-            <div class="ptext login">Login</div>
-            <button class="btn join-btn">Join Us</button>
         </div>
+        <div class="navBar">
+            <ul>
+                <li><a href="{% url 'login'%}" class="login">Log In</a></li>
+                <li><a href="{% url 'registerc1'%}" class="join-us">Join Us</a></li>
+            </ul>
+        </div>
+    </div>
 
-        <div class="upper-section">
-            <div class="filter-container">
+    <div class="upper-section">
+        <div class="upper-upper">
+            <div class="upper-left">
                 <div class="filter-header" onclick="displayJoinModal()">
                     <img src="{% static 'img/lines.svg' %}" alt="Lines">
                     <span class="ptext filter-text">Filter</span>
                     <img class="arrow" src="{% static 'img/arrow.svg' %}" alt="arrow">
                 </div>
             </div>    
-        
-            <div class="ptext discover">Discover</div>
-            <div class="ptext your">Your <span class="ptext project"> Project</span> </div>
-        
-            <div class="input-container">
-                <input class= "input-box" type="text" placeholder="Search">
-                <img class ="search" src="{% static 'img/search.svg' %}" onclick="displayJoinModal()" alt="Search Icon">
+            <div class="upper-center">
+                <div class="ptext discover">Discover</div>
+                <div class="upper-center-down">
+                    <div class="ptext your">Your <span class="ptext project"> Project</span> </div>
+                </div>
             </div>
-        
+            <div class="upper-right">
+                <div class="input-container">
+                    <input class= "input-box" type="text" placeholder="Search">
+                    <img class ="search" src="{% static 'img/search.svg' %}" onclick="displayJoinModal()" alt="Search Icon">
+                </div>
+            </div>
+        </div>
+        <div class="upper-down">
             <nav class="cat-nav">
                 <a href="#branding" onclick="displayJoinModal()">Branding</a>
                 <a href="#illustration" onclick="displayJoinModal()" >Illustration</a>
@@ -52,65 +63,76 @@
                 <a href="#video_editing" onclick="displayJoinModal()" >Video Editing</a>
                 <a href="#image_editing" onclick="displayJoinModal()" >Image Editing</a>
             </nav>
-            
         </div>
+ 
+    </div>
 
-        <div class="publications-section">
+    <div class="publications-section">
 
-            <div class="publications-container">
-                {% for publication in publications %}
-                    <div class="publication-container" onclick="displayJoinModal()">
-                        <div class="card">
-                            <div class="project-picture-container">
-                                <img class="fav" src="{% static 'img/Fav.svg' %}" />
-                                <img class="project-picture" src="{{ publication.project_picture.url }}" alt="Project Picture"/>
-                            </div>
-                            <div class="project-data-1">
+        <div class="publications-container">
+            {% for publication in publications %}
+                <div class="publication-container" onclick="displayJoinModal()">
+                    <div class="card">
+                        <div class="project-picture-container">
+                            <img class="fav" src="{% static 'img/Fav.svg' %}" />
+                            <img class="project-picture" src="{{ publication.project_picture.url }}" alt="Project Picture"/>
+                        </div>
+                        <div class="project-data-1">
+                            <div class="project-data-1-left">
                                 <img class="publication-profile-picture" src="{{ publication.manager.image.url }}" alt="Profile Picture"/>
                                 <div class="ptext publication-profile-name">{{ publication.manager.name }}</div>
+                            </div>
+                            <div class="project-data-1-right">
                                 <img class="star" src="{% static 'img/Star.svg' %}" />
                                 <div class="ptext publication-rate">{{ publication.manager.rating }}</div>
                                 <div class="ptext comments-amount">({{ publication.manager.ratings_received.count }}+)</div>
                             </div>
                         </div>
-                        <div class="project-data-2">
-                            <div class="ptext project-name">{{ publication.name }}</div>
-                            <div class="ptext project-description">{{ publication.description }}</div>
-                            <div class="ptext project-budget">From ${{ publication.budget }}</div>
-                        </div>
-                        <div class="categories-container">
-                            {% for category in publication.projectcategories.all %}
-                                <div class="category-container">
-                                    <div class="category">{{ category.name }}</div>
-                                </div>
-                            {% endfor %}
-                        </div> 
                     </div>
-                {% empty %}
-                    <p>There are no publications registered yet.</p>
-                {% endfor %}
-            </div>
-
+                    <div class="project-data-2">
+                        <div class="ptext project-name">{{ publication.name }}</div>
+                        <div class="ptext project-description">{{ publication.description }}</div>
+                        <div class="ptext project-budget">From ${{ publication.budget }}</div>
+                    </div>
+                    <div class="categories-container">
+                        {% for category in publication.projectcategories.all %}
+                            <div class="category-container">
+                                <div class="category">{{ category.name }}</div>
+                            </div>
+                        {% endfor %}
+                    </div> 
+                </div>
+            {% empty %}
+                <p>There are no publications registered yet.</p>
+            {% endfor %}
         </div>
 
-        {% include 'perfil/sections/footer.html' %}
+
 
     </div>
+
+    {% include 'perfil/sections/footer2.html' %}
 
     <div id="joinModal" class="modal">
         <div class="modal-content">
             <span id="close" class="close">&times;</span>
-            <div class="ptext modal-title">Join our <span class="ptext community">Community</span></div>
-            <button id= "sign-up-btn" class='btn sign-up'>Sign Up</button>
-            <div class="separator-con">
-                <hr class="separator a">
-                <div class="ptext or">Or</div>
-                <hr class="separator b">
-            </div>
-            <button id= "login-btn" class='btn login'>Log In</button>
-            <div class="google-container">
-                <img class="google-icon" src="{% static 'img/Google.png' %}"> 
-                <button id= "btn sign-google" class='btn sign-google'>Sign In with Google</button>
+            <div class="modal-content-content">
+                <div class="ptext modal-title">Join our <span class="ptext community">Community</span></div>
+                <a href="{% url 'registerc1'%}" target="_blank">
+                    <button id= "sign-up-btn" class='btn sign-up'>Sign Up</button>
+                </a>
+                <div class="separator-con">
+                    <hr class="separator">
+                    <div class="ptext or">Or</div>
+                    <hr class="separator">
+                </div>
+                <a href="{% url 'login' %}" target="_blank">
+                    <button id= "login-btn" class='btn login'>Log In</button>
+                </a>
+                <div class="google-container">
+                    <img class="google-icon" src="{% static 'img/Google.png' %}"> 
+                    <button id= "btn sign-google" class='btn sign-google'>Sign In with Google</button>
+                </div>
             </div>
         </div>
     </div>

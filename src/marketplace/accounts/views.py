@@ -186,7 +186,8 @@ def create_project_view(request, id):
         'profile_image': client.image.url,
         'home_url': reverse('mainCliente', args=[client.id]),
         'profile_url': reverse('perfilesCliente', args=[client.id]),
-        'at_client_page': True
+        'at_client_page': True,
+        'company_manager': client
     }
     return render(request, 'AddProject.html', context)
 
@@ -209,6 +210,7 @@ def edit_project_view(request, id_client, id_project):
 def post_project(request):
     if request.method == 'POST':
         manager_id = request.POST.get('manager')
+        print(f"Manager ID: {manager_id}")
         name = request.POST.get('name')
         description = request.POST.get('description')
         budget = request.POST.get('budget')
@@ -227,7 +229,7 @@ def post_project(request):
                 manager_id=manager_id,
                 name=name,
                 description=description,
-                budget=budget,
+                budget=budget
             )
 
         # form = createProjectForm(request.POST, request.FILES)
