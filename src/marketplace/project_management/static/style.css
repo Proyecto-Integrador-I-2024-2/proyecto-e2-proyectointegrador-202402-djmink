@@ -52,10 +52,6 @@
     display:flex;
     flex-direction: row;
     align-items: center;
-    width: 304px;
-    height: 90px;
-    top: 0px;
-    left: 1%;
     border: none;
   }
 
@@ -117,6 +113,9 @@
 
   .blue-notification {
     display:none;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
     /* position: relative; */
     width: 100%;
     height: 30px;
@@ -126,10 +125,6 @@
     transition: opacity 1s ease-out;
    }
    .blue-notification .your-account-has {
-    /* display:none; */
-    /* position: absolute; */
-    top: 6px;
-    left: 47%;
     font-family: var(--normal-semi-bold-font-family);
     font-weight: var(--normal-semi-bold-font-weight);
     color: #ffffff;
@@ -261,7 +256,8 @@
     }
   
     .frame .torso .ellipse {
-      /* position: absolute; */
+      border-radius: 50%;
+      height: 40px;
       width:40px;
       margin: 5px;
       object-fit: cover;
@@ -452,22 +448,16 @@
     display:flex;
     flex-direction: row;
     align-items: center;
-    gap:80px;
+    flex-wrap: wrap;
+    gap: 50px;
     justify-content: space-between;
   }
   
-  .frame .requirement {
-    top: 1199px;
-    left: 150px;
-    position: absolute;
-    width: 540px;
-    height: 240px;
-    background-color: #bcbcbc66;
-    border-radius: 10px;
-    overflow: hidden;
-    border: 1px solid;
-    border-color: var(--variable-collection-silver);
+  .frame .requirements > * {
+    flex: 1 1 calc(50% - 40px); /* Adjust the width to fit 2 items per row */
+    max-width: calc(50% - 40px); /* Ensure the max-width doesn't exceed 50% */
   }
+
   
   .frame .type {
     position: absolute;
@@ -607,7 +597,7 @@
   .frame .text-wrapper-16 {
     margin-left:1px;
     color: #ffffff;
-    font-size: 40px;
+    font-size: 38px;
     text-align: center;
     white-space: nowrap;
     font-family: "Poppins", Helvetica;
@@ -714,6 +704,7 @@
     flex-direction: column;
     gap: 15px;
     padding:25px;
+    margin: 0 7.5px 0 7.5px;
     background-color: #bcbcbc66;
     border-radius: 10px;
     overflow: hidden;
@@ -726,25 +717,25 @@
     flex-direction: row;
     gap: 5px;
   }
-  
-  .frame .type-3 {
-    width: 107px;
-    left: 202px;
+
+  .frame .row-flex-div-wrap {
+    display: flex;
+    flex-direction: row;
+    gap: 5px;
   }
   
+  
   .frame .overlap-group-4 {
-    position: relative;
-    width: 105px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
     height: 25px;
     background-color: #448de6;
     border-radius: 10px;
   }
   
   .frame .text-wrapper-19 {
-    position: absolute;
-    height: 18px;
-    top: 3px;
-    left: 12px;
+    margin: 0 8px 0 8px;
     font-family: var(--extra-small-font-family);
     font-weight: var(--extra-small-font-weight);
     color: #ffffff;
@@ -755,15 +746,39 @@
     font-style: var(--extra-small-font-style);
   }
   
-  .frame .type-4 {
+  .frame .professions-list {
     display: flex;
     flex-direction: row;
     align-items: center;
-    gap:2px;
-    height: 25px;
-    top: 190px;
-    left: 31px;
-  }
+    overflow-x: auto; /* Enables horizontal scrolling */
+    overflow-y: hidden; /* Hides vertical scrollbar */
+    flex-wrap: nowrap; /* Prevents wrapping */
+    gap: 5px 2px;
+    scrollbar-width: thin; /* Makes the scrollbar thinner */
+    scrollbar-color: #888 transparent; /* Customizes scrollbar color */
+}
+
+.frame .professions-list::-webkit-scrollbar {
+    height: 5px; /* Sets the height of the scrollbar */
+}
+
+.frame .professions-list::-webkit-scrollbar-thumb {
+    background-color: #888; /* Customizes the color of the scrollbar thumb */
+    border-radius: 10px; /* Rounds the scrollbar thumb */
+}
+
+.frame .professions-list::-webkit-scrollbar-track {
+    background-color: transparent; /* Makes the track transparent */
+}
+
+/* Additional styling for a completely hidden scrollbar */
+.frame .professions-list::-webkit-scrollbar {
+    display: none; /* Hides the scrollbar (optional) */
+}
+
+.frame .professions-list::-webkit-scrollbar-button {
+  display: none; /* Hides the arrows */
+}
   
   .frame .overlap-6 {
     display:flex;
@@ -776,6 +791,7 @@
   
   .frame .text-wrapper-20 {
     margin: 0 8px 0 8px;
+    text-wrap-mode: nowrap;
     font-family: var(--extra-small-font-family);
     font-weight: var(--extra-small-font-weight);
     color: #ffffff;
@@ -1284,9 +1300,12 @@ scrollbar-color: #888 #f1f1f1; /* Thumb color and track color */
 }
 
 .application-form {
-  position: relative;
-  width: 700px;
-  height: 453px;
+  display: flex;
+  flex-direction: column; 
+  padding: 30px 30px;
+  margin: auto;
+  gap:15px;
+  width: 100%;
   background-color: var(--variable-collection-white-smoke);
   border-radius: 10px;
   overflow: hidden;
@@ -1294,38 +1313,47 @@ scrollbar-color: #888 #f1f1f1; /* Thumb color and track color */
   border-color: #000000;
 }
 
+.application-form .column-flex {
+  display: flex;
+  flex-direction: column;
+  margin-top: 6px;
+  margin-left: 10px;
+}
+
+.application-form .row-flex {
+  display: flex;
+  flex-direction: row;
+}
+
+.application-form .wastable {
+  display: flex;
+  flex-direction: column;
+  justify-content: end;
+}
+
 .application-form .overlap-group {
-  position: absolute;
-  width: 620px;
+  display: flex;
+  flex-direction: row;
   height: 109px;
-  top: 96px;
-  left: 40px;
+  justify-content: space-between;
+  padding: 10px 20px 10px 20px;
   background-color: #d9d9d9;
   border-radius: 10px;
 }
 
 .application-form .profile {
-  position: absolute;
-  width: 279px;
-  height: 60px;
-  top: 39px;
-  left: 20px;
+  display:flex;
+  flex-direction: row;
 }
 
 .application-form .status {
-  position: absolute;
-  width: 143px;
-  height: 15px;
-  top: 37px;
-  left: 75px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
 }
 
 .application-form .text-wrapper {
-  position: absolute;
-  width: 122px;
-  height: 15px;
-  top: 0;
-  left: 19px;
+  margin-left: 4px;
   font-family: var(--extra-small-font-family);
   font-weight: var(--extra-small-font-weight);
   color: #27b63e;
@@ -1337,28 +1365,18 @@ scrollbar-color: #888 #f1f1f1; /* Thumb color and track color */
 }
 
 .application-form .check {
-  position: absolute;
   width: 15px;
   height: 15px;
-  top: 0;
-  left: 0;
 }
 
 .application-form .ellipse {
-  width: 60px;
-  height: 60px;
+  width: 50px;
+  height: 50px;
+  border-radius: 100%;
   object-fit: cover;
-  position: absolute;
-  top: 0;
-  left: 0;
 }
 
 .application-form .div {
-  position: absolute;
-  width: 202px;
-  height: 30px;
-  top: 6px;
-  left: 75px;
   font-family: var(--normal-font-family);
   font-weight: var(--normal-font-weight);
   color: #000000;
@@ -1369,11 +1387,6 @@ scrollbar-color: #888 #f1f1f1; /* Thumb color and track color */
 }
 
 .application-form .text-wrapper-2 {
-  position: absolute;
-  width: 214px;
-  height: 24px;
-  top: 12px;
-  left: 26px;
   font-family: var(--medium-font-family);
   font-weight: var(--medium-font-weight);
   color: #000000;
@@ -1384,11 +1397,9 @@ scrollbar-color: #888 #f1f1f1; /* Thumb color and track color */
 }
 
 .application-form .component {
-  position: absolute;
   width: 100px;
   height: 40px;
-  top: 49px;
-  left: 503px;
+  margin-bottom: 12px;
   background-color: var(--variable-collection-silver);
   border-radius: 10px;
   border-color: var(--variable-collection-silver);
@@ -1396,10 +1407,6 @@ scrollbar-color: #888 #f1f1f1; /* Thumb color and track color */
 }
 
 .application-form .delete {
-  position: absolute;
-  height: 21px;
-  top: 11.2px;
-  left: 29px;
   font-family: var(--small-font-family);
   font-weight: var(--small-font-weight);
   color: var(--variable-collection-rich-black);
@@ -1411,11 +1418,7 @@ scrollbar-color: #888 #f1f1f1; /* Thumb color and track color */
 }
 
 .application-form .text-wrapper-3 {
-  position: absolute;
-  width: 596px;
-  height: 40px;
-  top: 33px;
-  left: 50px;
+  margin-left: 15px;
   font-family: var(--h5-font-family);
   font-weight: var(--h5-font-weight);
   color: #000000;
@@ -1426,11 +1429,7 @@ scrollbar-color: #888 #f1f1f1; /* Thumb color and track color */
 }
 
 .application-form .p {
-  position: absolute;
-  width: 603px;
-  height: 54px;
-  top: 212px;
-  left: 50px;
+  margin-left: 15px;
   font-family: var(--large-font-family);
   font-weight: var(--large-font-weight);
   color: #000000;
@@ -1442,11 +1441,9 @@ scrollbar-color: #888 #f1f1f1; /* Thumb color and track color */
 }
 
 .application-form .option {
-  position: absolute;
-  width: 389px;
-  height: 20px;
-  top: 277px;
-  left: 60px;
+  display: flex;
+  flex-direction: row;
+  margin-left: 17px;
 }
 
 .application-form .ellipse-2 {
@@ -1454,17 +1451,10 @@ scrollbar-color: #888 #f1f1f1; /* Thumb color and track color */
   height: 20px;
   background-color: #d9d9d9;
   border-radius: 10px;
-  position: absolute;
-  top: 0;
-  left: 0;
 }
 
 .application-form .text-wrapper-4 {
-  position: absolute;
-  width: 347px;
-  height: 20px;
-  top: 0;
-  left: 40px;
+  margin-left:5px;
   font-family: var(--normal-font-family);
   font-weight: var(--normal-font-weight);
   color: #000000;
@@ -1509,20 +1499,14 @@ scrollbar-color: #888 #f1f1f1; /* Thumb color and track color */
 .application-form .basic-button {
   all: unset;
   box-sizing: border-box;
-  position: absolute;
   width: 400px;
   height: 40px;
-  top: 379px;
-  left: 150px;
   background-color: var(--variable-collection-palatinate-blue);
   border-radius: 10px;
 }
 
 .application-form .log-in {
-  position: absolute;
-  height: 21px;
-  top: 11.5px;
-  left: 180px;
+  
   font-family: var(--small-bold-font-family);
   font-weight: var(--small-bold-font-weight);
   color: var(--variable-collection-white-smoke);
@@ -1558,8 +1542,8 @@ scrollbar-color: #888 #f1f1f1; /* Thumb color and track color */
   margin: 5% auto; /* Centered */
   padding: 20px;
   border: 1px solid #88888800;
-  width: 42%; /* Adjust as needed */
-  position: relative;
+  width: 44.3%;
+  display: flex;
   border-radius: 5px;
 }
 
@@ -1580,12 +1564,61 @@ scrollbar-color: #888 #f1f1f1; /* Thumb color and track color */
   color: black;
 }
 
+.right-most-side {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+} 
+
+.centered-div {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  margin-top: 15px;
+} 
+
 /* Style for the close image inside the modal */
 .close-image {
-  position: absolute;
-  top: 15px;
-  right: 15px;
   width: 24px;
-  height: 24px;
+  height: 24px; 
   cursor: pointer;
+}
+
+.option {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.radio-input {
+  display: none;
+}
+
+.option .ellipse-2 {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 2px solid #d9d9d9;
+  margin-right: 10px;
+  position: relative;
+}
+
+.radio-input:checked + .ellipse-2::after {
+  content: '';
+  width: 12px;
+  height: 12px;
+  background-color: #555555;
+  border-radius: 50%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.text-wrapper-4 {
+  font-size: 16px;
+}
+
+.option:hover .ellipse-2 {
+  border-color: #007BFF;
 }

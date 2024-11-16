@@ -1,7 +1,8 @@
 from django.http import Http404, JsonResponse
 from django.db.models import Avg
 from django.shortcuts import render, get_object_or_404
-from my_aplication.models import Project, Freelancer
+from django.urls import reverse
+from my_aplication.models import Project, Freelancer, Milestone, Like
 from .forms import createCommentForm, createRatingForm, createApplicationForm
 from django.contrib.contenttypes.models import ContentType
 
@@ -12,18 +13,31 @@ def freelancerProjectView2(request):
 
 
 # Create your views here.
-def freelancerProjectView(request, id):
+def freelancerProjectView(request, freelancer_id, id):
     p = get_object_or_404(Project, id=id)
+    f = get_object_or_404(Freelancer, id=freelancer_id)
     d = p.description # get the description of the project
-    r = p.requirements.all() # get the requirements of the project
+    m = p.milestones.all() # get the milestones of the project
     c = p.comments.all() # get the comments of the project
+    likes = p.likes.count() # get the likes of the project
     rating = p.ratings.all().aggregate(Avg('value'))['value__avg'] # get the average rating of the project
+    has_applied = p.applications.filter(freelancer=f).exists()
+    f.profile_url = reverse('perfilFreelancer', args=[f.id])
+    f.has_liked = p.likes.filter(object_id=f.id).exists()
+    f.has_applied = has_applied
+
+    for comment in c:
+        comment.profile_url = reverse('perfilFreelancer', args=[comment.user.id])
+
     context = {
         'p': p,
-        'r': r,
+        'm': m,
         'c': c,
         'd': d,
-        'rating': rating
+        'profile_url': reverse('perfilesCliente', args=[p.manager.id]),
+        'rating': rating,
+        'likes': likes,
+        'freelancer': f,
     }
     return render(request, 'project_management/freelancer_view.html', context)
             
@@ -40,19 +54,20 @@ def post_comment(request):
         author = request.POST.get('author', 'Anonymous')  # default if author not provided
         content = request.POST.get('content')
         project_id = request.POST.get('project_id')
+        freelancer_id = request.POST.get('freelancer_id')
 
         # Make sure to set `project`, `content_type`, and `object_id` appropriately
         # This example assumes you have a valid `project_id` in the POST request
+
         project = Project.objects.get(id=project_id)
         fct = ContentType.objects.get_for_model(Freelancer)
-        user_id = "1"
         
         form = createCommentForm({
             'author': author,
             'content': content,
             'project': project.id,
             'content_type': fct,
-            'object_id': user_id,
+            'object_id': freelancer_id,
             'comment': None  # Assuming this is a new top-level comment
         })
 
@@ -64,28 +79,45 @@ def post_comment(request):
 
     return JsonResponse({'success': False, 'message': 'Invalid request method'})
 
-def createRating(request, id):
-    p = get_object_or_404(Project, id=id)
+def post_like(request):
     if request.method == 'POST':
-        form = createRatingForm(request.POST)
-        if form.is_valid():
-            r = form.save(commit=False)
-            r.project = p
-            r.save()
-            return render(request, 'project_management/client_view.html', {'p':p})
-    else:
-        form = createRatingForm()
-    return render(request, 'project_management/create_rating.html', {'form': form})
+        like = request.POST.get('like')
+        project_id = request.POST.get('project_id')
+        freelancer_id = request.POST.get('freelancer_id')
 
-def createApplication(request, id):
-    p = get_object_or_404(Project, id=id)
+        fct = ContentType.objects.get_for_model(Freelancer)
+        project = Project.objects.get(id=project_id)
+
+        if like == 'true':
+            like = Like.objects.create(project=project, object_id=freelancer_id, content_type=fct)
+            return JsonResponse({'success': True, 'message': 'Liked successfully'})
+        else:
+            like = Like.objects.filter(project=project, object_id=freelancer_id).delete()
+            return JsonResponse({'success': True, 'message': 'Unliked successfully'})
+
+    return JsonResponse({'success': False, 'message': 'Invalid request method'})
+    
+
+def post_application(request):
     if request.method == 'POST':
-        form = createApplicationForm(request.POST)
+        freelancer_id = request.POST.get('freelancer_id')
+        project_id = request.POST.get('project_id')
+        milestone_id = request.POST.get('milestone_id')
+
+        project = Project.objects.get(id=project_id)
+        freelancer = Freelancer.objects.get(id=freelancer_id)
+        milestone = Milestone.objects.get(id=milestone_id)
+
+        form = createApplicationForm({
+            'milestone': milestone,
+            'project': project,
+            'freelancer': freelancer
+        })
+
         if form.is_valid():
-            a = form.save(commit=False)
-            a.project = p
-            a.save()
-            return render(request, 'project_management/client_view.html', {'p':p})
-    else:
-        form = createApplicationForm()
-    return render(request, 'project_management/create_application.html', {'form': form})
+            form.save()
+            return JsonResponse({'success': True, 'message': 'Application posted successfully'})
+        else:
+            return JsonResponse({'success': False, 'message': 'Failed to post application'})
+
+    return JsonResponse({'success': False, 'message': 'Invalid request method'})

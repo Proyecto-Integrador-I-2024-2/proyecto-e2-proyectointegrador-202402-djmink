@@ -15,5 +15,5 @@ class createRatingForm(forms.ModelForm):
 class createApplicationForm(forms.ModelForm):
     class Meta:
         model = Application
-        fields = ['freelancer', 'accepted', 'project', 'milestone']   
+        fields = ['freelancer', 'project', 'milestone']   
 
