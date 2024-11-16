@@ -35,7 +35,7 @@
               <div class = "left-half">  
                 <div class="owner">
                   <img class="ellipse" src="{% static 'ellipse-274.png' %}" />
-                  <div class="text-wrapper-11">{{p.profile.name}}</div>
+                  <div class="text-wrapper-11">{{p.manager.business_vertical}}</div>
                 </div>
                 <button class="grade-label" onclick="toggleStar()">
                   <img id="star-image" class="grade" src="{% static 'grade-1.svg' %}" />
@@ -48,7 +48,7 @@
                 <button id="like-button" class="like-button" onclick="toggleLike()">
                   <div class="overlap-7">
                     <img id="like-icon" class="favorite" src="{% static 'favorite.svg' %}" />
-                    <div id=like-count class="text-wrapper-25">{{ p.likes }}</div>
+                    <div id=like-count class="text-wrapper-25">{{ likes }}</div>
                   </div>
                 </button>
                 <button id="apply-button" class="apply-button"><div class="save-changes-2">Apply</div></button>
@@ -56,75 +56,48 @@
             </div>  
           </div>
           <div class = "bigger-column-spacing">
-            <img class="picture" src="{% static 'picture.png' %}" />
+          {% if p.project_picture %}
+            <img id="profile-img" class="picture" src="{{ p.project_picture.url }}" alt="Project Image"/>
+          {% else %}
+            <img id="profile-img" class="picture" src="{% static 'picture.png' %}" alt="Default Image"/>
+            {% endif %}
             <pre class="the-sonic-landscapes">
               {{d|linebreaksbr}}
             </pre>
           </div>
-          <div class="text-wrapper-22">Requirements</div>
+          <div class="text-wrapper-22">Milestones</div>
           <div class="requirements">
-            <div class="requirement-3">
-              <div class = "row-flex-div">
-                <div class="number">
-                  <div class="overlap-5"><div class="text-wrapper-16">1</div></div>
-                </div>  
-                <div class = "req-title-div">
-                  <div class="title-3">Ethnographic Fieldwork Planning</div>
-                  <div class="row-flex-div">
-                    <img class="img-2" src="{% static 'check.svg' %}" />
-                    <div class="text-wrapper-21">Available</div>
-                  </div>
-                </div>
-              </div>
-              <p class="p">
-                Organize and plan visits to different Colombian regions to collect traditional sounds and musical elements.
-                This includes identifying communities, securing permissions, and arranging logistics for interviews and
-                sound recordings.
-              </p>
-              <div class = "row-flex-div">
-                <div class="type-4">
-                  <div class="overlap-6">
-                    <div class="text-wrapper-20">Cultural anthropologist</div>
-                  </div>
-                  <div class="type-3">
-                    <div class="overlap-group-4">
-                      <div class="text-wrapper-19">Ethnographer</div>
+            {% for milestone in m %}
+              <div class="requirement-3">
+                <div class = "row-flex-div">
+                  <div class="number">
+                    <div class="overlap-5"><div class="text-wrapper-16">{{forloop.counter}}</div></div>
+                  </div>  
+                  <div class = "req-title-div">
+                    <div class="title-3">{{ milestone.name }}</div>
+                    <div class="row-flex-div">
+                      <img class="img-2" src="{% static 'check.svg' %}" />
+                      <div class="text-wrapper-21">{{ milestone.state }}</div>
                     </div>
                   </div>
                 </div>
-              </div>  
-            </div>
-            <div class="requirement-3">
-              <div class = "row-flex-div">
-                <div class="number">
-                  <div class="overlap-5"><div class="text-wrapper-16">1</div></div>
-                </div>  
-                <div class = "req-title-div">
-                  <div class="title-3">Ethnographic Fieldwork Planning</div>
-                  <div class="row-flex-div">
-                    <img class="img-2" src="{% static 'check.svg' %}" />
-                    <div class="text-wrapper-21">Available</div>
-                  </div>
-                </div>
-              </div>
-              <p class="p">
-                Organize and plan visits to different Colombian regions to collect traditional sounds and musical elements.
-                This includes identifying communities, securing permissions, and arranging logistics for interviews and
-                sound recordings.
-              </p>
-              <div class = "row-flex-div">
-                <div class="type-4">
-                  <div class="overlap-6">
-                    <div class="text-wrapper-20">Cultural anthropologist</div>
-                  </div>
-                  <div class="type-3">
-                    <div class="overlap-group-4">
-                      <div class="text-wrapper-19">Ethnographer</div>
+                <p class="p">
+                  {{ milestone.description }}
+                </p>
+                <div class = "row-flex-div-wrap">
+                  <div class="professions-list">
+                    {% for profession in milestone.professions.all %}
+                    <div class="overlap-6">
+                      <div class="text-wrapper-20">{{profession.name}}</div>
                     </div>
+                    <!-- <div class="overlap-group-4">
+                      <div class="text-wrapper-19">Ethnographer</div>
+                    </div> -->
+                    {% endfor %}
                   </div>
-                </div>
-              </div>  
-            </div>
+                </div>  
+              </div>
+            {% endfor %}
           </div>
           <div class="text-wrapper-17">Comments</div>
           <div class="make-comment">
@@ -158,15 +131,6 @@
                 </div>  
               </div>  
             </li>
-            <!-- <div class="comment-2">
-              <img class="ellipse-2" src="{% static 'ellipse-257-1.png' %}" />
-              <div class="overlap-group-2">
-                <div class="user">Rebeka</div>
-                <div class="element-moths-ago">October 21st, 2024</div>
-              </div>
-              <p class="comment-text">It was really nice working with this community!</p>
-              <img class="line" src="{% static 'line-10.svg' %}" />
-            </div> -->
             {% endfor %}
           </ul>  
         </div>
@@ -329,7 +293,7 @@
 
     applyButton2.onclick = function() {
     modal.style.display = 'none';  
-    appliedDiv.style.display = 'block';
+    appliedDiv.style.display = 'flex';
     appliedTextDiv.style.display = 'block';
     appliedDiv.classList.remove('fade-out'); // Ensure the element is fully opaque
     appliedTextDiv.classList.remove('fade-out'); // Ensure the element is fully opaque
@@ -401,5 +365,29 @@
         console.error('Error:', error);
       });
     });
+  </script>
+  <script>
+     document.addEventListener('DOMContentLoaded', function() {
+    const colors = ['#d95f5f', '#448de6', '#d44c4c', '#3d8440', '#c162c8'];
+    const overlapElements = document.querySelectorAll('.overlap-6');
+    
+    // Initialize a variable to store the last assigned color
+    let lastColor = '';
+
+    overlapElements.forEach(el => {
+      let randomColor;
+
+      // Ensure that the new color is not the same as the last color
+      do {
+        randomColor = colors[Math.floor(Math.random() * colors.length)];
+      } while (randomColor === lastColor);
+
+      // Assign the random color to the element
+      el.style.backgroundColor = randomColor;
+
+      // Update the lastColor for the next iteration
+      lastColor = randomColor;
+    });
+  });
   </script>
 </html>

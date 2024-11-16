@@ -170,7 +170,6 @@ def post_project(request):
             project_picture=project_picture
         )
         # form = createProjectForm(request.POST, request.FILES)
-
         milestones_json =  request.POST.get('milestones')
         if milestones_json:
             milestones = json.loads(milestones_json)

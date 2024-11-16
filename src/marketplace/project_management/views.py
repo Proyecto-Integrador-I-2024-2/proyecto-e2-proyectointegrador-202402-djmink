@@ -1,7 +1,7 @@
 from django.http import Http404, JsonResponse
 from django.db.models import Avg
 from django.shortcuts import render, get_object_or_404
-from my_aplication.models import Project, Freelancer
+from my_aplication.models import Project, Freelancer, Milestone
 from .forms import createCommentForm, createRatingForm, createApplicationForm
 from django.contrib.contenttypes.models import ContentType
 
@@ -15,15 +15,17 @@ def freelancerProjectView2(request):
 def freelancerProjectView(request, id):
     p = get_object_or_404(Project, id=id)
     d = p.description # get the description of the project
-    r = p.requirements.all() # get the requirements of the project
+    m = p.milestones.all() # get the milestones of the project
     c = p.comments.all() # get the comments of the project
+    likes = p.likes.count() # get the likes of the project
     rating = p.ratings.all().aggregate(Avg('value'))['value__avg'] # get the average rating of the project
     context = {
         'p': p,
-        'r': r,
+        'm': m,
         'c': c,
         'd': d,
-        'rating': rating
+        'rating': rating,
+        'likes': likes
     }
     return render(request, 'project_management/freelancer_view.html', context)
             
@@ -43,6 +45,7 @@ def post_comment(request):
 
         # Make sure to set `project`, `content_type`, and `object_id` appropriately
         # This example assumes you have a valid `project_id` in the POST request
+
         project = Project.objects.get(id=project_id)
         fct = ContentType.objects.get_for_model(Freelancer)
         user_id = "1"
