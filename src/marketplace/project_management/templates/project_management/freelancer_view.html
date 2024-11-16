@@ -9,7 +9,7 @@
   </head>
   <body>
     <div class="frame">
-      <div id="view-project" class="view-project" data-project-id="{{ p.id }}">
+      <div id="view-project" class="view-project" data-project-id="{{ p.id }}" data-freelancer-id = "{{freelancer.id}}" data-freelancer-name = "{{freelancer.name}}" data-has-applied = "{{freelancer.has_applied}}" data-has-liked = "{{freelancer.has_liked}}">
 
         <div class="heading">  
           <a href="http://127.0.0.1:8000/">
@@ -34,7 +34,8 @@
             <div class = "second-half">
               <div class = "left-half">  
                 <div class="owner">
-                  <img class="ellipse" src="{% static 'ellipse-274.png' %}" />
+                  <a href="{{ profile_url }}"><img class="ellipse" src="{{ p.manager.image.url }}" alt="Profile Picture"/></a>
+                  <!-- <img class="ellipse" src="{% static 'ellipse-274.png' %}" /> -->
                   <div class="text-wrapper-11">{{p.manager.business_vertical}}</div>
                 </div>
                 <button class="grade-label" onclick="toggleStar()">
@@ -61,9 +62,9 @@
           {% else %}
             <img id="profile-img" class="picture" src="{% static 'picture.png' %}" alt="Default Image"/>
             {% endif %}
-            <pre class="the-sonic-landscapes">
-              {{d|linebreaksbr}}
-            </pre>
+            <p class="the-sonic-landscapes">
+              {{d}}
+            </p>
           </div>
           <div class="text-wrapper-22">Milestones</div>
           <div class="requirements">
@@ -119,7 +120,9 @@
             <li class="overlap-2">
               <div class = "whole-comment">
                 <div class="comment">
-                  <img class="ellipse-2" src="{% static 'ellipse-257.png' %}" />
+                  <a href="{{ comment.profile_url }}">
+                    <img class="ellipse-2" src="{{ comment.user.image.url }}" alt="Profile Picture" />
+                  </a>
                   <div class="overlap-group-2">
                     <div class="user">{{ comment.author }}</div>
                     <div class="element-moths-ago">{{ comment.created_at|date:"F jS, Y" }}</div>
@@ -161,9 +164,17 @@
   <script>
     // Track the current "liked" state
     let isLiked = false;
-  
+  document.addEventListener('DOMContentLoaded', function() {
+    const liked = document.getElementById('view-project').dataset.hasLiked;
+    if (liked === 'True') {
+      isLiked = true;
+      document.getElementById('like-icon').src = "{% static 'favorite_filled.svg' %}";
+    }
+  });
     // Function to toggle like state
     function toggleLike() {
+      const projectId = document.getElementById('view-project').dataset.projectId;
+      const freelancerId = document.getElementById('view-project').dataset.freelancerId;
       // Get the like count element
       const likeCountElement = document.getElementById('like-count');
       // Get the image element
@@ -180,12 +191,36 @@
         likeCount++;
         likeIcon.src = "{% static 'favorite_filled.svg' %}"; // Change to "liked" image
       }
-  
+      
       // Update the displayed like count
       likeCountElement.innerText = likeCount;
   
       // Toggle the liked state
       isLiked = !isLiked;
+
+      fetch('/project/post_like/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+          'X-CSRFToken': '{{ csrf_token }}'  // Include CSRF token for security
+        },
+        body: new URLSearchParams({
+          'like': isLiked,
+          'project_id': projectId,
+          'freelancer_id': freelancerId
+        })
+      })
+      .then(response => response.json())
+      .then(data => {
+        if (data.success) {
+          alert(data.message);
+        } else {
+          alert(data.message);
+        }
+      })
+      .catch(error => {
+        console.error('Error:', error);
+      });
     }
   </script>
   <script>
@@ -234,6 +269,7 @@
   
       // Toggle the liked state
       isStarred = !isStarred;
+
     }
   </script>
   <script>
@@ -291,22 +327,64 @@
       }
     }
 
+    function getSelectedMilestone() {
+      const selectedMilestone = document.querySelector('input[name="milestone-selection"]:checked');
+      return selectedMilestone ? selectedMilestone.value : null;
+    }
+
     applyButton2.onclick = function() {
-    modal.style.display = 'none';  
-    appliedDiv.style.display = 'flex';
-    appliedTextDiv.style.display = 'block';
-    appliedDiv.classList.remove('fade-out'); // Ensure the element is fully opaque
-    appliedTextDiv.classList.remove('fade-out'); // Ensure the element is fully opaque
+      const milestoneId = getSelectedMilestone();
+      const freelancerId = document.getElementById('view-project').dataset.freelancerId;
+      const projectId = document.getElementById('view-project').dataset.projectId;
+      const hasApplied = document.getElementById('view-project').dataset.hasApplied;
+      if (milestoneId) {
+        if (hasApplied) {
+          alert('You have already applied to this project');
+          return;
+        }else{  
+        fetch('/project/post_application/', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'X-CSRFToken': '{{ csrf_token }}'  // Include CSRF token for security
+          },
+          body: new URLSearchParams({
+            'freelancer_id': freelancerId,
+            'project_id': projectId,
+            'milestone_id': milestoneId
+          })
+        })
+        .then(response => response.json())
+        .then(data => {
+          if (data.success) {
+            alert(data.message);
+            modal.style.display = 'none';  
+            appliedDiv.style.display = 'flex';
+            appliedTextDiv.style.display = 'block';
+            appliedDiv.classList.remove('fade-out'); // Ensure the element is fully opaque
+            appliedTextDiv.classList.remove('fade-out'); // Ensure the element is fully opaque
 
-    wait = setTimeout(function() {
-    appliedDiv.classList.add('fade-out'); // Start the fade-out transition
-    appliedTextDiv.classList.add('fade-out'); // Start the fade-out transition
+            wait = setTimeout(function() {
+            appliedDiv.classList.add('fade-out'); // Start the fade-out transition
+            appliedTextDiv.classList.add('fade-out'); // Start the fade-out transition
 
-    setTimeout(function() {
-      appliedDiv.style.display = 'none'; // Hide the element after the transition
-      appliedTextDiv.style.display = 'none'; // Hide the element after the transition 
-      }, 1000); // Match this duration with the CSS transition duration
-    }, 3000);
+            setTimeout(function() {
+              appliedDiv.style.display = 'none'; // Hide the element after the transition
+              appliedTextDiv.style.display = 'none'; // Hide the element after the transition 
+              }, 1000); // Match this duration with the CSS transition duration
+            }, 3000); // Wait for 3 seconds before starting the fade-out transition 
+          } else {
+            alert(data.message);
+          }
+        })
+        .catch(error => {
+          console.error('Error:', error);
+        });
+      }
+    }
+      else {
+        alert('Please select a milestone to apply');
+      }
     }
   </script>
   <script>
@@ -333,11 +411,13 @@
   <script>
     document.getElementById('publish-comment').addEventListener('click', function() {
       const projectId = document.getElementById('view-project').dataset.projectId;
+      const freelancerId = document.getElementById('view-project').dataset.freelancerId;
+      const freelancerName = document.getElementById('view-project').dataset.freelancerName;
       const commentBox = document.getElementById('comment-box');
       const content = commentBox.value;
 
       // Assuming you have a way to get author and project_id; update accordingly
-      const author = "Anonymous"; // Update with the actual author if needed
+      // const author = "Anonymous"; // Update with the actual author if needed
 
       fetch('/project/post_comment/', {
         method: 'POST',
@@ -346,9 +426,10 @@
           'X-CSRFToken': '{{ csrf_token }}'  // Include CSRF token for security
         },
         body: new URLSearchParams({
-          'author': author,
+          'author': freelancerName,
           'content': content,
-          'project_id': projectId
+          'project_id': projectId,
+          'freelancer_id': freelancerId
         })
       })
       .then(response => response.json())

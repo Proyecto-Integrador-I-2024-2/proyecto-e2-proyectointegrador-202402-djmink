@@ -256,7 +256,8 @@
     }
   
     .frame .torso .ellipse {
-      /* position: absolute; */
+      border-radius: 50%;
+      height: 40px;
       width:40px;
       margin: 5px;
       object-fit: cover;
@@ -1316,6 +1317,7 @@ scrollbar-color: #888 #f1f1f1; /* Thumb color and track color */
   display: flex;
   flex-direction: column;
   margin-top: 6px;
+  margin-left: 10px;
 }
 
 .application-form .row-flex {
@@ -1368,8 +1370,9 @@ scrollbar-color: #888 #f1f1f1; /* Thumb color and track color */
 }
 
 .application-form .ellipse {
-  width: 60px;
-  height: 60px;
+  width: 50px;
+  height: 50px;
+  border-radius: 100%;
   object-fit: cover;
 }
 
