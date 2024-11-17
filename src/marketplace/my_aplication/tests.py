@@ -83,6 +83,7 @@ class ProjectModelTest(TestCase):
         self.assertEqual(project.state, 'PENDING')
 
 class RatingModelTest(TestCase):
+    time = timezone.now()
     def setUp(self):
         # Configuración de un Freelancer
         self.freelancer = Freelancer.objects.create(
@@ -94,40 +95,38 @@ class RatingModelTest(TestCase):
             price='100 USD/hr',
             experience='semi_senior',
         )
-        
-        # Obtener el ContentType correcto para Freelancer
-        freelancer_type = ContentType.objects.get_for_model(Freelancer)
+
+        self.company_manager = CompanyManager.objects.create(
+            username='company_manager1',
+            email='company_manager1@example.com',
+            password='securepassword',
+            name='Alice',
+            legal_agent='Alice LLC',
+            address='123 Business St.',
+            business_vertical='Software Development',
+            company_type='SaaS'
+        )
+
         
         # Crear una instancia de Rating usando el ContentType correcto
+
         self.rating = Rating.objects.create(
-            content_type=freelancer_type,
-            object_id=self.freelancer.id,
-            user=self.freelancer,
-            score=4.5
+            user_profile=self.freelancer,
+            author=self.company_manager,
+            score=4.5,
+            date_rated=self.time,
         )
 
     def test_create_rating(self):
         # Verifica que la calificación se haya creado correctamente
-        self.assertEqual(self.rating.content_type.model, 'freelancer')
-        self.assertEqual(self.rating.object_id, self.freelancer.id)
-        self.assertEqual(self.rating.user, self.freelancer)
+        self.assertEqual(self.rating.user_profile.id, self.freelancer.id)
+        self.assertEqual(self.rating.author.id, self.company_manager.id)
         self.assertEqual(self.rating.score, 4.5)
+        self.assertEqual(self.rating.date_rated, self.time)
 
     def test_rating_score_value(self):
         # Verifica que el puntaje esté dentro del rango permitido
         self.assertTrue(1 <= self.rating.score <= 5, "Score debe estar entre 1 y 5.")
-
-    def test_content_type_association(self):
-        # Verifica que el content_type sea el correcto
-        freelancer_type = ContentType.objects.get_for_model(Freelancer)
-        self.assertEqual(self.rating.content_type, freelancer_type)
-
-    def test_rating_retrieval(self):
-        # Verifica que se pueda recuperar la calificación usando object_id y content_type
-        retrieved_rating = Rating.objects.get(content_type=self.rating.content_type, object_id=self.freelancer.id)
-        self.assertEqual(retrieved_rating, self.rating)
-    
-
 
 class SkillModelTest(TestCase):
     def setUp(self):
