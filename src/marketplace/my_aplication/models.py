@@ -106,11 +106,13 @@ from django.contrib.auth.models import BaseUserManager
 from django.contrib.auth.hashers import make_password
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, BaseUserManager
 from django.contrib.auth.hashers import check_password, make_password
+from django.core.validators import MinValueValidator, MaxValueValidator
+from django.core.exceptions import ValidationError
 
 
 class User(models.Model):
     username = models.CharField(max_length=100, unique=True)
-    name = models.CharField(max_length=100, blank=True, null=True)
+    name = models.CharField(max_length=100, null=True)
     phone = models.CharField(max_length=100, blank=True, null=True)
     password = models.CharField(max_length=255)
     is_active = models.BooleanField(default=True)
@@ -167,8 +169,13 @@ class CompanyManager(User):
 class Rating(models.Model):
     user_profile = models.ForeignKey(User, related_name="ratings_received", on_delete=models.CASCADE, null=True)
     author = models.ForeignKey(User, related_name="ratings_made", on_delete=models.CASCADE, null=True)
-    score = models.FloatField()
+    score = models.FloatField(validators=[MinValueValidator(0.0), MaxValueValidator(5.0)], blank=True, null=True)
     date_rated = models.DateField(default=timezone.now)
+
+    def clean(self):
+        # Asegurarse de que el autor no sea None
+        if not self.author:
+            raise ValidationError('El campo "author" no puede ser None.')
 
     def __str__(self):
         return f'{self.author} rated {self.user_profile} - {self.score}'
@@ -216,7 +223,7 @@ class Project(models.Model):
     type = models.CharField(max_length=100, default='General')  # Default type
     duration = models.CharField(max_length=100, default='Not Specified')  # Default duration
     description = models.TextField(default='No description provided.')  # Default description
-    budget = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)  # Default budget
+    budget = models.DecimalField(max_digits=10, decimal_places=2, default=0.00, validators=[MinValueValidator(0.00)])  # Default budget
     deadline = models.DateField(null=True, blank=True)  # No default, but can be left empty
     date_created = models.DateField(auto_now_add=True)  # Automatically set to the current date when created
     project_picture = models.ImageField(upload_to='project_pictures/', blank=True, null=True , default = 'project_pictures/Project-Management-Fundamentals.jpg')  # Default project picture
@@ -331,6 +338,11 @@ class Milestone(models.Model):
             completed_tasks = self.tasks.filter(state="CP").count()
             self.progress = (completed_tasks / total_tasks) * 100
         self.save()
+        
+    def clean(self):
+        # Verificar que la fecha de finalización sea posterior a la fecha de inicio
+        if self.end_date <= self.start_date:
+            raise ValidationError('La fecha de finalización debe ser posterior a la fecha de inicio.')
 
 class Profession(models.Model):
     requeriment = models.ForeignKey(Milestone, related_name='professions', on_delete=models.CASCADE)
