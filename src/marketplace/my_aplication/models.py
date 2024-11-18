@@ -322,7 +322,7 @@ class Milestone(models.Model):
 
     name = models.CharField(max_length=50)
     description = models.CharField(max_length=500)
-    start_date = models.DateField(auto_now_add=True)
+    start_date = models.DateField()
     end_date = models.DateField()
     paid = models.BooleanField(default=False) 
     project = models.ForeignKey(Project, on_delete=models.CASCADE, related_name='milestones')
@@ -345,7 +345,7 @@ class Milestone(models.Model):
             raise ValidationError('La fecha de finalización debe ser posterior a la fecha de inicio.')
 
 class Profession(models.Model):
-    requeriment = models.ForeignKey(Milestone, related_name='professions', on_delete=models.CASCADE)
+    milestone = models.ForeignKey(Milestone, related_name='professions', on_delete=models.CASCADE)
     name = models.CharField(max_length=100)
 
 class Task(models.Model):

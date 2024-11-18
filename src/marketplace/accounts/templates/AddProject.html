@@ -72,13 +72,30 @@
 
                             <label class="ptext" for="freelancer-name">Description</label>
                             <input class="milestone-description" type="text" id="description" name="freelancer-name" placeholder="Description" required />
+
+                            <label class="ptext" for="milestone-start-date">Start Date</label>
+                            <input class="milestone-start-date" type="date" id="milestone-start-date" name="milestone-start-date" required />
                     
                             <label class="ptext" for="milestone-deadline">Deadline</label>
                             <input class="milestone-deadline" type="date" id="milestone-deadline" name="milestone-deadline" required />
                     
+                            <h3 class="ptext">Professions Needed</h3>
+                            <div id="profession-list" class="profession-list"></div>
+                            <label class="ptext" for="profession-name">Profession Name</label>
+                            <input type="text" id="profession-name" placeholder="Add profession" />
+                            <button type="button" class="btn add-profession" onclick="addProfession(this)">Add Profession</button>
+
                             <h3 class="ptext">Tasks</h3>
                             <div id="task-list" class="task-list"></div>
+                            <label class="ptext" for="task-name">Task Name</label>
                             <input type="text" id="task-name" placeholder="Add task" />
+                            
+                            <label class="ptext" for="task-description">Task Description</label>
+                            <input type="text" id="task-description" placeholder="Add task description"/>
+
+                            <label class="ptext" for="task-deadline">Task Deadline</label>
+                            <input type="date" id="task-deadline" placeholder="Add task deadline"/>
+
                             <button type="button" class="btn add-task" onclick="addTask(this)">Add Task</button>
 
                             <button type="submit" class="btn remove-milestone" onclick="removeMilestone(this)">Remove Milestone</button>
@@ -134,13 +151,23 @@
             const milestoneData = {
                 name: milestone.querySelector('.milestone-name').value,
                 description: milestone.querySelector('.milestone-description').value,
+                start_date: milestone.querySelector('.milestone-start-date').value,
                 deadline: milestone.querySelector('.milestone-deadline').value,
+                professions_related: [],
                 tasks: []
             };
 
+            milestone.querySelectorAll('.profession-item').forEach(profession => {
+                milestoneData.professions_related.push({
+                    name: profession.querySelector('span.profession-name').textContent
+                });
+            });
+
             milestone.querySelectorAll('.task-item').forEach(task => {
                 milestoneData.tasks.push({
-                    name: task.querySelector('span').textContent,
+                    name: task.querySelector('span.task-name').textContent.split(': ')[1].trim(),
+                    description: task.querySelector('span.task-description').textContent.split(': ')[1].trim(),
+                    deadline: task.querySelector('span.task-deadline').textContent.split(': ')[1].trim()
                     });
                 });
                 milestones.push(milestoneData);
@@ -185,20 +212,52 @@
     });
     </script>
     <script>
+
+        function addProfession(button) {
+            const thisMilestone = button.parentElement;
+            const professionName = thisMilestone.querySelector("#profession-name").value;
+            if (professionName === "") return;
+        
+            const professionList = thisMilestone.querySelector("#profession-list");
+            const professionItem = document.createElement("div");
+            professionItem.classList.add("profession-item");
+            professionItem.innerHTML = `
+                <span class="profession-name">${professionName}</span>
+                <button class="remove-button2" onclick="removeProfession(this)">Remove</button>
+            `;
+            professionList.appendChild(professionItem);
+            thisMilestone.querySelector("#profession-name").value = "";
+        }
+
+        function removeProfession(button) {
+            button.parentElement.remove();
+        }
+
         function addTask(button) {
             const thisMilestone = button.parentElement;
             const taskName = thisMilestone.querySelector("#task-name").value;
-            if (taskName === "") return;
+            const taskDescription = thisMilestone.querySelector("#task-description").value;
+            const taskDeadline = thisMilestone.querySelector("#task-deadline").value;
+            if (taskName === "" || taskDescription === "" || taskDeadline === ""){
+                alert("Please fill in all task fields.");
+                return;
+            }
         
             const taskList = thisMilestone.querySelector("#task-list");
             const taskItem = document.createElement("div");
             taskItem.classList.add("task-item");
             taskItem.innerHTML = `
-                <span>${taskName}</span>
+                <div>
+                    <span class="task-name"><b>Name:</b> ${taskName}</span>
+                    <span class="task-description"><b>Description:</b> ${taskDescription}</span>
+                    <span class="task-deadline"><b>Deadline:</b> ${taskDeadline}</span>
+                </div>
                 <button class="remove-button" onclick="removeTask(this)">Remove</button>
             `;
             taskList.appendChild(taskItem);
             thisMilestone.querySelector("#task-name").value = "";
+            thisMilestone.querySelector("#task-description").value = "";
+            thisMilestone.querySelector("#task-deadline").value = "";
         }
         
         function removeTask(button) {
@@ -222,12 +281,29 @@
                     <label class="ptext" for="freelancer-name">Description</label>
                     <input class="milestone-description" type="text" id="description" name="freelancer-name" placeholder="Description" required />
 
+                    <label class="ptext" for="milestone-start-date">Start Date</label>
+                    <input class="milestone-start-date" type="date" id="milestone-start-date" name="milestone-start-date" required />
+
                     <label class="ptext" for="milestone-deadline">Deadline</label>
                     <input class="milestone-deadline" type="date" id="milestone-deadline" name="milestone-deadline" required />
+
+                    <h3 class="ptext">Professions Needed</h3>
+                    <label class="ptext" for="profession-name">Profession Name</label>
+                    <div id="profession-list" class="profession-list"></div>
+                    <input type="text" id="profession-name" placeholder="Add profession" />
+                    <button type="button" class="btn add-profession" onclick="addProfession(this)">Add Profession</button>
             
                     <h3 class="ptext">Tasks</h3>
+                    <label class="ptext" for="task-name">Task Name</label>
                     <div id="task-list" class="task-list"></div>
                     <input type="text" id="task-name" placeholder="Add task" />
+
+                    <label class="ptext" for="task-description">Task Description</label>
+                    <input type="text" id="task-description" placeholder="Add task description"/>
+
+                    <label class="ptext" for="task-deadline">Task Deadline</label>
+                    <input type="date" id="task-deadline" placeholder="Add task deadline"/>
+
                     <button type="button" class="btn add-task" onclick="addTask(this)">Add Task</button>
             
                     <button type="submit" class="btn remove-milestone" onclick="removeMilestone(this)">Remove Milestone</button>

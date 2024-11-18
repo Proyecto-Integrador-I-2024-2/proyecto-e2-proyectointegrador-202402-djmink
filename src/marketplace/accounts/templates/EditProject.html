@@ -51,36 +51,6 @@
                     </div>
                 </div>
             </form>
-            <!-- <div class="milestones-section">
-                <h2 class="ptext">Milestones</h2>
-                <button class="btn add-milestone">+ Add Milestone</button>
-                <div class="milestones-container">
-                    {% for milestone in milestones %}
-                    <div class="milestone">
-                        <div class="milestone-header" onclick="toggleTasks(this)">
-                            <div class="ptext milestone-name">{{ milestone.name }}</div>
-                            <div class="ptext milestone-progress">{{ milestone.progress }}%</div>
-                            <div class="ptext milestone-deadline">{{ milestone.deadline }}</div>
-                            <button class="btn assignment">Assignments</button>
-                        </div>
-                        <div class="tasks-list" style="display: none;">
-                            {% for task in milestone.tasks.all %}
-                            <div class="task">
-                                <div class="circle">
-                                    {% if task.completed %}
-                                    <img class="check" src="path_to_check_icon" alt="Completed">
-                                    {% endif %}
-                                </div>
-                                <div class="ptext task-name">{{ task.name }}</div>
-                            </div>
-                            {% endfor %}
-                            <div class="task-add">Add task</div>
-                        </div>
-                    </div>
-                    {% endfor %}
-                </div>
-                <button id="submit" type="submit" class="buttonSubmit">Save chances</button>
-            </div> -->
             
             <div id ="milestone-list" class="milestone-list">
                 {% for milestone in milestones %}
@@ -92,20 +62,52 @@
                 
                         <label class="ptext" for="freelancer-name">Description</label>
                         <input class="milestone-description" type="text" id="description" name="freelancer-name" placeholder="Description" value="{{ milestone.description }}" required />
-                
+
+                        <label class="ptext" for="milestone-start-date">Start Date</label>
+                        <input class="milestone-start-date" type="date" id="milestone-start-date" name="milestone-start-date" value="{{milestone.start_date|date:'Y-m-d'}}" required />
+
                         <label class="ptext" for="milestone-deadline">Deadline</label>
                         <input class="milestone-deadline" type="date" id="milestone-deadline" name="milestone-deadline" value="{{ milestone.end_date|date:'Y-m-d' }}"  required />
                 
+                        <h3 class="ptext">Professions Needed</h3>
+                        <div id="profession-list" class="profession-list">
+                            {% for profession in milestone.professions.all %}
+                            <div class="profession-item" data-profession-id="{{profession.id}}">
+                                <span class="profession-name">{{ profession.name }}</span>
+                                <button type="button" class="btn remove-profession" onclick="removeProfession(this)">Remove Profession</button>
+                            </div>
+                            {% endfor %}
+                        </div>
+                        <label class="ptext" for="profession-name">Profession Name</label>
+                        <input type="text" id="profession-name" placeholder="Add profession" />
+                        <button type="button" class="btn add-profession" onclick="addProfession(this)">Add Profession</button>
+
                         <h3 class="ptext">Tasks</h3>
                         <div id="task-list" class="task-list">
                             {% for task in milestone.tasks.all %}
                             <div class="task-item" data-task-id="{{task.id}}">
-                                <span>{{ task.name }}</span>
-                                <button type="button" class="btn remove-task" onclick="removeTask(this)">Remove Task</button>
+                                <div class="spaguetti">
+                                    <span class="task-name"><b>Name:</b> {{task.name}}</span>
+                                    <span class="task-description"><b>Description:</b> {{task.description}}</span>
+                                    <span class="task-deadline"><b>Deadline:</b> {{task.deadline|date:'Y-m-d'}}</span>
+                                </div>
+                                <div class="meatballs">
+                                    <button type="button" class="green-button" onclick="editTask(this)">Edit</button>
+                                    <button type="button" class="red-button" onclick="removeTask(this)">Remove</button>
+                                </div>
                             </div>
                             {% endfor %}
                         </div>
+
+                        <label class="ptext" for="task-name">Task Name</label>
                         <input type="text" id="task-name" placeholder="Add task" />
+
+                        <label class="ptext" for="task-description">Task Description</label>
+                        <input type="text" id="task-description" placeholder="Add task description"/>
+
+                        <label class="ptext" for="task-deadline">Task Deadline</label>
+                        <input type="date" id="task-deadline" placeholder="Add task deadline"/>
+
                         <button type="button" class="btn add-task" onclick="addTask(this)">Add Task</button>
 
                         <button type="button" class="btn remove-milestone" onclick="removeMilestone(this)">Remove Milestone</button>
@@ -150,21 +152,63 @@
 <script>
     const deletedMilestones = [];
     const deletedTasks = [];
+    const deletedProfessions = [];
+
+    function addProfession(button) {
+            const thisMilestone = button.parentElement;
+            const professionName = thisMilestone.querySelector("#profession-name").value;
+            if (professionName === "") return;
+        
+            const professionList = thisMilestone.querySelector("#profession-list");
+            const professionItem = document.createElement("div");
+            professionItem.classList.add("profession-item");
+            professionItem.innerHTML = `
+                <span class="profession-name">${professionName}</span>
+                <button class="remove-button2" onclick="removeProfession(this)">Remove</button>
+            `;
+            professionList.appendChild(professionItem);
+            thisMilestone.querySelector("#profession-name").value = "";
+        }
+
 
         function addTask(button) {
             const thisMilestone = button.parentElement;
             const taskName = thisMilestone.querySelector("#task-name").value;
-            if (taskName === "") return;
+            const taskDescription = thisMilestone.querySelector("#task-description").value;
+            const taskDeadline = thisMilestone.querySelector("#task-deadline").value;
+            if (taskName === "" || taskDescription === "" || taskDeadline === ""){
+                alert("Please fill in all task fields.");
+                return;
+            }
         
             const taskList = thisMilestone.querySelector("#task-list");
             const taskItem = document.createElement("div");
             taskItem.classList.add("task-item");
             taskItem.innerHTML = `
-                <span>${taskName}</span>
-                <button class="remove-button" onclick="removeTask(this)">Remove</button>
+                <div class="spaguetti">
+                    <span class="task-name"><b>Name:</b> ${taskName}</span>
+                    <span class="task-description"><b>Description:</b> ${taskDescription}</span>
+                    <span class="task-deadline"><b>Deadline:</b> ${taskDeadline}</span>
+                </div>
+                <div class="meatballs">
+                    <button type="button" class="green-button" onclick="editTask(this)">Edit</button>
+                    <button type="button" class="red-button" onclick="removeTask(this)">Remove</button>
+                </div>
             `;
             taskList.appendChild(taskItem);
             thisMilestone.querySelector("#task-name").value = "";
+            thisMilestone.querySelector("#task-description").value = "";
+            thisMilestone.querySelector("#task-deadline").value = "";
+        }
+
+        function removeProfession(button) {
+            const professionElement = button.closest('.profession-item');
+            const professionId = professionElement.dataset.professionId;
+
+            if (professionId) {
+                deletedProfessions.push(professionId);  // Track the profession ID for deletion
+            }
+            button.parentElement.remove();
         }
         
         function removeTask(button) {
@@ -174,7 +218,33 @@
             if (taskId) {
                 deletedTasks.push(taskId);  // Track the task ID for deletion
             }
-            button.parentElement.remove();
+            button.parentElement.parentElement.remove();
+        }
+
+        function editTask(button){
+            const thisMilestone = button.closest('.add-milestone-section');
+            const taskNamePrev = thisMilestone.querySelector("#task-name").value;
+            const taskDescriptionPrev = thisMilestone.querySelector("#task-description").value;
+            const taskDeadlinePrev = thisMilestone.querySelector("#task-deadline").value;
+
+            if (taskNamePrev !== "" && taskDescriptionPrev !== "" && taskDeadlinePrev !== ""){
+                alert("Please save or clear the task fields of the current task before editing another one.");
+                return;
+            }
+
+            const taskElement = button.closest('.task-item');
+            const taskName = taskElement.querySelector('.task-name').textContent.split(': ')[1].trim();
+            const taskDescription = taskElement.querySelector('.task-description').textContent.split(': ')[1].trim();
+            const taskDeadline = taskElement.querySelector('.task-deadline').textContent.split(': ')[1].trim();
+
+            const milestoneSection = button.closest('.add-milestone-section');
+
+            milestoneSection.querySelector('#task-name').value = taskName;
+            milestoneSection.querySelector('#task-description').value = taskDescription;
+            milestoneSection.querySelector('#task-deadline').value = taskDeadline;
+
+            removeTask(button);
+
         }
 
         function removeMilestone(button) {
@@ -200,15 +270,32 @@
                     <label class="ptext" for="freelancer-name">Description</label>
                     <input class="milestone-description" type="text" id="description" name="freelancer-name" placeholder="Description" required />
 
+                    <label class="ptext" for="milestone-start-date">Start Date</label>
+                    <input class="milestone-start-date" type="date" id="milestone-start-date" name="milestone-start-date" required />
+
                     <label class="ptext" for="milestone-deadline">Deadline</label>
                     <input class="milestone-deadline" type="date" id="milestone-deadline" name="milestone-deadline" required />
+
+                    <h3 class="ptext">Professions Needed</h3>
+                    <label class="ptext" for="profession-name">Profession Name</label>
+                    <div id="profession-list" class="profession-list"></div>
+                    <input type="text" id="profession-name" placeholder="Add profession" />
+                    <button type="button" class="btn add-profession" onclick="addProfession(this)">Add Profession</button>
             
                     <h3 class="ptext">Tasks</h3>
+                    <label class="ptext" for="task-name">Task Name</label>
                     <div id="task-list" class="task-list"></div>
                     <input type="text" id="task-name" placeholder="Add task" />
+
+                    <label class="ptext" for="task-description">Task Description</label>
+                    <input type="text" id="task-description" placeholder="Add task description"/>
+
+                    <label class="ptext" for="task-deadline">Task Deadline</label>
+                    <input type="date" id="task-deadline" placeholder="Add task deadline"/>
+
                     <button type="button" class="btn add-task" onclick="addTask(this)">Add Task</button>
             
-                    <button type="button" class="btn remove-milestone" onclick="removeMilestone(this)">Remove Milestone</button>
+                    <button type="submit" class="btn remove-milestone" onclick="removeMilestone(this)">Remove Milestone</button>
                 </form>
             `;
             milestoneList.appendChild(addMilestoneSection);
@@ -234,14 +321,25 @@
                 id: milestone.closest('.add-milestone-section').dataset.milestoneId || null,
                 name: milestone.querySelector('.milestone-name').value,
                 description: milestone.querySelector('.milestone-description').value,
+                start_date: milestone.querySelector('.milestone-start-date').value,
                 deadline: milestone.querySelector('.milestone-deadline').value,
+                professions: [],
                 tasks: []
             };
+
+            milestone.querySelectorAll('.profession-item').forEach(profession => {
+                milestoneData.professions.push({
+                    id: profession.dataset.professionId || null,
+                    name: profession.querySelector('span.profession-name').textContent,
+                    });
+                });
 
             milestone.querySelectorAll('.task-item').forEach(task => {
                 milestoneData.tasks.push({
                     id: task.dataset.taskId || null,
-                    name: task.querySelector('span').textContent,
+                    name: task.querySelector('span.task-name').textContent.split(': ')[1].trim(),
+                    description: task.querySelector('span.task-description').textContent.split(': ')[1].trim(),
+                    deadline: task.querySelector('span.task-deadline').textContent.split(': ')[1].trim()
                     });
                 });
                 milestones.push(milestoneData);
@@ -250,6 +348,7 @@
         formData.append('milestones', JSON.stringify(milestones));
         formData.append('deletedMilestones', JSON.stringify(deletedMilestones));
         formData.append('deletedTasks', JSON.stringify(deletedTasks));
+        formData.append('deletedProfessions', JSON.stringify(deletedProfessions));
 
       const url = `/accounts/post_project_edition/${projectId}/`;
 
