@@ -6,8 +6,7 @@ from django.utils import timezone
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.auth import get_user_model
 from datetime import date
-from django.core.exceptions import ValidationError
-
+from django.core.exceptions import FieldError, ValidationError
 
 
 class FreelancerModelTest(TestCase):
@@ -33,6 +32,35 @@ class FreelancerModelTest(TestCase):
         # Verifica que el valor por defecto de 'jobs_completed' es 0
         freelancer = self.freelancer
         self.assertEqual(freelancer.jobs_completed, 0)
+    
+    def test_create_freelancer_with_invalid_email(self):
+        freelancer = Freelancer(
+            username='invalid_freelancer',
+            email='not-an-email',  # Email inválido
+            password='securepassword',
+            name='Invalid User',
+            profession='Tester',
+            price='50',
+            experience='junior',
+        )
+        with self.assertRaises(ValidationError):
+            freelancer.full_clean()  # Esto activará la validación del campo email
+            freelancer.save()
+
+    
+    def test_create_freelancer_with_empty_name(self):
+        freelancer = Freelancer(
+            username='empty_name_freelancer',
+            email='emptyname@example.com',
+            password='securepassword',
+            name='',  # Nombre vacío
+            profession='Tester',
+            price='50 USD/hr',
+            experience='junior',
+        )
+        with self.assertRaises(ValidationError):
+            freelancer.full_clean()  # Esto activará la validación del campo email
+            freelancer.save()
 
 class CompanyManagerModelTest(TestCase):
     def setUp(self):
@@ -53,6 +81,18 @@ class CompanyManagerModelTest(TestCase):
         manager = self.company_manager
         self.assertEqual(manager.username, 'company_manager1')
         self.assertEqual(manager.email, 'company_manager1@example.com')
+    
+    def test_create_company_manager_with_missing_fields(self):
+        company = CompanyManager(
+            username='incomplete_manager',
+            email='manager@example.com',
+            password='securepassword',
+            name='Incomplete Manager'
+            # Falta `legal_agent` y otros campos obligatorios
+        )
+        with self.assertRaises(ValidationError):
+            company.full_clean()  # Esto activará la validación del campo email
+            company.save()
 
 class ProjectModelTest(TestCase):
     def setUp(self):
@@ -81,6 +121,29 @@ class ProjectModelTest(TestCase):
         # Verifica que el estado predeterminado de un proyecto sea 'PENDING'
         project = self.project
         self.assertEqual(project.state, 'PENDING')
+    
+    def test_project_with_negative_budget(self):
+        project = Project(
+            manager=self.company_manager,
+            name='Invalid Budget Project',
+            description='Test project with negative budget.',
+            budget=-1000.00,  # Presupuesto inválido
+            state='PENDING'
+        )
+        with self.assertRaises(ValidationError):
+            project.full_clean()  # Esto activará la validación del campo email
+            project.save(
+        )
+    
+    def test_project_without_manager(self):
+        with self.assertRaises(IntegrityError):
+            Project.objects.create(
+                manager=None,  # Manager ausente
+                name='No Manager Project',
+                description='Project without manager.',
+                budget=5000.00,
+                state='PENDING'
+            )
 
 class RatingModelTest(TestCase):
     time = timezone.now()
@@ -128,6 +191,28 @@ class RatingModelTest(TestCase):
         # Verifica que el puntaje esté dentro del rango permitido
         self.assertTrue(1 <= self.rating.score <= 5, "Score debe estar entre 1 y 5.")
 
+    def test_rating_with_invalid_score(self):
+        rating = Rating(
+            user_profile=self.freelancer,
+            author=self.company_manager,
+            score=6,  # Puntaje fuera de rango
+            date_rated=self.time,
+        )
+        with self.assertRaises(ValidationError):
+            rating.full_clean()
+            rating.save()
+    
+    def test_rating_with_invalid_author_type(self):
+        rating = Rating(
+            user_profile=self.freelancer,
+            author=None,  # Tipo de autor inválido
+            score=4,
+            date_rated=self.time,
+        )
+        with self.assertRaises(ValidationError):
+            rating.full_clean()
+            rating.save()
+
 class SkillModelTest(TestCase):
     def setUp(self):
         self.freelancer = Freelancer.objects.create(
@@ -148,6 +233,16 @@ class SkillModelTest(TestCase):
         # Verifica que una habilidad se ha creado correctamente
         skill = self.skill
         self.assertEqual(skill.name, 'Python')
+    
+    def test_skill_without_name(self):
+    
+        skill = Skill(
+            profile=self.freelancer,
+            name=None  # Nombre de habilidad ausente
+        )
+        with self.assertRaises(ValidationError):
+            skill.full_clean()
+            skill.save()  
 
 class ApplicationModelTest(TestCase):
     def setUp(self):
@@ -199,6 +294,28 @@ class ApplicationModelTest(TestCase):
         self.assertEqual(application.state, 'Sent')
         self.assertEqual(application.freelancer, self.freelancer)
         self.assertEqual(application.milestone, self.milestone)
+
+    def test_application_without_freelancer(self):
+        with self.assertRaises(IntegrityError):
+            Application.objects.create(
+                freelancer=None,  # Freelancer ausente
+                project=self.project,
+                milestone=self.milestone,
+                accepted=False,
+                state='Sent'
+            )
+    
+    def test_application_with_invalid_state(self):
+        application = Application.objects.create(
+            freelancer=self.freelancer,
+            project=self.project,
+            milestone=self.milestone,
+            accepted=False,
+            state='InvalidState'  # Estado inválido
+        )
+        with self.assertRaises(ValidationError):
+            application.full_clean()
+            application.save()
         
 class MilestoneModelTest(TestCase):
     def setUp(self):
@@ -245,5 +362,29 @@ class MilestoneModelTest(TestCase):
         self.assertEqual(milestone.name, 'Milestone 1')
         self.assertEqual(milestone.project, self.project)
         self.assertEqual(milestone.freelancer, self.freelancer)
+
+    def test_milestone_with_invalid_dates(self):
+        milestone = Milestone(
+            name='Invalid Dates Milestone',
+            description='Milestone with end_date before start_date.',
+            start_date=timezone.now(),
+            end_date=timezone.now() - timezone.timedelta(days=1),  # Fecha final antes de la inicial
+            project=self.project,
+            freelancer=self.freelancer,
+            state='Available'
+        )
+        with self.assertRaises(ValidationError):
+            milestone.full_clean()
+            milestone.save()
     
-##Pruebas negativas unitarias
+    def test_milestone_without_project(self):
+        with self.assertRaises(IntegrityError):
+            Milestone.objects.create(
+                name='No Project Milestone',
+                description='Milestone without associated project.',
+                start_date=timezone.now(),
+                end_date=timezone.now() + timezone.timedelta(days=10),
+                project=None,  # Proyecto ausente
+                freelancer=self.freelancer,
+                state='Available'
+            )
