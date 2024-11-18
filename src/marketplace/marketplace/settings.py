@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     'perfil',
     'accounts',
     'project_management',
+    'notifications'
 ]
 
 MIDDLEWARE = [
