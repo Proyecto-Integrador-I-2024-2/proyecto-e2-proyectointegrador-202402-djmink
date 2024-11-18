@@ -151,6 +151,11 @@ textarea:focus {
 
 .remove-button {
     width: 80px;
+    height: 40px;
+}
+
+.remove-button-2 {
+    width: 80px;
 }
 
 .spaced-out{
@@ -297,6 +302,8 @@ footer a:hover {
      width: 100%;
 } */
 
+
+
 #milestone-form input {
     display: block;
     padding: 8px;
@@ -352,6 +359,58 @@ footer a:hover {
     cursor: pointer;
 }
 
+.btn.add-profession {
+    display: block;
+    margin-bottom: 70px;
+    width: 100%;
+    padding: 5px 10px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+#profession-list {
+    margin-top: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.profession-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 5px;
+    border: 1px solid #eee;
+    border-radius: 4px;
+    margin-bottom: 5px;
+    font-size: 14px;
+}
+
+.profession-item div {
+    display: flex;
+    flex-direction: column;
+}
+
+.profession-item span {
+    flex-grow: 1;
+    max-width: 900px;
+}
+
+.profession-item button {
+    background-color: red;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 2px 5px;
+    cursor: pointer;
+    font-size: 12px;
+    margin-right: 10px;
+}
+
 #task-list {
     margin-top: 10px;
     display: flex;
@@ -362,6 +421,7 @@ footer a:hover {
 .task-item {
     display: flex;
     align-items: center;
+    justify-content: space-between;
     padding: 5px;
     border: 1px solid #eee;
     border-radius: 4px;
@@ -369,8 +429,14 @@ footer a:hover {
     font-size: 14px;
 }
 
+.task-item div {
+    display:flex;
+    flex-direction: column;
+}
+
 .task-item span {
     flex-grow: 1;
+    max-width: 900px;
 }
 
 .task-item button {
@@ -381,5 +447,6 @@ footer a:hover {
     padding: 2px 5px;
     cursor: pointer;
     font-size: 12px;
+    margin-right: 10px;
 }
 

@@ -332,13 +332,18 @@
       return selectedMilestone ? selectedMilestone.value : null;
     }
 
+    let hasAppliedBoolean = false;
+
     applyButton2.onclick = function() {
       const milestoneId = getSelectedMilestone();
       const freelancerId = document.getElementById('view-project').dataset.freelancerId;
       const projectId = document.getElementById('view-project').dataset.projectId;
       const hasApplied = document.getElementById('view-project').dataset.hasApplied;
+      if(hasApplied === 'True'){
+        hasAppliedBoolean = true;
+      }
       if (milestoneId) {
-        if (hasApplied) {
+        if (hasAppliedBoolean) {
           alert('You have already applied to this project');
           return;
         }else{  
@@ -357,6 +362,7 @@
         .then(response => response.json())
         .then(data => {
           if (data.success) {
+            hasAppliedBoolean = true;
             alert(data.message);
             modal.style.display = 'none';  
             appliedDiv.style.display = 'flex';
