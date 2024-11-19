@@ -8,6 +8,12 @@ from django.contrib.auth import get_user_model
 from datetime import date
 from django.core.exceptions import FieldError, ValidationError
 
+from django.test import LiveServerTestCase
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+import perfil.urls, project_management.urls, marketplace.urls, accounts.urls
 
 class FreelancerModelTest(TestCase):
     def setUp(self):
@@ -388,3 +394,54 @@ class MilestoneModelTest(TestCase):
                 freelancer=self.freelancer,
                 state='Available'
             )
+
+# Functional tests
+class LoginTest(LiveServerTestCase):
+    
+    USERNAME_INPUT = (By.NAME, 'username')
+    PASSWORD_INPUT = (By.NAME, 'password')
+    SUBMIT_BUTTON = (By.CLASS_NAME, 'buttonSubmit')
+
+    def setUp(self):
+        """
+        Método que se ejecuta antes de cada prueba. Aquí se inicializa el navegador.
+        """
+        self.driver = webdriver.Chrome()  # o webdriver.Firefox()
+        self.timeout = 20
+        self.driver.get('http://127.0.0.1:8000/accounts/login/')
+
+    def find_element(self, locator):
+        return WebDriverWait(self.driver, self.timeout).until(EC.presence_of_element_located(locator))
+
+    def click(self, locator):
+        self.find_element(locator).click()
+
+    def enter_text(self, locator, text):
+        self.find_element(locator).send_keys(text)
+
+    def test_login(self):
+        self.setUp()
+        self.assertIn('Log In', self.driver.title)
+        self.enter_text(self.USERNAME_INPUT, 'prueba@prueba.com') # insertar texto
+        self.enter_text(self.PASSWORD_INPUT, 'prueba')
+        self.click(self.SUBMIT_BUTTON)
+        self.assertIn('Home', self.driver.title)
+        self.driver.quit()
+
+    def test_login_with_invalid_credentials(self):
+        self.setUp()
+        self.assertIn('Log In', self.driver.title)
+        self.enter_text(self.USERNAME_INPUT, 'invalid_user') # insertar texto
+        self.enter_text(self.PASSWORD_INPUT, 'invalid')
+        self.click(self.SUBMIT_BUTTON)
+
+        try:
+            alert = WebDriverWait(self.driver, self.timeout).until(EC.alert_is_present())
+            alert_text = alert.text
+            self.assertIn(alert_text, 'Credenciales incorrectas. Intente nuevamente')
+            alert.accept()
+        except Exception:
+            self.fail('Alert not found')
+        
+        self.assertIn('Log In', self.driver.title)
+        self.driver.quit()
