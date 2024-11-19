@@ -22,9 +22,10 @@ def freelancerProjectView(request, freelancer_id, id):
     likes = p.likes.count() # get the likes of the project
     rating = p.ratings.all().aggregate(Avg('value'))['value__avg'] # get the average rating of the project
     has_applied = p.applications.filter(freelancer=f).exists()
-    f.profile_url = reverse('perfilFreelancer', args=[f.id])
-    f.has_liked = p.likes.filter(object_id=f.id).exists()
-    f.has_applied = has_applied
+    print(has_applied)
+    #f.profile_url = reverse('perfilFreelancer', args=[f.id])
+    has_liked = p.likes.filter(object_id=f.id).exists()
+    #f.has_applied = has_applied
 
     for comment in c:
         comment.profile_url = reverse('perfilFreelancer', args=[comment.user.id])
@@ -38,6 +39,8 @@ def freelancerProjectView(request, freelancer_id, id):
         'rating': rating,
         'likes': likes,
         'freelancer': f,
+        'has_applied': has_applied,
+        'has_liked': has_liked,
     }
     return render(request, 'project_management/freelancer_view.html', context)
             

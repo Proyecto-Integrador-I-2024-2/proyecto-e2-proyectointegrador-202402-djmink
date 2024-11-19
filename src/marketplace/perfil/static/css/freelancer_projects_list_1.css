@@ -8,6 +8,10 @@ body{
     background-color: #F2F2F2;
 }
 
+.ptext{
+    position: absolute;
+}
+
 .projects-title-container{
     position: relative;
     height: 100px;

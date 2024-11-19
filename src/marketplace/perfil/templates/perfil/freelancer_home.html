@@ -10,66 +10,76 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home</title>
     <link rel="icon" type="image/png" href="{% static 'img/Logo.png' %}">
-    <link rel="stylesheet" href="{% static 'css/freelancer_home.css' %}">
+    <link rel="stylesheet" href="{% static 'css/freelancer_home_1.css' %}">
     <link rel="stylesheet" href="{% static 'css/info-modal.css' %}">
     <link rel="stylesheet" href="{% static 'css/heading.css' %}">
-    <link rel="stylesheet" href="{% static 'css/footer.css' %}">
+    <link rel="stylesheet" href="{% static 'css/footer_1.css' %}">
 </head>
 <body>
 
     {% include 'perfil/sections/info-modal.html' %}
 
-    <div class="back">
+    {% include 'perfil/sections/heading.html' %}
 
-        {% include 'perfil/sections/heading.html' %}
-
-        <div class="upper-section">
-            <div class="filter-container">
-                <div class="filter-header" onclick="toggleFilters()">
-                    <img src="{% static 'img/lines.svg' %}" alt="Lines">
-                    <span class="ptext filter-text">Filter</span>
-                    <img class="arrow" src="{% static 'img/arrow.svg' %}" alt="arrow">
+    <div class="upper-section">
+        <div class="upper-upper">
+            <div class="upper-left">
+                <div class="filter-container">
+                    <div class="filter-header" onclick="toggleFilters()">
+                        <img src="{% static 'img/lines.svg' %}" alt="Lines">
+                        <span class="filter-title">Filter</span>
+                        <img class="arrow" src="{% static 'img/arrow.svg' %}" alt="arrow">
+                    </div>
+                    <div class="filter-options">
+                        <form method="get" action=".">
+                            <div class="filter-option-container">
+                                <div class="filter-text">Category</div>
+                                <select name="category" id="category">
+                                    <option value="">Select Category</option>
+                                    {% for category in categories %}
+                                        <option value="{{ category.id }}">{{ category.name }}</option>
+                                    {% empty %}
+                                        <option>No categories available</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="filter-option-container">
+                                <div class="filter-text">Company</div>
+                                <select name="company" id="company">
+                                    <option value="">Select Company</option>
+                                    {% for company in companies %}
+                                        <option value="{{ company.id }}">{{ company.name }}</option>
+                                    {% empty %}
+                                        <option>No companies available</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="filter-option-container">
+                                <div class="ptext budget-filter">Budget</div>
+                                <input type="number" name="budget_min" placeholder="Enter min budget" value="{{ request.GET.budget_min }}">
+                                <input type="number" name="budget_max" placeholder="Enter max budget" value="{{ request.GET.budget_max }}">
+                            </div>
+                            <button class="apply-filters-btn" type="submit">Apply</button>
+                        </form>   
+                    </div>
                 </div>
-                <div class="filter-options">
+            </div>
+            <div class="upper-center">
+                <div class="ptext discover">Discover</div>
+                <div class="upper-center-down">
+                    <div class="ptext your">Your <span class="ptext project"> Project</span> </div>
+                </div>
+            </div>
+            <div class="upper-right">
+                <div class="input-container">
                     <form method="get" action=".">
-                        <div class="ptext category-filter">Category</div>
-                        <select name="category" id="category">
-                            <option value="">Select Category</option>
-                            {% for category in categories %}
-                                <option value="{{ category.id }}">{{ category.name }}</option>
-                            {% empty %}
-                                <option>No categories available</option>
-                            {% endfor %}
-                        </select>
-                
-                        <div class="ptext company-filter">Company</div>
-                        <select name="company" id="company">
-                            <option value="">Select Company</option>
-                            {% for company in companies %}
-                                <option value="{{ company.id }}">{{ company.name }}</option>
-                            {% empty %}
-                                <option>No companies available</option>
-                            {% endfor %}
-                        </select>
-                
-                        <div class="ptext budget-filter">Budget</div>
-                        <input type="text" name="budget" placeholder="Enter Budget" value="{{ request.GET.budget }}">
-                
-                        <button class="apply-filters-btn" type="submit">Apply</button>
-                    </form>   
+                        <input class="input-box" type="text" name="search" placeholder="Search" value="{{ search_query }}">
+                        <img class ="search" src="{% static 'img/search.svg' %}" onclick="displayJoinModal()" alt="Search Icon">
+                    </form>
                 </div>
-            </div>    
-        
-            <div class="ptext discover">Discover</div>
-            <div class="ptext your">Your <span class="ptext project"> Project</span> </div>
-        
-            <div class="input-container">
-                <form method="get" action=".">
-                    <input class="input-box" type="text" name="search" placeholder="Search" value="{{ search_query }}">
-                    <img class="search" src="{% static 'img/search.svg' %}" alt="Search Icon" onclick="this.parentElement.submit()" />
-                </form>
-            </div>           
-        
+            </div>
+        </div>
+        <div class="upper-down">
             <nav class="cat-nav">
                 <a href="?type=Branding">Branding</a>
                 <a href="?type=Illustration">Illustration</a>
@@ -78,70 +88,73 @@
                 <a href="?type=Video Editing">Video Editing</a>
                 <a href="?type=Image Editing">Image Editing</a>
             </nav>
-            
         </div>
+    </div>
 
-        <div class="publications-section">
+    <div class="publications-section">
 
-            <div class="publications-container">
-                {% for project in projects %}
-                    <div class="publication-container">
-                        <div class="card">
-                            <div class="project-picture-container">
-                                <img class="fav" src="{% static 'img/Fav.svg' %}" />
-                                <img class="project-picture" src="{{ project.project_picture.url }}" alt="Project Picture"/>
-                            </div>
-                            <div class="project-data-1">
+        <div class="publications-container">
+            {% for project in projects %}
+                <div class="publication-container">
+                    <div class="card">
+                        <div class="project-picture-container">
+                            <img class="fav" src="{% static 'img/Fav.svg' %}" />
+                            <img class="project-picture" src="{{ project.project_picture.url }}" alt="Project Picture"/>
+                        </div>
+                        <div class="project-data-1">
+                            <div class="project-data-1-left">
                                 <img class="publication-profile-picture" src="{{ project.manager.image.url }}" alt="Profile Picture"/>
                                 <div class="ptext publication-profile-name">{{ project.manager.name }}</div>
+                            </div>
+                            <div class="project-data-1-right">
                                 <img class="star" src="{% static 'img/Star.svg' %}" />
                                 <div class="ptext publication-rate">{{ project.manager.rating }}</div>
-                                <div class="ptext comments-amount">({{ project.comments.count }}+)</div>
+                                <div class="ptext comments-amount">({{ project.manager.ratings_received.count }}+)</div>
                             </div>
                         </div>
-                        <div class="project-data-2">
-                            <div class="ptext project-name">{{ project.name }}</div>
-                            <div class="ptext project-description">{{ project.description }}</div>
-                            <div class="ptext project-budget">From ${{ project.budget }}</div>
-                        </div>
-                        <div class="categories-container">
-                            {% for category in project.projectcategories.all %}
-                                <div class="category-container">
-                                    <div class="category">{{ category.name }}</div>
-                                </div>
-                            {% endfor %}
-                        </div> 
                     </div>
-                {% endfor %}
-            </div>
-
-            <div class="buttons-container">
-                {% if projects.has_previous %}
-                    <a href="?page={{ projects.previous_page_number }}" class="page-btn" id="left">&#8249;</a>
-                {% else %}
-                    <button id="left" class="page-btn" disabled>&#8249;</button>
-                {% endif %}
-            
-                {% for num in projects.paginator.page_range %}
-                    {% if projects.number == num %}
-                        <span class="current-page">{{ num }}</span> 
-                    {% else %}
-                        <a href="?page={{ num }}" class="page-btn">{{ num }}</a>  
-                    {% endif %}
-                {% endfor %}
-            
-                {% if projects.has_next %}
-                    <a href="?page={{ projects.next_page_number }}" class="page-btn" id="right">&#8250;</a>
-                {% else %}
-                    <button id="right" class="page-btn" disabled>&#8250;</button>
-                {% endif %}
-            </div>
+                    <div class="project-data-2">
+                        <div class="ptext project-name">{{ project.name }}</div>
+                        <div class="ptext project-description">{{ project.description }}</div>
+                        <div class="ptext project-budget">From ${{ project.budget }}</div>
+                    </div>
+                    <div class="categories-container">
+                        {% for category in project.projectcategories.all %}
+                            <div class="category-container">
+                                <div class="category">{{ category.name }}</div>
+                            </div>
+                        {% endfor %}
+                    </div> 
+                </div>
+            {% endfor %}
         </div>
 
-        {% include 'perfil/sections/footer.html' %}
-
     </div>
+
+    <div class="buttons-container">
+        {% if projects.has_previous %}
+            <a href="?page={{ projects.previous_page_number }}" class="page-btn" id="left">&#8249;</a>
+        {% else %}
+            <button id="left" class="page-btn" disabled>&#8249;</button>
+        {% endif %}
     
+        {% for num in projects.paginator.page_range %}
+            {% if projects.number == num %}
+                <span class="current-page">{{ num }}</span> 
+            {% else %}
+                <a href="?page={{ num }}" class="page-btn">{{ num }}</a>  
+            {% endif %}
+        {% endfor %}
+    
+        {% if projects.has_next %}
+            <a href="?page={{ projects.next_page_number }}" class="page-btn" id="right">&#8250;</a>
+        {% else %}
+            <button id="right" class="page-btn" disabled>&#8250;</button>
+        {% endif %}
+    </div>
+
+    {% include 'perfil/sections/footer2.html' %}
+
 
     <script>
         function toggleFilters() {

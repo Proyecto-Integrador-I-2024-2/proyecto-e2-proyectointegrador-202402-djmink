@@ -1,14 +1,16 @@
 {% load static %}
 <div class="commentssection">
 
-    <div class="ptext commentstitle">Comments</div>
+    <div class="commentstitle">Comments</div>
 
-    <form method="POST">
-        {% csrf_token %}
-        <input type="hidden" name="action" value="new_comment">
-        <textarea class="input-comment" name="comment" placeholder="Write your comment"></textarea>
-        <button type="submit" class="publish-btn">Publish</button>
-    </form>
+    <div class="publish-comment-section">
+        <form method="POST">
+            {% csrf_token %}
+            <input type="hidden" name="action" value="new_comment">
+            <textarea class="input-comment" name="comment" placeholder="Write your comment"></textarea>
+            <button type="submit" class="publish-btn">Publish</button>
+        </form>
+    </div>
 
     <div class="comments">
         {% for comment in p.comments_received.all %}

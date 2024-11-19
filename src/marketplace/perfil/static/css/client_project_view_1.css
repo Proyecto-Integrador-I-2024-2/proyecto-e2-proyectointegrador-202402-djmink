@@ -12,6 +12,10 @@ body{
     position: relative;
 }
 
+.ptext{
+    position: absolute;
+}
+
 .ptext.project-name{
     left: 100px;
     height: 121px;
