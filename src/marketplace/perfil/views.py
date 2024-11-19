@@ -677,7 +677,6 @@ def mainFreelancer(request, id):
     search_query = request.GET.get('search', '')
 
     projects_list = Project.objects.all()
-    print(projects_list)
     if search_query:
         projects_list = projects_list.filter(name__icontains=search_query)
 
@@ -687,7 +686,7 @@ def mainFreelancer(request, id):
 
     company_id = request.GET.get('company')
     if company_id:
-        projects_list = projects_list.filter(clientprofile__id=company_id)
+        projects_list = projects_list.filter(manager__id=company_id)
 
     budget_min = request.GET.get('budget_min')
     budget_max = request.GET.get('budget_max')
