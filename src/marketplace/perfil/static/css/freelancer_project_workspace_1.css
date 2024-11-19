@@ -8,6 +8,10 @@ body{
     background-color: #F2F2F2;
 }
 
+.ptext{
+    position: absolute;
+}
+
 .main{
     position:relative;
     margin-top: 20px;

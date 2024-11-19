@@ -689,13 +689,20 @@ def mainFreelancer(request, id):
     if company_id:
         projects_list = projects_list.filter(clientprofile__id=company_id)
 
-    budget = request.GET.get('budget')
-    if budget:
+    budget_min = request.GET.get('budget_min')
+    budget_max = request.GET.get('budget_max')
+    if budget_min and budget_max:
         try:
-            budget_value = float(budget)
-            projects_list = projects_list.filter(budget__lte=budget_value)
+            budget_min_value = float(budget_min)
+            budget_max_value = float(budget_max)
+
+            if budget_min_value <= budget_max_value:
+                projects_list = projects_list.filter(
+                    budget__gte=budget_min_value, 
+                    budget__lte=budget_max_value
+                )
         except ValueError:
-            pass 
+            pass  
 
     project_type = request.GET.get('type') 
     if project_type:
@@ -724,7 +731,8 @@ def mainFreelancer(request, id):
         'categories': categories,
         'companies': companies,
         'search_query': search_query,
-        'budget': budget  
+        'budget_min': budget_min,
+        'budget_max': budget_max  
     })
 
 def mainCliente(request, id):        
@@ -925,10 +933,9 @@ def projectWorkspace(request, id, id_project):
                 messages.success(request, f"Estado de las tareas del milestone '{milestone.name}' actualizado exitosamente.")
 
         elif action == "send_assignment":
+
             task_id = request.POST.get("task-select")
             task = get_object_or_404(Task, id=task_id)
-            milestone_id = task.milestone.id
-            milestone = get_object_or_404(Task, id=milestone_id)
             name = request.POST.get("name")
             link = request.POST.get("link")
             file = request.FILES.get("assignment-file")

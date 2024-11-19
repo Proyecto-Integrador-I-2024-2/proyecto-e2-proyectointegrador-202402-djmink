@@ -9,7 +9,7 @@
   </head>
   <body>
     <div class="frame">
-      <div id="view-project" class="view-project" data-project-id="{{ p.id }}" data-freelancer-id = "{{freelancer.id}}" data-freelancer-name = "{{freelancer.name}}" data-has-applied = "{{freelancer.has_applied}}" data-has-liked = "{{freelancer.has_liked}}">
+      <div id="view-project" class="view-project" data-project-id="{{ p.id }}" data-freelancer-id = "{{freelancer.id}}" data-freelancer-name = "{{freelancer.name}}" data-has-applied = "{{has_applied}}" data-has-liked = "{{has_liked}}">
 
         <div class="heading">  
           <a href="http://127.0.0.1:8000/">
@@ -346,7 +346,8 @@
         if (hasAppliedBoolean) {
           alert('You have already applied to this project');
           return;
-        }else{  
+        }else{
+          document.getElementById('view-project').dataset.hasApplied = 'True';
         fetch('/project/post_application/', {
           method: 'POST',
           headers: {

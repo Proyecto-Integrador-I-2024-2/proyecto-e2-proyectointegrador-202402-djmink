@@ -10,14 +10,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
     <title>Edit Profile - Delete & Disable</title>
     <link rel="icon" type="image/png" href="{% static 'img/Logo.png' %}">
-    <link rel="stylesheet" href="{% static 'css/edit_profile_delete1.css' %}">
+    <link rel="stylesheet" href="{% static 'css/edit_profile_delete_1.css' %}">
     <link rel="stylesheet" href="{% static 'css/heading.css' %}">
-    <link rel="stylesheet" href="{% static 'css/footer.css' %}">
+    <link rel="stylesheet" href="{% static 'css/footer_1.css' %}">
 </head>
 <body>
-    <div class="editsection">
 
-        {% include 'perfil/sections/heading.html' %} 
+    {% include 'perfil/sections/heading.html' %} 
+
+    <div class="editsection">
 
         <div class="ptext ep">
             Edit profile
@@ -27,7 +28,7 @@
         <a href="{% url 'editProfile' p.id %}" class="ptext profile">Profile</a>
         <a href="{% url 'editPortfolio' p.id %}" class="ptext portfolio">Portfolio</a>
         <a href="#deteleaccount" class="ptext delete-account">Delete account</a>
-        <a href="{% url 'home' %}" class="ptext logout">Log out</a>    
+        <a href="{% url 'home' %}" class="ptext logout">Log out</a> 
 
         <div class="body">
 
@@ -46,7 +47,7 @@
                 
     </div>
 
-    {% include 'perfil/sections/footer.html' %} 
+    {% include 'perfil/sections/footer2.html' %} 
 
     <div id="deleteAccountModal" class="modal">
         <div class="modal-content">

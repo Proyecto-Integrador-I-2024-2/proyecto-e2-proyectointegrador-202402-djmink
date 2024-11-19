@@ -8,8 +8,8 @@ body {
 
 .separator-1 {
     position: relative;
-    left: 122px;
-    width:1200px;
+    left: 8%;
+    width: 84%;
     transform:rotate(0deg);
     border:1px solid #000000;
 }

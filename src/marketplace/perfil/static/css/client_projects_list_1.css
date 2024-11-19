@@ -15,6 +15,10 @@ body{
     background-color: #F2F2F2;
 }
 
+.ptext{
+    position: absolute;
+}
+
 .ptext.welcome{
     color:#000000;
     font-size:54px;

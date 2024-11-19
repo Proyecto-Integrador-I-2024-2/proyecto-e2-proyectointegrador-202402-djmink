@@ -5,10 +5,14 @@ html {
 }
 
 .editsection{
-    background-color:#F2F2F2;
+    background-color: #F2F2F2;
     width: 1440px;
     height: 950px;
     position: relative;
+}
+
+.ptext{
+    position: absolute;
 }
 
 .ptext.ep {

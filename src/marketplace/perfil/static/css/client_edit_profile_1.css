@@ -15,6 +15,10 @@ body{
     position: relative;
 }
 
+.ptext{
+    position: absolute;
+}
+
 .ptext.ep {
     color:#7D7D7D;
     font-size:14px;

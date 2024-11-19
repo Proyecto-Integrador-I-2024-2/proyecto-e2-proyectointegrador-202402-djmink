@@ -54,6 +54,7 @@ def freelancerProjectView(request, freelancer_id, id):
             'likes': likes,
             'freelancer': f,
         }
+        
     elif isinstance(viewer, CompanyManager):
         cm = get_object_or_404(CompanyManager, id=freelancer_id)
         cm.profile_url = reverse('perfilesCliente', args=[cm.id])
