@@ -15,8 +15,7 @@
     background-color: var(--variable-collection-white-smoke);
   }
 
-  .frame .heading {
-    /* position: absolute; */
+  /* .frame .heading {
     display:flex;
     flex-direction: row;
     width: 100%;
@@ -31,7 +30,6 @@
   
   .frame .text-wrapper-26 {
     width: 60%;
-    /* min-width: 200px; */
     font-family: var(--medium-font-family);
     font-weight: var(--medium-font-weight);
     color: #000000;
@@ -60,11 +58,6 @@
     height: 75px;
     margin-left:10px;
   }
-
-  /* .frame .line-wrapper {
-    
-  } */
-  
   .frame .line-2 {
     object-fit: cover;
   }
@@ -109,7 +102,7 @@
     width: 24px;
     height: 24px;
     margin-right: 5px;
-  }
+  } */
 
   .blue-notification {
     display:none;
@@ -284,7 +277,8 @@
   }
   
   .frame .grade {
-    margin: 5px;
+    width: 23px;
+    height: 23px;
   }
   
   .frame .text-wrapper-23 {
@@ -320,9 +314,9 @@
     display:flex;
     flex-direction: row;
     align-items: center;
+    justify-content: center;
     width: 40px;
     height: 40px;
-    padding-right:4px;
     margin: 2px;
     margin-left: 5px;
     margin-right: 5px;
@@ -337,7 +331,6 @@
   .frame .save-button-2 {
     width: 24px;
     height: 24px;
-    margin-left: 1px;
   }
   
   .frame .like-button {
@@ -383,6 +376,7 @@
     display:flex;
     flex-direction: row;
     align-items: center;
+    justify-content: center;
     width: 100px;
     height: 40px;
     margin: 2px;
@@ -391,7 +385,6 @@
   }
 
   .frame .save-changes-2 {
-    margin-left: 30px;
     font-family: var(--small-bold-font-family);
     font-weight: var(--small-bold-font-weight);
     color: #ffffff;
@@ -972,17 +965,15 @@ scrollbar-color: #888 #f1f1f1; /* Thumb color and track color */
   display:flex;
   flex-direction: row;
   align-items: center;
+  justify-content: center;
   width: 119px;
   height: 40px;
-  top: 0;
-  left: 85.5%;
   background-color: #0040ff;
   border-radius: 10px;
   border-color:transparent;
 }
 
 .frame .save-changes {
-  margin-left: 25px;
   font-family: var(--small-bold-font-family);
   font-weight: var(--small-bold-font-weight);
   color: #ffffff;
@@ -1145,18 +1136,14 @@ scrollbar-color: #888 #f1f1f1; /* Thumb color and track color */
     object-fit: cover; */
   }
 
-.frame .footer {
+/* .frame .footer {
   margin: auto;
-  /* padding: 20px; */
-  /* text-align: center; */
   display:flex;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
   width: 100%;
   height: 130px;
-  /* top: 2000px; */
-  /* left: 0; */
   background-color: var(--variable-collection-white-smoke);
 }
 
@@ -1297,7 +1284,7 @@ scrollbar-color: #888 #f1f1f1; /* Thumb color and track color */
   height: 20px;
   margin: auto;
   object-fit: cover;
-}
+} */
 
 .application-form {
   display: flex;

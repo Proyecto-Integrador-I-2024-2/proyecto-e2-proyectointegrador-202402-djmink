@@ -53,6 +53,11 @@
             </form>
             
             <div id ="milestone-list" class="milestone-list">
+                {% if milestones_filtered_out %}
+                <div class="add-milestone-section">
+                    <h2 class="ptext">Alert! Milestones that have a freelancer assigned to them or their tasks are ineditable and therefore absent from this page.</h2>
+                </div>        
+                {% endif %}
                 {% for milestone in milestones %}
                 <div class="add-milestone-section" data-milestone-id="{{milestone.id}}">
                     <h2 class="ptext">Edit Milestone</h2>
