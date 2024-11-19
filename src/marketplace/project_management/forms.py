@@ -1,5 +1,5 @@
 from django import forms
-from my_aplication.models import Application, ProjectComment, ProjectRating
+from my_aplication.models import Application, ProjectComment, ProjectRating, SavedProject
 
 class createCommentForm(forms.ModelForm):
     class Meta:
@@ -17,3 +17,7 @@ class createApplicationForm(forms.ModelForm):
         model = Application
         fields = ['freelancer', 'project', 'milestone']   
 
+class createSavedProjectForm(forms.ModelForm):
+    class Meta:
+        model = SavedProject
+        fields = ['content_type', 'user_id', 'project']

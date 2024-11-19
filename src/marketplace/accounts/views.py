@@ -193,16 +193,22 @@ def create_project_view(request, id):
 
 def edit_project_view(request, id_client, id_project):
     project = Project.objects.get(id=id_project)
-    milestones = project.milestones.all()
+    all_milestones = list(project.milestones.all())
     client = CompanyManager.objects.get(id=id_client)
+    milestones = project.milestones.filter(freelancer__isnull=True)
+
+    milestones = [milestone for milestone in milestones if not milestone.tasks.filter(freelancer__isnull=False).exists()]
     
+    milestones_filtered_out = len(all_milestones) > len(milestones)
+
     context = {
         'project': project,
         'milestones': milestones,
         'profile_image': client.image.url,
         'home_url': reverse('mainCliente', args=[client.id]),
         'profile_url': reverse('perfilesCliente', args=[client.id]),
-        'at_client_page': True
+        'at_client_page': True,
+        'milestones_filtered_out': milestones_filtered_out
     }
     return render(request, 'EditProject.html', context)
 

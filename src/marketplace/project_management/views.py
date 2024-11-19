@@ -2,7 +2,7 @@ from django.http import Http404, JsonResponse
 from django.db.models import Avg
 from django.shortcuts import render, get_object_or_404
 from django.urls import reverse
-from my_aplication.models import User, Project, Freelancer, Milestone, Like, CompanyManager
+from my_aplication.models import User, Project, Freelancer, Milestone, Like, CompanyManager, SavedProject
 from .forms import createCommentForm, createRatingForm, createApplicationForm
 from django.contrib.contenttypes.models import ContentType
 
@@ -36,6 +36,7 @@ def freelancerProjectView(request, freelancer_id, id):
             # Handle case where viewer is neither type (shouldn't happen if your data is clean)
             viewer_type = 'unknown'
 
+
     context = {}        
 
     if isinstance(viewer, Freelancer):
@@ -44,29 +45,41 @@ def freelancerProjectView(request, freelancer_id, id):
         f.profile_url = reverse('perfilFreelancer', args=[f.id])
         f.has_liked = p.likes.filter(object_id=f.id).exists()
         f.has_applied = has_applied
+        f.has_saved = p.saved_projects.filter(user_id=f.id).exists()
+        p.profile_url = reverse('perfilesCliente', args=[p.manager.id])
+        user_type = 'freelancer'
         context = {
             'p': p,
             'm': m,
             'c': c,
             'd': d,
-            'profile_url': reverse('perfilesCliente', args=[p.manager.id]),
+            'profile_url': reverse('perfilFreelancer', args=[f.id]),
+            'profile_image': f.image.url,
             'rating': rating,
             'likes': likes,
             'freelancer': f,
+            'home_url': reverse('mainFreelancer', args=[f.id]),
+            'user_type': user_type,
         }
-        
+
     elif isinstance(viewer, CompanyManager):
-        cm = get_object_or_404(CompanyManager, id=freelancer_id)
-        cm.profile_url = reverse('perfilesCliente', args=[cm.id])
+        f = get_object_or_404(CompanyManager, id=freelancer_id)
+        f.profile_url = reverse('perfilesCliente', args=[f.id])
+        f.has_liked = p.likes.filter(object_id=f.id).exists()
+        f.has_saved = p.saved_projects.filter(user_id=f.id).exists()
+        user_type = 'company_manager'
         context = {
             'p': p,
             'm': m,
             'c': c,
             'd': d,
             'profile_url': reverse('perfilesCliente', args=[p.manager.id]),
+            'profile_image': f.image.url,
             'rating': rating,
             'likes': likes,
-            'freelancer': cm,
+            'freelancer': f,
+            'home_url': reverse('mainCliente', args=[f.id]),
+            'user_type': user_type,
         }
 
 
@@ -89,12 +102,17 @@ def post_comment(request):
         content = request.POST.get('content')
         project_id = request.POST.get('project_id')
         freelancer_id = request.POST.get('freelancer_id')
+        user_type = request.POST.get('user_type')
 
         # Make sure to set `project`, `content_type`, and `object_id` appropriately
         # This example assumes you have a valid `project_id` in the POST request
 
+        if user_type == 'freelancer':
+            fct = ContentType.objects.get_for_model(Freelancer)
+        elif user_type == 'company_manager':
+            fct = ContentType.objects.get_for_model(CompanyManager)
+
         project = Project.objects.get(id=project_id)
-        fct = ContentType.objects.get_for_model(Freelancer)
         
         form = createCommentForm({
             'author': author,
@@ -118,8 +136,14 @@ def post_like(request):
         like = request.POST.get('like')
         project_id = request.POST.get('project_id')
         freelancer_id = request.POST.get('freelancer_id')
+        user_type = request.POST.get('user_type')
 
-        fct = ContentType.objects.get_for_model(Freelancer)
+
+        if user_type == 'freelancer':
+            fct = ContentType.objects.get_for_model(Freelancer)
+        elif user_type == 'company_manager':
+            fct = ContentType.objects.get_for_model(CompanyManager)
+
         project = Project.objects.get(id=project_id)
 
         if like == 'true':
@@ -155,3 +179,25 @@ def post_application(request):
             return JsonResponse({'success': False, 'message': 'Failed to post application'})
 
     return JsonResponse({'success': False, 'message': 'Invalid request method'})
+
+def post_saved(request):
+    if request.method == 'POST':
+        safe = request.POST.get('isSaved')
+        project_id = request.POST.get('project_id')
+        user_id = request.POST.get('user_id')
+        user_type = request.POST.get('user_type')
+
+        if user_type == 'freelancer':
+            fct = ContentType.objects.get_for_model(Freelancer)
+        elif user_type == 'company_manager':
+            fct = ContentType.objects.get_for_model(CompanyManager)
+
+        project = Project.objects.get(id=project_id)
+        if safe == 'true':
+            safe = SavedProject.objects.create(project=project, user_id=user_id, content_type=fct)
+            return JsonResponse({'success': True, 'message': 'Saved successfully'})
+        else:
+            safe = SavedProject.objects.filter(project=project, user_id=user_id).delete()
+            return JsonResponse({'success': True, 'message': 'Unsaved successfully'})
+
+    return JsonResponse({'success': False, 'message': 'Invalid request'})
