@@ -12,6 +12,11 @@ class editProjectForm(forms.ModelForm):
         model = Project
         fields = ['name', 'type', 'duration', 'description', 'budget', 'deadline', 'project_picture', 'state']
 
+class createMilestoneForm(forms.ModelForm):
+    class Meta:
+        model = Milestone
+        fields = ['name', 'description', 'project']
+
 # class createMilestoneForm(forms.ModelForm):
 #     class Meta:
 #         model = Milestone

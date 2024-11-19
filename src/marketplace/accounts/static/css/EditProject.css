@@ -339,6 +339,11 @@ footer a:hover {
 
 .remove-button {
     width: 80px;
+    height:40px;
+}
+
+.remove-button-2{
+    width: 80px;
 }
 
 .spaced-out{
@@ -441,6 +446,58 @@ footer a:hover {
     cursor: pointer;
 }
 
+.btn.add-profession {
+    display: block;
+    margin-bottom: 70px;
+    width: 100%;
+    padding: 5px 10px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+#profession-list {
+    margin-top: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.profession-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 5px;
+    border: 1px solid #eee;
+    border-radius: 4px;
+    margin-bottom: 5px;
+    font-size: 14px;
+}
+
+.profession-item div {
+    display: flex;
+    flex-direction: column;
+}
+
+.profession-item span {
+    flex-grow: 1;
+    max-width: 900px;
+}
+
+.profession-item button {
+    background-color: red;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 2px 5px;
+    cursor: pointer;
+    font-size: 12px;
+    margin-right: 10px;
+}
+
 #task-list {
     margin-top: 10px;
     display: flex;
@@ -451,6 +508,7 @@ footer a:hover {
 .task-item {
     display: flex;
     align-items: center;
+    justify-content: space-between;
     padding: 5px;
     border: 1px solid #eee;
     border-radius: 4px;
@@ -458,11 +516,22 @@ footer a:hover {
     font-size: 14px;
 }
 
-.task-item span {
-    flex-grow: 1;
+.task-item .spaguetti {
+    display:flex;
+    flex-direction: column;
 }
 
-.task-item button {
+.task-item .meatball {
+    display:flex;
+    flex-direction: row;
+}
+
+.task-item span {
+    flex-grow: 1;
+    max-width: 900px;
+}
+
+.task-item .red-button {
     background-color: red;
     color: white;
     border: none;
@@ -470,6 +539,22 @@ footer a:hover {
     padding: 2px 5px;
     cursor: pointer;
     font-size: 12px;
+    width: 80px;
+    height:40px;
+    margin-right: 10px;
+}
+
+.task-item .green-button {
+    background-color: rgb(33, 205, 33);
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 2px 5px;
+    cursor: pointer;
+    font-size: 12px;
+    width: 80px;
+    height:40px;
+    margin-right: 10px;
 }
 
 .circle {
@@ -490,7 +575,7 @@ footer a:hover {
 
 .task-name {
     font-size: 14px;
-    color: #555;
+    color: #000000;
 }
 
 .btn.save-changes {

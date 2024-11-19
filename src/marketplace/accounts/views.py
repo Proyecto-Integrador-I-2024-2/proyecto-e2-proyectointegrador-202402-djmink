@@ -16,7 +16,7 @@ from my_aplication.models import Freelancer, CompanyManager, User
 from .forms import createProjectForm, editProjectForm
 import os
 
-from my_aplication.models import Freelancer, CompanyManager, Project, Milestone, Task
+from my_aplication.models import Freelancer, CompanyManager, Project, Milestone, Task, Profession
 
 #SMTP libraries
 from django.core.mail import send_mail
@@ -241,14 +241,24 @@ def post_project(request):
                 milestone = Milestone.objects.create(
                     name=milestone_data['name'],
                     description=milestone_data['description'],
+                    start_date=milestone_data['start_date'],
                     end_date=milestone_data['deadline'],
                     project=project
                 )
+
+                professions = milestone_data.get('professions_related', [])
+                for profession in professions:
+                    Profession.objects.create(
+                        name=profession['name'],
+                        milestone=milestone
+                    )
                 
                 tasks = milestone_data.get('tasks', [])
                 for task_data in tasks:
                     Task.objects.create(
                         name=task_data['name'],
+                        description=task_data['description'],
+                        deadline=task_data['deadline'],
                         milestone=milestone,
                     )
 
@@ -284,6 +294,7 @@ def post_project_edition(request, id=None):
 
         deleted_milestones = json.loads(request.POST.get('deletedMilestones', '[]'))
         deleted_tasks = json.loads(request.POST.get('deletedTasks', '[]'))
+        deleted_professions = json.loads(request.POST.get('deletedProfessions', '[]'))
 
         # Delete specified milestones
         if deleted_milestones:
@@ -292,6 +303,9 @@ def post_project_edition(request, id=None):
         # Delete specified tasks
         if deleted_tasks:
             Task.objects.filter(id__in=deleted_tasks, milestone__project=project).delete()
+
+        if deleted_professions:
+            Profession.objects.filter(id__in=deleted_professions, milestone__project=project).delete()    
         
         milestones_json = request.POST.get('milestones')
         if milestones_json:
@@ -305,6 +319,7 @@ def post_project_edition(request, id=None):
                     if milestone:
                         milestone.name = milestone_data['name']
                         milestone.description = milestone_data['description']
+                        milestone.start_date = milestone_data['start_date']
                         milestone.end_date = milestone_data['deadline']
                         milestone.save()
                 else:
@@ -312,9 +327,24 @@ def post_project_edition(request, id=None):
                     milestone = Milestone.objects.create(
                         name=milestone_data['name'],
                         description=milestone_data['description'],
+                        start_date=milestone_data['start_date'],
                         end_date=milestone_data['deadline'],
                         project=project
                     )
+
+                professions = milestone_data.get('professions', [])
+                for profession_data in professions:
+                    profession_id = profession_data.get('id')
+                    if profession_id:
+                        profession = Profession.objects.filter(id=profession_id, milestone=milestone).first()
+                        if profession:
+                            profession.name = profession_data['name']
+                            profession.save()
+                    else:
+                        Profession.objects.create(
+                            name=profession_data['name'],
+                            milestone=milestone
+                        )    
                 
                 # Handle tasks within the milestone
                 tasks = milestone_data.get('tasks', [])
@@ -324,11 +354,15 @@ def post_project_edition(request, id=None):
                         task = Task.objects.filter(id=task_id, milestone=milestone).first()
                         if task:
                             task.name = task_data['name']
+                            task.description = task_data['description']
+                            task.deadline = task_data['deadline']
                             task.save()
                     else:
                         # Create a new task if no ID is provided
                         Task.objects.create(
                             name=task_data['name'],
+                            description=task_data['description'],
+                            deadline=task_data['deadline'],
                             milestone=milestone,
                         )
 

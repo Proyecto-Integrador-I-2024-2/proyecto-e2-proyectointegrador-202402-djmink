@@ -2,46 +2,77 @@ from django.http import Http404, JsonResponse
 from django.db.models import Avg
 from django.shortcuts import render, get_object_or_404
 from django.urls import reverse
-from my_aplication.models import Project, Freelancer, Milestone, Like
+from my_aplication.models import User, Project, Freelancer, Milestone, Like, CompanyManager
 from .forms import createCommentForm, createRatingForm, createApplicationForm
 from django.contrib.contenttypes.models import ContentType
 
  # get the current user model
 
 def freelancerProjectView2(request):
-    return render(request, 'project_management/application_form.html')
+    return render(request, 'project_management/freelancer_view2.html')
 
 
 # Create your views here.
 def freelancerProjectView(request, freelancer_id, id):
     p = get_object_or_404(Project, id=id)
-    f = get_object_or_404(Freelancer, id=freelancer_id)
     d = p.description # get the description of the project
     m = p.milestones.all() # get the milestones of the project
     c = p.comments.all() # get the comments of the project
     likes = p.likes.count() # get the likes of the project
     rating = p.ratings.all().aggregate(Avg('value'))['value__avg'] # get the average rating of the project
-    has_applied = p.applications.filter(freelancer=f).exists()
-    print(has_applied)
-    #f.profile_url = reverse('perfilFreelancer', args=[f.id])
-    has_liked = p.likes.filter(object_id=f.id).exists()
-    #f.has_applied = has_applied
 
-    for comment in c:
-        comment.profile_url = reverse('perfilFreelancer', args=[comment.user.id])
+    viewer = get_object_or_404(User, id=freelancer_id)
 
-    context = {
-        'p': p,
-        'm': m,
-        'c': c,
-        'd': d,
-        'profile_url': reverse('perfilesCliente', args=[p.manager.id]),
-        'rating': rating,
-        'likes': likes,
-        'freelancer': f,
-        'has_applied': has_applied,
-        'has_liked': has_liked,
-    }
+    try:
+        viewer = Freelancer.objects.get(id=freelancer_id)
+        viewer_type = 'freelancer'
+        # Add freelancer-specific logic here
+    except Freelancer.DoesNotExist:
+        try:
+            viewer = CompanyManager.objects.get(id=freelancer_id)
+            viewer_type = 'client'
+            # Add client-specific logic here
+        except CompanyManager.DoesNotExist:
+            # Handle case where viewer is neither type (shouldn't happen if your data is clean)
+            viewer_type = 'unknown'
+
+    context = {}        
+
+    if isinstance(viewer, Freelancer):
+        f = get_object_or_404(Freelancer, id=freelancer_id)
+        has_applied = p.applications.filter(freelancer=f).exists()
+        f.profile_url = reverse('perfilFreelancer', args=[f.id])
+        f.has_liked = p.likes.filter(object_id=f.id).exists()
+        f.has_applied = has_applied
+        context = {
+            'p': p,
+            'm': m,
+            'c': c,
+            'd': d,
+            'profile_url': reverse('perfilesCliente', args=[p.manager.id]),
+            'rating': rating,
+            'likes': likes,
+            'freelancer': f,
+        }
+        
+    elif isinstance(viewer, CompanyManager):
+        cm = get_object_or_404(CompanyManager, id=freelancer_id)
+        cm.profile_url = reverse('perfilesCliente', args=[cm.id])
+        context = {
+            'p': p,
+            'm': m,
+            'c': c,
+            'd': d,
+            'profile_url': reverse('perfilesCliente', args=[p.manager.id]),
+            'rating': rating,
+            'likes': likes,
+            'freelancer': cm,
+        }
+
+
+    # for comment in c:
+    #     comment.profile_url = reverse('freelancerProfile', args=[comment.user.id, f.id])
+
     return render(request, 'project_management/freelancer_view.html', context)
             
 def clientProjectView(request, id):        

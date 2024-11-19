@@ -711,7 +711,10 @@ def mainFreelancer(request, id):
     # Configuración de paginación
     paginator = Paginator(projects_list, 12)
     page_number = request.GET.get('page')  
-    projects = paginator.get_page(page_number) 
+    projects = paginator.get_page(page_number)
+
+    for project in projects:
+        project.profile_url = reverse('freelancer_project', args=[profile.id, project.id])
 
     categories = ProjectCategory.objects.all()
     companies = CompanyManager.objects.filter(projects__isnull=False).distinct()
