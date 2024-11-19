@@ -390,7 +390,8 @@
         if (hasAppliedBoolean) {
           alert('You have already applied to this project');
           return;
-        }else{  
+        }else{
+          document.getElementById('view-project').dataset.hasApplied = 'True';
         fetch('/project/post_application/', {
           method: 'POST',
           headers: {

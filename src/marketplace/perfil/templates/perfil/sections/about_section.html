@@ -3,44 +3,55 @@
 
     <div class="ptext about-title">About Me</div>
 
-    <div class="experience">
-        <div class="experience-header">{{ p.experience }}</div>
-        <div class="experience-body">
-            <div class="jobs-done">
-                <span class="percentage">{{ p.jobs_completed }}%</span> Jobs Completed
-            </div>
-            <div class="price">{{ p.price }}</div>
-            <div class="join-date">
-                Joined {{ p.date_joined }}
+    <div class="items-about">
+        <div class="experience-content">
+            <div class="experience">
+                <div class="experience-header">{{ p.experience }}</div>
+                <div class="experience-body">
+                    <div class="jobs-done">
+                        <span class="percentage">{{ p.jobs_completed }}%</span> Jobs Completed
+                    </div>
+                    <div class="price">{{ p.price }}</div>
+                    <div class="join-date">
+                        Joined {{ p.date_joined }}
+                    </div>
+                </div>
             </div>
         </div>
+        <div class="lineNav2"></div>
+    
+        <div class="habilities-content">
+            <div class="habilities-container">
+                {% for hability in p.skills.all %}
+                    <div class="hability-container">
+                        <div class="hability">{{ hability.name }}</div>
+                    </div>
+                {% empty %}
+                    <p>You don't have skills registered yet.</p>
+                {% endfor %}
+            </div>   
+        </div>
+        <div class="lineNav2 b"></div>
+    
+        <div class="certificates-content">
+            <div class="certificates-container">
+                {% for certificate in p.certificates.all %}
+                    <div class="certificate-container">
+                        <div class="ptext name-certificate">{{ certificate.name }}</div>
+                        <div class="rectangle20">
+                            <img id="card" class="card" src="{% static 'img/card.svg' %}" alt="Card"/>
+                            <div class="ptext type-certificate">{{ certificate.type }}</div>
+                        </div>
+                        <a href="{{ certificate.url }}" target="_blank">
+                            <img id="view" class="view" src="{% static 'img/view.svg' %}" alt="View"/>
+                        </a>
+                    </div>
+                {% empty %}
+                    <p>You don't have certificates registered yet.</p>
+                {% endfor %}
+            </div> 
+        </div>
+         
     </div>
-
-    <div class="habilities-container">
-        {% for hability in p.skills.all %}
-            <div class="hability-container">
-                <div class="hability">{{ hability.name }}</div>
-            </div>
-        {% empty %}
-            <p>You don't have skills registered yet.</p>
-        {% endfor %}
-    </div>        
-
-    <div class="certificates-container">
-        {% for certificate in p.certificates.all %}
-            <div class="certificate-container">
-                <div class="ptext name-certificate">{{ certificate.name }}</div>
-                <div class="rectangle20">
-                    <img id="card" class="card" src="{% static 'img/card.svg' %}" alt="Card"/>
-                    <div class="ptext type-certificate">{{ certificate.type }}</div>
-                </div>
-                <a href="{{ certificate.url }}" target="_blank">
-                    <img id="view" class="view" src="{% static 'img/view.svg' %}" alt="View"/>
-                </a>
-            </div>
-        {% empty %}
-            <p>You don't have certificates registered yet.</p>
-        {% endfor %}
-    </div>     
-
+       
 </div>
