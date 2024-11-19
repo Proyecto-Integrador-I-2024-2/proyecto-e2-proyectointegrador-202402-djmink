@@ -84,13 +84,15 @@
         <div class="publications-section">
 
             <div class="publications-container">
-                {% for project in projects %}
+                {% for project in projects %}         
                     <div class="publication-container">
                         <div class="card">
-                            <div class="project-picture-container">
-                                <img class="fav" src="{% static 'img/Fav.svg' %}" />
-                                <img class="project-picture" src="{{ project.project_picture.url }}" alt="Project Picture"/>
-                            </div>
+                            <a href="{{ project.profile_url }}">
+                                <div class="project-picture-container">
+                                    <img class="fav" src="{% static 'img/Fav.svg' %}" />
+                                    <img class="project-picture" src="{{ project.project_picture.url }}" alt="Project Picture"/>
+                                </div>
+                            </a>
                             <div class="project-data-1">
                                 <img class="publication-profile-picture" src="{{ project.manager.image.url }}" alt="Profile Picture"/>
                                 <div class="ptext publication-profile-name">{{ project.manager.name }}</div>
@@ -111,7 +113,7 @@
                                 </div>
                             {% endfor %}
                         </div> 
-                    </div>
+                    </div> 
                 {% endfor %}
             </div>
 

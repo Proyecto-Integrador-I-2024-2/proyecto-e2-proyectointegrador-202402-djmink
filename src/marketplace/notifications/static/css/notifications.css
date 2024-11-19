@@ -1,20 +1,8 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap');
 
-*,
-*::before,
-*::after {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-html {
-    font-size: 100%; /* 1rem = 16px */
-}
 
 body {
     font-family: 'Poppins', sans-serif;
-    font-size: 16px;
     line-height: 1.5;
     color: #01000c;
     background-color: #F2F2F2;
@@ -48,27 +36,114 @@ button {
     height: 100%;
 }
 
+* {
+    padding: 0;
+    margin: 0;
+    font-family: 'Poppins', sans-serif;
+}
+
 .header_notificate {
-    text-align: left;
-    padding: 0.5em;
-    position: relative;
-    margin: 1em 1em 3em 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1em;
+}
+
+.heading {
+    height: 100px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    overflow: hidden;
+    background-color:#F2F2F2;
+}
+
+.logo-pic{
+    width: 100px;
+    height: 100px;
+}
+
+.icon{
+    width:30px;
+    height: 30px;
+    cursor: pointer;
+}
+
+.logo {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-left: 20px;
+}
+
+.profile_picture_heading {
+    width:50px;
+    height: 50px;
+    border-radius: 50%; 
+    object-fit: cover;
+}
+
+.lineNav {
+    margin-right: 20px;
+    height: 70px;
+    width: 1px;
+    background-color: rgba(1, 0, 12, 1);
+}
+
+.navText {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    font-weight: 400;
+}
+
+.navBar {
+    display: flex;
+    margin-right: 20px;
+}
+
+.homeBar{
     display: flex;
 }
 
-.header_notificate h1 {
-    font-size: 2em;
+.homeBar ul{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    list-style: none;
+}
+
+.homeBar ul li {
+    margin: 10px;
+}
+
+.navBar ul {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    list-style: none;
+}
+
+.navBar ul li {
+    margin: 10px;
+}
+
+.main_notificate h1 {
     font-weight: bold;
+    font-size: xx-large;
 }
 
 .main_notificate h3 {
     color: #333;
     font-weight: bold;
+    font-size: 1.2em;
 }
 
 .tab-buttons {
     display: flex;
     text-align: center;
+    border-bottom: #9b9ba3 1px solid;
 }
 
 .tab-button {

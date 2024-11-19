@@ -9,31 +9,10 @@
     <link rel="stylesheet" href="{% static 'style.css' %}" />
   </head>
   <body>
-    <div class="frame">
-      <div class="heading">
-        <a href="http://127.0.0.1:8000/">
-          <button class="logo-name">
-            <img class="logo" src="{% static 'Marketplace_1.png' %}" />
-            <div class="line-wrapper">
-              <img class="line-2" src="{% static 'line-1.svg' %}" />
-            </div>
-            <div class="online-marketplace">Online<br />Marketplace</div>
-          </button>
-        </a>
-        <div class="text-wrapper-26">Freelancer Project View</div>
-        <div class="user-elements">
-          <img
-            class="notification-icon"
-            src="{% static 'notification-icon-1.svg' %}"
-          />
-          <img class="chat-icon" src="{% static 'chat-icon-1.svg' %}" />
-          <img
-            class="profile-picture"
-            src="{% static 'profile-picture.png' %}"
-          />
-        </div>
-      </div>
-    </div>
+    {% include 'perfil/sections/heading.html' %}
+    <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
+
+
     <div class="content">
       <div class="main_notificate">
         <div class="header_notificate">
@@ -42,25 +21,18 @@
 
         <!-- Botones para alternar entre pestañas -->
         <div class="tab-buttons">
-          <button
-            class="tab-button"
-            id="unread-tab"
-            onclick="showUnreadNotifications()">
-            Unread Notifications
-          </button>
-          <button
-            class="tab-button"
-            id="all-tab"
-            onclick="showAllNotifications()">
-            All Notifications
-          </button>
+          <button class="tab-button" id="unread-tab" onclick="showUnreadNotifications()">Unread Notifications</button>
+          <button class="tab-button" id="all-tab"onclick="showAllNotifications()"> All Notifications</button>
         </div>
 
         <!-- Contenedor de Notificaciones -->
         <div id="unread-notifications" class="notifications">
           <h3>Unread Notifications</h3>
-          {% for notification in notification %} {% if not notification.read %}
-          <div class="notification_item">
+          {% for notification in unread_notifications %}
+          <div
+            class="notification_item"
+            data-notification-id="{{ notification.id }}"
+          >
             <div class="notification_img">
               <img src="" />
             </div>
@@ -70,15 +42,18 @@
             <div class="notification_time">
               <p>Hace {{ notification.timestamp|timesince }}.</p>
             </div>
+            <div class="notification_mark_as_read">
+              <button>Mark as read</button>
+            </div>
           </div>
-          {% endif %} {% empty %}
-          <p>No new notifications.</p>
+          {% empty %}
+          <p>No unread notifications.</p>
           {% endfor %}
         </div>
 
         <div id="all-notifications" class="notifications" style="display: none">
           <h3>All Notifications</h3>
-          {% for notification in notification %}
+          {% for notification in notification_list %}
           <div class="notification_item">
             <div class="notification_img">
               <img src="" />
@@ -89,6 +64,11 @@
             <div class="notification_time">
               <p>Hace {{ notification.timestamp|timesince }}.</p>
             </div>
+            {% if notification.read %}
+             <p>Read</p>
+            {% else %}
+             <p>Unread</p>
+            {% endif %} 
           </div>
           {% empty %}
           <p>No notifications available.</p>
@@ -118,6 +98,39 @@
       document.addEventListener("DOMContentLoaded", function () {
         showUnreadNotifications();
       });
+
+      // Marcar una notificación como leída
+      document
+        .querySelectorAll(".notification_mark_as_read button")
+        .forEach((button) => {
+          button.addEventListener("click", function () {
+            const notificationItem = button.closest(".notification_item");
+            const notificationId = notificationItem.dataset.notificationId;
+
+            // Enviar la solicitud para marcar como leída
+            fetch(`/notifications/mark-as-read/${notificationId}/`, {
+              method: "POST",
+              headers: {
+                "X-CSRFToken": document.querySelector(
+                  "[name=csrfmiddlewaretoken]"
+                ).value,
+                "Content-Type": "application/json",
+              },
+            })
+              .then((response) => response.json())
+              .then((data) => {
+                if (data.success) {
+                  // Ocultar el elemento en el frontend
+                  notificationItem.style.display = "none";
+                } else {
+                  console.error(data.message);
+                }
+              })
+              .catch((error) => {
+                console.error("Error:", error);
+              });
+          });
+        });
     </script>
   </body>
 </html>

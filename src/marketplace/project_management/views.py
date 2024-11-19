@@ -2,6 +2,7 @@ from django.http import Http404, JsonResponse
 from django.db.models import Avg
 from django.shortcuts import render, get_object_or_404
 from django.urls import reverse
+from notifications.models import Notification
 from my_aplication.models import User, Project, Freelancer, Milestone, Like, CompanyManager
 from .forms import createCommentForm, createRatingForm, createApplicationForm
 from django.contrib.contenttypes.models import ContentType
@@ -123,6 +124,17 @@ def post_like(request):
 
         if like == 'true':
             like = Like.objects.create(project=project, object_id=freelancer_id, content_type=fct)
+
+            # Crear la notificación asociada
+            Notification.objects.create(
+                level=Notification.Levels.info,
+                destiny= get_object_or_404(CompanyManager, id=project.manager_id),  
+                actor_content_type=ContentType.objects.get_for_model(Freelancer),
+                actor_object_id=freelancer_id,
+                verb=f"has liked your project {project.name}",
+                public=True
+            )
+
             return JsonResponse({'success': True, 'message': 'Liked successfully'})
         else:
             like = Like.objects.filter(project=project, object_id=freelancer_id).delete()
@@ -149,6 +161,17 @@ def post_application(request):
 
         if form.is_valid():
             form.save()
+
+            # Crear la notificación asociada
+            Notification.objects.create(
+                level=Notification.Levels.info,
+                destiny= get_object_or_404(CompanyManager, id=project.manager_id),  
+                actor_content_type=ContentType.objects.get_for_model(Freelancer),
+                actor_object_id=freelancer.id,
+                verb=f"has applied to your project {project.name}",
+                public=True
+            )
+
             return JsonResponse({'success': True, 'message': 'Application posted successfully'})
         else:
             return JsonResponse({'success': False, 'message': 'Failed to post application'})

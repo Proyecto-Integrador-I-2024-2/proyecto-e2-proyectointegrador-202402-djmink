@@ -76,6 +76,7 @@ def editAccountClient(request, id):
     profile_image = p.image.url
     return render(request, 'perfil/client_edit_profile_account.html', {
         'p': p, 
+        'this_id': id,
         'home_url': reverse('mainCliente', args=[p.id]),
         'at_client_page': True,
         'profile_url': profile_url, 
@@ -148,6 +149,7 @@ def editAccount(request, id):
     profile_image = p.image.url
     return render(request, 'perfil/freelancer_edit_profile_account.html', {
         'p': p,
+        'this_id': id,
         'projects_url': reverse('projectsList', args=[p.id]),
         'home_url': reverse('mainFreelancer', args=[p.id]),
         'profile_image': profile_image,
@@ -210,6 +212,7 @@ def perfilesCliente(request, id):
     profile_image = p.image.url
     return render(request, 'perfil/client_profile.html', {
         'p':p,
+        'this_id': id,
         'home_url': reverse('mainCliente', args=[p.id]),
         'at_client_page': True,
         'edit_profile_url': edit_profile_url,
@@ -276,6 +279,7 @@ def perfilesFreelancer(request, id):
     profile_image = p.image.url
     return render(request, 'perfil/freelancer_profile.html', {
         'p':p,
+        'this_id': id,
         'projects_url': reverse('projectsList', args=[p.id]),
         'home_url': reverse('mainFreelancer', args=[p.id]),
         'edit_profile_url': edit_profile_url,
@@ -376,6 +380,7 @@ def editProfile(request, id=id):
     profile_url = reverse('perfilFreelancer', args=[p.id])
     return render(request, 'perfil/freelancer_edit_profile.html', {
         'p': p,
+        'this_id': id,
         'projects_url': reverse('projectsList', args=[p.id]),
         'home_url': reverse('mainFreelancer', args=[p.id]),
         'profile_image': profile_image,
@@ -427,6 +432,7 @@ def editProfileClient(request, id=id):
     profile_image = p.image.url
     return render(request, 'perfil/client_edit_profile.html', {
         'p': p,
+        'this_id': id,
         'profile_url': profile_url,
         'home_url': reverse('mainCliente', args=[p.id]),
         'at_client_page': True,
@@ -480,6 +486,7 @@ def editPortfolio(request, id=id):
     profile_image = p.image.url
     return render(request, 'perfil/freelancer_edit_profile_portfolio.html', {
         'p': p,
+        'this_id': id,
         'projects_url': reverse('projectsList', args=[p.id]),
         'home_url': reverse('mainFreelancer', args=[p.id]),
         'profile_image': profile_image,
@@ -512,6 +519,7 @@ def editProjectsClient(request, id=id):
     profile_image = p.image.url
     return render(request, 'perfil/client_edit_profile_projects.html', {
         'p': p,
+        'this_id': id,
         'profile_url': profile_url,
         'home_url': reverse('mainCliente', args=[p.id]),
         'at_client_page': True,
@@ -584,6 +592,7 @@ def clientProfile(request, id, idclient):
     profile_url = reverse('perfilFreelancer', args=[client.id])
     return render(request, 'perfil/client_profile_view.html', {
         'p': p,
+        'this_id': id,
         'projects_url': reverse('projectsList', args=[p.id]),
         'home_url': reverse('mainFreelancer', args=[p.id]),
         'profile_image': profile_image,
@@ -658,6 +667,7 @@ def freelancerProfile(request, id, idclient):
     profile_url = reverse('perfilesCliente', args=[client.id])
     return render(request, 'perfil/freelancer_profile_view.html', {
         'p': p,
+        'this_id': id,
         'profile_image': profile_image,
         'client': client,
         'profile_url': profile_url,
@@ -677,7 +687,6 @@ def mainFreelancer(request, id):
     search_query = request.GET.get('search', '')
 
     projects_list = Project.objects.all()
-    print(projects_list)
     if search_query:
         projects_list = projects_list.filter(name__icontains=search_query)
 
@@ -687,15 +696,22 @@ def mainFreelancer(request, id):
 
     company_id = request.GET.get('company')
     if company_id:
-        projects_list = projects_list.filter(clientprofile__id=company_id)
+        projects_list = projects_list.filter(manager__id=company_id)
 
-    budget = request.GET.get('budget')
-    if budget:
+    budget_min = request.GET.get('budget_min')
+    budget_max = request.GET.get('budget_max')
+    if budget_min and budget_max:
         try:
-            budget_value = float(budget)
-            projects_list = projects_list.filter(budget__lte=budget_value)
+            budget_min_value = float(budget_min)
+            budget_max_value = float(budget_max)
+
+            if budget_min_value <= budget_max_value:
+                projects_list = projects_list.filter(
+                    budget__gte=budget_min_value, 
+                    budget__lte=budget_max_value
+                )
         except ValueError:
-            pass 
+            pass  
 
     project_type = request.GET.get('type') 
     if project_type:
@@ -704,7 +720,10 @@ def mainFreelancer(request, id):
     # Configuración de paginación
     paginator = Paginator(projects_list, 12)
     page_number = request.GET.get('page')  
-    projects = paginator.get_page(page_number) 
+    projects = paginator.get_page(page_number)
+
+    for project in projects:
+        project.profile_url = reverse('freelancer_project', args=[profile.id, project.id])
 
     categories = ProjectCategory.objects.all()
     companies = CompanyManager.objects.filter(projects__isnull=False).distinct()
@@ -713,6 +732,7 @@ def mainFreelancer(request, id):
     profile_url = reverse('perfilFreelancer', args=[profile.id])
     return render(request, 'perfil/freelancer_home.html', {
         'profile': profile,
+        'this_id': id,
         'projects_url': reverse('projectsList', args=[profile.id]),
         'at_home': True,
         'profile_image': profile_image,
@@ -721,7 +741,8 @@ def mainFreelancer(request, id):
         'categories': categories,
         'companies': companies,
         'search_query': search_query,
-        'budget': budget  
+        'budget_min': budget_min,
+        'budget_max': budget_max  
     })
 
 def mainCliente(request, id):        
@@ -737,6 +758,7 @@ def mainCliente(request, id):
     profile_url = reverse('perfilesCliente', args=[p.id])
     return render(request, 'perfil/client_projects_list.html', {
         'p':p,
+        'this_id': id,
         'at_home': True,
         'at_client_page': True,
         'profile_image': profile_image,
@@ -756,6 +778,7 @@ def projectsList(request, id):
     profile_url = reverse('perfilFreelancer', args=[p.id])
     return render(request, 'perfil/freelancer_projects_list.html', {
         'profile': p,
+        'this_id': id,
         'home_url': reverse('mainFreelancer', args=[p.id]),
         'at_projects_page': True,
         'profile_image': profile_image,
@@ -893,6 +916,7 @@ def manageProject(request, id, id_project):
     profile_url = reverse('perfilesCliente', args=[p.id])
     return render(request, 'perfil/client_project_view.html', {
         'profile': p,
+        'this_id': id,
         'project_progress': project_progress,
         'project': project_data,
         'home_url': reverse('mainCliente', args=[p.id]),
@@ -924,8 +948,6 @@ def projectWorkspace(request, id, id_project):
         elif action == "send_assignment":
             task_id = request.POST.get("task-select")
             task = get_object_or_404(Task, id=task_id)
-            milestone_id = task.milestone.id
-            milestone = get_object_or_404(Task, id=milestone_id)
             name = request.POST.get("name")
             link = request.POST.get("link")
             file = request.FILES.get("assignment-file")
@@ -978,6 +1000,7 @@ def projectWorkspace(request, id, id_project):
     profile_image = p.image.url
     return render(request, 'perfil/freelancer_project_workspace.html', {
         'profile': p,
+        'this_id': id,
         'projects_url': reverse('projectsList', args=[p.id]),
         'home_url': reverse('mainFreelancer', args=[p.id]),
         'profile_url': profile_url,
@@ -1005,6 +1028,7 @@ def deleteDisable(request, id=id):
     profile_image = p.image.url
     return render(request, 'perfil/freelancer_edit_profile_delete.html', {
         'p': p,
+        'this_id': id,
         'profile_image': profile_image,
         'projects_url': reverse('projectsList', args=[p.id]),
         'home_url': reverse('mainFreelancer', args=[p.id]),
@@ -1029,6 +1053,7 @@ def deleteDisableClient(request, id=id):
     profile_image = p.image.url
     return render(request, 'perfil/client_edit_profile_delete.html', {
         'p': p,
+        'this_id': id,
         'profile_image': profile_image,
         'home_url': reverse('mainCliente', args=[p.id]),
         'at_client_page': True,
@@ -1036,6 +1061,3 @@ def deleteDisableClient(request, id=id):
 
 def calendar(request):
     return render(request, 'perfil/calendar.html')
-
-
-
