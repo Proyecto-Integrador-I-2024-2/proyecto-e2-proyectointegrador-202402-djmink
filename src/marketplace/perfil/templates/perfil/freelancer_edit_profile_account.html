@@ -1,0 +1,186 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Profile - Account</title>
+    <link rel="icon" type="image/png" href="{% static 'img/Logo.png' %}">
+    <link rel="stylesheet" href="{% static 'css/edit_account_1.css' %}">
+    <link rel="stylesheet" href="{% static 'css/info-modal.css' %}">
+    <link rel="stylesheet" href="{% static 'css/heading.css' %}">
+    <link rel="stylesheet" href="{% static 'css/footer_1.css' %}">
+</head>
+<body>
+
+    {% include 'perfil/sections/info-modal.html' %}
+
+    {% include 'perfil/sections/heading.html' %}
+
+    <div class="editsection">
+
+
+        <div class="left-navigation">
+
+            <div class="navigation-text ep">
+                Edit profile
+            </div> 
+
+            <a href="#myaccount" class="navigation-text current">My account</a>
+            <a href="{% url 'editProfile' p.id %}" class="navigation-text">Profile</a>
+            <a href="{% url 'editPortfolio' p.id %}" class="navigation-text">Portfolio</a>
+            <a href="{% url 'deleteDisable' p.id %}" class="navigation-text del">Delete account</a>
+            <a href="{% url 'home' %}" class="navigation-text">Log out</a>   
+
+        </div>
+    
+        <div class="fields">
+    
+            <form method="POST">
+    
+                {% csrf_token %}
+    
+                <div class="ptext myaccount">
+                    My Account
+                </div>
+    
+                <div class="ptext basic-info">
+                    Basic Information
+                </div>
+                
+                <div class="input-container">
+                    <div class="name">Name</div>
+                    <textarea name="name" class="input-box">{{ p.name }}</textarea>
+                </div>
+    
+                <div class="input-container">
+                    <div class="name">Username</div>
+                    <textarea name="username" class="input-box">{{ p.username }}</textarea>
+                </div>
+    
+                <div class="input-container">
+                    <div class="name">Email</div>
+                    <textarea name="email" class="input-box">{{ p.email }}</textarea>
+                </div>
+    
+                <div class="input-container">
+                    <div class="name">Phone</div>
+                    <!-- img class="arrow" src="{% static 'img/arrow.svg' %}" alt="arrow" id="arrow" onclick="toggleCodeList()"-->
+                    <!--textarea id="code-box" class="input-box code">{{ code }}</textarea-->
+                    <textarea name="phone" class="input-box">{{ p.phone }}</textarea>
+                    <!--div class="code-list" id="code-list"></div-->
+                </div>
+
+                <div class="buttons-container">
+                    <button type="button" id= "change-password" class="med-btn pass" onclick="changePassword()">Change Password</button>
+                    <button type="submit" id= "save-changes" class='med-btn save'>Save Changes</button>
+                </div>
+        
+            </form>
+                
+        </div>
+
+    </div>
+    
+
+    {% include 'perfil/sections/footer2.html' %}
+
+    {% include 'perfil/sections/change_password_modal.html' %}
+
+    <script>
+
+        /*
+
+        document.addEventListener('DOMContentLoaded', () => {
+                
+            fetch('https://restcountries.com/v3.1/all')
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(countries => {
+                    const codeList = document.getElementById('code-list');
+                    countries.sort((a, b) => a.name.common.localeCompare(b.name.common));
+                    codeList.innerHTML = '';
+
+                    countries.forEach(country => {
+
+                        if (country.idd && country.idd.root && country.idd.suffixes && country.idd.suffixes.length > 0) { 
+                            const fullCode = `${country.idd.root}${country.idd.suffixes[0]}`;
+                            const codeItem = document.createElement('div');
+                            codeItem.className = 'code-item';
+                            codeItem.onclick = () => selectCode(fullCode);
+                            codeItem.innerText = `${fullCode} (${country.name.common})`;
+                            codeList.appendChild(codeItem);
+                        }
+                    });
+                })
+                .catch(error => {
+                    console.error('Error fetching countries:', error);
+                });
+
+
+        });
+    
+        function selectCode(code) {
+            const codeBox = document.getElementById('code-box');
+            codeBox.value = code;
+            toggleCodeList(); 
+        }
+
+        function toggleCodeList() {
+            const arrow = document.getElementById('arrow');
+            const codeList = document.getElementById('code-list');
+
+            if (codeList.style.display === "block") {
+                codeList.style.display = "none";
+                arrow.classList.remove('rotated');
+            } else {
+                codeList.style.display = "block";
+                arrow.classList.add('rotated');
+            }
+        }
+
+        
+        window.onclick = function(event) {
+            const codeList = document.getElementById('code-list');
+            const arrow = document.getElementById('arrow');
+
+            if (event.target !== codeList && event.target !== arrow) {
+                codeList.style.display = 'none';
+                arrow.classList.remove('rotated');
+            }
+        }
+        
+        */
+
+        var modal = document.getElementById("passwordModal");
+
+        function changePassword(){
+            modal.style.display = "block";
+            const span = document.getElementsByClassName("close")[0];
+
+            span.onclick = function() {
+                modal.style.display = "none";
+            }
+
+            window.onclick = function(event) {
+                if (event.target == modal) {
+                    modal.style.display = "none";
+                }
+            }
+        }
+
+        function savePassword() {
+            modal.style.display = "none";
+        }
+
+    </script>
+
+</body>

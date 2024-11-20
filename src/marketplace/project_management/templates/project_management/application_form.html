@@ -1,0 +1,43 @@
+{% load static %}
+<div id="application-modal" class="modal">
+    <div class="modal-content">
+      <span id="close-modal" class="close-button">&times;</span>
+      <!-- Modal Content Starts Here -->
+      <div class="application-form">
+        <div class="right-most-side"><img class="close-image" src="{% static 'close.svg' %}" /></div>
+        <div class="text-wrapper-3">Application to {{p.name}}</div>
+        <div class="overlap-group">
+          <div class= "column-flex">
+            <div class="text-wrapper-2">Check your profile</div>
+            <div class="profile">
+              <a href="{{ freelancer.profile_url }}"><img class="ellipse" src="{{ freelancer.image.url }}" alt="Profile Picture"/></a>
+              <div class="column-flex">
+                <div class="div">{{freelancer.username}}</div>
+                <div class="status">
+                  <img class="check" src="{% static 'check.svg' %}" />
+                  <div class="text-wrapper">Ready</div>
+                </div>
+              </div>  
+            </div>
+          </div>
+          <div class="wastable">  
+            <a href="{{ freelancer.profile_url }}"><button class="component"><div class="delete">Check</div></button></a>
+          </div>
+        </div>
+        <p class="p">Select the milestone you are interested to work in</p>
+        <div class="milestone-section">
+          {% for milestone in m %}
+          <label class="option" data-milestone-id="{{milestone.id}}">
+            <input type="radio" name="milestone-selection" value="{{ milestone.id }}" class="radio-input">
+            <div class="ellipse-2"></div>
+            <div class="text-wrapper-4">{{ milestone.name }}</div>
+          </label>
+          {% endfor %}
+        </div>
+        <div class="centered-div">        
+          <button id="basic-button" class="basic-button"><div class="log-in">Apply</div></button>
+        </div>
+      </div>
+      <!-- Modal Content Ends Here -->
+    </div>
+  </div>

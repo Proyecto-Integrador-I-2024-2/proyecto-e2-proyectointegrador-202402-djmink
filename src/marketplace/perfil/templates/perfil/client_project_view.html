@@ -1,0 +1,491 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Project</title>
+    <link rel="icon" type="image/png" href="{% static 'img/Logo.png' %}">
+    <link rel="stylesheet" href="{% static 'css/client_project_view_1.css' %}">
+    <link rel="stylesheet" href="{% static 'css/info-modal.css' %}">
+    <link rel="stylesheet" href="{% static 'css/heading.css' %}">
+    <link rel="stylesheet" href="{% static 'css/footer_1.css' %}">
+</head>
+<body>
+
+    {% include 'perfil/sections/info-modal.html' %}
+
+    {% include 'perfil/sections/heading.html' %}
+
+    <div class="main-title">
+        <div class="ptext project-name">{{ project.name}} </div>
+        <a href="{% url 'edit_project' profile.id project.id %}" class="editprojectbutton">
+            Edit Project
+        </a>
+    </div>
+
+    <div class="back">
+        
+        <div class="progress-container">
+            <div class="ptext progress">Progress</div>
+            <div class="progress-bar">
+                <div class="progress-fill" data-progress="{{ project_progress }}">
+                    {% if project_progress > 0 %}
+                        <span class="ptext progress-text">{{ project_progress|floatformat:0 }}%</span>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <div class="middle-section">
+            <div class="milestones-section">
+                <div class="ptext milestones-title">Milestones</div>
+                <div class="milestones-container">
+                    {% for milestone in project.milestones %}
+                        <div class="milestone-container-1">
+                            <div class="milestone-header" onclick="openMilestone(this)">
+                                <div class="ptext milestone-name">{{ milestone.name }}</div>
+                                {% if milestone.freelancer %}
+                                    <img class="freelancer-picture-1" src="{{ milestone.freelancer.profile_picture }}"/>
+                                    <div class="ptext freelancer-name-1">{{ milestone.freelancer.name }}</div>
+                                {% else %}
+                                    <div class="ptext info no-freelancer">No assigned yet.</div>
+                                {% endif %}
+                                {% if milestone.paid %}
+                                    <div class="ptext milestone-progress"><i>Paid</i></div>
+                                {% else %}
+                                    {% if milestone.progress1 == 100.00 %}
+                                        <button class="btn pay-freelancer" onclick="openPaymentModal('{{milestone.freelancer.name}}', '{{milestone.freelancer.id}}', '{{milestone.name}}', '{{milestone.id}}')">Pay</button>
+                                    {% else %}
+                                        <div class="ptext milestone-progress">{{ milestone.progress1 }}%</div>
+                                    {% endif %}
+                                {% endif %}
+                                <div class="ptext milestone-deadline">{{ milestone.end_date }}</div>
+                                <button class="btn assignment" onclick="openAssignmentModal('{{ milestone.id }}', '{{ milestone.name }}')">Assigments</button>
+                                <img class="arrow" src="{% static 'img/arrow.svg' %}" alt="arrow">
+                            </div>
+                            <div class="tasks-list">
+                                {% for task in milestone.tasks %}
+                                    <div class="task-container">
+                                        <div class="circle">
+                                            {% if task.state == 'CP' %}
+                                                <img class="check" src="{% static 'img/Check.svg' %}">
+                                            {% else %}
+                                                <img class="check" src="{% static 'img/Uncheck.svg' %}">
+                                            {% endif %}
+                                        </div>
+                                        <div class="ptext task-name">{{ task.name }}</div>
+                                    </div>
+                                {% empty %}
+                                    <div class="ptext info">No tasks assigned yet.</div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    {% empty %}
+                        <div class="ptext info">No milestones for this project registered yet.</div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <div class="applications-section">
+                <div class="ptext applications-title">Applications</div>
+                <div class="milestones-applications-container">
+                    {% for milestone in project.milestones %}
+                        <div class="milestone-application-container">
+                            <div class="ptext milestone-application-name">{{ milestone.name }}</div>
+                            <div class="applications-container">
+                                {% for application in milestone.applications %}
+                                    {% if application.state == 'Sent' %}
+                                        <div class="application-container">
+                                            <img class="freelancer-picture-2" src="{{ application.freelancer_picture }}"/>
+                                            <div class="ptext application-freelancer-name">{{ application.freelancer_name }}</div>
+                                            <form method="POST">
+                                                {% csrf_token %}
+                                                <input type="hidden" name="action" value="accept_application">
+                                                <input type="hidden" name="application_id" value="{{ application.id }}">
+                                                <button type="submit" class="btn accept">Accept</button>
+                                            </form>
+                                            <form method="POST">
+                                                {% csrf_token %}
+                                                <input type="hidden" name="action" value="reject_application">
+                                                <input type="hidden" name="application_id" value="{{ application.id }}">
+                                                <button type="submit" class="btn reject">Reject</button>
+                                            </form>
+                                            <a href="{% url 'freelancerProfile' profile.id application.freelancer_id%}" class="btn view-profile">View Profile</a>
+                                        </div>
+                                    {% endif %}
+                                {% endfor %}
+                            </div>
+                        </div>
+                    {% empty %}
+                       <div class="ptext info">No milestones for this project registered yet.</div>
+                    {% endfor %}
+                </div>
+            </div>
+
+        </div>
+
+        <div class="calendar-container">
+            <div class="up-calendar">
+                <button id="today-button" onclick="focusToday()">Today</button>
+                <div class="calendar-header">
+                    <button class="calendar-btn" id="prev-month">
+                        <img class="arrow-btn" src="{% static 'img/arrow-left.svg' %}" alt="Anterior" />
+                    </button>
+                    <div id="month-year"></div>
+                    <button class="calendar-btn" id="next-month">
+                        <img class="arrow-btn right" src="{% static 'img/arrow-left.svg' %}" alt="Anterior" />
+                    </button>
+                </div>
+                <div class="calendar-grid" id="calendar-grid"></div>
+            </div>
+            <div id="milestone-container" class="milestone-container">
+            </div>
+        </div>
+
+    </div>
+
+    {% include 'perfil/sections/footer2.html' %}
+
+    <div id="assignmentsModal" class="modal1">
+        <div class="modal-content">
+            <span id="close" class="close">&times;</span>
+            <div class="ptext modal-title">Assignments</div>
+            <div id="selected-milestone-title" class="ptext selected-milestone-title"></div>
+            <div class="assignments-modal-list">
+
+            </div>
+
+        </div>
+    </div>
+
+    <div id="pay-modal" class="modal1">
+        <div class="modal-content">
+            <span id="close1" class="close">&times;</span>
+            <div class="ptext modal-title">Make Payment</div>
+            <div id="milestone-to-pay" class="ptext selected-milestone-title"></div>
+            <div id="freelancer-to-pay" class="ptext selected-freelancer-title"></div>
+            <div class="ptext amount-to-pay">Enter amount to pay:</div>
+            <form method="POST">
+                {% csrf_token %}
+                <select class="currency-select" name="currency" id="currency">
+                    <option value="COP">COP</option>
+                    <option value="USD">USD</option>
+                    <option value="EUR">EUR</option>
+                </select>
+                <input class="input-amount" type="number" name="amount" id="budget" placeholder="Amount">
+                <input type="hidden" name="action" value="make_payment">
+                <input id="freelancer-to-pay-id" type="hidden" name="freelancer">
+                <input id="milestone-to-pay-id" type="hidden" name="milestone">
+                <button type="submit" class="btn make-pay">Make payment</button>
+            </form>
+        </div>
+    </div>
+
+    {{ project|json_script:"projectData" }}
+
+    <script>
+
+        let projectData;
+
+        document.addEventListener("DOMContentLoaded", function() {
+
+            projectData = JSON.parse(document.getElementById('projectData').textContent);
+            const progressFill = document.querySelector('.progress-fill');
+            const projectProgress = progressFill.getAttribute('data-progress');
+            progressFill.style.width = projectProgress + '%';
+
+            if (projectProgress > 0){
+                progressFill.querySelector('.progress-text').textContent = projectProgress + '%';
+            }
+
+            generateCalendarAround(currentDate);
+
+        });
+
+        function openPaymentModal(freelancerName, freelancerId, milestoneName, milestoneId){
+            document.getElementById('milestone-to-pay').textContent = "Milestone: " + milestoneName;
+            document.getElementById('freelancer-to-pay').textContent = "Freelancer: " + freelancerName;
+            document.getElementById('milestone-to-pay-id').value = milestoneId;
+            document.getElementById('freelancer-to-pay-id').value = freelancerId;
+
+            const modal = document.getElementById('pay-modal');
+            modal.style.display = "flex";
+
+            document.getElementById('close1').onclick = function() {
+                modal.style.display = 'none';
+            };
+
+            window.onclick = function(event) {
+                if (event.target === modal) {
+                    modal.style.display = 'none';
+                }
+            };
+        }
+
+        function openAssignmentModal(milestoneId, milestoneName) {
+            
+            // Filtra los assignments correspondientes a este milestone
+            const assignments = projectData.assignments.filter(assignment => assignment.milestone_id == milestoneId);
+
+            // Establece el título del milestone en el modal
+            document.getElementById('selected-milestone-title').textContent = milestoneName;
+
+            // Contenedor donde se agregarán los assignments
+            const assignmentsListContainer = document.querySelector('.assignments-modal-list');
+            
+            // Limpiar el contenido previo del modal
+            assignmentsListContainer.innerHTML = '';
+
+            // Iterar sobre los assignments y agregarlos al modal
+            assignments.forEach(assignment => {
+                const assignmentElement = document.createElement('div');
+                assignmentElement.classList.add('assignment-item');
+                
+                // Rellenar el contenido del assignment
+                assignmentElement.innerHTML = `
+                    <div class="assignment-info-container">
+                        <div class="ptext assignment-info"><strong>Name:</strong> ${assignment.name}</div>
+                        <div class="ptext assignment-info"><strong>Task:</strong> ${assignment.task}</div>
+                        <div class="ptext assignment-info"><strong>Date:</strong> ${assignment.date}</div>
+                        <div class="ptext assignment-info"><strong>Status:</strong> ${assignment.checked ? 'Reviewed' : 'Sent'}</div>
+                        ${assignment.file ? `<a class="ptext assignment-info" href="${assignment.file}" target="_blank">Download File</a>` : '<div class="ptext assignment-info download-btn">No file available</div>'}
+                        ${assignment.url ? `<a class="ptext assignment-info" href="https://${assignment.url}" target="_blank">Link</a>` : '<div class="ptext assignment-info link">No link available</div>'}
+                    </div>   
+                    <div class="comments-section">
+                        <div class="ptext comments-title">Send feedback:</div>
+                        <form method="POST">
+                            {% csrf_token %}
+                            <textarea placeholder="Add a comment" class="comment-input" name="assigment_comment"></textarea>
+                            <input type="hidden" name="action" value="send_assignment_comment">
+                            <input type="hidden" name="assignment_id" value="${assignment.id}">
+                            <button type="submit" class="btn add-comment">Send</button>
+                        </form>
+                    </div>
+                `;
+                
+                // Agregar el assignment al contenedor del modal
+                assignmentsListContainer.appendChild(assignmentElement);
+            });
+
+            // Mostrar el modal
+            const modal = document.getElementById('assignmentsModal');
+            modal.style.display = "flex";
+
+            // Cerrar el modal cuando se hace clic en el botón de cerrar
+            document.getElementById('close').onclick = function() {
+                modal.style.display = 'none';
+            };
+
+            // Cerrar el modal cuando se hace clic fuera de él
+            window.onclick = function(event) {
+                if (event.target === modal) {
+                    modal.style.display = 'none';
+                }
+            };
+        }
+
+        function openMilestone(header) {
+            const expandedSection = header.nextElementSibling;
+            expandedSection.classList.toggle('open');
+        }
+
+        //CALENDARIO
+       
+        const calendarGrid = document.getElementById('calendar-grid');
+        const monthYear = document.getElementById('month-year');
+        const today = new Date();
+        let currentDate = new Date();
+
+        function focusToday() {
+            currentDate = new Date(); // Resetea currentDate a la fecha de hoy
+            generateCalendarAround(currentDate); // Genera el calendario con el día actual en el centro
+        }
+
+        // Función para generar el calendario con 29 días alrededor de la fecha de referencia
+        function generateCalendarAround(date) {
+            calendarGrid.innerHTML = ''; // Limpiar el calendario
+            monthYear.textContent = `${new Date(date.getFullYear(), date.getMonth()).toLocaleString('en-US', { month: 'long' })} ${date.getFullYear()}`;
+
+            // Crear una lista para los 14 días anteriores y 14 días siguientes
+            const daysToShow = [];
+
+            // Agregar 14 días anteriores
+            for (let i = 14; i > 0; i--) {
+                const prevDate = new Date(date);
+                prevDate.setDate(date.getDate() - i);
+                daysToShow.push(prevDate);
+            }
+
+            // Agregar el día actual (o fecha de referencia)
+            daysToShow.push(date);
+
+            // Agregar 14 días siguientes
+            for (let i = 1; i <= 14; i++) {
+                const nextDate = new Date(date);
+                nextDate.setDate(date.getDate() + i);
+                daysToShow.push(nextDate);
+            }
+
+            // Crear contenedores para los días de cada mes
+            let currentMonth = null;
+            let monthContainer = null;
+            let currentDayLine = document.createElement('div');
+            currentDayLine.id = 'current-day-line';
+            currentDayLine.className = 'current-day-line';
+
+            daysToShow.forEach(day => {
+                const dayMonth = day.getMonth();
+
+                // Crear un nuevo contenedor si es un mes diferente
+                if (dayMonth !== currentMonth) {
+                    currentMonth = dayMonth;
+                    monthContainer = document.createElement('div');
+                    monthContainer.classList.add('month-container');
+                    calendarGrid.appendChild(monthContainer);
+                }
+
+                // Crear el elemento del día
+                const dayDiv = document.createElement('div');
+                dayDiv.classList.add('calendar-day');
+                dayDiv.textContent = day.getDate();
+
+                // Marcar el día actual
+                if (day.toDateString() === new Date().toDateString()) {
+                    dayDiv.classList.add('today');
+                    dayDiv.appendChild(currentDayLine);
+                }
+
+                // Añadir el día al contenedor del mes
+                monthContainer.appendChild(dayDiv);
+            });
+
+            generateMilestones(daysToShow);
+            updateCurrentDayLine(daysToShow);
+            adjustCurrentDayLineHeight(currentDayLine);
+        }
+
+        function adjustCurrentDayLineHeight(currentDayLine) {
+            const milestoneContainer = document.getElementById('milestone-container');
+            
+            if (milestoneContainer) {
+                const height = milestoneContainer.offsetHeight;
+                currentDayLine.style.height = `${height + 26}px`;
+            }
+        }
+
+        function updateCurrentDayLine(daysToShow) {
+            const todayIndex = daysToShow.findIndex(day => day.toDateString() === today.toDateString());
+            const currentDayLine = document.getElementById('current-day-line');
+            if (todayIndex !== -1) {
+                const leftOffset = todayIndex * 41.5 + 130;
+                currentDayLine.style.left = `${leftOffset}px`;
+                currentDayLine.style.display = 'block';
+            } else {
+                currentDayLine.style.display = 'none';
+            }
+            const dayContainer = document.querySelector('.calendar-day.today'); // Selecciona el contenedor del día actual
+            if (dayContainer) {
+                const top = dayContainer.offsetTop; // Obtiene la posición vertical del contenedor
+                currentDayLine.style.top = `${top + 25}px`; 
+            }
+        }
+
+        let milestoneOffset = 0; // Variable global para manejar el offset
+
+        function generateMilestones(daysToShow) {
+
+            const milestones = projectData.milestones.map(milestone => ({
+                startDate: milestone.start_date,
+                endDate: milestone.end_date,
+                name: milestone.name,
+            }));
+            
+            const milestoneContainer = document.getElementById('milestone-container');
+            milestoneContainer.innerHTML = ''; // Limpiar los hitos anteriores
+
+            milestones.forEach(milestone => {
+                const startDate = new Date(milestone.startDate);
+                startDate.setDate(startDate.getDate() + 1); // Sumar un día a la fecha de inicio
+
+                const endDate = new Date(milestone.endDate);
+                endDate.setDate(endDate.getDate() + 1); 
+
+                // Calcular la duración del hito en días
+                const durationInDays = (endDate - startDate) / (1000 * 60 * 60 * 24) + 1;
+
+                // Calcular la posición de inicio en base a los días del calendario
+                const startIndex = daysToShow.findIndex(day => day.toDateString() === startDate.toDateString());
+                const endIndex = daysToShow.findIndex(day => day.toDateString() === endDate.toDateString());
+
+                // Calcular el leftOffset
+                let leftOffset = (startIndex >= 0 ? startIndex : 0) * 41.5; // Posición de inicio
+                let width = durationInDays * 41.5; // Ancho total en pixels
+
+                // Verificar si el hito comienza antes del contenedor
+                if (startIndex < 0) {
+                    milestoneOffset = Math.ceil((startDate - daysToShow[0]) / (1000 * 60 * 60 * 24)); // Calcular offset si está fuera del rango
+                    milestoneOffset = milestoneOffset - 1;
+                    leftOffset = milestoneOffset * 41.5; // Ajustar la posición
+                    console.log(leftOffset);
+
+                    // Acortar el ancho si el hito se sale del contenedor
+                    if (leftOffset < 0) {
+                        width += leftOffset; // Aumentar el ancho según el offset negativo
+                        leftOffset = 0; 
+                    }
+                } else {
+                    // Verificar si el hito se sale del contenedor a la derecha
+                    const containerWidth = milestoneContainer.clientWidth;
+                    const rightEdge = leftOffset + width;
+                    if (rightEdge > containerWidth) {
+                        width = Math.max(0, containerWidth - leftOffset); // Ajustar el ancho si se sale a la derecha
+                    }
+                }
+
+                const milestoneDiv = document.createElement('div');
+                milestoneDiv.classList.add('milestone-rectangle');
+
+                if (width > 0 && leftOffset < 1200){ 
+
+                    milestoneDiv.innerHTML = `
+                        <div class="milestone" style="width: ${width}px; left: ${leftOffset}px; position: absolute;">
+                            <div class="milestone-name">${milestone.name}</div>
+                        </div>
+                    `;
+
+                }
+
+                milestoneContainer.appendChild(milestoneDiv);
+                
+            });
+        }
+
+        // Función para avanzar 29 días
+        function nextPeriod() {
+            currentDate.setDate(currentDate.getDate() + 1);
+            generateCalendarAround(currentDate);
+        }
+
+        // Función para retroceder 29 días
+        function prevPeriod() {
+            currentDate.setDate(currentDate.getDate() - 1);
+            generateCalendarAround(currentDate);
+        }
+
+        // Funciones para cambiar el periodo
+        document.getElementById('prev-month').addEventListener('click', () => {
+            prevPeriod();
+        });
+
+        document.getElementById('next-month').addEventListener('click', () => {
+            nextPeriod();
+        });
+        
+    </script>
+
+</body>

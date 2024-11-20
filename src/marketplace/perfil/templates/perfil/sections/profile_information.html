@@ -1,0 +1,59 @@
+{% load static %}
+<div class="profile">
+
+    <div class="up-profile">
+        <div class="profiletitle">Profile</div>
+        {% if show_edit_link %}
+            <a href="{{ edit_profile_url }}" class="editprofilebutton">
+                <div>Edit profile</div>
+            </a>
+        {% endif %}
+    </div>
+
+    <div class="down">
+        <div class="down-left">
+            <img class="profile_picture" src="{{ p.image.url }}" alt="Profile Picture"/>
+            <div class="rate-container">
+                <img class="star" src="{% static 'img/Star.svg' %}" />
+                <div class="calification">{{ p.rating }}</div>
+            </div>
+            {% if can_rate %}
+                <button class="rate-btn" type="button" onclick="openRateModal()">Rate</button>
+            {% endif %}
+        </div>
+        <div class="down-right">
+            <div class="name-profile">{{ p.name }}</div>
+            <div class="type">
+                {% if p.company_type %}
+                    {{ p.company_type }}
+                {% else %}
+                    {{ p.profession }}
+                {% endif %}
+            </div> 
+            <div class="description">{{ p.description }}</div>
+            <div class="email">{{ p.contact_email }}</div>
+            <div class="social-networks">
+                {% if p.social_networks.all %}
+                    {% for network in p.social_networks.all %}
+                        <a href="https://{{ network.url }}" target="_blank">
+                            <img class="social-icon-1" src="{{ network.image.url }}" alt="{{ network.type }}">
+                        </a>
+                    {% endfor %}
+                {% elif p.client_social_networks.all %}
+                    {% for network in p.client_social_networks.all %}
+                        <a href="https://{{ network.url }}" target="_blank">
+                            <img class="social-icon-1" src="{{ network.image.url }}" alt="{{ network.type }}">
+                        </a>
+                    {% endfor %}
+                {% endif %}
+            </div> 
+        </div>
+    </div>
+
+
+
+   
+    
+     
+    
+</div>

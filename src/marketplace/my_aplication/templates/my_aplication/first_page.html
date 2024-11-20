@@ -1,0 +1,171 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Freelancer Marketplace</title>
+    <link rel="stylesheet" href="{% static 'css/first_page2.css' %}">
+    <link rel="stylesheet" href="{% static 'css/info-modal.css' %}">
+</head>
+<body>
+
+    {% include 'perfil/sections/info-modal.html' %}
+
+    <div class="heading">
+        <div class="logo">
+            <img class="logo-pic" src="{% static 'img/Logo.svg' %}" class="logo" alt="">
+            <div class="lineNav"></div>
+            <div class="navText">
+                <span>Online</span>
+                <span>Marketplace</span>
+            </div>
+        </div>
+        <div class="navBar">
+            <ul>
+                <li><a href="{% url 'login'%}" class="login">Log In</a></li>
+                <li><a href="{% url 'registerc1'%}" class="join-us">Join Us</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="firstsection">
+        
+        <div class="container">
+
+            <div class="developyourproject">
+                DEVELOP YOUR
+            </div>
+            <div class="developyourproject">
+                PROJECT
+            </div>
+
+            <div class="onlinemarketplaceforfreelancers">
+                Online Marketplace for <span class="freelancers">Freelancers</span>
+            </div>
+
+            <div class="searchbar">
+                <input class="search" type="text" placeholder="Search" />
+                <a href="{% url 'firstMain' %}">
+                    <img class="frame" src="{% static 'img/Search.svg' %}"/>
+                </a>
+            </div>
+
+        </div>
+        
+    </div>
+
+    <div class='freelancersection'>
+
+        <img class="backgroundfreelancer" src="{% static 'img/freelancer_home_section.png' %}" />
+
+        <div class="container2">
+            <div class='forfreelancers'> 
+                For Freelancers
+            </div>
+    
+            <div class='freelancerdescription'>
+                Work in projects with companies all around the world.
+            </div>
+    
+            <a class="joinfreelancerbutton" href="{% url 'registerc1'%}">Join as a Freelancer</a>
+        </div>
+
+        <img class="b2" src="{% static 'img/b2.png' %}" />
+
+    </div>
+
+    <!-- company section -->
+    <div class="freelancersection" >
+
+        <img class="backgroundfreelancer" src="{% static 'img/company_home_section.png' %}" />
+
+        <div class="container2">
+            <div class='forfreelancers'> 
+                For Companies
+            </div>
+    
+            <div class='freelancerdescription'>
+                Develop your projects with our community to achieve your goals. 
+            </div>
+    
+            <a class="joinfreelancerbutton" href="{% url 'registerc1'%}">Join as a Company</a>
+        </div>
+
+    </div>
+
+    <!-- last section -->
+    <div class='lastsection'>
+
+        <div class="containerlast">
+
+            <div class='eoctitle'> 
+                EXPLORE OUR COMUNITY
+            </div>
+
+            <div class="containers">
+                <div class="container4">
+                    <a href="{% url 'firstMain' %}">
+                        <img class='eoc' src="{% static 'img/eoc1.png' %}" />
+                        <div class="overlay"></div>
+                        <div class="text">Find Projects</div>
+                    </a>
+                </div>
+        
+                <div class="container4">
+                    <a href="{% url 'firstMain' %}">
+                        <img class='eoc' src="{% static 'img/eoc2.png' %}" />
+                        <div class="overlay"></div>
+                        <div class="text">Find Developers</div>
+                    </a>
+                </div>
+        
+                <div class="container4">
+                    <a href="{% url 'firstMain' %}">
+                        <img class='eoc' src="{% static 'img/eoc3.png' %}" />
+                        <div class="overlay"></div>
+                        <div class="text">Work Together</div>
+                    </a>
+                </div>
+            </div>
+    
+            
+        </div>
+
+    </div>
+
+    <footer class="footer">
+        <img class="footer-logo" src="{% static 'img/Encora1.svg' %}" />
+        <nav class="footer-nav">
+            <a href="#features">Features</a>
+            <a href="#about">About</a>
+            <a href="#support">Support</a>
+            <a href="#resources">Resources</a>
+            <a href="#places">Places</a>
+            <a href="#jobs">Jobs</a>
+        </nav>
+        <div class="footer-right">
+            <div class="media">
+                <img class="social-icon gmail" src="{% static 'img/gmail.png' %}" />
+                <a href="https://www.facebook.com/encorainc" target="_blank">
+                    <img class="social-icon fb" src="{% static 'img/fb.png' %}"/>
+                </a>
+                <a href="https://www.instagram.com/encorainc/" target="_blank">
+                    <img class="social-icon ig" src="{% static 'img/ig.png' %}" />
+                </a>
+                <a href="https://www.linkedin.com/company/encorainc/" target="_blank">
+                    <img class="social-icon lin" src="{% static 'img/lin.png' %}" />
+                </a>
+            </div>
+            <div class='footertext'> 
+                © 2024 Online Marketplace
+            </div>
+        </div>
+    </footer>
+
+</body>
+</html>

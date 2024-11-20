@@ -1,0 +1,52 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'css/signUp3.css' %}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/png" href="{% static 'img/Logo.png' %}">
+    <title>Sing Up</title>
+</head>
+<body>
+    <nav>
+        <div class="logo">
+            <img class="logo-pic" src="{% static 'img/Logo.svg' %}" class="logo" alt="">
+            <div class="lineNav"></div>
+            <div class="navText">
+                <span>Online</span>
+                <span>Marketplace</span>
+            </div>
+        </div>
+        <div></div>
+    </nav>
+    <form class="content" method = "POST">
+        {% csrf_token %}
+        <div class="title">
+            <span class="titleSpan">Complete your Profile</span>
+            <span class="text-1">You're <span class="text-2">unique</span></span>
+        </div>
+        <div>
+            {% csrf_token %}
+            <div class="inputContainer">
+                <span>Country</span>
+                <select id = "country" name = "country">
+                    {% for country in countries %}
+                        <option>{{ country }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="inputContainer">
+                <span>id</span>
+                <input type="text" id = "identification" name = "identification">
+            </div>
+        </div>
+        <a>Why is it important?</a>
+        <button>Done</button>
+    </form>
+    
+</body>
+</html>

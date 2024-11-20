@@ -1,0 +1,344 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project Workspace</title>
+    <link rel="icon" type="image/png" href="{% static 'img/Logo.png' %}">
+    <link rel="stylesheet" href="{% static 'css/freelancer_project_workspace_1.css' %}">
+    <link rel="stylesheet" href="{% static 'css/info-modal.css' %}">
+    <link rel="stylesheet" href="{% static 'css/heading.css' %}">
+    <link rel="stylesheet" href="{% static 'css/footer_1.css' %}">
+</head>
+<body>
+
+    {% include 'perfil/sections/info-modal.html' %}
+
+    {% include 'perfil/sections/heading.html' %}
+
+    <div class="main">
+        <div class="milestone-section">
+            <div class="ptext workspace-title">Workspace - {{project.name}}</div>
+            <div class="ptext milestones-title">Milestones</div>
+            <form method="POST">
+                {% csrf_token %}
+                <div class="milestone-container"> 
+                    <div class="milestones-header">
+                        <select class="select" name="milestones-select" id="milestones-select" onclick="rotate('.milestones-header')" onchange="loadTasks(this); toggleSaveButton();">
+                            <option value="">Select Milestone</option>
+                            {% for milestone in project.milestones %}
+                                <option value="{{ milestone.id }}">{{ milestone.name }}</option>
+                            {% endfor %}
+                        </select>
+                        <img class="arrow" src="{% static 'img/arrow.svg' %}" alt="arrow">
+                    </div>
+                    <div class="tasks-list" id="tasks-list">
+                        <p class="ptext instruction">Select a milestone to see the tasks.</p>
+                    </div>   
+                </div>
+                <input type="hidden" name="action" value="save_tasks">
+                <button type="submit" class="btn save" id="save-button" style="display:none;">Save</button>
+            </form>
+            <div class="boards-section">
+                <div class="board">
+                    <div class="ptext to-do">To-do</div>
+                    <hr class="separator">
+                    <div class="tasks-list-board" id="tasks-list-NS"></div>
+                </div>
+                <div class="board">
+                    <div class="ptext to-do">In progress</div>
+                    <hr class="separator">
+                    <div class="tasks-list-board" id="tasks-list-IP"></div>
+                </div>
+                <div class="board">
+                    <div class="ptext to-do">Done</div>
+                    <hr class="separator">
+                    <div class="tasks-list-board" id="tasks-list-CP"></div>
+                </div>
+            </div>   
+        </div>
+        <hr class="separator2">
+        <div class="assignments-section">
+            <div class="ptext assignments-title">Assignments List</div> 
+            <div class="assignments-container">
+                {% for assignment in project.assignments %}
+                    <div class="assignment-container">
+                        <div class="ptext assignment-name">{{ assignment.name }}</div>
+                        <div class="ptext assignment-task"><strong>Task:</strong> {{ assignment.task }}</div>
+                        <div class="ptext assignment-task"><strong>Date:</strong> {{ assignment.date }}</div>
+                        <div class="ptext assignment-task"><strong>Status:</strong>
+                            {% if assignment.checked %}
+                                Reviewed
+                            {% else %}
+                                Sent
+                            {% endif %}
+                        </div>
+                        {% if assignment.file %}
+                            <a class="ptext assignment-task" href="{{ assignment.file }}" target="_blank">Download File</a>
+                        {% else %}
+                            <div class="ptext assignment-task"><i>No file available</i></div>
+                        {% endif %}
+            
+                        {% if assignment.url %}
+                            <a class="ptext assignment-task" href="https://{{ assignment.url }}" target="_blank">Link</a>
+                        {% else %}
+                            <div class="ptext assignment-task"><i>No link available</i></div>
+                        {% endif %}
+
+                        {% if assignment.checked %}
+                            <div class="ptext assignment-task"><strong>Feedback:</strong> {{assignment.comment }}</div>
+                        {% endif %}
+                    </div>
+                {% empty %}
+                    <div class="ptext info">No assignments available for this project.</div>
+                {% endfor %}
+            </div>            
+            <hr class="separator3">
+            <form method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="select-task-header">
+                    <select class="task-select" name="task-select" id="task-select" onclick="rotate('.select-task-header'); enableFileAndLinkInputs(this)">
+                        <option value="">Select Task</option>
+                        {% for milestone in project.milestones %}
+                            {% for task in milestone.tasks %}
+                                {% if task.state == 'CP' %} 
+                                    <option value="{{ task.id }}">{{ task.name }}</option>
+                                {% endif %}     
+                            {% endfor %}
+                        {% empty %}
+                            <option>No tasks available for this project</option>
+                        {% endfor %}
+                    </select>                
+                    <img class="arrow2" src="{% static 'img/arrow.svg' %}" alt="arrow">
+                </div>
+                <div class="upload-file" id="src-file1">
+                    <input name="assignment-file" type="file" id="input-file" onchange="loadFile(event)" disabled/>
+                </div>
+                <div class="ptext or">Or</div>
+                <input id="input-link" name="link" class="input-box" placeholder="Enter URL" oninput="loadLink(event)" disabled/>
+                <input id="input-name" name="name" class="input-box name" placeholder="Enter name" oninput="updateAssignmentName()" disabled/>
+                <div id="preview-assignment" class="preview-assignment" style="display: none;">
+                    <div id="assignment-name" class="ptext assignment-task"></div>
+                    <div id="assignment-task" class="ptext assignment-task"></div>
+                    <a id="assignment-file"class="ptext assignment-task" href="#" target="_blank"></a>
+                    <a id="assignment-link" class="ptext assignment-task" target="_blank"></a>
+                </div>
+                <input type="hidden" name="action" value="send_assignment">
+                <button type="submit" class="btn add-assignment" id="add-assignment-btn">Send assignment</button>
+            </form>
+        </div>
+
+    </div>
+
+    {% include 'perfil/sections/footer2.html' %}
+
+    {{ project|json_script:"projectData" }}
+
+    <script>
+
+        function checkInputs() {
+            const taskSelect = document.getElementById("task-select");
+            const inputFile = document.getElementById("input-file");
+            const inputLink = document.getElementById("input-link");
+            const inputName = document.getElementById("input-name");
+
+            const allInputsFilled = taskSelect.value && (inputFile.value || inputLink.value) && inputName.value;
+
+            const addButton = document.querySelector(".add-assignment");
+            if (allInputsFilled) {
+                addButton.disabled = false;
+            } else {
+                addButton.disabled = true;
+            }
+        }
+
+        document.addEventListener("DOMContentLoaded", function() {
+            document.getElementById("task-select").addEventListener("change", checkInputs);
+            document.getElementById("input-file").addEventListener("change", checkInputs);
+            document.getElementById("input-link").addEventListener("input", checkInputs);
+            document.getElementById("input-name").addEventListener("input", checkInputs);
+        });
+
+        checkInputs();
+
+
+        function enableFileAndLinkInputs() {
+            const taskSelect = document.getElementById("task-select");
+            const taskName = "<strong>Task:</strong> " + taskSelect.options[taskSelect.selectedIndex].text;
+            
+            if (taskSelect.value) {
+                
+                document.getElementById("preview-assignment").style.display = "block";
+                document.getElementById("assignment-task").innerHTML = taskName;
+                document.getElementById("input-file").disabled = false;
+                document.getElementById("input-link").disabled = false;
+                
+            } else {
+                document.getElementById("preview-assignment").style.display = "none";
+                document.getElementById("input-file").disabled = true;
+                document.getElementById("input-link").disabled = true;
+            }
+        }
+
+        function loadFile(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const fileURL = URL.createObjectURL(file);
+                const previewLink = document.getElementById('assignment-file');
+                previewLink.href = fileURL;
+                previewLink.textContent = 'Preview file';
+                document.getElementById("input-name").disabled = false;
+                document.getElementById("input-file").disabled = false;
+            }
+        }
+
+        function loadLink(event) {
+            var linkValue = event.target.value;
+            var linkElement = document.getElementById('assignment-link');
+
+            if (linkValue) {
+                linkElement.href ="https://" + linkValue;
+                linkElement.textContent = "Link";
+                document.getElementById("input-name").disabled = false;
+            } 
+        }
+
+        function updateAssignmentName() {
+            const assignmentName = document.getElementById("input-name").value;
+            document.getElementById("assignment-name").innerHTML = "<strong>Name:</strong> " + assignmentName;
+        }
+
+        function toggleSaveButton() {
+            const milestoneSelect = document.getElementById('milestones-select');
+            const saveButton = document.getElementById('save-button');
+            const noTasksAvailableInfo = document.getElementById('no-tasks-available-info'); 
+
+            if (noTasksAvailableInfo != null) {
+                saveButton.style.display = "none";
+            } else {
+                if (milestoneSelect.value !== "") {
+                    saveButton.style.display = "inline-block";
+                } else {
+                    saveButton.style.display = "none";
+                }
+            }
+        }
+
+        function rotate(container) {
+            const selectContainer = document.querySelector(container);
+            selectContainer.classList.toggle('expanded');
+        }
+
+        const project = JSON.parse(document.getElementById('projectData').textContent);
+    
+        function loadTasks(select) {
+
+            const tasksListContainer = document.getElementById('tasks-list');
+            tasksListContainer.innerHTML = ''; 
+            const selectedMilestoneId = select.value;
+
+            document.getElementById('tasks-list-NS').innerHTML = '';
+            document.getElementById('tasks-list-IP').innerHTML = '';
+            document.getElementById('tasks-list-CP').innerHTML = '';
+    
+            if (selectedMilestoneId) {
+                const selectedMilestone = project.milestones.find(m => m.id == selectedMilestoneId);
+    
+                if (selectedMilestone && selectedMilestone.tasks.length > 0) {
+                    selectedMilestone.tasks.forEach(task => {
+                        const taskDiv = document.createElement('div');
+                        taskDiv.classList.add('task-container');
+                        taskDiv.id = `task-${task.id}`;
+                        taskDiv.dataset.state = task.state;
+    
+                        taskDiv.innerHTML = `
+                            <div class="up">
+                                <img class="check" src="{% static 'img/Check.svg' %}">
+                                <div class="ptext task-name">${task.name}</div>
+                                <div class="ptext task-deadline">Deadline: ${task.deadline}</div>
+                                <select name="task_${task.id}" class="status-select" onchange="updateTaskStatus(${task.id}, this, this.value)">
+                                    <option value="NS" ${task.state === 'NS' ? 'selected' : ''}>To-Do</option>
+                                    <option value="IP" ${task.state === 'IP' ? 'selected' : ''}>In Progress</option>
+                                    <option value="CP" ${task.state === 'CP' ? 'selected' : ''}>Done</option>
+                                </select>
+                            </div>
+                            <div class="down">
+                                <div class="ptext task-desc">${task.description}</div>
+                            </div>
+                        `;
+
+                        const selectElement = taskDiv.querySelector('.status-select');
+                        if (task.state === 'NS') {
+                            selectElement.style.backgroundColor = '#2196f3';
+                        } else if (task.state === 'IP') {
+                            selectElement.style.backgroundColor = '#1465bb';
+                        } else if (task.state === 'CP') {
+                            selectElement.style.backgroundColor = '#003785';
+                        }
+    
+                        tasksListContainer.appendChild(taskDiv);
+
+                        const taskNameDiv = document.createElement('div');
+                        taskNameDiv.classList.add('task-name-container');
+                        taskNameDiv.id = `task-name-${task.id}`;
+                        taskNameDiv.dataset.state = task.state;
+
+                        switch (task.state) {
+                            case 'NS':
+                                taskNameDiv.style.backgroundColor = '#2196f3';
+                                break;
+                            case 'IP':
+                                taskNameDiv.style.backgroundColor = '#1465bb';
+                                break;
+                            case 'CP':
+                                taskNameDiv.style.backgroundColor = '#003785';
+                                break;
+                        }
+
+                        taskNameDiv.innerHTML = `<div class="ptext task-board-name">${task.name}</div>`
+
+                        const boardId = `tasks-list-${task.state}`;
+                        document.getElementById(boardId).appendChild(taskNameDiv);
+
+                    });
+                } else {
+                    tasksListContainer.innerHTML = '<p class="ptext instruction" id="no-tasks-available-info">No tasks available for this milestone</p>';
+                }
+            } else {
+                tasksListContainer.innerHTML = '<p class="ptext instruction">Select a milestone to see the tasks.</p>';
+            }
+        }
+
+        function updateTaskStatus(taskId, selectElement, newStatus) {
+            
+            const taskDiv = document.getElementById(`task-name-${taskId}`);
+            const currentBoard = document.getElementById(`tasks-list-${taskDiv.dataset.state}`);
+            currentBoard.removeChild(taskDiv);
+
+            taskDiv.dataset.state = newStatus;
+            const newBoard = document.getElementById(`tasks-list-${newStatus}`);
+            newBoard.appendChild(taskDiv);
+
+            //Cambiar colores: 
+            selectElement.style.backgroundColor = "";
+            if (newStatus === 'NS') {
+                taskDiv.style.backgroundColor = '#2196f3';
+                selectElement.style.backgroundColor = '#2196f3';
+            } else if (newStatus === 'IP') {
+                taskDiv.style.backgroundColor = '#1465bb';
+                selectElement.style.backgroundColor = '#1465bb';
+            } else if (newStatus === 'CP') {
+                taskDiv.style.backgroundColor = '#003785';
+                selectElement.style.backgroundColor = '#003785';
+            }
+
+        }
+        
+    </script>
+
+</body>

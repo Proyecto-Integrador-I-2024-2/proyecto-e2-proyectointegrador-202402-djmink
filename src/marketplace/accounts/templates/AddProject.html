@@ -1,0 +1,316 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="{% static 'css/AddProject.css' %}">
+        <link rel="stylesheet" href="{% static 'css/heading.css' %}">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+        <title>Document</title>
+        <link rel="icon" type="image/png" href="{% static 'img/Logo.png' %}">
+    </head>
+    <body>
+        {% include 'perfil/sections/heading.html' %}
+        <div id="torso" class="content" data-client-id="{{ this_id }}">
+            <h2>Add New Project</h2>
+            <div class="basicInformation">
+                <span>Basic information</span>
+                <form class="formInformation">
+                    <div class="leftSide">
+                        <div class="inputContainer">
+                            <span>Name</span>
+                            <input type="text" name="name" id="name">
+                        </div>
+                        <div class="inputContainer">
+                            <span>Description</span>
+                            <textarea rows="4" cols="50" placeholder="Escribe aquí..." name="description" id="description"></textarea>
+                        </div>
+                        <div class="inputContainer">
+                            <span>Budget</span>
+                            <select name="currency" id="currency">
+                                <option value="COP">COP</option>
+                                <option value="USD">USD</option>
+                                <option value="EUR">EUR</option>
+                            </select>
+                            <input type="number" name="budget" id="budget" placeholder="Amount">
+                        </div>
+                    </div>
+                    <div class="rightSide">
+                        <div class="profile-upload">
+                            <label for="project_picture">Project Picture:</label>
+                            <input type="file" id="project_picture" name="project_picture" accept="image/*" style="display: none;">
+                            <img id="profile-img" src="{% static 'images/Vector (2).png' %}" alt="Project Image" onclick="document.getElementById('project_picture').click();" style="cursor: pointer; width: 200px; height: 200px;">
+                            <button type="button" class="buttonSubmit" id="upload">Choose Image</button>
+                        </div>
+                            <!-- <div class="profile-upload">
+                                <input type="file" id="file-input" accept="image/*" />
+                                <label for="file-input" class="profile-circle">
+                                    <img id="profile-img" src="{% static 'images/Vector (2).png' %}" alt="Profile" />
+                                </label>
+                                <button id="upload" type="submit" class="buttonSubmit">Upload</button>
+                            </div> -->
+                    </div>
+                </form>    
+                <!-- <div class="spaced-out">
+                    <button id="submit" class="buttonSubmit">Save Project</button>
+                </div> -->
+                <div id ="milestone-list" class="milestone-list">
+                    <div class="add-milestone-section">
+                        <h2 class="ptext">Add Milestone</h2>
+                        <form id="milestone-form" class="milestone-form">
+                            <label class="ptext" for="milestone-name">Milestone Name</label>
+                            <input class="milestone-name" type="text" id="milestone-name" name="milestone-name" placeholder="Milestone name" required />
+                    
+                            <!-- <label class="ptext" for="freelancer-name">Freelancer Name</label>
+                            <input type="text" id="freelancer-name" name="freelancer-name" placeholder="Freelancer name" required />
+                    
+                            <label class="ptext" for="milestone-progress">Progress (%)</label>
+                            <input type="number" id="milestone-progress" name="milestone-progress" placeholder="Progress" min="0" max="100" required /> -->
+
+                            <label class="ptext" for="freelancer-name">Description</label>
+                            <input class="milestone-description" type="text" id="description" name="freelancer-name" placeholder="Description" required />
+
+                            <label class="ptext" for="milestone-start-date">Start Date</label>
+                            <input class="milestone-start-date" type="date" id="milestone-start-date" name="milestone-start-date" required />
+                    
+                            <label class="ptext" for="milestone-deadline">Deadline</label>
+                            <input class="milestone-deadline" type="date" id="milestone-deadline" name="milestone-deadline" required />
+                    
+                            <h3 class="ptext">Professions Needed</h3>
+                            <div id="profession-list" class="profession-list"></div>
+                            <label class="ptext" for="profession-name">Profession Name</label>
+                            <input type="text" id="profession-name" placeholder="Add profession" />
+                            <button type="button" class="btn add-profession" onclick="addProfession(this)">Add Profession</button>
+
+                            <h3 class="ptext">Tasks</h3>
+                            <div id="task-list" class="task-list"></div>
+                            <label class="ptext" for="task-name">Task Name</label>
+                            <input type="text" id="task-name" placeholder="Add task" />
+                            
+                            <label class="ptext" for="task-description">Task Description</label>
+                            <input type="text" id="task-description" placeholder="Add task description"/>
+
+                            <label class="ptext" for="task-deadline">Task Deadline</label>
+                            <input type="date" id="task-deadline" placeholder="Add task deadline"/>
+
+                            <button type="button" class="btn add-task" onclick="addTask(this)">Add Task</button>
+
+                            <button type="submit" class="btn remove-milestone" onclick="removeMilestone(this)">Remove Milestone</button>
+                        </form>
+                    </div>
+                </div>    
+                <div class="gray-div">
+                    <button type="submit" class="btn save-milestone" onclick="addMilestone()">Add Milestone</button>
+                    <button id="submit" class="btn save-milestone">Save Project</button>
+                </div>
+            </div>
+        </div>    
+    </body>
+    <footer>
+        <img src="{% static 'images/image 4.png' %}">
+        <div class="menuFooter">
+            <ul>
+                <li><a href="">Features</a></li>
+                <li><a href="">About</a></li>
+                <li><a href="">Support</a></li>
+                <li><a href="">Resources</a></li>
+                <li><a href="">Places</a></li>
+                <li><a href="">Jobs</a></li>
+            </ul>
+        </div>
+        <div class="social">
+            <ul>
+                <li><img src="{% static 'images/image 8.png' %}" alt=""></li>
+                <li><img src="{% static 'images/image 9.png' %}" alt=""></li>
+                <li><img src="{% static 'images/image 11.png' %}" alt=""></li>
+                <li><img src="{% static 'images/image 12.png' %}" alt=""></li>
+            </ul>
+        </div>
+    </footer>
+    
+</body>
+    <script>
+        document.getElementById('submit').addEventListener('click', function() {
+        const managerId = document.getElementById('torso').dataset.clientId; // Obtén el ID del manager
+        console.log("Manager ID:", managerId);
+        const formData = new FormData();
+        formData.append('manager', document.getElementById('torso').dataset.clientId);
+        formData.append('name', document.getElementById('name').value);
+        formData.append('description', document.getElementById('description').value);
+        formData.append('budget', document.getElementById('budget').value);
+        formData.append('project_picture', document.getElementById('project_picture').files[0]);
+        formData.append('type', 'General');
+        formData.append('duration', 'Not Specified');
+        formData.append('state', 'PENDING');
+        
+        const milestones = [];
+        document.querySelectorAll('.milestone-form').forEach(milestone => {
+            const milestoneData = {
+                name: milestone.querySelector('.milestone-name').value,
+                description: milestone.querySelector('.milestone-description').value,
+                start_date: milestone.querySelector('.milestone-start-date').value,
+                deadline: milestone.querySelector('.milestone-deadline').value,
+                professions_related: [],
+                tasks: []
+            };
+
+            milestone.querySelectorAll('.profession-item').forEach(profession => {
+                milestoneData.professions_related.push({
+                    name: profession.querySelector('span.profession-name').textContent
+                });
+            });
+
+            milestone.querySelectorAll('.task-item').forEach(task => {
+                milestoneData.tasks.push({
+                    name: task.querySelector('span.task-name').textContent.split(': ')[1].trim(),
+                    description: task.querySelector('span.task-description').textContent.split(': ')[1].trim(),
+                    deadline: task.querySelector('span.task-deadline').textContent.split(': ')[1].trim()
+                    });
+                });
+                milestones.push(milestoneData);
+            });
+
+        formData.append('milestones', JSON.stringify(milestones));
+        
+        fetch('/accounts/post_project/', {
+        method: 'POST',
+            headers: {
+            'X-CSRFToken': '{{ csrf_token }}'  // Include CSRF token for security
+            },
+            body: formData 
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+            alert(data.message);
+            // Optionally, refresh comments here or append the new comment to the list
+            } else {
+            alert(data.message);
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+        });
+
+        document.getElementById('project_picture').addEventListener('change', function(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById('profile-img').src = e.target.result;
+                }
+                reader.readAsDataURL(file);
+            }
+        });
+
+    document.getElementById('upload').addEventListener('click', function() {
+        document.getElementById('project_picture').click();
+    });
+    </script>
+    <script>
+
+        function addProfession(button) {
+            const thisMilestone = button.parentElement;
+            const professionName = thisMilestone.querySelector("#profession-name").value;
+            if (professionName === "") return;
+        
+            const professionList = thisMilestone.querySelector("#profession-list");
+            const professionItem = document.createElement("div");
+            professionItem.classList.add("profession-item");
+            professionItem.innerHTML = `
+                <span class="profession-name">${professionName}</span>
+                <button class="remove-button2" onclick="removeProfession(this)">Remove</button>
+            `;
+            professionList.appendChild(professionItem);
+            thisMilestone.querySelector("#profession-name").value = "";
+        }
+
+        function removeProfession(button) {
+            button.parentElement.remove();
+        }
+
+        function addTask(button) {
+            const thisMilestone = button.parentElement;
+            const taskName = thisMilestone.querySelector("#task-name").value;
+            const taskDescription = thisMilestone.querySelector("#task-description").value;
+            const taskDeadline = thisMilestone.querySelector("#task-deadline").value;
+            if (taskName === "" || taskDescription === "" || taskDeadline === ""){
+                alert("Please fill in all task fields.");
+                return;
+            }
+        
+            const taskList = thisMilestone.querySelector("#task-list");
+            const taskItem = document.createElement("div");
+            taskItem.classList.add("task-item");
+            taskItem.innerHTML = `
+                <div>
+                    <span class="task-name"><b>Name:</b> ${taskName}</span>
+                    <span class="task-description"><b>Description:</b> ${taskDescription}</span>
+                    <span class="task-deadline"><b>Deadline:</b> ${taskDeadline}</span>
+                </div>
+                <button class="remove-button" onclick="removeTask(this)">Remove</button>
+            `;
+            taskList.appendChild(taskItem);
+            thisMilestone.querySelector("#task-name").value = "";
+            thisMilestone.querySelector("#task-description").value = "";
+            thisMilestone.querySelector("#task-deadline").value = "";
+        }
+        
+        function removeTask(button) {
+            button.parentElement.remove();
+        }
+
+        function removeMilestone(button) {
+            button.parentElement.parentElement.remove();
+        }
+
+        function addMilestone() {
+            const milestoneList = document.getElementById("milestone-list");;
+            const addMilestoneSection = document.createElement("div");
+            addMilestoneSection.classList.add("add-milestone-section");
+            addMilestoneSection.innerHTML = `
+                <h2 class="ptext">Add Milestone</h2>
+                <form id="milestone-form" class="milestone-form">
+                    <label class="ptext" for="milestone-name">Milestone Name</label>
+                    <input class="milestone-name" type="text" id="milestone-name" name="milestone-name" placeholder="Milestone name" required />
+            
+                    <label class="ptext" for="freelancer-name">Description</label>
+                    <input class="milestone-description" type="text" id="description" name="freelancer-name" placeholder="Description" required />
+
+                    <label class="ptext" for="milestone-start-date">Start Date</label>
+                    <input class="milestone-start-date" type="date" id="milestone-start-date" name="milestone-start-date" required />
+
+                    <label class="ptext" for="milestone-deadline">Deadline</label>
+                    <input class="milestone-deadline" type="date" id="milestone-deadline" name="milestone-deadline" required />
+
+                    <h3 class="ptext">Professions Needed</h3>
+                    <label class="ptext" for="profession-name">Profession Name</label>
+                    <div id="profession-list" class="profession-list"></div>
+                    <input type="text" id="profession-name" placeholder="Add profession" />
+                    <button type="button" class="btn add-profession" onclick="addProfession(this)">Add Profession</button>
+            
+                    <h3 class="ptext">Tasks</h3>
+                    <label class="ptext" for="task-name">Task Name</label>
+                    <div id="task-list" class="task-list"></div>
+                    <input type="text" id="task-name" placeholder="Add task" />
+
+                    <label class="ptext" for="task-description">Task Description</label>
+                    <input type="text" id="task-description" placeholder="Add task description"/>
+
+                    <label class="ptext" for="task-deadline">Task Deadline</label>
+                    <input type="date" id="task-deadline" placeholder="Add task deadline"/>
+
+                    <button type="button" class="btn add-task" onclick="addTask(this)">Add Task</button>
+            
+                    <button type="submit" class="btn remove-milestone" onclick="removeMilestone(this)">Remove Milestone</button>
+                </form>
+            `;
+            milestoneList.appendChild(addMilestoneSection);
+        }
+        
+    </script>
+</html>

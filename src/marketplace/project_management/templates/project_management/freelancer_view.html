@@ -1,0 +1,527 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="{% static 'globals.css' %}" />
+    <link rel="stylesheet" href="{% static 'styleguide.css' %}" />
+    <link rel="stylesheet" href="{% static 'style.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/heading.css' %}">
+    <link rel="stylesheet" href="{% static 'css/footer_1.css' %}">
+  </head>
+  <body>
+    <div class="frame">
+      <div id="view-project" class="view-project" data-project-id="{{ p.id }}" data-freelancer-id = "{{freelancer.id}}" data-freelancer-name = "{{freelancer.name}}" data-has-applied = "{{freelancer.has_applied}}" data-has-liked = "{{freelancer.has_liked}}" data-user-type = {{user_type}} data-has-saved="{{freelancer.has_saved}}">
+
+        <!-- <div class="heading">  
+          <a href="http://127.0.0.1:8000/">
+            <button class="logo-name">
+              <img class="logo" src="{% static 'Marketplace_1.png' %}" />
+              <div class="line-wrapper"><img class="line-2" src="{% static 'line-1.svg' %}" /></div>
+              <div class="online-marketplace">Online<br />Marketplace</div>
+            </button>
+          </a>
+          <div class="text-wrapper-26">Freelancer Project View</div>
+          <div class = "user-elements">
+            <img class="notification-icon" src="{% static 'notification-icon-1.svg' %}" />
+            <img class="chat-icon" src="{% static 'chat-icon-1.svg' %}" />
+            <img class="profile-picture" src="{% static 'profile-picture.png' %}" />
+          </div>
+        </div> -->
+        {% include 'perfil/sections/heading.html' %}
+        <div id="applied" class="blue-notification"><div id="applied-text" class="your-account-has">Application sent</div></div>
+
+        <div class="torso">
+          <div class = "introduction">
+            <div class="project_name">{{ p.name }}</div>
+            <div class = "second-half">
+              <div class = "left-half">  
+                <div class="owner">
+                  <a href="{{ p.profile_url }}"><img class="ellipse" src="{{ p.manager.image.url }}" alt="Profile Picture"/></a>
+                  <!-- <img class="ellipse" src="{% static 'ellipse-274.png' %}" /> -->
+                  <div class="text-wrapper-11">{{p.manager.name}}</div>
+                </div>
+                <button class="grade-label" onclick="toggleStar()">
+                  <img id="star-image" class="grade" src="{% static 'grade-1.svg' %}" />
+                  <div id="rating" class="text-wrapper-23">{{ rating }}</div>
+                </button>
+                <p class="date">Creation date: {{ p.date_created|date:"F jS, Y" }}</p>
+              </div>
+              <div class="action-div">
+                <button id="save-button" class="save-button" onclick="toggleSave()"><img id= "saved-icon" class="save-button-2" src="{% static 'bookmark-2.svg' %}"/></button>
+                <button id="like-button" class="like-button" onclick="toggleLike()">
+                  <div class="overlap-7">
+                    <img id="like-icon" class="favorite" src="{% static 'favorite.svg' %}" />
+                    <div id=like-count class="text-wrapper-25">{{ likes }}</div>
+                  </div>
+                </button>
+                {% if user_type == 'freelancer' %}
+                <button id="apply-button" class="apply-button"><div class="save-changes-2">Apply</div></button>
+                {% endif %}
+              </div>
+            </div>  
+          </div>
+          <div class = "bigger-column-spacing">
+          {% if p.project_picture %}
+            <img id="profile-img" class="picture" src="{{ p.project_picture.url }}" alt="Project Image"/>
+          {% else %}
+            <img id="profile-img" class="picture" src="{% static 'picture.png' %}" alt="Default Image"/>
+            {% endif %}
+            <p class="the-sonic-landscapes">
+              {{d}}
+            </p>
+          </div>
+          <div class="text-wrapper-22">Milestones</div>
+          <div class="requirements">
+            {% for milestone in m %}
+              <div class="requirement-3">
+                <div class = "row-flex-div">
+                  <div class="number">
+                    <div class="overlap-5"><div class="text-wrapper-16">{{forloop.counter}}</div></div>
+                  </div>  
+                  <div class = "req-title-div">
+                    <div class="title-3">{{ milestone.name }}</div>
+                    <div class="row-flex-div">
+                      <img class="img-2" src="{% static 'check.svg' %}" />
+                      <div class="text-wrapper-21">{{ milestone.state }}</div>
+                    </div>
+                  </div>
+                </div>
+                <p class="p">
+                  {{ milestone.description }}
+                </p>
+                <div class = "row-flex-div-wrap">
+                  <div class="professions-list">
+                    {% for profession in milestone.professions.all %}
+                    <div class="overlap-6">
+                      <div class="text-wrapper-20">{{profession.name}}</div>
+                    </div>
+                    <!-- <div class="overlap-group-4">
+                      <div class="text-wrapper-19">Ethnographer</div>
+                    </div> -->
+                    {% endfor %}
+                  </div>
+                </div>  
+              </div>
+            {% endfor %}
+          </div>
+          <div class="text-wrapper-17">Comments</div>
+          <div class="make-comment">
+            <div class = "row-space-out">
+              <div class="row-flex-div">
+                <img class="bold" src="{% static 'bold.svg' %}" />
+                <img class="italic" src="{% static 'italic-1.svg' %}" />
+                <img class="underline" src="{% static 'underline-1.svg' %}" />
+              </div>
+              <button id="publish-comment" class="component"><div class="save-changes">Publish</div></button>
+            </div>
+            <div class="overlap-3">
+              <textarea id="comment-box" class="rectangle" placeholder="Write your comment"></textarea>
+              <!-- <div id="placeholder" class="text-wrapper-12">Write your comment</div> -->
+            </div>
+          </div>
+          <ul class="comment-list">
+            {% for comment in c %}
+            <li class="overlap-2">
+              <div class = "whole-comment">
+                <div class="comment">
+                  <a href="{{ comment.profile_url }}">
+                    <img class="ellipse-2" src="{{ comment.user.image.url }}" alt="Profile Picture" />
+                  </a>
+                  <div class="overlap-group-2">
+                    <div class="user">{{ comment.author }}</div>
+                    <div class="element-moths-ago">{{ comment.created_at|date:"F jS, Y" }}</div>
+                  </div>
+                </div>
+                <div class = "comment-message">
+                  <div class="comment-text">{{comment.content}}</div>
+                  <img class="line" src="{% static 'line-10.svg' %}" />
+                </div>  
+              </div>  
+            </li>
+            {% endfor %}
+          </ul>  
+        </div>
+        
+        <!-- <div class="footer">
+          <img class="image" src="{% static 'image-4.png' %}" />
+          <div class="overlap">
+            <div class="group">
+              <div class="text-wrapper-7">Features</div>
+              <div class="text-wrapper-6">About</div>
+              <div class="text-wrapper-5">Support</div>
+              <div class="text-wrapper-10">Resources</div>
+              <div class="text-wrapper-9">Places</div>
+              <div class="text-wrapper-8">Jobs</div>
+            </div>
+          </div>
+          <div class="overlap-group">
+            <img class="image-2" src="{% static 'image-9-1.png' %}" />
+            <img class="image-3" src="{% static 'image-11-1.png' %}" />
+            <img class="img" src="{% static 'image-8-1.png' %}" />
+            <img class="image-4" src="{% static 'image-12-1.png' %}" />
+          </div>
+        </div> -->
+        {% include 'perfil/sections/footer2.html' %}
+      </div>
+    </div>
+    {% include 'project_management\application_form.html' %}
+  </body>
+  <script>
+    // Track the current "liked" state
+    let isLiked = false;
+  document.addEventListener('DOMContentLoaded', function() {
+    const liked = document.getElementById('view-project').dataset.hasLiked;
+    if (liked === 'True') {
+      isLiked = true;
+      document.getElementById('like-icon').src = "{% static 'favorite_filled.svg' %}";
+    }
+  });
+    // Function to toggle like state
+    function toggleLike() {
+      const projectId = document.getElementById('view-project').dataset.projectId;
+      const freelancerId = document.getElementById('view-project').dataset.freelancerId;
+      const user_type = document.getElementById('view-project').dataset.userType;
+      // Get the like count element
+      const likeCountElement = document.getElementById('like-count');
+      // Get the image element
+      const likeIcon = document.getElementById('like-icon');
+      // Parse the current like count as an integer
+      let likeCount = parseInt(likeCountElement.innerText, 10);
+  
+      if (isLiked) {
+        // If already liked, decrease the count and change the image to "not liked" state
+        likeCount--;
+        likeIcon.src = "{% static 'favorite.svg' %}"; // Change back to "not liked" image
+      } else {
+        // If not liked, increase the count and change the image to "liked" state
+        likeCount++;
+        likeIcon.src = "{% static 'favorite_filled.svg' %}"; // Change to "liked" image
+      }
+      
+      // Update the displayed like count
+      likeCountElement.innerText = likeCount;
+  
+      // Toggle the liked state
+      isLiked = !isLiked;
+
+      fetch('/project/post_like/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+          'X-CSRFToken': '{{ csrf_token }}'  // Include CSRF token for security
+        },
+        body: new URLSearchParams({
+          'like': isLiked,
+          'project_id': projectId,
+          'freelancer_id': freelancerId,
+          'user_type': user_type
+        })
+      })
+      .then(response => response.json())
+      .then(data => {
+        if (data.success) {
+          alert(data.message);
+        } else {
+          alert(data.message);
+        }
+      })
+      .catch(error => {
+        console.error('Error:', error);
+      });
+    }
+  </script>
+  <script>
+    //Track the current "saved" state
+    let isSaved = false;
+    document.addEventListener('DOMContentLoaded', function() {
+    const saved = document.getElementById('view-project').dataset.hasSaved;
+    if (saved === 'True') {
+      isSaved = true;
+      document.getElementById('saved-icon').src = "{% static 'bookmark-filled.svg' %}";
+    }
+  });
+    // Function to toggle like state
+    function toggleSave() {
+      // Get the image element
+      const projectId = document.getElementById('view-project').dataset.projectId;
+      const freelancerId = document.getElementById('view-project').dataset.freelancerId;
+      const user_type = document.getElementById('view-project').dataset.userType;
+
+      const savedIcon = document.getElementById('saved-icon');
+  
+      if (isSaved) {
+        savedIcon.src = "{% static 'bookmark-2.svg' %}"; // Change back to "not liked" image
+      } else {
+        savedIcon.src = "{% static 'bookmark-filled.svg' %}"; // Change to "liked" image
+      }
+      // Toggle the liked state
+      isSaved = !isSaved;
+
+      fetch('/project/post_saved/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+          'X-CSRFToken': '{{ csrf_token }}'  // Include CSRF token for security
+        },
+        body: new URLSearchParams({
+          'isSaved': isSaved,
+          'project_id': projectId,
+          'user_id': freelancerId,
+          'user_type': user_type
+        })
+      })
+      .then(response => response.json())
+      .then(data => {
+        if (data.success) {
+          alert(data.message);
+        } else {
+          alert(data.message);
+        }
+      })
+      .catch(error => {
+        console.error('Error:', error);
+      });
+
+    }
+  </script>
+  <script>
+    // Track the current "liked" state
+    let isStarred = false;
+  
+    // Function to toggle like state
+    function toggleStar() {
+      // Get the like count element
+      const ratingCountElement = document.getElementById('rating');
+      // Get the image element
+      const starIcon = document.getElementById('star-image');
+      // Parse the current like count as an integer
+      // let starCount = parseInt(likeCountElement.innerText, 10);
+  
+      if (isStarred) {
+        // If already liked, decrease the count and change the image to "not liked" state
+        // likeCount--;
+        starIcon.src = "{% static 'grade-1.svg' %}"; // Change back to "not liked" image
+      } else {
+        // If not liked, increase the count and change the image to "liked" state
+        // likeCount++;
+        starIcon.src = "{% static 'star-filled.svg' %}"; // Change to "liked" image
+      }
+  
+      // Update the displayed like count
+      // likeCountElement.innerText = likeCount;
+  
+      // Toggle the liked state
+      isStarred = !isStarred;
+
+    }
+  </script>
+  <script>
+    //Track the current "saved" state
+    let isApplying = false;
+  
+    // Function to toggle like state
+    function toggleApplying() {
+      // Get the image element
+      const savedIcon = document.getElementById('saved-icon');
+  
+      if (isSaved) {
+        savedIcon.src = "{% static 'bookmark-2.svg' %}"; // Change back to "not liked" image
+      } else {
+        savedIcon.src = "{% static 'bookmark-filled.svg' %}"; // Change to "liked" image
+      }
+      // Toggle the liked state
+      isSaved = !isSaved;
+    }
+  </script>
+  <script>
+  var applyButton2 = document.getElementById('basic-button');
+  var appliedDiv = document.getElementById('applied')
+  var appliedTextDiv = document.getElementById('applied-text')
+
+    // Get the modal
+    var modal = document.getElementById('application-modal');
+
+    // Get the button that opens the modal
+    var applyButton = document.getElementById('apply-button');
+
+    // Get the elements that close the modal
+    var closeModal = document.getElementById('close-modal');
+    var closeImage = document.querySelector('.close-image');
+
+    // When the user clicks the apply button, open the modal
+    applyButton.onclick = function() {
+      modal.style.display = 'block';
+    }
+
+    // When the user clicks on <span> (x), close the modal
+    closeModal.onclick = function() {
+      modal.style.display = 'none';
+    }
+
+    // When the user clicks the close image, close the modal
+    closeImage.onclick = function() {
+      modal.style.display = 'none';
+    }
+
+    // When the user clicks outside of the modal content, close it
+    window.onclick = function(event) {
+      if (event.target == modal) {
+        modal.style.display = 'none';
+      }
+    }
+
+    function getSelectedMilestone() {
+      const selectedMilestone = document.querySelector('input[name="milestone-selection"]:checked');
+      return selectedMilestone ? selectedMilestone.value : null;
+    }
+
+    let hasAppliedBoolean = false;
+
+    applyButton2.onclick = function() {
+      const milestoneId = getSelectedMilestone();
+      const freelancerId = document.getElementById('view-project').dataset.freelancerId;
+      const projectId = document.getElementById('view-project').dataset.projectId;
+      const hasApplied = document.getElementById('view-project').dataset.hasApplied;
+      if(hasApplied === 'True'){
+        hasAppliedBoolean = true;
+      }
+      if (milestoneId) {
+        if (hasAppliedBoolean) {
+          alert('You have already applied to this project');
+          return;
+        }else{
+          document.getElementById('view-project').dataset.hasApplied = 'True';
+        fetch('/project/post_application/', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'X-CSRFToken': '{{ csrf_token }}'  // Include CSRF token for security
+          },
+          body: new URLSearchParams({
+            'freelancer_id': freelancerId,
+            'project_id': projectId,
+            'milestone_id': milestoneId
+          })
+        })
+        .then(response => response.json())
+        .then(data => {
+          if (data.success) {
+            hasAppliedBoolean = true;
+            alert(data.message);
+            modal.style.display = 'none';  
+            appliedDiv.style.display = 'flex';
+            appliedTextDiv.style.display = 'block';
+            appliedDiv.classList.remove('fade-out'); // Ensure the element is fully opaque
+            appliedTextDiv.classList.remove('fade-out'); // Ensure the element is fully opaque
+
+            wait = setTimeout(function() {
+            appliedDiv.classList.add('fade-out'); // Start the fade-out transition
+            appliedTextDiv.classList.add('fade-out'); // Start the fade-out transition
+
+            setTimeout(function() {
+              appliedDiv.style.display = 'none'; // Hide the element after the transition
+              appliedTextDiv.style.display = 'none'; // Hide the element after the transition 
+              }, 1000); // Match this duration with the CSS transition duration
+            }, 3000); // Wait for 3 seconds before starting the fade-out transition 
+          } else {
+            alert(data.message);
+          }
+        })
+        .catch(error => {
+          console.error('Error:', error);
+        });
+      }
+    }
+      else {
+        alert('Please select a milestone to apply');
+      }
+    }
+  </script>
+  <script>
+    
+    const commentBox = document.getElementById('comment-box');
+    const placeholder = document.getElementById('placeholder');
+
+    commentBox.addEventListener('focus', function() {
+    placeholder.style.display = 'none'; // Hide the placeholder on focus
+    });
+
+    commentBox.addEventListener('blur', function() {
+    if (commentBox.value.trim() === '') {
+    placeholder.style.display = 'block'; // Show placeholder again if no text
+    }
+    });
+
+    // Automatically grow the text area as user types
+    // commentBox.addEventListener('input', function() {
+    // commentBox.style.height = 'auto';
+    // commentBox.style.height = (commentBox.scrollHeight) + 'px';
+    // });
+  </script>  
+  <script>
+    document.getElementById('publish-comment').addEventListener('click', function() {
+      const projectId = document.getElementById('view-project').dataset.projectId;
+      const freelancerId = document.getElementById('view-project').dataset.freelancerId;
+      const freelancerName = document.getElementById('view-project').dataset.freelancerName;
+      const user_type = document.getElementById('view-project').dataset.userType;
+      const commentBox = document.getElementById('comment-box');
+      const content = commentBox.value;
+
+      // Assuming you have a way to get author and project_id; update accordingly
+      // const author = "Anonymous"; // Update with the actual author if needed
+
+      fetch('/project/post_comment/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+          'X-CSRFToken': '{{ csrf_token }}'  // Include CSRF token for security
+        },
+        body: new URLSearchParams({
+          'author': freelancerName,
+          'content': content,
+          'project_id': projectId,
+          'freelancer_id': freelancerId,
+          'user_type': user_type
+        })
+      })
+      .then(response => response.json())
+      .then(data => {
+        if (data.success) {
+          alert(data.message);
+          commentBox.value = '';  // Clear the comment box
+          // Optionally, refresh comments here or append the new comment to the list
+        } else {
+          alert(data.message);
+        }
+      })
+      .catch(error => {
+        console.error('Error:', error);
+      });
+    });
+  </script>
+  <script>
+     document.addEventListener('DOMContentLoaded', function() {
+    const colors = ['#d95f5f', '#448de6', '#d44c4c', '#3d8440', '#c162c8'];
+    const overlapElements = document.querySelectorAll('.overlap-6');
+    
+    // Initialize a variable to store the last assigned color
+    let lastColor = '';
+
+    overlapElements.forEach(el => {
+      let randomColor;
+
+      // Ensure that the new color is not the same as the last color
+      do {
+        randomColor = colors[Math.floor(Math.random() * colors.length)];
+      } while (randomColor === lastColor);
+
+      // Assign the random color to the element
+      el.style.backgroundColor = randomColor;
+
+      // Update the lastColor for the next iteration
+      lastColor = randomColor;
+    });
+  });
+  </script>
+</html>

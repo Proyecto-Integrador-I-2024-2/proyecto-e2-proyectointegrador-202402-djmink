@@ -1,0 +1,320 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en" class="whatever" 
+    data-socials-count="{{ p.client_social_networks.count|default:0 }}">
+<head>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Profile - Projects</title>
+    <link rel="icon" type="image/png" href="{% static 'img/Logo.png' %}">
+    <link rel="stylesheet" href="{% static 'css/client_edit_profile_1.css' %}">
+    <link rel="stylesheet" href="{% static 'css/info-modal.css' %}">
+    <link rel="stylesheet" href="{% static 'css/heading.css' %}">
+    <link rel="stylesheet" href="{% static 'css/footer_1.css' %}">
+</head>
+
+<body>
+
+    {% include 'perfil/sections/info-modal.html' %}
+
+    <div class="editsection"> 
+
+        {% include 'perfil/sections/heading.html' %}
+
+        <div class="ptext ep">
+            Edit profile
+        </div>     
+
+        <a href="{% url 'editAccountClient' p.id %}" class="ptext my-account">My account</a>
+        <a href="#editProfile" class="ptext profile">Profile</a>
+        <a href="{% url 'editProjectsClient' p.id %}" class="ptext portfolio">Projects</a>
+        <a href="{% url 'deleteDisableClient' p.id %}"  class="ptext delete-account">Delete account</a>
+        <a href="{% url 'home' %}" class="ptext logout">Log out</a>   
+    
+        <div class="container">
+    
+            <form method = "POST" enctype="multipart/form-data">
+    
+                {% csrf_token %}
+
+                <div class="ptext profiletitle">
+                    Profile
+                </div>
+    
+                <div class="container-pic">
+                    <img id="profile_picture3" class="profile_picture3" src="{{ p.image.url }}" alt="Profile Picture"/>
+                    <div class="ptext name">{{ p.name }}</div>
+                    <button type="button" id='change-picture-button' class='change-picture-button' onclick="changePicture()">
+                        <div class='ptext change'>Change profile picture</div>
+                    </button>
+                    <div id="input-container" style="display: none;"></div>
+                </div>
+
+                <div class="container-left-section">
+
+                    <div class="ptext about-you">
+                        About you
+                    </div>
+        
+                    <div class="input-container-major">
+                        <div class="ptext about">Business Vertical</div>
+                        <textarea name="type" class="input-box major">{{ p.company_type }}</textarea>
+                    </div>
+            
+                    <div class="input-container-bio">
+                        <div class="ptext about">Description</div>
+                        <textarea name="description" class="input-box bio">{{ p.description }}</textarea>
+                    </div>
+            
+                    <div class="input-container-mail">
+                        <div class="ptext about">Contact email</div>
+                        <textarea name="contact_email" class="input-box mail">{{ p.contact_email }}</textarea>
+                    </div>
+
+                </div>
+        
+               
+        
+                <div class="ptext links">
+                    Social Media
+                </div>
+        
+                <div class="social-networks" id="social-networks">
+                    {% for network in p.client_social_networks.all %}
+                        <div class="container-media" id="social-{{ network.id }}">
+                            <img class="media-pic" src="{{ network.image.url }}"/>
+                            <textarea class="mediainput">{{ network.url }}</textarea>
+                            <input type="hidden" name="social_type_{{ network.id }}" value="{{ network.type }}"/>
+                            <input type="hidden" name="social_id" value="{{ network.id }}"/>
+                            <button type="button" class="delete-btn social" onclick="removeTemporarySocial('{{ network.id }}', '{{ network.type }}')">X</button>
+                        </div>
+                    {% endfor %}
+                </div>   
+        
+                <div class="ptext add-new-social">
+                    Add new
+                </div>
+        
+                <div class="social-selector-container">
+                    <select name="social-media" id="social-media" onchange="updateSocialMedia()">
+                        <option value="">Select Social Media</option>
+                        {% for media in available_media %}
+                            <option value="{{ media.0 }}">{{ media.1 }}</option>
+                        {% empty %}
+                            <option>No social media available</option>
+                        {% endfor %}
+                    </select>
+                </div>
+        
+                <textarea id="user-input" class="newmediainput" style="display: none;"></textarea>
+                <img id="selected-icon" src="" alt="Social Media Icon" style="display: none;">
+                <button type="button" id= "add-social-btn" class="add social-btn" style="display: none" onclick="addSocialNetwork()">+</button>
+    
+                <input type="hidden" name="removed_social_ids" id="removed-social-ids" value="">
+        
+                <button id= "save" class="med-btn save">Save Changes</button>
+    
+            </form>
+    
+        </div>
+
+    </div>
+   
+
+    {% include 'perfil/sections/footer2.html' %}
+
+    <div id="profilePictureModal" class="modal">
+        <div class="modal-content">
+            <div class="up-modal-content">
+                <div class='change-pic-title'>Change Profile Picture</div>
+                <span class="close">&times;</span>
+            </div>
+
+            <img id="profile_picture4" class="profile_picture4" src="{{ p.image.url }}" alt="Profile Picture"/>
+            <div class="change-picture-buttons">
+                <div class="up-buttons">
+                    <button type="button" id="delete-button" class="med-btn delete" onclick="deletePicture()">Delete Picture</button>
+                    <div class="file-select" id="src-file1" >
+                        <input name="image" type="file" id="profile-picture-input" accept="image/*" onchange="previewImage(event)">
+                    </div>
+                </div>
+                <button type="button" id="save-button" class="med-btn savepic" onclick="savePicture()">Accept</button>
+            </div>
+            
+        </div>
+    </div>
+
+    <script>
+
+        const htmlElement = document.querySelector('html');
+        let socialCount = parseInt(htmlElement.dataset.socialsCount, 10) || 0;
+        let socialIdCounter = socialCount + 1;
+
+        function showElement(input, element){
+            const userInput = document.getElementById(input);
+            const elementToShow = document.getElementById(element);
+            if (userInput.value){
+                elementToShow.style.display = 'block';
+            } else {
+                elementToShow.style.display = 'none';
+            }
+        }
+
+        const removedSocialItems = [];
+
+        function markForRemoval(type, itemId) {
+            const element = document.getElementById(type + '-' + itemId);
+            if (element) {
+                element.style.display = 'none';
+                removedSocialItems.push(itemId);
+                document.getElementById('removed-social-ids').value = removedSocialItems.join(',');
+            } else {
+                console.error('Element not found:', itemId);
+            }
+        }
+
+        function updateSocialMedia() {
+            const selectElement = document.getElementById('social-media');
+            const selectedValue = selectElement.value;
+            const userInput = document.getElementById('user-input');
+            const iconElement = document.getElementById('selected-icon');
+            const button = document.getElementById('add-social-btn');
+
+            const urlMap = {
+                'facebook': 'facebook.com/',
+                'twitter': 'twitter.com/',
+                'instagram': 'instagram.com/',
+                'linkedin': 'linkedin.com/in/',
+                'github': 'github.com/'
+            };
+
+            const iconMap = {
+                'facebook': "{% static 'img/fb.png' %}", 
+                'twitter': "{% static 'img/twitter_icon.jpg' %}",    
+                'instagram': "{% static 'img/ig.png' %}",
+                'linkedin': "{% static 'img/lin.png' %}",  
+                'github': "{% static 'img/git.png' %}" 
+            };
+
+            if (urlMap[selectedValue]) {
+                userInput.value = `${urlMap[selectedValue]}your_user`;
+                userInput.style.display = 'block';
+                iconElement.src = iconMap[selectedValue];
+                iconElement.style.display = 'block';
+                button.style.display = 'block';
+            } else {
+                userInput.style.display = 'none'; 
+                iconElement.style.display = 'none';
+                button.style.display = 'none';
+            }
+
+        }
+
+        function addSocialNetwork() {
+            const selectElement = document.getElementById('social-media');
+            const selectedValue = selectElement.value;
+            const userInput = document.getElementById('user-input');
+            const socialNetworksContainer = document.getElementById('social-networks');
+            const iconElement = document.getElementById('selected-icon');
+            const button = document.getElementById('add-social-btn');
+
+            const iconMap = {
+                'facebook': "{% static 'img/fb.png' %}", 
+                'twitter': "{% static 'img/twitter_icon.jpg' %}",    
+                'instagram': "{% static 'img/ig.png' %}",
+                'linkedin': "{% static 'img/lin.png' %}",  
+                'github': "{% static 'img/git.png' %}" 
+            };
+
+            if (selectedValue && userInput.value) {
+
+                const newSocialId = socialIdCounter++;
+                const newSocialDiv = document.createElement('div');
+                newSocialDiv.classList.add('container-media');
+                newSocialDiv.id = 'social-' + newSocialId;
+
+                newSocialDiv.innerHTML = `
+                    <img class="media-pic" src="${iconMap[selectedValue]}" alt="${selectedValue} icon"/>
+                    <textarea class="mediainput" name="social_url_${newSocialId}">www.${userInput.value}</textarea>
+                    <input type="hidden" name="social_type_${newSocialId}" value="${selectedValue}"/>
+                    <input type="hidden" name="social_id" value="${newSocialId}"/>
+                    <button type="button" class="delete-btn social" onclick="removeTemporarySocial('${newSocialId}', '${selectedValue}')">X</button>
+                `;
+
+                socialNetworksContainer.appendChild(newSocialDiv);
+
+                selectElement.querySelector(`option[value="${selectedValue}"]`).remove();
+
+                selectElement.value = '';
+                userInput.value = '';
+                userInput.style.display = 'none';
+                iconElement.style.display = 'none';
+                button.style.display = 'none';
+            }
+        }
+
+        function removeTemporarySocial(element, selectedValue) {
+            markForRemoval('social', element);
+            const selectElement = document.getElementById('social-media');
+            const option = document.createElement('option');
+            option.value = selectedValue;
+            option.textContent = selectedValue.charAt(0).toUpperCase() + selectedValue.slice(1);
+            selectElement.appendChild(option);
+        }
+
+        var modal = document.getElementById("profilePictureModal");
+
+        function changePicture(){
+            modal.style.display = "block";
+            const span = document.getElementsByClassName("close")[0];
+
+            span.onclick = function() {
+                modal.style.display = "none";
+            }
+
+            window.onclick = function(event) {
+                if (event.target == modal) {
+                    modal.style.display = "none";
+                }
+            }
+        }
+
+        var reader = new FileReader();
+        var imageResult = "";
+
+        function previewImage(event) {
+            reader.onload = function() {
+                imageResult = reader.result;
+                var output = document.getElementById('profile_picture4');
+                output.src = imageResult; 
+            };
+            reader.readAsDataURL(event.target.files[0]);
+        }
+
+        function savePicture() {
+            const currentPic = document.getElementById('profile_picture3');
+            currentPic.src = imageResult;
+            
+            const inputContainer = document.getElementById('input-container');
+            const fileInput = document.getElementById('profile-picture-input');
+            inputContainer.innerHTML = '';
+            inputContainer.appendChild(fileInput);
+
+            modal.style.display = "none";
+        }
+
+        function deletePicture(){
+            const output = document.getElementById('profile_picture4');
+            output.src = "{% static 'img/user.jpg' %}";
+            imageResult = "{% static 'img/user.jpg' %}";
+            const input = document.getElementById("profile-picture-input");
+            input.value = '';
+        }
+
+    </script>
+
+</body>

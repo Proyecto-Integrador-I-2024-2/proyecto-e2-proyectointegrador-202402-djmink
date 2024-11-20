@@ -1,0 +1,117 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+    <title>Edit Profile - Delete & Disable</title>
+    <link rel="icon" type="image/png" href="{% static 'img/Logo.png' %}">
+    <link rel="stylesheet" href="{% static 'css/edit_profile_delete_1.css' %}">
+    <link rel="stylesheet" href="{% static 'css/heading.css' %}">
+    <link rel="stylesheet" href="{% static 'css/footer_1.css' %}">
+</head>
+<body>
+
+    {% include 'perfil/sections/heading.html' %} 
+
+    <div class="editsection">
+
+        <div class="ptext ep">
+            Edit profile
+        </div>     
+
+        <a href="{% url 'editAccount' p.id %}" class="ptext my-account">My account</a>
+        <a href="{% url 'editProfile' p.id %}" class="ptext profile">Profile</a>
+        <a href="{% url 'editPortfolio' p.id %}" class="ptext portfolio">Portfolio</a>
+        <a href="#deteleaccount" class="ptext delete-account">Delete account</a>
+        <a href="{% url 'home' %}" class="ptext logout">Log out</a> 
+
+        <div class="body">
+
+            <div class="ptext delete-title">
+                Delete Account
+            </div>
+    
+            <div class="ptext danger-zone">
+                Danger zone
+            </div>
+
+            <button id= "delete-account" class='med-btn delete' onclick="displayModal('deleteAccountModal', 'close1')">Delete Account</button>
+            <button id= "disable-account" class='med-btn disable' onclick="displayModal('disableAccountModal', 'close2')">Disable Account</button>
+
+        </div>  
+                
+    </div>
+
+    {% include 'perfil/sections/footer2.html' %} 
+
+    <div id="deleteAccountModal" class="modal">
+        <div class="modal-content">
+            <span id="close1" class="close">&times;</span>
+            <div class='ptext are-you-sure'>Are you sure?</div>
+            <form method="POST">
+                {% csrf_token %}
+                <input type="hidden" name="action" value="delete">
+                <button type="submit" id= "delete-btn-yes" class='med-btn delete-disable' onclick="confirmDeleteAccount()">Delete</button>
+            </form>
+            <button id= "cancel-delete" class='med-btn cancel' onclick="cancel()">Cancel</button>
+        </div>
+    </div>
+
+    <div id="disableAccountModal" class="modal">
+        <div class="modal-content">
+            <span id="close2" class="close">&times;</span>
+            <div class='ptext are-you-sure'>Are you sure?</div>
+            <form method="post">
+                {% csrf_token %}
+                <input type="hidden" name="action" value="disable">
+                <button type="submit" id= "disable-btn-yes" class='med-btn delete-disable' onclick="confirmDisableAccount()">Disable</button>
+            </form>
+
+            <button id= "cancel-disable" class='med-btn cancel' onclick="cancel()">Cancel</button>
+        </div>
+    </div>
+
+    <script>
+
+        var thismodal = '';
+
+        function displayModal(modal, close){
+
+            thismodal = document.getElementById(modal);
+            thismodal.style.display = "block";
+            const span = document.getElementById(close);
+            console.log(thismodal);
+
+            span.onclick = function() {
+                thismodal.style.display = "none";
+            }
+
+            window.onclick = function(event) {
+                if (event.target == thismodal) {
+                    thismodal.style.display = "none";
+                }
+            }
+        }
+
+        function cancel(){
+            thismodal.style.display = "none";
+        }
+
+        function confirmDeleteAccount(){
+            const modal = document.getElementById('deleteAccountModal');
+            modal.style.display = "none";
+        }
+
+        function confirmDisableAccount(){
+            const modal = document.getElementById('disableAccountModal');
+            modal.style.display = "none";
+        }
+
+    </script>
+
+</body>
