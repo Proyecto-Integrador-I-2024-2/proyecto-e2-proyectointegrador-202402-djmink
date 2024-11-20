@@ -414,6 +414,7 @@ button.add.social-btn {
     border-radius: 8px;
 }
 
+
 .modal {
     display: none; 
     position: fixed;
@@ -422,43 +423,56 @@ button.add.social-btn {
     top: 0;
     width: 100%; 
     height: 100%; 
-    overflow: auto; 
-    background-color: rgba(0, 0, 0, 0.4); /* Fondo negro con transparencia */
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.4); 
+    justify-content: center;
+    align-items: center;
 }
 
 .modal-content {
-    width: 525px;
-    height: 564px;
+    background-color: #F2F2F2;
     top: 50%;
     left: 50%;
-    background-color: #fefefe;
-    margin: 15% auto; 
+    transform: translate(-50%, -50%);
+    width: 500px;
+    height: 500px;
     padding: 20px;
     border: 1px solid #888;
-    width: 80%; 
-    max-width: 600px; 
-    text-align: center;
     border-radius: 10px;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
 }
 
-.ptext.change-pic-title{
-    left: 490px;
-    top: 230px;
-    width: 268px;
-    height: 36px;
+.up-modal-content{
+    width: 80%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.change-pic-title{
+    display: flex;
+    text-align: left;
+    align-items: center;
+    width: 70%;
+    height: 54px;
     color:#000000;
     font-size:24px;
     font-weight: 500;
-    position: absolute;
 }
 
 .close {
+    text-align: end;
+    width: 10%;
+    height: 54px;
     color: #aaa;
-    float: right;
     font-size: 35px;
-    font-weight: bold;
-    margin-right: 10px; 
+    font-weight: bold; 
 }
+
 
 .close:hover, .close:focus {
     color: black;
@@ -467,9 +481,6 @@ button.add.social-btn {
 }
 
 .profile_picture4 {
-    position: relative;
-    left: 108px;
-    top: 86px;
     width: 270px; 
     height: 270px; 
     border-radius: 50%;
@@ -477,20 +488,36 @@ button.add.social-btn {
     margin-bottom: 15px; 
 }
 
-.file-select {
-    position: relative;
-    display: inline-block;
+.change-picture-buttons{
+    display: flex;
+    width: 80%;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.up-buttons{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    margin-bottom: 3%;
 }
 
 .med-btn.delete{
-    top: 608px;
-    left: 630px;
     height: 50px;
-    width: 190px;
+    width: 47%;
     background-color: #F2F2F2;
     color: #01000C;
     border: 1px solid #BCBCBC;
     border-radius: 8px; 
+    position: static;
+}
+
+.file-select {
+    width: 47%;
+    position: relative;
+    display: inline-block;
 }
 
 .file-select::before {
@@ -502,9 +529,7 @@ button.add.social-btn {
     border-radius: 8px;
     content: 'Select';
     position: absolute;
-    left: -230px;
-    top: 130px;
-    width: 190px;
+    width: 100%;
     height: 50px;
     font-size: 14px; 
     font-family: "Poppins", sans-serif;
@@ -514,12 +539,9 @@ button.add.social-btn {
 
 .file-select input[type="file"] {
     opacity: 0;
-    position: relative;
     height: 50px;
-    width: 190px;
+    width: 100%;
     display: inline-block;
-    top: 145px;
-    left: -222px;
 }
 
 #src-file1::before {
@@ -527,11 +549,10 @@ button.add.social-btn {
 }
 
 .med-btn.savepic{
-    top: 678px;
-    left: 420px;
     height: 50px;
-    width: 400px;
+    width: 100%;
     background-color: #0040FF;
     color: rgb(255, 255, 255);
     border: none;
+    position: static;
 }

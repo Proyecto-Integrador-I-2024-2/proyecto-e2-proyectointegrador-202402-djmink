@@ -593,8 +593,8 @@ def clientProfile(request, id, idclient):
     return render(request, 'perfil/client_profile_view.html', {
         'p': p,
         'this_id': id,
-        'projects_url': reverse('projectsList', args=[p.id]),
-        'home_url': reverse('mainFreelancer', args=[p.id]),
+        'projects_url': reverse('projectsList', args=[client.id]),
+        'home_url': reverse('mainFreelancer', args=[client.id]),
         'profile_image': profile_image,
         'client': client,
         'profile_url': profile_url,
@@ -671,7 +671,7 @@ def freelancerProfile(request, id, idclient):
         'profile_image': profile_image,
         'client': client,
         'profile_url': profile_url,
-        'home_url': reverse('mainCliente', args=[p.id]),
+        'home_url': reverse('mainCliente', args=[client.id]),
         'at_client_page': True,
         'can_rate': True,
         'show_edit_link': False})
@@ -807,6 +807,11 @@ def manageProject(request, id, id_project):
                     task.freelancer = freelancer
                     task.save()
 
+                project = milestone.project
+                if project.state == 'PENDING':
+                    project.state = 'IN_PROGRESS'
+                    project.save()
+
                 application.save()
                 milestone.save()
                 #Notificar al freelancer
@@ -859,6 +864,12 @@ def manageProject(request, id, id_project):
         completed_tasks += sum(1 for task in tasks if task.state == 'CP')
 
     project_progress = int((completed_tasks / total_tasks * 100)) if total_tasks > 0 else 0
+
+    if project_progress == 100 and pr.state != 'COMPLETED':
+        pr.state = 'COMPLETED'
+    elif project_progress > 0 and project_progress < 100:
+        pr.state = 'IN_PROGRESS' 
+    pr.save()   
 
     project_data = {
         'id': pr.id,

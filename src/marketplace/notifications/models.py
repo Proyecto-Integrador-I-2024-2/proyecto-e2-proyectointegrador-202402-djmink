@@ -8,8 +8,7 @@ from django.contrib.auth.models import Group
 from django.db.models.query import QuerySet
 from django.db.models.signals import post_save
 
-#models
-from swapper import load_model
+
 from my_aplication.models import User
 
 #Esta clase se encarga de acceder a las notificaciones en la base de datos filtrando por leidas y no leidas. 
@@ -95,7 +94,6 @@ def notify_signals(verb, **kwargs):
     public = bool(kwargs.pop('public', True))
     timestamp = kwargs.pop('timestamp', timezone.now())
 
-    notify = load_model('notifications', 'Notification')
     levels = kwargs.pop('level', Notification.Levels.info)
 
     if isinstance(destiny, Group):

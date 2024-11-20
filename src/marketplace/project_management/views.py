@@ -54,6 +54,7 @@ def freelancerProjectView(request, freelancer_id, id):
             'm': m,
             'c': c,
             'd': d,
+            'this_id': freelancer_id,
             'profile_url': reverse('perfilFreelancer', args=[f.id]),
             'profile_image': f.image.url,
             'rating': rating,
@@ -61,6 +62,7 @@ def freelancerProjectView(request, freelancer_id, id):
             'freelancer': f,
             'home_url': reverse('mainFreelancer', args=[f.id]),
             'user_type': user_type,
+            'projects_url': reverse('projectsList', args=[f.id]),
         }
 
     elif isinstance(viewer, CompanyManager):
@@ -74,6 +76,7 @@ def freelancerProjectView(request, freelancer_id, id):
             'm': m,
             'c': c,
             'd': d,
+            'this_id': freelancer_id,
             'profile_url': reverse('perfilesCliente', args=[p.manager.id]),
             'profile_image': f.image.url,
             'rating': rating,

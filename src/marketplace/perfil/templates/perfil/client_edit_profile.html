@@ -21,9 +21,9 @@
 
     {% include 'perfil/sections/info-modal.html' %}
 
-    {% include 'perfil/sections/heading.html' %}
-
     <div class="editsection"> 
+
+        {% include 'perfil/sections/heading.html' %}
 
         <div class="ptext ep">
             Edit profile
@@ -129,14 +129,22 @@
 
     <div id="profilePictureModal" class="modal">
         <div class="modal-content">
-            <span class="close">&times;</span>
-            <div id='change-pic-title' class='ptext change-pic-title'>Change Profile Picture</div>
-            <img id="profile_picture4" class="profile_picture4" src="{{ p.image.url }}" alt="Profile Picture"/>
-            <div class="file-select" id="src-file1" >
-                <input name="image" type="file" id="profile-picture-input" accept="image/*" onchange="previewImage(event)">
+            <div class="up-modal-content">
+                <div class='change-pic-title'>Change Profile Picture</div>
+                <span class="close">&times;</span>
             </div>
-            <button type="button" id="delete-button" class="med-btn delete" onclick="deletePicture()">Delete Picture</button>
-            <button type="button" id="save-button" class="med-btn savepic" onclick="savePicture()">Accept</button>
+
+            <img id="profile_picture4" class="profile_picture4" src="{{ p.image.url }}" alt="Profile Picture"/>
+            <div class="change-picture-buttons">
+                <div class="up-buttons">
+                    <button type="button" id="delete-button" class="med-btn delete" onclick="deletePicture()">Delete Picture</button>
+                    <div class="file-select" id="src-file1" >
+                        <input name="image" type="file" id="profile-picture-input" accept="image/*" onchange="previewImage(event)">
+                    </div>
+                </div>
+                <button type="button" id="save-button" class="med-btn savepic" onclick="savePicture()">Accept</button>
+            </div>
+            
         </div>
     </div>
 
