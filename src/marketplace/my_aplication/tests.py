@@ -524,3 +524,33 @@ class FreelancerRegisterTest(LiveServerTestCase):
             self.assertTrue(True)
         
         self.driver.quit()
+
+class ModifyFreelancerInformationTest(LiveServerTestCase):
+    def setUp(self):
+        self.driver = webdriver.Chrome()
+        self.timeout = 20
+        self.driver.get('http://127.0.0.1:8000/accounts/register/freelancer1')
+    
+    def find_element(self, locator):
+        return WebDriverWait(self.driver, self.timeout).until(EC.presence_of_element_located(locator))
+
+    def click(self, locator):
+        self.find_element(locator).click()
+
+    def enter_text(self, locator, text):
+        self.find_element(locator).send_keys(text)
+
+    '''
+    my account
+    profile
+    portfolio
+    '''
+    def my_account(self):
+        self.setUp()
+        self.assertIn('Edit Profile - Account', self.driver.title)
+        
+
+        self.driver.quit()
+        '''
+        name, username, email, phone
+        '''
