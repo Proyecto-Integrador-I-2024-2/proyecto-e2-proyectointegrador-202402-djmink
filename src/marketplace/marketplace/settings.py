@@ -24,11 +24,8 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-bcfo@0sf^(=w9dd^jv*$8_7)u1l^d(4i7j*di3na&*m1@-5hs$'
-
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_HOST_USER = 'danieljpc19@gmail.com'
 EMAIL_HOST_PASSWORD = 'kqfvkjmkuyrnwubm'
