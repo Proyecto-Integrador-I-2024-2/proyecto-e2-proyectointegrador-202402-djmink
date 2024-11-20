@@ -39,7 +39,7 @@
                 <div class="owner">
                   <a href="{{ p.profile_url }}"><img class="ellipse" src="{{ p.manager.image.url }}" alt="Profile Picture"/></a>
                   <!-- <img class="ellipse" src="{% static 'ellipse-274.png' %}" /> -->
-                  <div class="text-wrapper-11">{{p.manager.business_vertical}}</div>
+                  <div class="text-wrapper-11">{{p.manager.name}}</div>
                 </div>
                 <button class="grade-label" onclick="toggleStar()">
                   <img id="star-image" class="grade" src="{% static 'grade-1.svg' %}" />

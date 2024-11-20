@@ -45,7 +45,9 @@
                     <div class="ptext project-name">{{ project.name }}</div>
                     <div class="ptext project-description">{{ project.description }}</div>
                     <div class="ptext project-state">State: {{ project.state }}</div>
+                    <a href="{% url 'freelancer_project' p.id project.id %}">
                     <button class="btn preview">Preview</button>
+                    </a>
                     <a href="{% url 'edit_project' p.id project.id %}">
                     <button class="btn edit">Edit</button>
                     </a>
