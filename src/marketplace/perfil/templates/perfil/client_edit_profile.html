@@ -11,39 +11,39 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Edit Profile - Projects</title>
     <link rel="icon" type="image/png" href="{% static 'img/Logo.png' %}">
-    <link rel="stylesheet" href="{% static 'css/client_edit_profile2.css' %}">
+    <link rel="stylesheet" href="{% static 'css/client_edit_profile_1.css' %}">
     <link rel="stylesheet" href="{% static 'css/info-modal.css' %}">
     <link rel="stylesheet" href="{% static 'css/heading.css' %}">
-    <link rel="stylesheet" href="{% static 'css/footer.css' %}">
+    <link rel="stylesheet" href="{% static 'css/footer_1.css' %}">
 </head>
 
 <body>
 
     {% include 'perfil/sections/info-modal.html' %}
 
-    <div class="editsection">
+    {% include 'perfil/sections/heading.html' %}
 
-        {% include 'perfil/sections/heading.html' %}
+    <div class="editsection"> 
 
         <div class="ptext ep">
             Edit profile
         </div>     
-    
+
         <a href="{% url 'editAccountClient' p.id %}" class="ptext my-account">My account</a>
         <a href="#editProfile" class="ptext profile">Profile</a>
         <a href="{% url 'editProjectsClient' p.id %}" class="ptext portfolio">Projects</a>
-        <a href="{% url 'deleteDisableClient' p.id %}" class="ptext delete-account">Delete account</a> 
-        <a href="{% url 'home' %}" class="ptext logout">Log out</a>       
+        <a href="{% url 'deleteDisableClient' p.id %}"  class="ptext delete-account">Delete account</a>
+        <a href="{% url 'home' %}" class="ptext logout">Log out</a>   
     
         <div class="container">
-    
-            <div class="ptext profiletitle">
-                Profile
-            </div>
     
             <form method = "POST" enctype="multipart/form-data">
     
                 {% csrf_token %}
+
+                <div class="ptext profiletitle">
+                    Profile
+                </div>
     
                 <div class="container-pic">
                     <img id="profile_picture3" class="profile_picture3" src="{{ p.image.url }}" alt="Profile Picture"/>
@@ -53,25 +53,31 @@
                     </button>
                     <div id="input-container" style="display: none;"></div>
                 </div>
+
+                <div class="container-left-section">
+
+                    <div class="ptext about-you">
+                        About you
+                    </div>
         
-                <div class="ptext about-you">
-                    About you
+                    <div class="input-container-major">
+                        <div class="ptext about">Business Vertical</div>
+                        <textarea name="type" class="input-box major">{{ p.company_type }}</textarea>
+                    </div>
+            
+                    <div class="input-container-bio">
+                        <div class="ptext about">Description</div>
+                        <textarea name="description" class="input-box bio">{{ p.description }}</textarea>
+                    </div>
+            
+                    <div class="input-container-mail">
+                        <div class="ptext about">Contact email</div>
+                        <textarea name="contact_email" class="input-box mail">{{ p.contact_email }}</textarea>
+                    </div>
+
                 </div>
         
-                <div class="input-container-major">
-                    <div class="ptext about">Business Vertical</div>
-                    <textarea name="type" class="input-box major">{{ p.company_type }}</textarea>
-                </div>
-        
-                <div class="input-container-bio">
-                    <div class="ptext about">Description</div>
-                    <textarea name="description" class="input-box bio">{{ p.description }}</textarea>
-                </div>
-        
-                <div class="input-container-mail">
-                    <div class="ptext about">Contact email</div>
-                    <textarea name="contact_email" class="input-box mail">{{ p.contact_email }}</textarea>
-                </div>
+               
         
                 <div class="ptext links">
                     Social Media
@@ -119,7 +125,7 @@
     </div>
    
 
-    {% include 'perfil/sections/footer.html' %}
+    {% include 'perfil/sections/footer2.html' %}
 
     <div id="profilePictureModal" class="modal">
         <div class="modal-content">

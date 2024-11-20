@@ -946,6 +946,7 @@ def projectWorkspace(request, id, id_project):
                 messages.success(request, f"Estado de las tareas del milestone '{milestone.name}' actualizado exitosamente.")
 
         elif action == "send_assignment":
+
             task_id = request.POST.get("task-select")
             task = get_object_or_404(Task, id=task_id)
             name = request.POST.get("name")

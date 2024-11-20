@@ -6,12 +6,14 @@
     <link rel="stylesheet" href="{% static 'globals.css' %}" />
     <link rel="stylesheet" href="{% static 'styleguide.css' %}" />
     <link rel="stylesheet" href="{% static 'style.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/heading.css' %}">
+    <link rel="stylesheet" href="{% static 'css/footer_1.css' %}">
   </head>
   <body>
     <div class="frame">
-      <div id="view-project" class="view-project" data-project-id="{{ p.id }}" data-freelancer-id = "{{freelancer.id}}" data-freelancer-name = "{{freelancer.name}}" data-has-applied = "{{freelancer.has_applied}}" data-has-liked = "{{freelancer.has_liked}}">
+      <div id="view-project" class="view-project" data-project-id="{{ p.id }}" data-freelancer-id = "{{freelancer.id}}" data-freelancer-name = "{{freelancer.name}}" data-has-applied = "{{freelancer.has_applied}}" data-has-liked = "{{freelancer.has_liked}}" data-user-type = {{user_type}} data-has-saved="{{freelancer.has_saved}}">
 
-        <div class="heading">  
+        <!-- <div class="heading">  
           <a href="http://127.0.0.1:8000/">
             <button class="logo-name">
               <img class="logo" src="{% static 'Marketplace_1.png' %}" />
@@ -25,7 +27,8 @@
             <img class="chat-icon" src="{% static 'chat-icon-1.svg' %}" />
             <img class="profile-picture" src="{% static 'profile-picture.png' %}" />
           </div>
-        </div>
+        </div> -->
+        {% include 'perfil/sections/heading.html' %}
         <div id="applied" class="blue-notification"><div id="applied-text" class="your-account-has">Application sent</div></div>
 
         <div class="torso">
@@ -34,7 +37,7 @@
             <div class = "second-half">
               <div class = "left-half">  
                 <div class="owner">
-                  <a href="{{ profile_url }}"><img class="ellipse" src="{{ p.manager.image.url }}" alt="Profile Picture"/></a>
+                  <a href="{{ p.profile_url }}"><img class="ellipse" src="{{ p.manager.image.url }}" alt="Profile Picture"/></a>
                   <!-- <img class="ellipse" src="{% static 'ellipse-274.png' %}" /> -->
                   <div class="text-wrapper-11">{{p.manager.business_vertical}}</div>
                 </div>
@@ -52,7 +55,9 @@
                     <div id=like-count class="text-wrapper-25">{{ likes }}</div>
                   </div>
                 </button>
+                {% if user_type == 'freelancer' %}
                 <button id="apply-button" class="apply-button"><div class="save-changes-2">Apply</div></button>
+                {% endif %}
               </div>
             </div>  
           </div>
@@ -138,7 +143,7 @@
           </ul>  
         </div>
         
-        <div class="footer">
+        <!-- <div class="footer">
           <img class="image" src="{% static 'image-4.png' %}" />
           <div class="overlap">
             <div class="group">
@@ -156,7 +161,8 @@
             <img class="img" src="{% static 'image-8-1.png' %}" />
             <img class="image-4" src="{% static 'image-12-1.png' %}" />
           </div>
-        </div>
+        </div> -->
+        {% include 'perfil/sections/footer2.html' %}
       </div>
     </div>
     {% include 'project_management\application_form.html' %}
@@ -175,6 +181,7 @@
     function toggleLike() {
       const projectId = document.getElementById('view-project').dataset.projectId;
       const freelancerId = document.getElementById('view-project').dataset.freelancerId;
+      const user_type = document.getElementById('view-project').dataset.userType;
       // Get the like count element
       const likeCountElement = document.getElementById('like-count');
       // Get the image element
@@ -207,7 +214,8 @@
         body: new URLSearchParams({
           'like': isLiked,
           'project_id': projectId,
-          'freelancer_id': freelancerId
+          'freelancer_id': freelancerId,
+          'user_type': user_type
         })
       })
       .then(response => response.json())
@@ -226,10 +234,20 @@
   <script>
     //Track the current "saved" state
     let isSaved = false;
-  
+    document.addEventListener('DOMContentLoaded', function() {
+    const saved = document.getElementById('view-project').dataset.hasSaved;
+    if (saved === 'True') {
+      isSaved = true;
+      document.getElementById('saved-icon').src = "{% static 'bookmark-filled.svg' %}";
+    }
+  });
     // Function to toggle like state
     function toggleSave() {
       // Get the image element
+      const projectId = document.getElementById('view-project').dataset.projectId;
+      const freelancerId = document.getElementById('view-project').dataset.freelancerId;
+      const user_type = document.getElementById('view-project').dataset.userType;
+
       const savedIcon = document.getElementById('saved-icon');
   
       if (isSaved) {
@@ -239,6 +257,32 @@
       }
       // Toggle the liked state
       isSaved = !isSaved;
+
+      fetch('/project/post_saved/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+          'X-CSRFToken': '{{ csrf_token }}'  // Include CSRF token for security
+        },
+        body: new URLSearchParams({
+          'isSaved': isSaved,
+          'project_id': projectId,
+          'user_id': freelancerId,
+          'user_type': user_type
+        })
+      })
+      .then(response => response.json())
+      .then(data => {
+        if (data.success) {
+          alert(data.message);
+        } else {
+          alert(data.message);
+        }
+      })
+      .catch(error => {
+        console.error('Error:', error);
+      });
+
     }
   </script>
   <script>
@@ -346,7 +390,8 @@
         if (hasAppliedBoolean) {
           alert('You have already applied to this project');
           return;
-        }else{  
+        }else{
+          document.getElementById('view-project').dataset.hasApplied = 'True';
         fetch('/project/post_application/', {
           method: 'POST',
           headers: {
@@ -419,6 +464,7 @@
       const projectId = document.getElementById('view-project').dataset.projectId;
       const freelancerId = document.getElementById('view-project').dataset.freelancerId;
       const freelancerName = document.getElementById('view-project').dataset.freelancerName;
+      const user_type = document.getElementById('view-project').dataset.userType;
       const commentBox = document.getElementById('comment-box');
       const content = commentBox.value;
 
@@ -435,7 +481,8 @@
           'author': freelancerName,
           'content': content,
           'project_id': projectId,
-          'freelancer_id': freelancerId
+          'freelancer_id': freelancerId,
+          'user_type': user_type
         })
       })
       .then(response => response.json())

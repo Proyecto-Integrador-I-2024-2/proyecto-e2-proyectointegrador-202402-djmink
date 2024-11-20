@@ -10,28 +10,33 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Edit Profile - Account</title>
     <link rel="icon" type="image/png" href="{% static 'img/Logo.png' %}">
-    <link rel="stylesheet" href="{% static 'css/edit_account4.css' %}">
+    <link rel="stylesheet" href="{% static 'css/edit_account_1.css' %}">
     <link rel="stylesheet" href="{% static 'css/info-modal.css' %}">
     <link rel="stylesheet" href="{% static 'css/heading.css' %}">
-    <link rel="stylesheet" href="{% static 'css/footer.css' %}">
+    <link rel="stylesheet" href="{% static 'css/footer_1.css' %}">
 </head>
 <body>
 
     {% include 'perfil/sections/info-modal.html' %}
 
+    {% include 'perfil/sections/heading.html' %}
+
     <div class="editsection">
 
-        {% include 'perfil/sections/heading.html' %}
 
-        <div class="ptext ep">
-            Edit profile
-        </div>     
-    
-        <a href="#myaccount" class="ptext my-account">My account</a>
-        <a href="{% url 'editProfile' p.id %}" class="ptext profile">Profile</a>
-        <a href="{% url 'editPortfolio' p.id %}" class="ptext portfolio">Portfolio</a>
-        <a href="{% url 'deleteDisable' p.id %}" class="ptext delete-account">Delete account</a>
-        <a href="{% url 'home' %}" class="ptext logout">Log out</a>       
+        <div class="left-navigation">
+
+            <div class="navigation-text ep">
+                Edit profile
+            </div> 
+
+            <a href="#myaccount" class="navigation-text current">My account</a>
+            <a href="{% url 'editProfile' p.id %}" class="navigation-text">Profile</a>
+            <a href="{% url 'editPortfolio' p.id %}" class="navigation-text">Portfolio</a>
+            <a href="{% url 'deleteDisable' p.id %}" class="navigation-text del">Delete account</a>
+            <a href="{% url 'home' %}" class="navigation-text">Log out</a>   
+
+        </div>
     
         <div class="fields">
     
@@ -47,41 +52,42 @@
                     Basic Information
                 </div>
                 
-                <div class="input-container name">
-                    <div class="ptext name">Name</div>
-                    <textarea name="name" class="input-box name">{{ p.name }}</textarea>
+                <div class="input-container">
+                    <div class="name">Name</div>
+                    <textarea name="name" class="input-box">{{ p.name }}</textarea>
                 </div>
     
-                <div class="input-container username">
-                    <div class="ptext name">Username</div>
-                    <textarea name="username" class="input-box name">{{ p.username }}</textarea>
+                <div class="input-container">
+                    <div class="name">Username</div>
+                    <textarea name="username" class="input-box">{{ p.username }}</textarea>
                 </div>
     
-                <div class="input-container email">
-                    <div class="ptext name">Email</div>
-                    <textarea name="email" class="input-box name">{{ p.email }}</textarea>
+                <div class="input-container">
+                    <div class="name">Email</div>
+                    <textarea name="email" class="input-box">{{ p.email }}</textarea>
                 </div>
     
-                <div class="input-container phone">
-                    <div class="ptext name">Phone</div>
+                <div class="input-container">
+                    <div class="name">Phone</div>
                     <!-- img class="arrow" src="{% static 'img/arrow.svg' %}" alt="arrow" id="arrow" onclick="toggleCodeList()"-->
                     <!--textarea id="code-box" class="input-box code">{{ code }}</textarea-->
-                    <textarea name="phone" class="input-box name">{{ p.phone }}</textarea>
+                    <textarea name="phone" class="input-box">{{ p.phone }}</textarea>
                     <!--div class="code-list" id="code-list"></div-->
                 </div>
-    
-                <button type="submit" id= "save-changes" class='med-btn save'>Save Changes</button>
-    
+
+                <div class="buttons-container">
+                    <button type="button" id= "change-password" class="med-btn pass" onclick="changePassword()">Change Password</button>
+                    <button type="submit" id= "save-changes" class='med-btn save'>Save Changes</button>
+                </div>
+        
             </form>
-    
-            <button type="button" id= "change-password" class="med-btn pass" onclick="changePassword()">Change Password</button>
-            
+                
         </div>
 
     </div>
     
 
-    {% include 'perfil/sections/footer.html' %}
+    {% include 'perfil/sections/footer2.html' %}
 
     {% include 'perfil/sections/change_password_modal.html' %}
 

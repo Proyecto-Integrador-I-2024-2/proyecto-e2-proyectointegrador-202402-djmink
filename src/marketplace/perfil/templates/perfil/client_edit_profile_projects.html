@@ -10,10 +10,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Edit Profile - Projects</title>
     <link rel="icon" type="image/png" href="{% static 'img/Logo.png' %}">
-    <link rel="stylesheet" href="{% static 'css/client_edit_profile_projects4.css' %}">
+    <link rel="stylesheet" href="{% static 'css/client_edit_profile_projects_1.css' %}">
     <link rel="stylesheet" href="{% static 'css/info-modal.css' %}">
     <link rel="stylesheet" href="{% static 'css/heading.css' %}">
-    <link rel="stylesheet" href="{% static 'css/footer.css' %}">
+    <link rel="stylesheet" href="{% static 'css/footer_1.css' %}">
 </head>
 <body>
 
@@ -53,7 +53,7 @@
                     {% for project in p.projects.all %}
                         <div class="project-container" id="project-{{ project.id }}">          
                             <button type="button" class="delete-btn project" onclick="markForRemoval('project', '{{ project.id }}')">X</button>
-                            <a href="{% url 'editProfileClient' p.id %}">
+                            <a href="{% url 'edit_project' p.id project.id %}">
                                 <img class="edit-btn" src="{% static 'img/Edit.svg' %}"/>
                             </a>  
                             <div id="project-name-{{ project.id }}" class="ptext project-name">{{ project.name }}</div>
@@ -75,7 +75,7 @@
 
     </div>
 
-    {% include 'perfil/sections/footer.html' %}  
+    {% include 'perfil/sections/footer2.html' %}  
     
     <script>
 
