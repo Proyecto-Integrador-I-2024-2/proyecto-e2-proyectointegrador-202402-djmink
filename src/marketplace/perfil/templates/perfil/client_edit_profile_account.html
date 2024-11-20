@@ -33,7 +33,7 @@
             <a href="{% url 'editProjectsClient' p.id %}" class="navigation-text">Projects</a>
             <a href="{% url 'deleteDisableClient' p.id %}" class="navigation-text del">Delete account</a>
             <a href="{% url 'home' %}" class="navigation-text">Log out</a>     
-        </div>
+        </div>  
         
 
         <div class="fields">
@@ -42,11 +42,11 @@
 
                 {% csrf_token %}
 
-                <div class="myaccount">
+                <div class="ptext myaccount">
                     My Account
                 </div>
     
-                <div class="basic-info">
+                <div class="ptext basic-info">
                     Basic Information
                 </div>
                 
