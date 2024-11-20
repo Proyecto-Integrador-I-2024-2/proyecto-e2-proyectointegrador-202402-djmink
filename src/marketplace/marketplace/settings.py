@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     'perfil',
     'accounts',
     'project_management',
+    'notifications'
 ]
 
 MIDDLEWARE = [
@@ -68,7 +69,9 @@ ROOT_URLCONF = 'marketplace.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [
+            BASE_DIR / 'templates',
+        ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [

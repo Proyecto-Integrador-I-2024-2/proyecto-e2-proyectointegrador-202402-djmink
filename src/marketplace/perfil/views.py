@@ -76,6 +76,7 @@ def editAccountClient(request, id):
     profile_image = p.image.url
     return render(request, 'perfil/client_edit_profile_account.html', {
         'p': p, 
+        'this_id': id,
         'home_url': reverse('mainCliente', args=[p.id]),
         'at_client_page': True,
         'profile_url': profile_url, 
@@ -148,6 +149,7 @@ def editAccount(request, id):
     profile_image = p.image.url
     return render(request, 'perfil/freelancer_edit_profile_account.html', {
         'p': p,
+        'this_id': id,
         'projects_url': reverse('projectsList', args=[p.id]),
         'home_url': reverse('mainFreelancer', args=[p.id]),
         'profile_image': profile_image,
@@ -210,6 +212,7 @@ def perfilesCliente(request, id):
     profile_image = p.image.url
     return render(request, 'perfil/client_profile.html', {
         'p':p,
+        'this_id': id,
         'home_url': reverse('mainCliente', args=[p.id]),
         'at_client_page': True,
         'edit_profile_url': edit_profile_url,
@@ -276,6 +279,7 @@ def perfilesFreelancer(request, id):
     profile_image = p.image.url
     return render(request, 'perfil/freelancer_profile.html', {
         'p':p,
+        'this_id': id,
         'projects_url': reverse('projectsList', args=[p.id]),
         'home_url': reverse('mainFreelancer', args=[p.id]),
         'edit_profile_url': edit_profile_url,
@@ -376,6 +380,7 @@ def editProfile(request, id=id):
     profile_url = reverse('perfilFreelancer', args=[p.id])
     return render(request, 'perfil/freelancer_edit_profile.html', {
         'p': p,
+        'this_id': id,
         'projects_url': reverse('projectsList', args=[p.id]),
         'home_url': reverse('mainFreelancer', args=[p.id]),
         'profile_image': profile_image,
@@ -427,6 +432,7 @@ def editProfileClient(request, id=id):
     profile_image = p.image.url
     return render(request, 'perfil/client_edit_profile.html', {
         'p': p,
+        'this_id': id,
         'profile_url': profile_url,
         'home_url': reverse('mainCliente', args=[p.id]),
         'at_client_page': True,
@@ -480,6 +486,7 @@ def editPortfolio(request, id=id):
     profile_image = p.image.url
     return render(request, 'perfil/freelancer_edit_profile_portfolio.html', {
         'p': p,
+        'this_id': id,
         'projects_url': reverse('projectsList', args=[p.id]),
         'home_url': reverse('mainFreelancer', args=[p.id]),
         'profile_image': profile_image,
@@ -512,6 +519,7 @@ def editProjectsClient(request, id=id):
     profile_image = p.image.url
     return render(request, 'perfil/client_edit_profile_projects.html', {
         'p': p,
+        'this_id': id,
         'profile_url': profile_url,
         'home_url': reverse('mainCliente', args=[p.id]),
         'at_client_page': True,
@@ -584,6 +592,7 @@ def clientProfile(request, id, idclient):
     profile_url = reverse('perfilFreelancer', args=[client.id])
     return render(request, 'perfil/client_profile_view.html', {
         'p': p,
+        'this_id': id,
         'projects_url': reverse('projectsList', args=[p.id]),
         'home_url': reverse('mainFreelancer', args=[p.id]),
         'profile_image': profile_image,
@@ -658,6 +667,7 @@ def freelancerProfile(request, id, idclient):
     profile_url = reverse('perfilesCliente', args=[client.id])
     return render(request, 'perfil/freelancer_profile_view.html', {
         'p': p,
+        'this_id': id,
         'profile_image': profile_image,
         'client': client,
         'profile_url': profile_url,
@@ -722,6 +732,7 @@ def mainFreelancer(request, id):
     profile_url = reverse('perfilFreelancer', args=[profile.id])
     return render(request, 'perfil/freelancer_home.html', {
         'profile': profile,
+        'this_id': id,
         'projects_url': reverse('projectsList', args=[profile.id]),
         'at_home': True,
         'profile_image': profile_image,
@@ -747,6 +758,7 @@ def mainCliente(request, id):
     profile_url = reverse('perfilesCliente', args=[p.id])
     return render(request, 'perfil/client_projects_list.html', {
         'p':p,
+        'this_id': id,
         'at_home': True,
         'at_client_page': True,
         'profile_image': profile_image,
@@ -766,6 +778,7 @@ def projectsList(request, id):
     profile_url = reverse('perfilFreelancer', args=[p.id])
     return render(request, 'perfil/freelancer_projects_list.html', {
         'profile': p,
+        'this_id': id,
         'home_url': reverse('mainFreelancer', args=[p.id]),
         'at_projects_page': True,
         'profile_image': profile_image,
@@ -903,6 +916,7 @@ def manageProject(request, id, id_project):
     profile_url = reverse('perfilesCliente', args=[p.id])
     return render(request, 'perfil/client_project_view.html', {
         'profile': p,
+        'this_id': id,
         'project_progress': project_progress,
         'project': project_data,
         'home_url': reverse('mainCliente', args=[p.id]),
@@ -987,6 +1001,7 @@ def projectWorkspace(request, id, id_project):
     profile_image = p.image.url
     return render(request, 'perfil/freelancer_project_workspace.html', {
         'profile': p,
+        'this_id': id,
         'projects_url': reverse('projectsList', args=[p.id]),
         'home_url': reverse('mainFreelancer', args=[p.id]),
         'profile_url': profile_url,
@@ -1014,6 +1029,7 @@ def deleteDisable(request, id=id):
     profile_image = p.image.url
     return render(request, 'perfil/freelancer_edit_profile_delete.html', {
         'p': p,
+        'this_id': id,
         'profile_image': profile_image,
         'projects_url': reverse('projectsList', args=[p.id]),
         'home_url': reverse('mainFreelancer', args=[p.id]),
@@ -1038,6 +1054,7 @@ def deleteDisableClient(request, id=id):
     profile_image = p.image.url
     return render(request, 'perfil/client_edit_profile_delete.html', {
         'p': p,
+        'this_id': id,
         'profile_image': profile_image,
         'home_url': reverse('mainCliente', args=[p.id]),
         'at_client_page': True,
@@ -1045,6 +1062,3 @@ def deleteDisableClient(request, id=id):
 
 def calendar(request):
     return render(request, 'perfil/calendar.html')
-
-
-

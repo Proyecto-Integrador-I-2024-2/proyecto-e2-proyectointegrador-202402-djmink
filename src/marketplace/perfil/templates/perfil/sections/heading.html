@@ -14,7 +14,7 @@
                 <li><a href="{{ home_url }}">Home</a></li>
             {% endif %}   
             {% if not at_client_page %}
-                {% if not at_projects_page %}
+                {% if not at_projects_page %}   
                     <li><a href="{{ projects_url }}">My Projects</a></li>
                 {% endif %}
             {% endif %}
@@ -23,7 +23,11 @@
     <div class="navBar">
         <ul>
             <li><img class="icon" src="{% static 'img/Chat_Icon.svg' %}" alt=""></li>
-            <li><img class="icon" src="{% static 'img/Notification_Icon.svg' %}" alt=""></li>
+            <li>
+                <a href="{% url 'notifications' id=this_id%}">
+                    <img class="icon notification_icon" src="{% static 'img/Notification_Icon.svg' %}" alt="Notifications Icon"/>
+                </a>
+            </li>
             <li><a href="{{ profile_url }}"><img class="profile_picture_heading" src="{{ profile_image }}" alt="Profile Picture"/></a></li>
         </ul>
     </div>

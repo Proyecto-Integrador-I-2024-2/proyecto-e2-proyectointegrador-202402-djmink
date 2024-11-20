@@ -184,6 +184,7 @@ def create_project_view(request, id):
 
     context = {
         'profile_image': client.image.url,
+        'this_id': id,
         'home_url': reverse('mainCliente', args=[client.id]),
         'profile_url': reverse('perfilesCliente', args=[client.id]),
         'at_client_page': True,
@@ -203,6 +204,7 @@ def edit_project_view(request, id_client, id_project):
 
     context = {
         'project': project,
+        'this_id': id_client,
         'milestones': milestones,
         'profile_image': client.image.url,
         'home_url': reverse('mainCliente', args=[client.id]),
