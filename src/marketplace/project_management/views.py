@@ -47,7 +47,7 @@ def freelancerProjectView(request, freelancer_id, id):
         f.has_liked = p.likes.filter(object_id=f.id).exists()
         f.has_applied = has_applied
         f.has_saved = p.saved_projects.filter(user_id=f.id).exists()
-        p.profile_url = reverse('perfilesCliente', args=[p.manager.id])
+        p.profile_url = reverse('clientProfile', args=[f.id, p.manager.id])
         user_type = 'freelancer'
         context = {
             'p': p,
@@ -71,6 +71,9 @@ def freelancerProjectView(request, freelancer_id, id):
         f.has_liked = p.likes.filter(object_id=f.id).exists()
         f.has_saved = p.saved_projects.filter(user_id=f.id).exists()
         user_type = 'company_manager'
+        if viewer.id == p.manager.id:
+            p.profile_url = reverse('perfilesCliente', args=[f.id])
+
         context = {
             'p': p,
             'm': m,
