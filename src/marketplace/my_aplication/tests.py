@@ -524,4 +524,3 @@ class FreelancerRegisterTest(LiveServerTestCase):
             self.assertTrue(True)
         
         self.driver.quit()
-
