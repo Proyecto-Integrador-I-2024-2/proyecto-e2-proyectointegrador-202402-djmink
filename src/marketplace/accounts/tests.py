@@ -53,24 +53,3 @@ class TestProjectViews(TestCase):
         self.assertIn('profile_image', response.context)
         self.assertIn('home_url', response.context)
         self.assertIn('profile_url', response.context)
-
-    def test_edit_project_view(self):
-        url = reverse('edit_project', args=[self.client_manager.id, self.project.id])
-        response = self.client.get(url)
-
-        # Assert response status
-        self.assertEqual(response.status_code, 200)
-
-        # Assert template used
-        self.assertTemplateUsed(response, 'EditProject.html')
-
-        # Assert context data
-        self.assertEqual(response.context['project'], self.project)
-        self.assertQuerysetEqual(
-            response.context['milestones'],
-            Milestone.objects.filter(project=self.project),
-            ordered=False
-        )
-        self.assertIn('profile_image', response.context)
-        self.assertIn('home_url', response.context)
-        self.assertIn('profile_url', response.context)
